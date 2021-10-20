@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-responsive.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="assets/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+  <script src="assets/js/main.js" type="text/javascript"></script>
+
+  <title>REST API Resources</title>
+</head>
+<body>
+  <div class="header">
+    <div class="top-bar">
+      <h1 id="logo"><a class="logo" href="/"><span>OpenAPI</span><span class="light">API Docs</span></a></h1>
+    </div>
+  </div>
+  <div class="model-container"></div>
+  <div class="content">
+    <div class="box clearfix">
+      <div class="sidebar">
+        <div class="section-box">
+          <div class="section-header">
+            Overview
+          </div>
+          <ul>
+            <li>Getting Started</li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPCreatorApi">ACPCreatorApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPCreatorApi#checkCreatorURLAvailable">checkCreatorURLAvailable</a></li>
+            <li><a href="#!/ACPCreatorApi#createCreator">createCreator</a></li>
+            <li><a href="#!/ACPCreatorApi#createCreatorInviteCode">createCreatorInviteCode</a></li>
+            <li><a href="#!/ACPCreatorApi#getCreatorCategories">getCreatorCategories</a></li>
+            <li><a href="#!/ACPCreatorApi#getCreatorDetails">getCreatorDetails</a></li>
+            <li><a href="#!/ACPCreatorApi#getCreatorInviteCodeList">getCreatorInviteCodeList</a></li>
+            <li><a href="#!/ACPCreatorApi#getCreatorList">getCreatorList</a></li>
+            <li><a href="#!/ACPCreatorApi#getCreatorsTitles">getCreatorsTitles</a></li>
+            <li><a href="#!/ACPCreatorApi#getSubscriptionPlanList">getSubscriptionPlanList</a></li>
+            <li><a href="#!/ACPCreatorApi#updateCreator">updateCreator</a></li>
+            <li><a href="#!/ACPCreatorApi#updateCreatorSubscriptionPlan">updateCreatorSubscriptionPlan</a></li>
+            <li><a href="#!/ACPCreatorApi#uploadCard">uploadCard</a></li>
+            <li><a href="#!/ACPCreatorApi#uploadCover">uploadCover</a></li>
+            <li><a href="#!/ACPCreatorApi#uploadIcon">uploadIcon</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPCreatorAgreementApi">ACPCreatorAgreementApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPCreatorAgreementApi#editCreatorAgreement">editCreatorAgreement</a></li>
+            <li><a href="#!/ACPCreatorAgreementApi#getCreatorAgreement">getCreatorAgreement</a></li>
+            <li><a href="#!/ACPCreatorAgreementApi#listCreatorAgreement">listCreatorAgreement</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPDashboardApi">ACPDashboardApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPDashboardApi#getJobStatus">getJobStatus</a></li>
+            <li><a href="#!/ACPDashboardApi#startJob">startJob</a></li>
+            <li><a href="#!/ACPDashboardApi#stopJob">stopJob</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPFAQApi">ACPFAQApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPFAQApi#createFaqArticle">createFaqArticle</a></li>
+            <li><a href="#!/ACPFAQApi#createFaqSection">createFaqSection</a></li>
+            <li><a href="#!/ACPFAQApi#getFaqArticleDetails">getFaqArticleDetails</a></li>
+            <li><a href="#!/ACPFAQApi#getFaqImages">getFaqImages</a></li>
+            <li><a href="#!/ACPFAQApi#getFaqSectionDetails">getFaqSectionDetails</a></li>
+            <li><a href="#!/ACPFAQApi#getFaqSectionsACP">getFaqSectionsACP</a></li>
+            <li><a href="#!/ACPFAQApi#updateFaqArticle">updateFaqArticle</a></li>
+            <li><a href="#!/ACPFAQApi#updateFaqSection">updateFaqSection</a></li>
+            <li><a href="#!/ACPFAQApi#uploadFaqImage">uploadFaqImage</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPFeatureApi">ACPFeatureApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPFeatureApi#getFeatureConfigs">getFeatureConfigs</a></li>
+            <li><a href="#!/ACPFeatureApi#saveFeature">saveFeature</a></li>
+            <li><a href="#!/ACPFeatureApi#saveFeatureCategory">saveFeatureCategory</a></li>
+            <li><a href="#!/ACPFeatureApi#saveFeatureDependencies">saveFeatureDependencies</a></li>
+            <li><a href="#!/ACPFeatureApi#saveFeatureResolution">saveFeatureResolution</a></li>
+            <li><a href="#!/ACPFeatureApi#saveFeatureType">saveFeatureType</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPModeratorApi">ACPModeratorApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPModeratorApi#addCreatorModeratorACP">addCreatorModeratorACP</a></li>
+            <li><a href="#!/ACPModeratorApi#createModerator">createModerator</a></li>
+            <li><a href="#!/ACPModeratorApi#getModeratorAvailableCreators">getModeratorAvailableCreators</a></li>
+            <li><a href="#!/ACPModeratorApi#getModeratorCreators">getModeratorCreators</a></li>
+            <li><a href="#!/ACPModeratorApi#getModeratorList">getModeratorList</a></li>
+            <li><a href="#!/ACPModeratorApi#removeCreatorModeratorACP">removeCreatorModeratorACP</a></li>
+            <li><a href="#!/ACPModeratorApi#updateGlobalModerator">updateGlobalModerator</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPTranscodingApi">ACPTranscodingApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPTranscodingApi#augmentOrder">augmentOrder</a></li>
+            <li><a href="#!/ACPTranscodingApi#createOrder">createOrder</a></li>
+            <li><a href="#!/ACPTranscodingApi#getContentACP">getContentACP</a></li>
+            <li><a href="#!/ACPTranscodingApi#getContentList">getContentList</a></li>
+            <li><a href="#!/ACPTranscodingApi#getJob">getJob</a></li>
+            <li><a href="#!/ACPTranscodingApi#getOrder">getOrder</a></li>
+            <li><a href="#!/ACPTranscodingApi#getOrderList">getOrderList</a></li>
+            <li><a href="#!/ACPTranscodingApi#getTask">getTask</a></li>
+            <li><a href="#!/ACPTranscodingApi#getUpload">getUpload</a></li>
+            <li><a href="#!/ACPTranscodingApi#getUploadList">getUploadList</a></li>
+            <li><a href="#!/ACPTranscodingApi#postContent">postContent</a></li>
+            <li><a href="#!/ACPTranscodingApi#postJob">postJob</a></li>
+            <li><a href="#!/ACPTranscodingApi#postManager">postManager</a></li>
+            <li><a href="#!/ACPTranscodingApi#postOrder">postOrder</a></li>
+            <li><a href="#!/ACPTranscodingApi#postTask">postTask</a></li>
+            <li><a href="#!/ACPTranscodingApi#postUpload">postUpload</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ACPUserApi">ACPUserApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ACPUserApi#addUserSubscriptions">addUserSubscriptions</a></li>
+            <li><a href="#!/ACPUserApi#checkEmailAvailable">checkEmailAvailable</a></li>
+            <li><a href="#!/ACPUserApi#checkUsernameAvailable">checkUsernameAvailable</a></li>
+            <li><a href="#!/ACPUserApi#createAdmin">createAdmin</a></li>
+            <li><a href="#!/ACPUserApi#deleteUser">deleteUser</a></li>
+            <li><a href="#!/ACPUserApi#findUser">findUser</a></li>
+            <li><a href="#!/ACPUserApi#getPaymentProcessorData">getPaymentProcessorData</a></li>
+            <li><a href="#!/ACPUserApi#getSubjectAccessData">getSubjectAccessData</a></li>
+            <li><a href="#!/ACPUserApi#getUserDetails">getUserDetails</a></li>
+            <li><a href="#!/ACPUserApi#getUserList">getUserList</a></li>
+            <li><a href="#!/ACPUserApi#getUserSubscriptions">getUserSubscriptions</a></li>
+            <li><a href="#!/ACPUserApi#listUserInvoices">listUserInvoices</a></li>
+            <li><a href="#!/ACPUserApi#removeUserSubscription">removeUserSubscription</a></li>
+            <li><a href="#!/ACPUserApi#scheduleDeletionACP">scheduleDeletionACP</a></li>
+            <li><a href="#!/ACPUserApi#searchUserForModeration">searchUserForModeration</a></li>
+            <li><a href="#!/ACPUserApi#signupACP">signupACP</a></li>
+            <li><a href="#!/ACPUserApi#unscheduleDeletionACP">unscheduleDeletionACP</a></li>
+            <li><a href="#!/ACPUserApi#updateAdministrator">updateAdministrator</a></li>
+            <li><a href="#!/ACPUserApi#updateUser">updateUser</a></li>
+            <li><a href="#!/ACPUserApi#uploadAvatarACP">uploadAvatarACP</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ActivationApi">ActivationApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ActivationApi#confirmEmail">confirmEmail</a></li>
+            <li><a href="#!/ActivationApi#requestActivationEmail">requestActivationEmail</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/AdministrationApi">AdministrationApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/AdministrationApi#addGlobalModerator">addGlobalModerator</a></li>
+            <li><a href="#!/AdministrationApi#getModerator">getModerator</a></li>
+            <li><a href="#!/AdministrationApi#listModeratorsAdmin">listModeratorsAdmin</a></li>
+            <li><a href="#!/AdministrationApi#removeGlobalModerator">removeGlobalModerator</a></li>
+            <li><a href="#!/AdministrationApi#removeModerator">removeModerator</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/AuthApi">AuthApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/AuthApi#beginSpoofing">beginSpoofing</a></li>
+            <li><a href="#!/AuthApi#checkFor2faLogin">checkFor2faLogin</a></li>
+            <li><a href="#!/AuthApi#endSpoofing">endSpoofing</a></li>
+            <li><a href="#!/AuthApi#getCaptchaInfo">getCaptchaInfo</a></li>
+            <li><a href="#!/AuthApi#login">login</a></li>
+            <li><a href="#!/AuthApi#logout">logout</a></li>
+            <li><a href="#!/AuthApi#signup">signup</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/BrainTreeApi">BrainTreeApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/BrainTreeApi#generateClientToken">generateClientToken</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CDNApi">CDNApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CDNApi#getDeliveryInfo">getDeliveryInfo</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CMSBlogPostApi">CMSBlogPostApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CMSBlogPostApi#createBlogPost">createBlogPost</a></li>
+            <li><a href="#!/CMSBlogPostApi#deleteBlogPost">deleteBlogPost</a></li>
+            <li><a href="#!/CMSBlogPostApi#editBlogPost">editBlogPost</a></li>
+            <li><a href="#!/CMSBlogPostApi#getBlogPostCMS">getBlogPostCMS</a></li>
+            <li><a href="#!/CMSBlogPostApi#listBlogPost">listBlogPost</a></li>
+            <li><a href="#!/CMSBlogPostApi#updateNewAttachments">updateNewAttachments</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CMSContentApi">CMSContentApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CMSContentApi#deleteContent">deleteContent</a></li>
+            <li><a href="#!/CMSContentApi#editContent">editContent</a></li>
+            <li><a href="#!/CMSContentApi#getAudioContentCMS">getAudioContentCMS</a></li>
+            <li><a href="#!/CMSContentApi#getContentCMS">getContentCMS</a></li>
+            <li><a href="#!/CMSContentApi#getGalleryContentCMS">getGalleryContentCMS</a></li>
+            <li><a href="#!/CMSContentApi#getPictureContentCMS">getPictureContentCMS</a></li>
+            <li><a href="#!/CMSContentApi#getVideoContentCMS">getVideoContentCMS</a></li>
+            <li><a href="#!/CMSContentApi#listAudioContent">listAudioContent</a></li>
+            <li><a href="#!/CMSContentApi#listGalleryContent">listGalleryContent</a></li>
+            <li><a href="#!/CMSContentApi#listPictureContent">listPictureContent</a></li>
+            <li><a href="#!/CMSContentApi#listVideoContent">listVideoContent</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CMSCreatorSubscriptionPlanApi">CMSCreatorSubscriptionPlanApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CMSCreatorSubscriptionPlanApi#downloadSubscribers">downloadSubscribers</a></li>
+            <li><a href="#!/CMSCreatorSubscriptionPlanApi#listSubscribers">listSubscribers</a></li>
+            <li><a href="#!/CMSCreatorSubscriptionPlanApi#listSubscriptionPlansCMS">listSubscriptionPlansCMS</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CMSCreatorWarehouseApi">CMSCreatorWarehouseApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CMSCreatorWarehouseApi#createPriceRule">createPriceRule</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#deletePriceRule">deletePriceRule</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#editPriceRule">editPriceRule</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getCollections">getCollections</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getCountries">getCountries</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getCreatorWarehouse">getCreatorWarehouse</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getPriceRule">getPriceRule</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getProducts">getProducts</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#getShopInfo">getShopInfo</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#listCollections">listCollections</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#listPriceRules">listPriceRules</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#listProducts">listProducts</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#listShopShippingCountries">listShopShippingCountries</a></li>
+            <li><a href="#!/CMSCreatorWarehouseApi#saveCreatorWarehouse">saveCreatorWarehouse</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CMSLivestreamApi">CMSLivestreamApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CMSLivestreamApi#getLivestreamInfo">getLivestreamInfo</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CommentApi">CommentApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CommentApi#dislikeComment">dislikeComment</a></li>
+            <li><a href="#!/CommentApi#getCommentReplies">getCommentReplies</a></li>
+            <li><a href="#!/CommentApi#getComments">getComments</a></li>
+            <li><a href="#!/CommentApi#likeComment">likeComment</a></li>
+            <li><a href="#!/CommentApi#postComment">postComment</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ConnectedAccountsApi">ConnectedAccountsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ConnectedAccountsApi#callback">callback</a></li>
+            <li><a href="#!/ConnectedAccountsApi#complete">complete</a></li>
+            <li><a href="#!/ConnectedAccountsApi#dissociate">dissociate</a></li>
+            <li><a href="#!/ConnectedAccountsApi#getAccountConnect">getAccountConnect</a></li>
+            <li><a href="#!/ConnectedAccountsApi#listConnections">listConnections</a></li>
+            <li><a href="#!/ConnectedAccountsApi#refresh">refresh</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ContentApi">ContentApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ContentApi#dislikeContent">dislikeContent</a></li>
+            <li><a href="#!/ContentApi#getAudioContent">getAudioContent</a></li>
+            <li><a href="#!/ContentApi#getBlogPost">getBlogPost</a></li>
+            <li><a href="#!/ContentApi#getContent">getContent</a></li>
+            <li><a href="#!/ContentApi#getCreatorBlogPosts">getCreatorBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getGalleryContent">getGalleryContent</a></li>
+            <li><a href="#!/ContentApi#getMultiCreatorBlogPosts">getMultiCreatorBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getPictureContent">getPictureContent</a></li>
+            <li><a href="#!/ContentApi#getPictureUrl">getPictureUrl</a></li>
+            <li><a href="#!/ContentApi#getRelatedBlogPosts">getRelatedBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getVideoContent">getVideoContent</a></li>
+            <li><a href="#!/ContentApi#likeContent">likeContent</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ContentUploadApi">ContentUploadApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ContentUploadApi#abortMultipartUploadV3">abortMultipartUploadV3</a></li>
+            <li><a href="#!/ContentUploadApi#completeMultipartUploadContent">completeMultipartUploadContent</a></li>
+            <li><a href="#!/ContentUploadApi#createMultipartUploadV3">createMultipartUploadV3</a></li>
+            <li><a href="#!/ContentUploadApi#getUploadedPartsV3">getUploadedPartsV3</a></li>
+            <li><a href="#!/ContentUploadApi#signPartUploadContent">signPartUploadContent</a></li>
+            <li><a href="#!/ContentUploadApi#thumbnailUpdateSubscribe">thumbnailUpdateSubscribe</a></li>
+            <li><a href="#!/ContentUploadApi#uploadThumbnailV3">uploadThumbnailV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorApi">CreatorApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorApi#bindCreatorInviteCode">bindCreatorInviteCode</a></li>
+            <li><a href="#!/CreatorApi#claimCreatorInviteCode">claimCreatorInviteCode</a></li>
+            <li><a href="#!/CreatorApi#discoverCreatorsV2">discoverCreatorsV2</a></li>
+            <li><a href="#!/CreatorApi#discoverCreatorsV3">discoverCreatorsV3</a></li>
+            <li><a href="#!/CreatorApi#getChannelInfo">getChannelInfo</a></li>
+            <li><a href="#!/CreatorApi#getCreator">getCreator</a></li>
+            <li><a href="#!/CreatorApi#getCreatorByName">getCreatorByName</a></li>
+            <li><a href="#!/CreatorApi#getCreatorInfoByName">getCreatorInfoByName</a></li>
+            <li><a href="#!/CreatorApi#getCreatorInviteCodeInfo">getCreatorInviteCodeInfo</a></li>
+            <li><a href="#!/CreatorApi#getCreators">getCreators</a></li>
+            <li><a href="#!/CreatorApi#getInfo">getInfo</a></li>
+            <li><a href="#!/CreatorApi#getSocialLinks">getSocialLinks</a></li>
+            <li><a href="#!/CreatorApi#listCreatorCategoriesV2">listCreatorCategoriesV2</a></li>
+            <li><a href="#!/CreatorApi#listCreatorCategoriesV3">listCreatorCategoriesV3</a></li>
+            <li><a href="#!/CreatorApi#listCreators">listCreators</a></li>
+            <li><a href="#!/CreatorApi#listPlaylists">listPlaylists</a></li>
+            <li><a href="#!/CreatorApi#listVideos">listVideos</a></li>
+            <li><a href="#!/CreatorApi#updateChannelImage">updateChannelImage</a></li>
+            <li><a href="#!/CreatorApi#updateChannelInfo">updateChannelInfo</a></li>
+            <li><a href="#!/CreatorApi#updateSocialLinks">updateSocialLinks</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorAdministrationApi">CreatorAdministrationApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorAdministrationApi#addCreatorModeratorAdmin">addCreatorModeratorAdmin</a></li>
+            <li><a href="#!/CreatorAdministrationApi#addCreatorModeratorByPath">addCreatorModeratorByPath</a></li>
+            <li><a href="#!/CreatorAdministrationApi#listModerators">listModerators</a></li>
+            <li><a href="#!/CreatorAdministrationApi#listModeratorsByPath">listModeratorsByPath</a></li>
+            <li><a href="#!/CreatorAdministrationApi#removeCreatorModeratorAdmin">removeCreatorModeratorAdmin</a></li>
+            <li><a href="#!/CreatorAdministrationApi#removeCreatorModeratorByPath">removeCreatorModeratorByPath</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorAgreementApi">CreatorAgreementApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorAgreementApi#confirmAgreement">confirmAgreement</a></li>
+            <li><a href="#!/CreatorAgreementApi#getAgreement">getAgreement</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorPlanFeatureLevelsApi">CreatorPlanFeatureLevelsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorPlanFeatureLevelsApi#calculateCreatorPlanFeatureCosts">calculateCreatorPlanFeatureCosts</a></li>
+            <li><a href="#!/CreatorPlanFeatureLevelsApi#listCreatorPlanFeatureLevels">listCreatorPlanFeatureLevels</a></li>
+            <li><a href="#!/CreatorPlanFeatureLevelsApi#planFeatureLevels">planFeatureLevels</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorSubscriptionPlanApi">CreatorSubscriptionPlanApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorSubscriptionPlanApi#getCreatorSubInfoPublic">getCreatorSubInfoPublic</a></li>
+            <li><a href="#!/CreatorSubscriptionPlanApi#getPlansForContent">getPlansForContent</a></li>
+            <li><a href="#!/CreatorSubscriptionPlanApi#listSubscriptionPlans">listSubscriptionPlans</a></li>
+            <li><a href="#!/CreatorSubscriptionPlanApi#publishSubscriptionPlan">publishSubscriptionPlan</a></li>
+            <li><a href="#!/CreatorSubscriptionPlanApi#updateSubscriptionPlans">updateSubscriptionPlans</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/DiscordBotApi">DiscordBotApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/DiscordBotApi#generateInviteLink">generateInviteLink</a></li>
+            <li><a href="#!/DiscordBotApi#getDiscordBotInfo">getDiscordBotInfo</a></li>
+            <li><a href="#!/DiscordBotApi#joinDiscordServers">joinDiscordServers</a></li>
+            <li><a href="#!/DiscordBotApi#link">link</a></li>
+            <li><a href="#!/DiscordBotApi#linkCallback">linkCallback</a></li>
+            <li><a href="#!/DiscordBotApi#listDiscordBotConnections">listDiscordBotConnections</a></li>
+            <li><a href="#!/DiscordBotApi#unlink">unlink</a></li>
+            <li><a href="#!/DiscordBotApi#updateLink">updateLink</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/EdgesApi">EdgesApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/EdgesApi#getEdges">getEdges</a></li>
+            <li><a href="#!/EdgesApi#getVideoUrl">getVideoUrl</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/FAQApi">FAQApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/FAQApi#getFaqSections">getFaqSections</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/IframeApi">IframeApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/IframeApi#getVideoPlayer">getVideoPlayer</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ImageOptimizationsApi">ImageOptimizationsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ImageOptimizationsApi#getOptimizationsV2">getOptimizationsV2</a></li>
+            <li><a href="#!/ImageOptimizationsApi#getOptimizationsV3">getOptimizationsV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/LivestreamApi">LivestreamApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/LivestreamApi#renderLivePopout">renderLivePopout</a></li>
+            <li><a href="#!/LivestreamApi#updateConfig">updateConfig</a></li>
+            <li><a href="#!/LivestreamApi#uploadLiveThumbnail">uploadLiveThumbnail</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/LoyaltyRewardsApi">LoyaltyRewardsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/LoyaltyRewardsApi#claimLoyaltyReward">claimLoyaltyReward</a></li>
+            <li><a href="#!/LoyaltyRewardsApi#listCreatorLoyaltyReward">listCreatorLoyaltyReward</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/MediaApi">MediaApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/MediaApi#deleteVideo">deleteVideo</a></li>
+            <li><a href="#!/MediaApi#getList">getList</a></li>
+            <li><a href="#!/MediaApi#getRelatedVideos">getRelatedVideos</a></li>
+            <li><a href="#!/MediaApi#getVideo">getVideo</a></li>
+            <li><a href="#!/MediaApi#updateVideo">updateVideo</a></li>
+            <li><a href="#!/MediaApi#watchKey">watchKey</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ModerationApi">ModerationApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ModerationApi#banUserV2">banUserV2</a></li>
+            <li><a href="#!/ModerationApi#banUserV3">banUserV3</a></li>
+            <li><a href="#!/ModerationApi#hideCommentV2">hideCommentV2</a></li>
+            <li><a href="#!/ModerationApi#hideCommentV3">hideCommentV3</a></li>
+            <li><a href="#!/ModerationApi#listBanV2">listBanV2</a></li>
+            <li><a href="#!/ModerationApi#listBanV3">listBanV3</a></li>
+            <li><a href="#!/ModerationApi#moderateComment">moderateComment</a></li>
+            <li><a href="#!/ModerationApi#moderateVideoComment">moderateVideoComment</a></li>
+            <li><a href="#!/ModerationApi#unbanUserV2">unbanUserV2</a></li>
+            <li><a href="#!/ModerationApi#unbanUserV3">unbanUserV3</a></li>
+            <li><a href="#!/ModerationApi#unhideCommentV2">unhideCommentV2</a></li>
+            <li><a href="#!/ModerationApi#unhideCommentV3">unhideCommentV3</a></li>
+            <li><a href="#!/ModerationApi#userBanStatusV2">userBanStatusV2</a></li>
+            <li><a href="#!/ModerationApi#userBanStatusV3">userBanStatusV3</a></li>
+            <li><a href="#!/ModerationApi#userInfoV2">userInfoV2</a></li>
+            <li><a href="#!/ModerationApi#userInfoV3">userInfoV3</a></li>
+            <li><a href="#!/ModerationApi#userUnbanV2">userUnbanV2</a></li>
+            <li><a href="#!/ModerationApi#userUnbanV3">userUnbanV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/PasswordResetApi">PasswordResetApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/PasswordResetApi#resetPassword">resetPassword</a></li>
+            <li><a href="#!/PasswordResetApi#sendPasswordReset">sendPasswordReset</a></li>
+            <li><a href="#!/PasswordResetApi#validateKey">validateKey</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/PaymentsApi">PaymentsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/PaymentsApi#addAddress">addAddress</a></li>
+            <li><a href="#!/PaymentsApi#addPaymentMethod">addPaymentMethod</a></li>
+            <li><a href="#!/PaymentsApi#cancelSubscription">cancelSubscription</a></li>
+            <li><a href="#!/PaymentsApi#deleteAddress">deleteAddress</a></li>
+            <li><a href="#!/PaymentsApi#deletePaymentMethod">deletePaymentMethod</a></li>
+            <li><a href="#!/PaymentsApi#estimateTaxes">estimateTaxes</a></li>
+            <li><a href="#!/PaymentsApi#listAddresses">listAddresses</a></li>
+            <li><a href="#!/PaymentsApi#listInvoices">listInvoices</a></li>
+            <li><a href="#!/PaymentsApi#listPaymentMethods">listPaymentMethods</a></li>
+            <li><a href="#!/PaymentsApi#purchaseSubscription">purchaseSubscription</a></li>
+            <li><a href="#!/PaymentsApi#setPrimaryAddress">setPrimaryAddress</a></li>
+            <li><a href="#!/PaymentsApi#setPrimaryPaymentMethod">setPrimaryPaymentMethod</a></li>
+            <li><a href="#!/PaymentsApi#updateAddress">updateAddress</a></li>
+            <li><a href="#!/PaymentsApi#webhook">webhook</a></li>
+            <li><a href="#!/PaymentsApi#webhookWithSubprocessor">webhookWithSubprocessor</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/PlaylistApi">PlaylistApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/PlaylistApi#listPlaylistVideos">listPlaylistVideos</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/SocketApi">SocketApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/SocketApi#disconnectSocket">disconnectSocket</a></li>
+            <li><a href="#!/SocketApi#socketConnect">socketConnect</a></li>
+            <li><a href="#!/SocketApi#subscribeUser">subscribeUser</a></li>
+            <li><a href="#!/SocketApi#subscribeUserById">subscribeUserById</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/StripeApi">StripeApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/StripeApi#retrievePublicKey">retrievePublicKey</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/SubscriptionsApi">SubscriptionsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/SubscriptionsApi#doesUserHaveSubV2">doesUserHaveSubV2</a></li>
+            <li><a href="#!/SubscriptionsApi#doesUserHaveSubV3">doesUserHaveSubV3</a></li>
+            <li><a href="#!/SubscriptionsApi#listUserSubscriptionsV2">listUserSubscriptionsV2</a></li>
+            <li><a href="#!/SubscriptionsApi#listUserSubscriptionsV3">listUserSubscriptionsV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/SupportApi">SupportApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/SupportApi#getTicketTypes">getTicketTypes</a></li>
+            <li><a href="#!/SupportApi#submitSupport">submitSupport</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/SyncApi">SyncApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/SyncApi#disconnectSync">disconnectSync</a></li>
+            <li><a href="#!/SyncApi#syncConnect">syncConnect</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ThumbnailUpdateUnsubscribeApi">ThumbnailUpdateUnsubscribeApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ThumbnailUpdateUnsubscribeApi#thumbnailUpdateUnsubscribe">thumbnailUpdateUnsubscribe</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/TranscodingApi">TranscodingApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/TranscodingApi#getActiveProcesses">getActiveProcesses</a></li>
+            <li><a href="#!/TranscodingApi#getTranscodeProgress">getTranscodeProgress</a></li>
+            <li><a href="#!/TranscodingApi#progressSubscribe">progressSubscribe</a></li>
+            <li><a href="#!/TranscodingApi#progressSubscribeCMS">progressSubscribeCMS</a></li>
+            <li><a href="#!/TranscodingApi#progressUnsubscribe">progressUnsubscribe</a></li>
+            <li><a href="#!/TranscodingApi#progressUnsubscribeCMS">progressUnsubscribeCMS</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/UserApi">UserApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/UserApi#activateBackupCode">activateBackupCode</a></li>
+            <li><a href="#!/UserApi#activateTwoFactorAuthentication">activateTwoFactorAuthentication</a></li>
+            <li><a href="#!/UserApi#changePassword">changePassword</a></li>
+            <li><a href="#!/UserApi#completeEmailChange">completeEmailChange</a></li>
+            <li><a href="#!/UserApi#deactivateBackupCode">deactivateBackupCode</a></li>
+            <li><a href="#!/UserApi#deactivateTwoFactorAuthentication">deactivateTwoFactorAuthentication</a></li>
+            <li><a href="#!/UserApi#generateBackupCode">generateBackupCode</a></li>
+            <li><a href="#!/UserApi#generateTwoFactorSecret">generateTwoFactorSecret</a></li>
+            <li><a href="#!/UserApi#getAchievementPerks">getAchievementPerks</a></li>
+            <li><a href="#!/UserApi#getActivityFeedV2">getActivityFeedV2</a></li>
+            <li><a href="#!/UserApi#getActivityFeedV3">getActivityFeedV3</a></li>
+            <li><a href="#!/UserApi#getAdministrator">getAdministrator</a></li>
+            <li><a href="#!/UserApi#getExternalLinksV2">getExternalLinksV2</a></li>
+            <li><a href="#!/UserApi#getExternalLinksV3">getExternalLinksV3</a></li>
+            <li><a href="#!/UserApi#getSecurity">getSecurity</a></li>
+            <li><a href="#!/UserApi#getSelf">getSelf</a></li>
+            <li><a href="#!/UserApi#getUserCreator">getUserCreator</a></li>
+            <li><a href="#!/UserApi#getUserInfo">getUserInfo</a></li>
+            <li><a href="#!/UserApi#getUserInfoByName">getUserInfoByName</a></li>
+            <li><a href="#!/UserApi#getUserNotificationSettingsV2">getUserNotificationSettingsV2</a></li>
+            <li><a href="#!/UserApi#getUserNotificationSettingsV3">getUserNotificationSettingsV3</a></li>
+            <li><a href="#!/UserApi#scheduleDeletion">scheduleDeletion</a></li>
+            <li><a href="#!/UserApi#self">self</a></li>
+            <li><a href="#!/UserApi#unscheduleDeletion">unscheduleDeletion</a></li>
+            <li><a href="#!/UserApi#updateEmail">updateEmail</a></li>
+            <li><a href="#!/UserApi#updateExternalLinksV2">updateExternalLinksV2</a></li>
+            <li><a href="#!/UserApi#updateExternalLinksV3">updateExternalLinksV3</a></li>
+            <li><a href="#!/UserApi#updateInfo">updateInfo</a></li>
+            <li><a href="#!/UserApi#updateUserNotificationSettingsV2">updateUserNotificationSettingsV2</a></li>
+            <li><a href="#!/UserApi#updateUserNotificationSettingsV3">updateUserNotificationSettingsV3</a></li>
+            <li><a href="#!/UserApi#uploadAvatar">uploadAvatar</a></li>
+            <li><a href="#!/UserApi#userCreatorBanStatus">userCreatorBanStatus</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/VideoApi">VideoApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/VideoApi#getDashClearKeys">getDashClearKeys</a></li>
+            <li><a href="#!/VideoApi#getDashClearKeysOverPost">getDashClearKeysOverPost</a></li>
+            <li><a href="#!/VideoApi#getDashSignedChunkUrl">getDashSignedChunkUrl</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/VideoCommentInteractionsApi">VideoCommentInteractionsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/VideoCommentInteractionsApi#clearInteraction">clearInteraction</a></li>
+            <li><a href="#!/VideoCommentInteractionsApi#setInteraction">setInteraction</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/VideoCommentsApi">VideoCommentsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/VideoCommentsApi#addVideoComment">addVideoComment</a></li>
+            <li><a href="#!/VideoCommentsApi#getVideoCommentReplies">getVideoCommentReplies</a></li>
+            <li><a href="#!/VideoCommentsApi#getVideoComments">getVideoComments</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/VideoUploadApi">VideoUploadApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/VideoUploadApi#abortMultipartUploadV2">abortMultipartUploadV2</a></li>
+            <li><a href="#!/VideoUploadApi#completeMultipartUploadVideo">completeMultipartUploadVideo</a></li>
+            <li><a href="#!/VideoUploadApi#createMultipartUploadV2">createMultipartUploadV2</a></li>
+            <li><a href="#!/VideoUploadApi#getUploadedPartsV2">getUploadedPartsV2</a></li>
+            <li><a href="#!/VideoUploadApi#signPartUploadVideo">signPartUploadVideo</a></li>
+            <li><a href="#!/VideoUploadApi#uploadThumbnailV2">uploadThumbnailV2</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/VpnApi">VpnApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/VpnApi#downloadUserProfile">downloadUserProfile</a></li>
+            <li><a href="#!/VpnApi#getEnabledState">getEnabledState</a></li>
+            <li><a href="#!/VpnApi#getServerList">getServerList</a></li>
+            <li><a href="#!/VpnApi#updateEnabledState">updateEnabledState</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/WebNotificationApi">WebNotificationApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/WebNotificationApi#getAppInfoV2">getAppInfoV2</a></li>
+            <li><a href="#!/WebNotificationApi#getAppInfoV3">getAppInfoV3</a></li>
+            <li><a href="#!/WebNotificationApi#getTokenInfo">getTokenInfo</a></li>
+            <li><a href="#!/WebNotificationApi#registerV2">registerV2</a></li>
+            <li><a href="#!/WebNotificationApi#registerV3">registerV3</a></li>
+            <li><a href="#!/WebNotificationApi#unregisterV2">unregisterV2</a></li>
+            <li><a href="#!/WebNotificationApi#unregisterV3">unregisterV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/WebhookApi">WebhookApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/WebhookApi#connectedAccount">connectedAccount</a></li>
+            <li><a href="#!/WebhookApi#livestreamPublish">livestreamPublish</a></li>
+          </ul>
+        </div>
+      </div>
+    <div class="non-sidebar">
+      <div class="main-content">
+        <h2>Getting Started</h2>
+        <p>To begin using your fancy HTTP API, follow the steps below.</p>
+        <p>You can add some helpful tips, here</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

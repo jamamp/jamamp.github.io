@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-responsive.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="assets/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+  <script src="assets/js/main.js" type="text/javascript"></script>
+
+  <title>REST API Resources</title>
+</head>
+<body>
+  <div class="header">
+    <div class="top-bar">
+      <h1 id="logo"><a class="logo" href="/"><span>OpenAPI</span><span class="light">API Docs</span></a></h1>
+    </div>
+  </div>
+  <div class="model-container"></div>
+  <div class="content">
+    <div class="box clearfix">
+      <div class="sidebar">
+        <div class="section-box">
+          <div class="section-header">
+            Overview
+          </div>
+          <ul>
+            <li>Getting Started</li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/AuthApi">AuthApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/AuthApi#checkFor2faLogin">checkFor2faLogin</a></li>
+            <li><a href="#!/AuthApi#getCaptchaInfo">getCaptchaInfo</a></li>
+            <li><a href="#!/AuthApi#login">login</a></li>
+            <li><a href="#!/AuthApi#logout">logout</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CDNApi">CDNApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CDNApi#getDeliveryInfo">getDeliveryInfo</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CommentApi">CommentApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CommentApi#dislikeComment">dislikeComment</a></li>
+            <li><a href="#!/CommentApi#getCommentReplies">getCommentReplies</a></li>
+            <li><a href="#!/CommentApi#getComments">getComments</a></li>
+            <li><a href="#!/CommentApi#likeComment">likeComment</a></li>
+            <li><a href="#!/CommentApi#postComment">postComment</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ConnectedAccountsApi">ConnectedAccountsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ConnectedAccountsApi#listConnections">listConnections</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/ContentApi">ContentApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/ContentApi#getBlogPost">getBlogPost</a></li>
+            <li><a href="#!/ContentApi#getCreatorBlogPosts">getCreatorBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getMultiCreatorBlogPosts">getMultiCreatorBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getRelatedBlogPosts">getRelatedBlogPosts</a></li>
+            <li><a href="#!/ContentApi#getVideoContent">getVideoContent</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorApi">CreatorApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorApi#getCreator">getCreator</a></li>
+            <li><a href="#!/CreatorApi#getCreatorInfoByName">getCreatorInfoByName</a></li>
+            <li><a href="#!/CreatorApi#getCreators">getCreators</a></li>
+            <li><a href="#!/CreatorApi#getInfo">getInfo</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/CreatorSubscriptionPlanApi">CreatorSubscriptionPlanApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/CreatorSubscriptionPlanApi#getCreatorSubInfoPublic">getCreatorSubInfoPublic</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/LoyaltyRewardsApi">LoyaltyRewardsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/LoyaltyRewardsApi#listCreatorLoyaltyReward">listCreatorLoyaltyReward</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/MediaApi">MediaApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/MediaApi#watchKey">watchKey</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/PaymentsApi">PaymentsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/PaymentsApi#listAddresses">listAddresses</a></li>
+            <li><a href="#!/PaymentsApi#listInvoices">listInvoices</a></li>
+            <li><a href="#!/PaymentsApi#listPaymentMethods">listPaymentMethods</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/SubscriptionsApi">SubscriptionsApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/SubscriptionsApi#listUserSubscriptionsV3">listUserSubscriptionsV3</a></li>
+          </ul>
+        </div>
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/UserApi">UserApi</a>
+          </div>
+          <ul>
+            <li><a href="#!/UserApi#getActivityFeedV3">getActivityFeedV3</a></li>
+            <li><a href="#!/UserApi#getExternalLinksV3">getExternalLinksV3</a></li>
+            <li><a href="#!/UserApi#getSecurity">getSecurity</a></li>
+            <li><a href="#!/UserApi#getSelf">getSelf</a></li>
+            <li><a href="#!/UserApi#getUserInfo">getUserInfo</a></li>
+            <li><a href="#!/UserApi#getUserInfoByName">getUserInfoByName</a></li>
+            <li><a href="#!/UserApi#getUserNotificationSettingsV3">getUserNotificationSettingsV3</a></li>
+            <li><a href="#!/UserApi#updateUserNotificationSettingsV3">updateUserNotificationSettingsV3</a></li>
+            <li><a href="#!/UserApi#userCreatorBanStatus">userCreatorBanStatus</a></li>
+          </ul>
+        </div>
+      </div>
+    <div class="non-sidebar">
+      <div class="main-content">
+        <h2>Getting Started</h2>
+        <p>To begin using your fancy HTTP API, follow the steps below.</p>
+        <p>You can add some helpful tips, here</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

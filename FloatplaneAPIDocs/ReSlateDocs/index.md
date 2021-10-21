@@ -10835,13 +10835,13 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=string \
+curl -X GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=string HTTP/1.1
+GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 HTTP/1.1
 
 Accept: application/json
 
@@ -10853,7 +10853,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=string',
+fetch('{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1',
 {
   method: 'GET',
 
@@ -10878,7 +10878,7 @@ headers = {
 result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/creator/list',
   params: {
   'ids' => 'array[string]',
-'limit' => 'string'
+'limit' => 'integer'
 }, headers: headers
 
 p JSON.parse(result)
@@ -10894,7 +10894,7 @@ headers = {
 r = requests.get('{scheme}://www.floatplane.com/api/v3/content/creator/list', params={
   'ids': [
   "string"
-],  'limit': 'string'
+],  'limit': '1'
 }, headers = headers)
 
 print(r.json())
@@ -10933,7 +10933,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=string");
+URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -10985,7 +10985,7 @@ Retrieve paginated blog posts from multiple creators for the home page.
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |ids|query|array[string]|true|The GUID(s) of the creator(s) to retrieve posts from.|
-|limit|query|string|true|The maximum number of posts to retrieve.|
+|limit|query|integer|true|The maximum number of posts to retrieve.|
 |fetchAfter|query|array[object]|false|For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.|
 
 > Example responses

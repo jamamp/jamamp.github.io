@@ -13969,7 +13969,7 @@ public class ContentApiExample {
         // Create an instance of the API class
         ContentApi apiInstance = new ContentApi();
         array[String] ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
-        String limit = limit_example; // String | The maximum number of posts to retrieve.
+        Integer limit = 56; // Integer | The maximum number of posts to retrieve.
         array[fetchAfter] fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
         
         try {
@@ -13991,7 +13991,7 @@ public class ContentApiExample {
     public static void main(String[] args) {
         ContentApi apiInstance = new ContentApi();
         array[String] ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
-        String limit = limit_example; // String | The maximum number of posts to retrieve.
+        Integer limit = 56; // Integer | The maximum number of posts to retrieve.
         array[fetchAfter] fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
         
         try {
@@ -14020,7 +14020,7 @@ public class ContentApiExample {
 // Create an instance of the API class
 ContentApi *apiInstance = [[ContentApi alloc] init];
 array[String] *ids = ; // The GUID(s) of the creator(s) to retrieve posts from. (default to null)
-String *limit = limit_example; // The maximum number of posts to retrieve. (default to null)
+Integer *limit = 56; // The maximum number of posts to retrieve. (default to null)
 array[fetchAfter] *fetchAfter = ; // For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional) (default to null)
 
 // Get Multi Creator Blog Posts
@@ -14051,7 +14051,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 // Create an instance of the API class
 var api = new FloatplaneApi.ContentApi()
 var ids = ; // {array[String]} The GUID(s) of the creator(s) to retrieve posts from.
-var limit = limit_example; // {String} The maximum number of posts to retrieve.
+var limit = 56; // {Integer} The maximum number of posts to retrieve.
 var opts = {
   'fetchAfter':  // {array[fetchAfter]} For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
 };
@@ -14091,7 +14091,7 @@ namespace Example
             // Create an instance of the API class
             var apiInstance = new ContentApi();
             var ids = new array[String](); // array[String] | The GUID(s) of the creator(s) to retrieve posts from. (default to null)
-            var limit = limit_example;  // String | The maximum number of posts to retrieve. (default to null)
+            var limit = 56;  // Integer | The maximum number of posts to retrieve. (default to null)
             var fetchAfter = new array[fetchAfter](); // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional)  (default to null)
 
             try {
@@ -14119,7 +14119,7 @@ OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.s
 // Create an instance of the API class
 $api_instance = new OpenAPITools\Client\Api\ContentApi();
 $ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
-$limit = limit_example; // String | The maximum number of posts to retrieve.
+$limit = 56; // Integer | The maximum number of posts to retrieve.
 $fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
 
 try {
@@ -14144,7 +14144,7 @@ $WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
 # Create an instance of the API class
 my $api_instance = WWW::OPenAPIClient::ContentApi->new();
 my $ids = []; # array[String] | The GUID(s) of the creator(s) to retrieve posts from.
-my $limit = limit_example; # String | The maximum number of posts to retrieve.
+my $limit = 56; # Integer | The maximum number of posts to retrieve.
 my $fetchAfter = []; # array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
 
 eval { 
@@ -14171,7 +14171,7 @@ openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
 # Create an instance of the API class
 api_instance = openapi_client.ContentApi()
 ids =  # array[String] | The GUID(s) of the creator(s) to retrieve posts from. (default to null)
-limit = limit_example # String | The maximum number of posts to retrieve. (default to null)
+limit = 56 # Integer | The maximum number of posts to retrieve. (default to null)
 fetchAfter =  # array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional) (default to null)
 
 try: 
@@ -14187,7 +14187,7 @@ except ApiException as e:
 
 pub fn main() {
     let ids = ; // array[String]
-    let limit = limit_example; // String
+    let limit = 56; // Integer
     let fetchAfter = ; // array[fetchAfter]
 
     let mut context = ContentApi::Context::default();
@@ -14247,7 +14247,7 @@ The GUID(s) of the creator(s) to retrieve posts from.
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
-                    String
+                    Integer
                 </span>
 
                     <div class="inner description marked">

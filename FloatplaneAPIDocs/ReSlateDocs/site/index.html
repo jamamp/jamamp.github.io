@@ -217,6 +217,20 @@
           </li>
         
           <li>
+            <a href="#floatplane-api-faq" class="toc-h1 toc-link" data-title="FAQ">FAQ</a>
+            
+              <ul class="toc-list-h2">
+                
+                  <li>
+                    <a href="#getfaqsections" class="toc-h2 toc-link" data-title="">getFaqSections</a>
+                    
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
             <a href="#floatplane-api-payments" class="toc-h1 toc-link" data-title="Payments">Payments</a>
             
               <ul class="toc-list-h2">
@@ -619,6 +633,11 @@
                     
                   </li>
                 
+                  <li>
+                    <a href="#tocS_FaqSectionModel" class="toc-h2 toc-link" data-title="">FaqSectionModel</a>
+                    
+                  </li>
+                
               </ul>
             
           </li>
@@ -694,7 +713,7 @@
 </ul>
 <p>When dealing with cookies in native applications (not via a website inside of a browser), please keep in mind that some languages/libraries may keep cookies across requests by default, and some may not. For instance, in Swift the <code>URLSession.shared</code> object with default configuration will automatically track and persist cookies across requests.</p>
 <h1 id="floatplane-api-auth">Auth</h1>
-<p>TODO</p>
+<p>Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators.</p>
 <h2 id="login">login</h2>
 <p><a id="opIdlogin"></a></p>
 <blockquote>
@@ -1192,7 +1211,7 @@ CookieAuth
 This operation does not require authentication
 </aside>
 <h1 id="floatplane-api-cdn">CDN</h1>
-<p>TODO</p>
+<p>Content Delivery mechanisms for Floatplane media.</p>
 <h2 id="getdeliveryinfo">getDeliveryInfo</h2>
 <p><a id="opIdgetDeliveryInfo"></a></p>
 <blockquote>
@@ -1353,7 +1372,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-connectedaccounts">ConnectedAccounts</h1>
-<p>TODO</p>
+<p>3rd party account management, such as Discord or LTT Forums.</p>
 <h2 id="listconnections">listConnections</h2>
 <p><a id="opIdlistConnections"></a></p>
 <blockquote>
@@ -1557,7 +1576,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-creator">Creator</h1>
-<p>TODO</p>
+<p>Get and discover creators on the platform. Creator invitation and profile management.</p>
 <h2 id="getinfo">getInfo</h2>
 <p><a id="opIdgetInfo"></a></p>
 <blockquote>
@@ -3094,7 +3113,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-creatorsubscriptionplan">CreatorSubscriptionPlan</h1>
-<p>TODO</p>
+<p>Manage creator subscription plans.</p>
 <h2 id="getcreatorsubinfopublic">getCreatorSubInfoPublic</h2>
 <p><a id="opIdgetCreatorSubInfoPublic"></a></p>
 <blockquote>
@@ -3212,8 +3231,266 @@ CookieAuth
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+<h1 id="floatplane-api-faq">FAQ</h1>
+<p>Get FAQs.</p>
+<h2 id="getfaqsections">getFaqSections</h2>
+<p><a id="opIdgetFaqSections"></a></p>
+<blockquote>
+<p>Code samples</p>
+</blockquote>
+<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X GET <span class="token punctuation">{</span>scheme<span class="token punctuation">}</span>://www.floatplane.com/api/v2/faq/list <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: application/json'</span><br></code></pre>
+<pre class="language-http"><code class="language-http">GET {scheme}://www.floatplane.com/api/v2/faq/list HTTP/1.1<br><br><span class="token header-name keyword">Accept:</span> application/json<br></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span><span class="token operator">:</span><span class="token string">'application/json'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'{scheme}://www.floatplane.com/api/v2/faq/list'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'GET'</span><span class="token punctuation">,</span><br><br>  headers<span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string">'rest-client'</span><br><span class="token keyword">require</span> <span class="token string">'json'</span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> <span class="token constant">RestClient</span><span class="token punctuation">.</span>get <span class="token string">'{scheme}://www.floatplane.com/api/v2/faq/list'</span><span class="token punctuation">,</span><br>  params<span class="token punctuation">:</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span> headers<span class="token punctuation">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'{scheme}://www.floatplane.com/api/v2/faq/list'</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><br><br><span class="token keyword">require</span> <span class="token string single-quoted-string">'vendor/autoload.php'</span><span class="token punctuation">;</span><br><br><span class="token variable">$headers</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>    <span class="token string single-quoted-string">'Accept'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token variable">$client</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Define array of request body.</span><br><span class="token variable">$request_body</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token variable">$client</span><span class="token operator">-></span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GET'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'{scheme}://www.floatplane.com/api/v2/faq/list'</span><span class="token punctuation">,</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>        <span class="token string single-quoted-string">'headers'</span> <span class="token operator">=></span> <span class="token variable">$headers</span><span class="token punctuation">,</span><br>        <span class="token string single-quoted-string">'json'</span> <span class="token operator">=></span> <span class="token variable">$request_body</span><span class="token punctuation">,</span><br>       <span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Exception<span class="token punctuation">\</span>BadResponseException</span> <span class="token variable">$e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handle exception or api errors.</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$e</span><span class="token operator">-></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br><br> <span class="token comment">// ...</span><br></code></pre>
+<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">URL</span><span class="token punctuation">(</span><span class="token string">"{scheme}://www.floatplane.com/api/v2/faq/list"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-go"><code class="language-go"><span class="token keyword">package</span> main<br><br><span class="token keyword">import</span> <span class="token punctuation">(</span><br>       <span class="token string">"bytes"</span><br>       <span class="token string">"net/http"</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>    headers <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><br>        <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><br><br>    data <span class="token operator">:=</span> bytes<span class="token punctuation">.</span><span class="token function">NewBuffer</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span>jsonReq<span class="token punctuation">}</span><span class="token punctuation">)</span><br>    req<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">NewRequest</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"{scheme}://www.floatplane.com/api/v2/faq/list"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><br>    req<span class="token punctuation">.</span>Header <span class="token operator">=</span> headers<br><br>    client <span class="token operator">:=</span> <span class="token operator">&amp;</span>http<span class="token punctuation">.</span>Client<span class="token punctuation">{</span><span class="token punctuation">}</span><br>    resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><br>    <span class="token comment">// ...</span><br><span class="token punctuation">}</span><br></code></pre>
+<p><code>GET /api/v2/faq/list</code></p>
+<p><em>Get Faq Sections</em></p>
+<p>Retrieve a list of FAQ sections to display to the user. Each section contains one or more FAQ items. This is normally accessible from <a href="https://www.floatplane.com/support">https://www.floatplane.com/support</a>. Note that the answers to the FAQs will contain HTML.</p>
+<blockquote>
+<p>Example responses</p>
+</blockquote>
+<blockquote>
+<p>200 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"faqs"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-10-03T18:45:49.157Z"</span><span class="token punctuation">,</span><br>        <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-12-19T22:06:01.843Z"</span><span class="token punctuation">,</span><br>        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"5d9641ddbced315cc7d9135f"</span><span class="token punctuation">,</span><br>        <span class="token property">"question"</span><span class="token operator">:</span> <span class="token string">"How do you get the PewPew emote? "</span><span class="token punctuation">,</span><br>        <span class="token property">"answer"</span><span class="token operator">:</span> <span class="token string">"&lt;p>&lt;span style=\"background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);\">The PewPew emote was as an account reward for users who had succesfully set up a payment method on Floatplane.com before January 1st 2019.&lt;/span>&lt;/p>"</span><span class="token punctuation">,</span><br>        <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>        <span class="token property">"link"</span><span class="token operator">:</span> <span class="token string">"g-pewpew-emote"</span><span class="token punctuation">,</span><br>        <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span><br>        <span class="token property">"faqSection"</span><span class="token operator">:</span> <span class="token string">"5d9641d0b3e3285cfffe44a9"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-10-03T18:45:36.840Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-12-19T22:08:50.481Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"5d9641d0b3e3285cfffe44a9"</span><span class="token punctuation">,</span><br>    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"General"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"For general questions about Floatplane"</span><span class="token punctuation">,</span><br>    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>    <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">1</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"faqs"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-10-03T18:26:28.413Z"</span><span class="token punctuation">,</span><br>        <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2020-01-28T03:23:15.918Z"</span><span class="token punctuation">,</span><br>        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"5d963d54221c575ce366b7e7"</span><span class="token punctuation">,</span><br>        <span class="token property">"question"</span><span class="token operator">:</span> <span class="token string">"Can you upgrade me to the LTT supporter (1080p) subscription? "</span><span class="token punctuation">,</span><br>        <span class="token property">"answer"</span><span class="token operator">:</span> <span class="token string">"&lt;p>At this time there is no difference between the two channels in regards to features that are unlocked. The only difference between the two is the price.&lt;/p>"</span><span class="token punctuation">,</span><br>        <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>        <span class="token property">"link"</span><span class="token operator">:</span> <span class="token string">"sub-u-payment"</span><span class="token punctuation">,</span><br>        <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span><br>        <span class="token property">"faqSection"</span><span class="token operator">:</span> <span class="token string">"5d8d1be612c2535c9dc067d1"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-09-26T20:13:26.431Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2020-01-28T03:24:33.443Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"5d8d1be612c2535c9dc067d1"</span><span class="token punctuation">,</span><br>    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Subscription and Payment "</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"Life isn't always about money but this section is. If you have a payment or subscription issue look here.  "</span><span class="token punctuation">,</span><br>    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>    <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">2</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">]</span></code></pre>
+<blockquote>
+<p>400 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>401 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notLoggedInError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>403 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"missingAchievementError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"requiresAllOfAchievement"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"6157853e479315db795f7296"</span><span class="token punctuation">,</span><br>            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FloatVPN Alpha"</span><span class="token punctuation">,</span><br>            <span class="token property">"startDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"endDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token null keyword">null</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>404 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notFoundError"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>default Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="getfaqsections-responses">Responses</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.3.1">OK</a></td>
+<td>OK</td>
+<td>Inline</td>
+</tr>
+<tr>
+<td>400</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.1">Bad Request</a></td>
+<td>Bad Request - The request has errors and the server did not process it.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td><a href="https://tools.ietf.org/html/rfc7235#section-3.1">Unauthorized</a></td>
+<td>Unauthenticated - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.3">Forbidden</a></td>
+<td>Forbidden - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
+<td>Not Found - The resource was not found.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>default</td>
+<td>Default</td>
+<td>Unexpected response code</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getfaqsections-responseschema">Response Schema</h3>
+<p>Status Code <strong>200</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>anonymous</em></td>
+<td>[<a href="#schemafaqsectionmodel">FaqSectionModel</a>]</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» faqs</td>
+<td>[object]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» createdAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» updatedAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» question</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» answer</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>This field may contain HTML that should be rendered.</td>
+</tr>
+<tr>
+<td>»» status</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» link</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» order</td>
+<td>number</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» faqSection</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» createdAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» updatedAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» name</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» description</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» status</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» order</td>
+<td>number</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h4 id="enumerated-values-1">Enumerated Values</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>status</td>
+<td>public</td>
+</tr>
+<tr>
+<td>status</td>
+<td>public</td>
+</tr>
+</tbody>
+</table>
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
 <h1 id="floatplane-api-payments">Payments</h1>
-<p>TODO</p>
+<p>User payment method/address/invoice management.</p>
 <h2 id="listpaymentmethods">listPaymentMethods</h2>
 <p><a id="opIdlistPaymentMethods"></a></p>
 <blockquote>
@@ -3666,7 +3943,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-subscriptions">Subscriptions</h1>
-<p>TODO</p>
+<p>Get user subscriptions.</p>
 <h2 id="listusersubscriptionsv3">listUserSubscriptionsV3</h2>
 <p><a id="opIdlistUserSubscriptionsV3"></a></p>
 <blockquote>
@@ -3999,7 +4276,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-user">User</h1>
-<p>TODO</p>
+<p>User discovery and profile management.</p>
 <h2 id="getuserinfo">getUserInfo</h2>
 <p><a id="opIdgetUserInfo"></a></p>
 <blockquote>
@@ -5388,7 +5665,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-media">Media</h1>
-<p>TODO</p>
+<p>Video media management.</p>
 <h2 id="watchkey">watchKey</h2>
 <p><a id="opIdwatchKey"></a></p>
 <blockquote>
@@ -5487,7 +5764,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-comment">Comment</h1>
-<p>TODO</p>
+<p>Comment retrieval, posting, and interacting.</p>
 <h2 id="postcomment">postComment</h2>
 <p><a id="opIdpostComment"></a></p>
 <blockquote>
@@ -6688,7 +6965,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-content">Content</h1>
-<p>TODO</p>
+<p>Content retrieval and interacting.</p>
 <h2 id="getcreatorblogposts">getCreatorBlogPosts</h2>
 <p><a id="opIdgetCreatorBlogPosts"></a></p>
 <blockquote>
@@ -7545,7 +7822,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-1">Enumerated Values</h4>
+<h4 id="enumerated-values-2">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -8663,7 +8940,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-2">Enumerated Values</h4>
+<h4 id="enumerated-values-3">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -8800,7 +9077,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 <h1 id="floatplane-api-loyaltyrewards">LoyaltyRewards</h1>
-<p>TODO</p>
+<p>Loyalty rewards information and claiming.</p>
 <h2 id="listcreatorloyaltyreward">listCreatorLoyaltyReward</h2>
 <p><a id="opIdlistCreatorLoyaltyReward"></a></p>
 <blockquote>
@@ -10089,7 +10366,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-3">Enumerated Values</h4>
+<h4 id="enumerated-values-4">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -10475,7 +10752,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-4">Enumerated Values</h4>
+<h4 id="enumerated-values-5">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -11453,7 +11730,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-5">Enumerated Values</h4>
+<h4 id="enumerated-values-6">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -12852,6 +13129,165 @@ CookieAuth
 <td>true</td>
 <td>none</td>
 <td>none</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_FaqSectionModel">FaqSectionModel</h2>
+<!-- backwards compatibility -->
+<a id="schemafaqsectionmodel"></a>
+<a id="schema_FaqSectionModel"></a>
+<a id="tocSfaqsectionmodel"></a>
+<a id="tocsfaqsectionmodel"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"faqs"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>      <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"question"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"answer"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>      <span class="token property">"link"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"faqSection"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"public"</span><span class="token punctuation">,</span><br>  <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-42">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>faqs</td>
+<td>[object]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» createdAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» updatedAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» question</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» answer</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>This field may contain HTML that should be rendered.</td>
+</tr>
+<tr>
+<td>» status</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» link</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» order</td>
+<td>number</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» faqSection</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>string(date-time)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>order</td>
+<td>number</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h4 id="enumerated-values-7">Enumerated Values</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>status</td>
+<td>public</td>
+</tr>
+<tr>
+<td>status</td>
+<td>public</td>
 </tr>
 </tbody>
 </table>

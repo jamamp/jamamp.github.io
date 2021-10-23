@@ -21,51 +21,55 @@
     "tags": [
         {
             "name": "Auth",
-            "description": "TODO"
+            "description": "Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators."
         },
         {
             "name": "CDN",
-            "description": "TODO"
+            "description": "Content Delivery mechanisms for Floatplane media."
         },
         {
             "name": "ConnectedAccounts",
-            "description": "TODO"
+            "description": "3rd party account management, such as Discord or LTT Forums."
         },
         {
             "name": "Creator",
-            "description": "TODO"
+            "description": "Get and discover creators on the platform. Creator invitation and profile management."
         },
         {
             "name": "CreatorSubscriptionPlan",
-            "description": "TODO"
+            "description": "Manage creator subscription plans."
+        },
+        {
+            "name": "FAQ",
+            "description": "Get FAQs."
         },
         {
             "name": "Payments",
-            "description": "TODO"
+            "description": "User payment method/address/invoice management."
         },
         {
             "name": "Subscriptions",
-            "description": "TODO"
+            "description": "Get user subscriptions."
         },
         {
             "name": "User",
-            "description": "TODO"
+            "description": "User discovery and profile management."
         },
         {
             "name": "Media",
-            "description": "TODO"
+            "description": "Video media management."
         },
         {
             "name": "Comment",
-            "description": "TODO"
+            "description": "Comment retrieval, posting, and interacting."
         },
         {
             "name": "Content",
-            "description": "TODO"
+            "description": "Content retrieval and interacting."
         },
         {
             "name": "LoyaltyRewards",
-            "description": "TODO"
+            "description": "Loyalty rewards information and claiming."
         }
     ],
     "components": {
@@ -2332,6 +2336,99 @@
                     "plan",
                     "creator"
                 ]
+            },
+            "FaqSectionModel": {
+                "type": "object",
+                "properties": {
+                    "faqs": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "question": {
+                                    "type": "string"
+                                },
+                                "answer": {
+                                    "type": "string",
+                                    "description": "This field may contain HTML that should be rendered."
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "public"
+                                    ]
+                                },
+                                "link": {
+                                    "type": "string"
+                                },
+                                "order": {
+                                    "type": "number"
+                                },
+                                "faqSection": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "createdAt",
+                                "updatedAt",
+                                "id",
+                                "question",
+                                "answer",
+                                "status",
+                                "link",
+                                "order",
+                                "faqSection"
+                            ]
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "public"
+                        ]
+                    },
+                    "order": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "faqs",
+                    "createdAt",
+                    "updatedAt",
+                    "id",
+                    "name",
+                    "description",
+                    "status",
+                    "order"
+                ]
             }
         },
         "securitySchemes": {
@@ -3953,6 +4050,93 @@
                                         }
                                     ]
                                 }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v2/faq/list": {
+            "get": {
+                "operationId": "getFaqSections",
+                "summary": "Get Faq Sections",
+                "description": "Retrieve a list of FAQ sections to display to the user. Each section contains one or more FAQ items. This is normally accessible from https://www.floatplane.com/support. Note that the answers to the FAQs will contain HTML.",
+                "tags": [
+                    "FAQ"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FaqSectionModel"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "faqs": [
+                                            {
+                                                "createdAt": "2019-10-03T18:45:49.157Z",
+                                                "updatedAt": "2019-12-19T22:06:01.843Z",
+                                                "id": "5d9641ddbced315cc7d9135f",
+                                                "question": "How do you get the PewPew emote? ",
+                                                "answer": "<p><span style=\"background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);\">The PewPew emote was as an account reward for users who had succesfully set up a payment method on Floatplane.com before January 1st 2019.</span></p>",
+                                                "status": "public",
+                                                "link": "g-pewpew-emote",
+                                                "order": 1,
+                                                "faqSection": "5d9641d0b3e3285cfffe44a9"
+                                            }
+                                        ],
+                                        "createdAt": "2019-10-03T18:45:36.840Z",
+                                        "updatedAt": "2019-12-19T22:08:50.481Z",
+                                        "id": "5d9641d0b3e3285cfffe44a9",
+                                        "name": "General",
+                                        "description": "For general questions about Floatplane",
+                                        "status": "public",
+                                        "order": 1
+                                    },
+                                    {
+                                        "faqs": [
+                                            {
+                                                "createdAt": "2019-10-03T18:26:28.413Z",
+                                                "updatedAt": "2020-01-28T03:23:15.918Z",
+                                                "id": "5d963d54221c575ce366b7e7",
+                                                "question": "Can you upgrade me to the LTT supporter (1080p) subscription? ",
+                                                "answer": "<p>At this time there is no difference between the two channels in regards to features that are unlocked. The only difference between the two is the price.</p>",
+                                                "status": "public",
+                                                "link": "sub-u-payment",
+                                                "order": 1,
+                                                "faqSection": "5d8d1be612c2535c9dc067d1"
+                                            }
+                                        ],
+                                        "createdAt": "2019-09-26T20:13:26.431Z",
+                                        "updatedAt": "2020-01-28T03:24:33.443Z",
+                                        "id": "5d8d1be612c2535c9dc067d1",
+                                        "name": "Subscription and Payment ",
+                                        "description": "Life isn't always about money but this section is. If you have a payment or subscription issue look here.  ",
+                                        "status": "public",
+                                        "order": 2
+                                    }
+                                ]
                             }
                         }
                     },

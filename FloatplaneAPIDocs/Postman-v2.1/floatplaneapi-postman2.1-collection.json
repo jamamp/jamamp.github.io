@@ -1,15 +1,15 @@
 {
     "item": [
         {
-            "id": "ecffdf6d-d914-404c-bf67-3081de5512a9",
+            "id": "ce3b717b-beaa-4825-878a-b7a2697dd833",
             "name": "Auth",
             "description": {
-                "content": "TODO",
+                "content": "Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "b4d25a5b-ac2a-4b46-90dc-6b36684066c6",
+                    "id": "5a62d577-fbf7-4d4c-bd3d-0c3e3bcc92a9",
                     "name": "Login",
                     "request": {
                         "name": "Login",
@@ -57,7 +57,7 @@
                     },
                     "response": [
                         {
-                            "id": "b73e3c60-9375-4702-b40b-6decb48b334d",
+                            "id": "780a1843-04d9-4cdd-92a5-3d2cec207992",
                             "name": "OK - Returns the header and information about the logged-in user, including the id, username, and profile image.",
                             "originalRequest": {
                                 "url": {
@@ -98,7 +98,7 @@
                                     "disabled": false,
                                     "description": "Contains the cookie used in subsequent authenticated requests.",
                                     "key": "Set-Cookie",
-                                    "value": "eu magna"
+                                    "value": "quis eiusmod Excepteur enim nulla"
                                 },
                                 {
                                     "key": "Content-Type",
@@ -110,7 +110,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a1a65fc7-f9b3-426a-8595-66f6e975cbdc",
+                            "id": "84c6d6ac-715b-4257-a7c4-43df8bd039da",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -157,7 +157,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "300d6d17-5d5d-42aa-91bf-e668bd96e318",
+                            "id": "23cf7b7c-8d86-4559-84a5-b1a6da4433a7",
                             "name": "Unauthenticated - The login attempt failed, either due to a bad username or password.",
                             "originalRequest": {
                                 "url": {
@@ -199,12 +199,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n \"id\": \"do deserunt Ut officia\",\n \"errors\": [\n  {\n   \"id\": \"ea et aliquip deserunt\",\n   \"name\": \"laboris eiusmod velit\",\n   \"message\": \"est voluptate qui\",\n   \"data\": {}\n  },\n  {\n   \"id\": \"sit dolore qui in\",\n   \"name\": \"laboris in non\",\n   \"message\": \"cillum minim\",\n   \"data\": {}\n  }\n ],\n \"message\": \"elit laboris\"\n}",
+                            "body": "{\n \"id\": \"pariatur\",\n \"errors\": [\n  {\n   \"id\": \"adipisicing in ullamco\",\n   \"name\": \"proident ut ea \",\n   \"message\": \"id enim\",\n   \"data\": {}\n  },\n  {\n   \"id\": \"velit esse id Excepteur\",\n   \"name\": \"pariatur elit esse\",\n   \"message\": \"ut nostrud aliqua\",\n   \"data\": {}\n  }\n ],\n \"message\": \"pariatur mollit\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "eae9b230-4b90-4ce9-823d-6192e40181fe",
+                            "id": "cb7e845e-7f44-41c7-8b3b-3087f9c25dc6",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -251,7 +251,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "61421006-20a9-42e2-93ab-87ff7b9d4650",
+                            "id": "a4444016-4911-4f2b-9aef-5a38b8ea7939",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -298,7 +298,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "68a06d04-b2e7-4c40-94e5-eb772908e1ae",
+                            "id": "e82c5a9d-f30c-49b8-b1e1-25a03652fa6f",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -348,7 +348,7 @@
                     "event": []
                 },
                 {
-                    "id": "1ad97e6b-2dba-4dca-aa64-bfe580800738",
+                    "id": "76972a6e-c160-4676-8dfd-b3451a33bf91",
                     "name": "Logout",
                     "request": {
                         "name": "Logout",
@@ -381,7 +381,7 @@
                     },
                     "response": [
                         {
-                            "id": "04d28e3b-cc6e-4aa9-b9ef-be2bca5dad9a",
+                            "id": "be8168f0-37f3-46bb-ba73-d0a8e1ec0b09",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -414,7 +414,7 @@
                                     "disabled": false,
                                     "description": "Obtain a new authentication/authorization cookie after logging out. This new cookie will not be authenticated to perform subsequent requests.",
                                     "key": "Set-Cookie",
-                                    "value": "eu magna"
+                                    "value": "quis eiusmod Excepteur enim nulla"
                                 },
                                 {
                                     "key": "Content-Type",
@@ -426,7 +426,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "5237e020-0b9f-4cbd-8b5a-35d21ce69b3e",
+                            "id": "8c23d635-cf27-43b1-94fd-4131cc50c15d",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -465,7 +465,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "400928c0-8bc9-4e2f-9a8a-236fa7f4c030",
+                            "id": "7bab9331-5442-4896-9187-67948b2e9a40",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -504,7 +504,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "12f977ff-9d3b-4b23-ac9f-ec08e4be7c9d",
+                            "id": "5b3da677-97a8-4d42-a335-2544fc51ad92",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -543,7 +543,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "edabe9cf-ad67-4c87-b465-eb83fba2730b",
+                            "id": "34252963-7040-48f3-8404-cf453309db59",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -582,7 +582,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "81253100-88df-4d47-a49e-5136fb8a1ce3",
+                            "id": "8697eecb-0a8d-4f03-a351-bbc129976524",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -624,7 +624,7 @@
                     "event": []
                 },
                 {
-                    "id": "88351047-a64d-43b8-ada2-1a3f1c1a7ed4",
+                    "id": "9cdbd994-8331-4070-9f24-c0c878c47546",
                     "name": "Check For 2FA Login",
                     "request": {
                         "name": "Check For 2FA Login",
@@ -672,7 +672,7 @@
                     },
                     "response": [
                         {
-                            "id": "2339c56a-ec48-44c0-8a83-e7fff58f9f57",
+                            "id": "6f136bde-0571-4b42-999b-4b26554c2747",
                             "name": "OK - Returns the header and information about the logged-in user, including the id, username, and profile image.",
                             "originalRequest": {
                                 "url": {
@@ -713,7 +713,7 @@
                                     "disabled": false,
                                     "description": "Contains the cookie used in subsequent authenticated requests.",
                                     "key": "Set-Cookie",
-                                    "value": "eu magna"
+                                    "value": "quis eiusmod Excepteur enim nulla"
                                 },
                                 {
                                     "key": "Content-Type",
@@ -725,7 +725,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ea99cd93-3919-4aef-b4a7-56cc5295c164",
+                            "id": "cfa28e95-f1fc-403c-9d82-7e97a1730efa",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -772,7 +772,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1972da0a-4934-41ac-bf4a-053abff4a613",
+                            "id": "ecc97748-d551-4adc-85ed-764ed91a4115",
                             "name": "Unauthenticated - The login attempt failed, either due to a bad username or password.",
                             "originalRequest": {
                                 "url": {
@@ -814,12 +814,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n \"id\": \"aute minim magna sed\",\n \"errors\": [\n  {\n   \"id\": \"ex est ut culpa deserunt\",\n   \"name\": \"nisi aute laboris\",\n   \"message\": \"eu dol\",\n   \"data\": {}\n  },\n  {\n   \"id\": \"ex nulla\",\n   \"name\": \"dolor non nisi incididunt\",\n   \"message\": \"consequat magna\",\n   \"data\": {}\n  }\n ],\n \"message\": \"dolor eu\"\n}",
+                            "body": "{\n \"id\": \"aliqua officia Duis id proident\",\n \"errors\": [\n  {\n   \"id\": \"fugiat consequat eu velit\",\n   \"name\": \"in laboris sit\",\n   \"message\": \"mollit cu\",\n   \"data\": {}\n  },\n  {\n   \"id\": \"nostrud laboris veniam cillum\",\n   \"name\": \"adipisicing voluptate ea nisi elit\",\n   \"message\": \"aute minim sunt Ut\",\n   \"data\": {}\n  }\n ],\n \"message\": \"Ut\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a43e87ee-f276-412a-8a35-7d804594ce35",
+                            "id": "063b4fe3-0aac-479f-b8db-5b2fca818f43",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -866,7 +866,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "878ed583-aad5-4433-883e-ccef70f93c7e",
+                            "id": "4864283d-e832-4a12-acca-ff1b56241232",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -913,7 +913,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d3a227bf-325a-4217-a1b8-d8c945f063ae",
+                            "id": "2b208bc4-7897-4b29-8264-aa9631d85fea",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -963,7 +963,7 @@
                     "event": []
                 },
                 {
-                    "id": "d6e7b605-d8d3-4cb9-8498-6f14e4969b23",
+                    "id": "c8a3c38d-3611-4a4b-b09b-a8cdba9ad35a",
                     "name": "Get Captcha Info",
                     "request": {
                         "name": "Get Captcha Info",
@@ -997,7 +997,7 @@
                     },
                     "response": [
                         {
-                            "id": "8c5e5708-50a9-4667-b1ba-dde1b83d7ef6",
+                            "id": "6884dbcf-4760-4cc7-a575-036580ca8929",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -1037,7 +1037,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "306e943e-810c-4192-b9ea-646fa513ac47",
+                            "id": "fa0c2432-e106-437e-be77-904f3d539e98",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -1077,7 +1077,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "72e1fe66-ff48-4b8f-8328-46252449375c",
+                            "id": "6be86490-378e-4e29-bf89-0173411e8b04",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1117,7 +1117,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "42081244-2344-47fe-8a97-e26fee49b48d",
+                            "id": "ce60ff77-9d1f-4343-86c6-84aa106e1925",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1157,7 +1157,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6d0861f0-9dd1-454e-b382-680f8a7d6bcb",
+                            "id": "05acd940-daf4-41e1-8608-eb78956c0075",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -1197,7 +1197,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "78f07aef-29d0-44c7-8721-81e432d48f79",
+                            "id": "5a9e740d-e273-4f36-95bd-a5d3c4e4a214",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -1243,15 +1243,15 @@
             "event": []
         },
         {
-            "id": "bd0ea59c-3b09-4c1f-bb24-02470840b5f0",
+            "id": "bb942f20-e1c3-437c-9a9d-4b662b38805a",
             "name": "CDN",
             "description": {
-                "content": "TODO",
+                "content": "Content Delivery mechanisms for Floatplane media.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "eacec7fa-857d-4e6e-b730-6df944583a9f",
+                    "id": "334e7833-a967-437f-b3f7-6685fa081c4f",
                     "name": "Get Delivery Info",
                     "request": {
                         "name": "Get Delivery Info",
@@ -1297,7 +1297,7 @@
                     },
                     "response": [
                         {
-                            "id": "e8417d2b-1e4e-487c-922a-b5283cc52ad3",
+                            "id": "a37191a4-b81b-498e-832b-e3c760e326c0",
                             "name": "OK - Information on how to stream or download the requested video from the CDN in various levels of quality.",
                             "originalRequest": {
                                 "url": {
@@ -1345,7 +1345,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "519110d6-216d-4179-a06c-275b5c780788",
+                            "id": "4b92d22c-535d-4426-b4a2-3bf0ca34e0b3",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -1393,7 +1393,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "de1f9962-87f3-4e7c-9ee0-e791c61eb0e1",
+                            "id": "da31ec09-06be-4dc7-a3cc-23c57e4d87a5",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1441,7 +1441,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "06228d20-8866-4208-ad00-bfa6a728bfc2",
+                            "id": "749a4d55-839d-4c2a-986c-bcecc1dca631",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1489,7 +1489,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0193e85d-02ec-4a64-bb1c-ef1a126f3ed6",
+                            "id": "64570dab-e912-431a-bcd8-b29d68ad774b",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -1537,7 +1537,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cef043ce-5ac2-4128-891d-a73723f28b7e",
+                            "id": "48bc5ff9-f438-4f74-b47d-5f784edcdda7",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -1591,15 +1591,15 @@
             "event": []
         },
         {
-            "id": "fa7e28ff-6b9f-4433-815e-faa8ef33fd5d",
+            "id": "5719e0b8-e967-4ff9-bf6d-a60b07217e2a",
             "name": "ConnectedAccounts",
             "description": {
-                "content": "TODO",
+                "content": "3rd party account management, such as Discord or LTT Forums.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "12805e24-e14e-42a2-bd96-ad8dfaafeb82",
+                    "id": "753cf5c1-a8b5-4be8-9488-351437ce1dc5",
                     "name": "List Connections",
                     "request": {
                         "name": "List Connections",
@@ -1632,7 +1632,7 @@
                     },
                     "response": [
                         {
-                            "id": "d31e45ce-6c98-4f06-bfc7-a5567a444352",
+                            "id": "11c895ec-106a-49f3-9d9d-524d39447cf9",
                             "name": "OK - Returns the list of connected and available accounts.",
                             "originalRequest": {
                                 "url": {
@@ -1671,7 +1671,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7e627d5b-0938-4648-ba05-2a36fe4f0e2b",
+                            "id": "843215c9-5ae5-4a58-bd53-5edf8a7c241e",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -1710,7 +1710,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b5ad8da0-c0ec-450c-a864-22aa39f9138a",
+                            "id": "f01f74ab-5040-404f-a61c-323b2f6f8ce2",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1749,7 +1749,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6d900440-e479-485d-8adc-57a7a96d7b87",
+                            "id": "cb6432ae-3daa-4459-b8fd-bea9407a5bd1",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -1788,7 +1788,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "28555553-c28b-49d1-a34b-00d1a071352c",
+                            "id": "41f9c753-8d9a-4570-ab97-ab38fcc96179",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -1827,7 +1827,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "64c6f705-f804-4a1f-bb6d-a446fb2e94fc",
+                            "id": "97a883f3-9189-4f26-b3dc-ba048095a7d5",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -1872,15 +1872,15 @@
             "event": []
         },
         {
-            "id": "610a203a-00b0-4b89-8f8c-3b8d2244f39b",
+            "id": "07f1e9e1-cb01-485f-9457-ccea13240dad",
             "name": "Creator",
             "description": {
-                "content": "TODO",
+                "content": "Get and discover creators on the platform. Creator invitation and profile management.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "3ecbb1ed-10e5-4e01-8d38-a107fe01275d",
+                    "id": "3cc290aa-0d82-4310-9415-aec910a9aadf",
                     "name": "Get Info",
                     "request": {
                         "name": "Get Info",
@@ -1926,7 +1926,7 @@
                     },
                     "response": [
                         {
-                            "id": "78fb9938-195e-4a31-883e-71117587ee56",
+                            "id": "c5d99c10-1901-4b2e-9a1c-17d13f3a07e9",
                             "name": "OK - The creators are found from their identifiers and returned in an array",
                             "originalRequest": {
                                 "url": {
@@ -1974,7 +1974,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fb802a49-2624-4ab4-8a4a-1071e81660a7",
+                            "id": "46410a80-6c63-4638-901a-55d65a7958f0",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -2022,7 +2022,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "82fd44e9-d6b3-4d89-a115-427e2016943a",
+                            "id": "c0524bb2-ac6f-4d58-9826-42714014f30f",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2070,7 +2070,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9656361f-0304-4264-9964-324c29f0bcb4",
+                            "id": "84743e17-3eaf-4fe5-a1d8-c2a54f1e7c1d",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2118,7 +2118,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "62dbc23f-5065-484f-8e5d-009c789358a1",
+                            "id": "43b1c7f8-ec19-4724-a468-05942a3f6a64",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -2166,7 +2166,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2dc8b11f-1413-415a-a925-5483fba8ed09",
+                            "id": "cd133784-1db4-403d-a06f-8830159975a1",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -2217,7 +2217,7 @@
                     "event": []
                 },
                 {
-                    "id": "ab201751-2233-4dcc-937f-a3d384c7da1f",
+                    "id": "e814786b-cf78-45db-88d8-4eee474c9a0d",
                     "name": "Get Info By Name",
                     "request": {
                         "name": "Get Info By Name",
@@ -2263,7 +2263,7 @@
                     },
                     "response": [
                         {
-                            "id": "fcd33787-db72-4979-9f64-0c9b3e1f3400",
+                            "id": "05e11e30-43fb-4edb-b455-3e289feaf596",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -2311,7 +2311,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "89683a5d-097a-4cff-9102-bdcf7d9ad1d8",
+                            "id": "6f7e6e4e-d67e-4e6b-a544-131f1bb59d77",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -2359,7 +2359,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "457883a4-9044-43e6-bebe-e2002fb69c9d",
+                            "id": "57ad40e7-46fb-4a79-98e4-b1a93b120a80",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2407,7 +2407,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "bf7a1abb-eaad-4598-8f73-4d850c2d570c",
+                            "id": "7de0a6f3-0aa0-40ad-ad0d-81183ebfd815",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2455,7 +2455,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3b387fdc-8249-4df3-a707-c204663f0f1e",
+                            "id": "7e3d5472-7962-4d2a-914d-0bae533c0007",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -2503,7 +2503,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a70c1756-6dce-4020-835c-3805b39334c0",
+                            "id": "74c6a345-e68e-44c7-ad3b-5fa9930fc20a",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -2554,7 +2554,7 @@
                     "event": []
                 },
                 {
-                    "id": "9e345590-4acd-4f9f-a633-e20cb39b5794",
+                    "id": "ca36aac7-e00c-41d1-b73f-5d120a2e202f",
                     "name": "Get Creator",
                     "request": {
                         "name": "Get Creator",
@@ -2594,7 +2594,7 @@
                     },
                     "response": [
                         {
-                            "id": "0ac3fb0b-eb11-4afe-aa29-5ef67a1b44d3",
+                            "id": "3041c4d5-bda3-46cd-8629-0c7afbc73f0b",
                             "name": "OK - Creator information returned",
                             "originalRequest": {
                                 "url": {
@@ -2638,7 +2638,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "28bfbcfa-e8c7-4e0d-b722-be9c3a5e785e",
+                            "id": "50694017-447c-41bf-bc69-401829d454cc",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -2682,7 +2682,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "68fb8986-0c29-4019-ae52-fb2dbb574e0a",
+                            "id": "3060c504-69db-4d2a-9feb-573123b3fe5f",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2726,7 +2726,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2e411402-12e1-4a70-99d4-4113ce41c804",
+                            "id": "05396294-f39f-4d3b-9e69-a969c83151b3",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -2770,7 +2770,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a45c5c83-b30f-4bf1-8ea3-514114a5af18",
+                            "id": "b52b0c94-8e31-4982-b22e-8a9dcb4a8f78",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -2814,7 +2814,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "30909064-1d7c-459c-8945-1e123d14d81e",
+                            "id": "91b30601-2091-4b45-9e0c-fe53de907a18",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -2861,7 +2861,7 @@
                     "event": []
                 },
                 {
-                    "id": "22c3a24b-1563-41f2-8ca5-468333e6c8ca",
+                    "id": "2816f9a0-7949-4db2-b441-20bfc3a44bf5",
                     "name": "Get Creators",
                     "request": {
                         "name": "Get Creators",
@@ -2901,7 +2901,7 @@
                     },
                     "response": [
                         {
-                            "id": "aba412f8-a259-44b4-8e24-578dffd334fd",
+                            "id": "1c51702a-e200-4c17-bed5-c1f844c17ec9",
                             "name": "OK - Creators returned",
                             "originalRequest": {
                                 "url": {
@@ -2945,7 +2945,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cec58329-9235-4f50-8346-67885cd83f4a",
+                            "id": "a2aa8a40-197d-4c51-b597-60ecf6094a4e",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -2989,7 +2989,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "5770d4e2-4761-41a7-8395-4b74a07e4d18",
+                            "id": "dd8b3a5b-5e8e-49de-9c2c-e2d377c90268",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3033,7 +3033,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ec0a0925-7a08-41d9-ba93-a64bfbad06b4",
+                            "id": "6069d425-b431-4b84-9851-ae1b4f39f150",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3077,7 +3077,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d452a42e-5544-40c3-b244-11e7b4409682",
+                            "id": "c1a9e151-cdc8-4c89-8cb7-aa6616897c38",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -3121,7 +3121,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "41a58231-3664-44dc-8c66-d16f5768780e",
+                            "id": "95e408cb-87b5-48e1-bd66-b20e0139741a",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -3171,15 +3171,15 @@
             "event": []
         },
         {
-            "id": "1b1d8b50-a792-4af0-94fe-2b76468b69c0",
+            "id": "a095ee40-92e8-4a17-b0b1-2fdb14c84af8",
             "name": "CreatorSubscriptionPlan",
             "description": {
-                "content": "TODO",
+                "content": "Manage creator subscription plans.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "7909158a-1919-401c-b49d-2405aedda880",
+                    "id": "6efc3043-775d-4c72-805a-7062b8f17395",
                     "name": "Get Creator Sub Info Public",
                     "request": {
                         "name": "Get Creator Sub Info Public",
@@ -3219,7 +3219,7 @@
                     },
                     "response": [
                         {
-                            "id": "bb01d592-ca54-4a67-b7de-f36af88874a1",
+                            "id": "768c460f-2982-4748-a7d4-b746ce873519",
                             "name": "OK - Information about the plans for the creator",
                             "originalRequest": {
                                 "url": {
@@ -3263,7 +3263,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3019108b-f78a-4b74-a345-a17affe4ff53",
+                            "id": "fc88cb62-b9d3-4c6d-b4df-aff74d488d61",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -3307,7 +3307,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fcab7749-09f3-4e3f-9922-6b56223cfe16",
+                            "id": "813755fb-22ba-46b9-8999-591b31e640d3",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3351,7 +3351,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6e844d79-9b0e-4a5a-a83f-f7673416adb8",
+                            "id": "9a93b109-de37-4bf6-99ff-17c08ec5e0b7",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3395,7 +3395,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cb8b1728-3a05-43ea-be4a-965e605ebefd",
+                            "id": "e8811369-4c8b-4d7e-bcd8-561800afdd94",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -3439,7 +3439,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "16a63f1c-ab44-4c59-948d-23c654bb82f3",
+                            "id": "e84ce095-dc96-40d5-b57f-c15740fd04d9",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -3489,15 +3489,296 @@
             "event": []
         },
         {
-            "id": "e177b7fe-f690-416c-b203-4cf9f0864f27",
-            "name": "Payments",
+            "id": "05338051-aaf0-4973-a115-e55ba014f802",
+            "name": "FAQ",
             "description": {
-                "content": "TODO",
+                "content": "Get FAQs.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "e2f5a14a-493c-48fa-bcfe-e64582d33542",
+                    "id": "22f7e7f4-85e0-4c49-bcd1-b19bad0aebb4",
+                    "name": "Get Faq Sections",
+                    "request": {
+                        "name": "Get Faq Sections",
+                        "description": {
+                            "content": "Retrieve a list of FAQ sections to display to the user. Each section contains one or more FAQ items. This is normally accessible from https://www.floatplane.com/support. Note that the answers to the FAQs will contain HTML.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "api",
+                                "v2",
+                                "faq",
+                                "list"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "description": " (This can only be one of https)",
+                                    "type": "any",
+                                    "value": "{{scheme}}",
+                                    "key": "scheme"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "a6d0fb8a-0611-447f-87b3-ea8b90b2ee6c",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "[\n {\n  \"faqs\": [\n   {\n    \"createdAt\": \"2019-10-03T18:45:49.157Z\",\n    \"updatedAt\": \"2019-12-19T22:06:01.843Z\",\n    \"id\": \"5d9641ddbced315cc7d9135f\",\n    \"question\": \"How do you get the PewPew emote? \",\n    \"answer\": \"<p><span style=\\\"background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);\\\">The PewPew emote was as an account reward for users who had succesfully set up a payment method on Floatplane.com before January 1st 2019.</span></p>\",\n    \"status\": \"public\",\n    \"link\": \"g-pewpew-emote\",\n    \"order\": 1,\n    \"faqSection\": \"5d9641d0b3e3285cfffe44a9\"\n   }\n  ],\n  \"createdAt\": \"2019-10-03T18:45:36.840Z\",\n  \"updatedAt\": \"2019-12-19T22:08:50.481Z\",\n  \"id\": \"5d9641d0b3e3285cfffe44a9\",\n  \"name\": \"General\",\n  \"description\": \"For general questions about Floatplane\",\n  \"status\": \"public\",\n  \"order\": 1\n },\n {\n  \"faqs\": [\n   {\n    \"createdAt\": \"2019-10-03T18:26:28.413Z\",\n    \"updatedAt\": \"2020-01-28T03:23:15.918Z\",\n    \"id\": \"5d963d54221c575ce366b7e7\",\n    \"question\": \"Can you upgrade me to the LTT supporter (1080p) subscription? \",\n    \"answer\": \"<p>At this time there is no difference between the two channels in regards to features that are unlocked. The only difference between the two is the price.</p>\",\n    \"status\": \"public\",\n    \"link\": \"sub-u-payment\",\n    \"order\": 1,\n    \"faqSection\": \"5d8d1be612c2535c9dc067d1\"\n   }\n  ],\n  \"createdAt\": \"2019-09-26T20:13:26.431Z\",\n  \"updatedAt\": \"2020-01-28T03:24:33.443Z\",\n  \"id\": \"5d8d1be612c2535c9dc067d1\",\n  \"name\": \"Subscription and Payment \",\n  \"description\": \"Life isn't always about money but this section is. If you have a payment or subscription issue look here.  \",\n  \"status\": \"public\",\n  \"order\": 2\n }\n]",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "ee42de1a-8e28-435f-a181-ef484400ba0f",
+                            "name": "Bad Request - The request has errors and the server did not process it.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n \"id\": \"awoz-3s5g-6amf\",\n \"errors\": [\n  {\n   \"id\": \"9edc-zejt-n3hb\",\n   \"name\": \"paramValidationError\",\n   \"message\": \"\\\"captchaToken\\\" must be an object\",\n   \"data\": {\n    \"rule\": \"object.base\"\n   }\n  }\n ],\n \"message\": \"\\\"captchaToken\\\" must be an object\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "fc3f43ba-09d3-4ee4-a4f0-b80a46bec860",
+                            "name": "Unauthenticated - The request was not authenticated to make the request.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n \"id\": \"erng-ah8e-n0d3\",\n \"errors\": [\n  {\n   \"id\": \"erng-ah8e-n0d3\",\n   \"name\": \"notLoggedInError\",\n   \"message\": \"You must be logged-in to access this resource.\"\n  }\n ],\n \"message\": \"You must be logged-in to access this resource.\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "e661a417-70c9-450a-aefe-b0c4daeeeeca",
+                            "name": "Forbidden - The request was not authenticated to make the request.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n \"id\": \"f4ec-orux-hds2\",\n \"errors\": [\n  {\n   \"id\": \"f4ec-orux-hds2\",\n   \"name\": \"missingAchievementError\",\n   \"message\": \"You lack one or more of the required achievements needed to access the requested resource.\",\n   \"data\": {\n    \"requiresAllOfAchievement\": [\n     {\n      \"id\": \"6157853e479315db795f7296\",\n      \"title\": \"FloatVPN Alpha\",\n      \"startDate\": null,\n      \"endDate\": null,\n      \"icon\": null\n     }\n    ]\n   }\n  }\n ],\n \"message\": \"You lack one or more of the required achievements needed to access the requested resource.\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "c8739ed4-9547-4634-ba6d-2674b5cb63a7",
+                            "name": "Not Found - The resource was not found.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n \"id\": \"f4ec-orux-hds2\",\n \"errors\": [\n  {\n   \"id\": \"f4ec-orux-hds2\",\n   \"name\": \"notFoundError\"\n  }\n ]\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "4fb4d45a-9163-4918-95b1-67fcc67e609e",
+                            "name": "Unexpected response code",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "api",
+                                        "v2",
+                                        "faq",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "description": " (This can only be one of https)",
+                                            "type": "any",
+                                            "value": "{{scheme}}",
+                                            "key": "scheme"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Internal Server Error",
+                            "code": 500,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n \"id\": \"awoz-3s5g-6amf\",\n \"errors\": [\n  {\n   \"id\": \"9edc-zejt-n3hb\",\n   \"name\": \"paramValidationError\",\n   \"message\": \"\\\"captchaToken\\\" must be an object\",\n   \"data\": {\n    \"rule\": \"object.base\"\n   }\n  }\n ],\n \"message\": \"\\\"captchaToken\\\" must be an object\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": []
+                }
+            ],
+            "event": []
+        },
+        {
+            "id": "42b1d371-2162-48fa-b227-383b598d8fd2",
+            "name": "Payments",
+            "description": {
+                "content": "User payment method/address/invoice management.",
+                "type": "text/plain"
+            },
+            "item": [
+                {
+                    "id": "8ffc81f5-852b-469a-b11a-39c2b3bdc77e",
                     "name": "List Payment Methods",
                     "request": {
                         "name": "List Payment Methods",
@@ -3531,7 +3812,7 @@
                     },
                     "response": [
                         {
-                            "id": "76c8f24b-b9b0-4a0c-b770-335cf61ed222",
+                            "id": "901f1e73-5a6b-4123-b652-191482c42a80",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -3571,7 +3852,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "94195cd7-9cea-40fc-adc2-799f8cfdd1bf",
+                            "id": "d7fa058c-77d3-4163-8a5a-90af22cf22f1",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -3611,7 +3892,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f24bc73c-57f6-4bfa-99af-145615bdf55b",
+                            "id": "e77fc817-4b78-4055-84c7-a64e7f13bb18",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3651,7 +3932,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2a60cb58-a69e-4830-a800-6652e5ecd5df",
+                            "id": "e3bb7256-951d-412f-8e66-594b3793ae10",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3691,7 +3972,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fffdb1aa-26b3-4b50-a971-b9fe9f689f7b",
+                            "id": "f8a1e41d-7890-4875-9e5c-f9f41b51c93b",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -3731,7 +4012,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "adf74a32-bee0-4155-81cf-06fbb806d29a",
+                            "id": "0a44729e-66d1-4e33-8114-91174324a28c",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -3774,7 +4055,7 @@
                     "event": []
                 },
                 {
-                    "id": "4820d65e-b118-4801-8ead-a096bcb2d322",
+                    "id": "4ef49aac-dbd6-40ce-a7ee-87acb3c88e5d",
                     "name": "List Addresses",
                     "request": {
                         "name": "List Addresses",
@@ -3808,7 +4089,7 @@
                     },
                     "response": [
                         {
-                            "id": "ee8d1a36-020a-47fa-a4e5-4f517afa1730",
+                            "id": "96c3e750-25a7-47c6-958d-a98e86f6e550",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -3848,7 +4129,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d9c3716a-3712-46fa-ae59-7754a5354c97",
+                            "id": "ca5035f5-0d64-4040-b417-36d47c1aacaf",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -3888,7 +4169,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d958f236-62bb-456b-8a1b-f9e567f9dc3e",
+                            "id": "e0b8adf6-2255-449b-8723-0d0bb2328eca",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3928,7 +4209,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6d2cd135-80ef-4e28-a937-d875214e43cd",
+                            "id": "91830d7d-f68a-47c8-99a6-d5788425ce53",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -3968,7 +4249,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8b1ecbd1-ea3b-48ad-ae38-56863e7fa253",
+                            "id": "4c56188e-7ba2-48f9-9377-ae9f95209e95",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -4008,7 +4289,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4efb9ab4-4ec8-4c2c-a536-d647f47e0a3b",
+                            "id": "91c0aa84-355c-407b-bcc6-419674bc38f6",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -4051,7 +4332,7 @@
                     "event": []
                 },
                 {
-                    "id": "0cd7afbe-9193-47d6-b5c0-027c7b511dd0",
+                    "id": "8d511d15-b611-4d93-950e-f9af2288259a",
                     "name": "List Invoices",
                     "request": {
                         "name": "List Invoices",
@@ -4085,7 +4366,7 @@
                     },
                     "response": [
                         {
-                            "id": "5afc58b7-859b-457f-bd17-72b9bdf50e13",
+                            "id": "2bb49a79-098c-4320-88d6-bb09d3a8cf9e",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -4125,7 +4406,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a03ae63b-9972-4924-891f-8b11c9a58010",
+                            "id": "78f4fc8d-f92f-4366-a898-cc8618443508",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -4165,7 +4446,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2bd55e73-be90-4e7f-9f64-a26a49d5c397",
+                            "id": "3b38afad-cc2b-4484-8e7a-099cd6b03b8a",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4205,7 +4486,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7dd57200-6de8-4774-82f8-704142b8b68d",
+                            "id": "c8d78573-73fd-49e2-986c-e26e1c69bdc0",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4245,7 +4526,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d3882d9f-5b84-41ef-8714-5cd72dd8188e",
+                            "id": "f976b511-2025-466f-afc4-3a40113f7003",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -4285,7 +4566,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "593ba761-a528-411d-89fc-b01968e9b988",
+                            "id": "7cbe937d-0459-42cf-9695-a003e75ac9be",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -4331,15 +4612,15 @@
             "event": []
         },
         {
-            "id": "c52e717f-18f8-4941-808d-e2b3b6cd272e",
+            "id": "8f5b07a3-e085-4c51-98d2-679eaefa9dd9",
             "name": "Subscriptions",
             "description": {
-                "content": "TODO",
+                "content": "Get user subscriptions.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "e5c0657a-a00c-4c03-a0ee-948522bd9b38",
+                    "id": "4d6371b9-9e6f-4be1-bcfc-38cdaf353320",
                     "name": "List User Subscriptions",
                     "request": {
                         "name": "List User Subscriptions",
@@ -4372,7 +4653,7 @@
                     },
                     "response": [
                         {
-                            "id": "fca9e959-b87a-4e3a-a9ad-964f17a7517b",
+                            "id": "73bd8262-f504-42d4-9f4b-ac1cada85433",
                             "name": "OK - Subscriptions returned",
                             "originalRequest": {
                                 "url": {
@@ -4411,7 +4692,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "11bced95-f0e3-457f-b706-99040ca3c58f",
+                            "id": "8007733c-1fa8-4d65-81be-70b34326f466",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -4450,7 +4731,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f48b133f-fcee-4c06-a89a-c67037a2b8e3",
+                            "id": "7112c546-de85-43a1-8e3e-5d45aa8dfc3c",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4489,7 +4770,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "85271bb9-d29d-434b-a28b-9834f62c449c",
+                            "id": "5fe6ba0c-2700-4b14-864a-1f521f17b560",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4528,7 +4809,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3a2b1884-1f47-408b-96ee-5547a6639fb1",
+                            "id": "ae01201c-7b40-4e33-a06d-1f5b74983e04",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -4567,7 +4848,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "85e7c707-bf50-40c7-8c15-5e376c8b1ea0",
+                            "id": "a6240775-3581-423f-9523-f5fc40317f83",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -4612,15 +4893,15 @@
             "event": []
         },
         {
-            "id": "bb7da0ff-e414-41a1-9966-d105d81f887c",
+            "id": "456cf7fe-2909-450e-849e-ac13cf9f47b5",
             "name": "User",
             "description": {
-                "content": "TODO",
+                "content": "User discovery and profile management.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "5d1f523d-4655-40b9-a630-b3d641dac17a",
+                    "id": "a81370ee-fee2-4f05-a444-406d5fad477c",
                     "name": "Info",
                     "request": {
                         "name": "Info",
@@ -4666,7 +4947,7 @@
                     },
                     "response": [
                         {
-                            "id": "2637c677-aa84-4de9-9caf-a4f43e1d8ffc",
+                            "id": "2427e1f0-c3d1-4dae-b3eb-88818e0f4c28",
                             "name": "OK - Results of the user search",
                             "originalRequest": {
                                 "url": {
@@ -4714,7 +4995,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3b43652f-1191-419d-a6c6-8c82bb61ae1d",
+                            "id": "44216a8f-2b53-4f43-8e9b-d91f2c28eb83",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -4762,7 +5043,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3d6615bb-0307-48e6-a08c-e852608165e3",
+                            "id": "8e82723e-bda6-4ec4-855e-d3633e2f1a45",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4810,7 +5091,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "dc889978-0534-45a5-8280-a998d7be3716",
+                            "id": "b9bba50b-fb4d-45bb-9282-aeecc085b843",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -4858,7 +5139,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9fa15686-6fbf-4b5c-88e7-6e1b0aa36927",
+                            "id": "09f517f8-efee-47b6-9ad1-17bb557256b3",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -4906,7 +5187,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "64f2337c-c0f3-42d0-a561-eb0d904e226f",
+                            "id": "b77989da-7a19-42c3-b49e-f6627203c710",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -4957,7 +5238,7 @@
                     "event": []
                 },
                 {
-                    "id": "e5839620-df32-4c21-9110-237d00f031f9",
+                    "id": "f09a4627-14a1-4da1-90bd-7e92f4054d02",
                     "name": "Get Info By Name",
                     "request": {
                         "name": "Get Info By Name",
@@ -5003,7 +5284,7 @@
                     },
                     "response": [
                         {
-                            "id": "ffc8d345-cdf5-4c8e-93c8-78143ff28250",
+                            "id": "398e7740-4540-4faa-a6ea-9c6808011b04",
                             "name": "OK - Results of the user search",
                             "originalRequest": {
                                 "url": {
@@ -5051,7 +5332,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "29447fdb-e063-413e-8171-806af6a6c1ad",
+                            "id": "c4eec0ae-efde-4834-9678-e6c82e0f9635",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -5099,7 +5380,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6785be14-78a8-4f26-94fb-26ceb2e7a8bd",
+                            "id": "b07a2623-04ee-4335-b312-1b830bf68949",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5147,7 +5428,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "99bc5512-725c-4ee8-9a4c-ce75d93eae68",
+                            "id": "ef76fca8-484a-45f3-ae37-db542c3c6624",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5195,7 +5476,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2dfca7e9-6a37-4fe6-8f76-06fa3fe7271f",
+                            "id": "b51268f2-0706-4152-bd5b-cabfb8df797b",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -5243,7 +5524,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6813b54f-32b3-4fa4-aef2-ef333272c2b2",
+                            "id": "02db913d-3f2d-4119-92cd-8b3bb509e685",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -5294,7 +5575,7 @@
                     "event": []
                 },
                 {
-                    "id": "56d7eeff-32b9-4266-8f14-c0d94a8e556a",
+                    "id": "db9c250d-1aff-460d-9be8-06ac97b02a58",
                     "name": "Get Security",
                     "request": {
                         "name": "Get Security",
@@ -5327,7 +5608,7 @@
                     },
                     "response": [
                         {
-                            "id": "3049b58b-5de2-4e57-859f-1a89feba74bb",
+                            "id": "3dad1147-2bbc-4fe5-bcf6-a54300f0e77b",
                             "name": "OK - Current security settings",
                             "originalRequest": {
                                 "url": {
@@ -5366,7 +5647,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "96888aa2-ea5b-47c0-8ac5-6661233258c2",
+                            "id": "749b7678-8b5d-4da6-ba56-0c6db172f3f1",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -5405,7 +5686,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0c12d8dc-d121-460e-943e-540b065fe747",
+                            "id": "cf54bd02-ae45-4374-be03-3910c5b59e11",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5444,7 +5725,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d9ddecda-e88d-4e7a-9725-ccc67394038f",
+                            "id": "e86a0c78-4bcc-456e-9c59-b7253ca86a2d",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5483,7 +5764,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d1cbe49e-0b2b-454a-8803-7dc6fd6e6ce0",
+                            "id": "9d7e9128-ce2f-44b8-b410-dcdc9bfd65e0",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -5522,7 +5803,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "16621a7c-1788-4068-8e16-63cab991a480",
+                            "id": "6db4d150-6f2c-41a0-8afc-35d718fd7649",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -5564,7 +5845,7 @@
                     "event": []
                 },
                 {
-                    "id": "71dc8d98-9971-480d-9c1e-95b5f3bfe551",
+                    "id": "17a29687-21aa-4df0-9e4c-c859a09f45e0",
                     "name": "User Creator Ban Status",
                     "request": {
                         "name": "User Creator Ban Status",
@@ -5605,7 +5886,7 @@
                     },
                     "response": [
                         {
-                            "id": "041f3bfb-deae-4f45-92e3-06eeab764fff",
+                            "id": "5ac4668f-305b-4d97-b3b2-e210a01a505c",
                             "name": "OK - Whether the user is banned or not",
                             "originalRequest": {
                                 "url": {
@@ -5645,12 +5926,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "false",
+                            "body": "true",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cab5ab8c-9e0b-4539-8d3a-2e5c73426cf1",
+                            "id": "562e0e1b-a193-44e2-bdf8-ece9b29f4df7",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -5695,7 +5976,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d2a5e19e-ddcb-49e0-b375-6d137f7a2044",
+                            "id": "ce1da0c8-64de-4c4d-b538-6abd5bdd3066",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5740,7 +6021,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cc8fb9df-fabc-4039-aea5-3ae7640ff1e5",
+                            "id": "39d187be-fae4-4911-8eb6-9684c82dc729",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -5785,7 +6066,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e4eeecf8-7f9f-40ec-a3fb-8553dafff3d1",
+                            "id": "504841c6-50d8-468f-8305-7d5ff26bdacc",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -5830,7 +6111,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "84ec25eb-c4e7-4288-b0ea-ad92b07264f5",
+                            "id": "d79bfa2f-689e-4d6f-909a-85f2b17aaf6a",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -5878,7 +6159,7 @@
                     "event": []
                 },
                 {
-                    "id": "632cdbbd-f14d-427f-a31a-ffa51c527ed5",
+                    "id": "fa2f4a19-41ca-4561-9c5c-75d92423b1b5",
                     "name": "Get Activity Feed",
                     "request": {
                         "name": "Get Activity Feed",
@@ -5918,7 +6199,7 @@
                     },
                     "response": [
                         {
-                            "id": "6126c544-d5b6-43bd-acdc-dceee3908536",
+                            "id": "6b98d31b-47bd-4e68-8c7e-307a31489a86",
                             "name": "OK - Activity returned",
                             "originalRequest": {
                                 "url": {
@@ -5962,7 +6243,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "07f53009-3f14-496d-aa30-2d2a0b3d8e60",
+                            "id": "1c021a70-b491-4aae-bf23-5061bdd5603d",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -6006,7 +6287,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "973b47c3-6a2f-4b0c-910c-15f3be378ef6",
+                            "id": "edb93796-8522-4682-9cb3-382ca094021f",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6050,7 +6331,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "59c3ca16-f57d-4d8f-9c8d-4b1330c26945",
+                            "id": "368167e1-fb0e-4092-9d76-08b258740ea8",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6094,7 +6375,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "df22a6b3-e5d7-4091-abe8-039888bb1825",
+                            "id": "0d5fe31a-6931-4a3a-b2bc-7dbedb1dc645",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -6138,7 +6419,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a8076f5f-506d-43a8-893f-c9607c177b59",
+                            "id": "565860b0-a09f-4f4c-a3c9-8338acfc86d5",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -6185,7 +6466,7 @@
                     "event": []
                 },
                 {
-                    "id": "be51e3b2-83b6-421d-b085-9309729a9d75",
+                    "id": "87b99548-86ef-4f60-b0e7-b4246a7c9e66",
                     "name": "Get External Links",
                     "request": {
                         "name": "Get External Links",
@@ -6225,7 +6506,7 @@
                     },
                     "response": [
                         {
-                            "id": "1bacb80e-d95c-4cd2-930c-d4c020932778",
+                            "id": "17fa4da3-ffa1-49fd-8e77-0893dae5dedd",
                             "name": "OK - User links returned",
                             "originalRequest": {
                                 "url": {
@@ -6269,7 +6550,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "bafd082b-8af3-4c55-91a0-d6fde4284fa1",
+                            "id": "3d84c0a5-0b23-48d7-9e69-a7f5747be69c",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -6313,7 +6594,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8f4d90a8-fb53-46e4-8295-1b09e5598616",
+                            "id": "993dcc1c-800d-40c6-a961-2f11c6de3d7f",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6357,7 +6638,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1dd9e6dd-3546-4278-9298-12e404d6b9af",
+                            "id": "ae884613-0afc-463a-9f6e-d9342a1c253b",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6401,7 +6682,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "de94379a-976d-420b-86ed-0636a013d129",
+                            "id": "fe446da2-fa68-4957-8b24-93e414fd6773",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -6445,7 +6726,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e38bd0ba-7534-41e3-9de0-09407a432b67",
+                            "id": "ae527c47-1b67-4636-97f3-cd6884b2296b",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -6492,7 +6773,7 @@
                     "event": []
                 },
                 {
-                    "id": "db0c41c9-3127-4475-9f05-8949c2771ba2",
+                    "id": "3d33bc15-d4b3-44ca-9d1d-c38ee159433e",
                     "name": "Get Self",
                     "request": {
                         "name": "Get Self",
@@ -6525,7 +6806,7 @@
                     },
                     "response": [
                         {
-                            "id": "c0f260f6-f96f-4217-8308-7a7fd5695f39",
+                            "id": "78c85e58-a9cd-4443-87df-ef25c8bb0670",
                             "name": "OK - Information returned",
                             "originalRequest": {
                                 "url": {
@@ -6564,7 +6845,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a0dfaec4-ef7e-461f-9849-d0f2eded56ee",
+                            "id": "85c25bb9-2065-4382-8dac-b12fc8d01f09",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -6603,7 +6884,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fcd047c0-59b7-470c-8803-9c82908fc81e",
+                            "id": "01957e24-ead9-40aa-b81b-23599936020c",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6642,7 +6923,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1e02d0cf-c651-4b5a-836c-9e0bcb3cbf3c",
+                            "id": "4508a3c0-22bd-4396-9dd8-00a3736e131d",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6681,7 +6962,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "c9f1d0e9-271e-424e-90bb-ee266e23d630",
+                            "id": "82d78099-3683-47ef-bc6c-883b21f1563f",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -6720,7 +7001,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a07574cd-b8d1-4091-aa39-0869e7ddb02d",
+                            "id": "5ac3a81c-002b-4769-98e4-4e0dfb679fc5",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -6762,7 +7043,7 @@
                     "event": []
                 },
                 {
-                    "id": "5c93fd23-2bf2-48c0-acaa-ae86a211d0f6",
+                    "id": "3dcbcf40-66e4-46e6-9d33-1d9af078db72",
                     "name": "Get User Notification Settings",
                     "request": {
                         "name": "Get User Notification Settings",
@@ -6796,7 +7077,7 @@
                     },
                     "response": [
                         {
-                            "id": "8fd0cfd1-989b-4934-808c-1adab937d80f",
+                            "id": "761104fa-290d-4b63-be4d-98ed2580a9e3",
                             "name": "OK - Notifications returned",
                             "originalRequest": {
                                 "url": {
@@ -6836,7 +7117,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "890b5657-f6b5-4c3a-9117-e0f49e33ca49",
+                            "id": "03c9cb9d-b120-4c80-8765-b96c4feae090",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -6876,7 +7157,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "396c4364-c27b-4697-b806-6eaff8b7840a",
+                            "id": "ce4dd9cb-a09c-4fe7-9469-847a598f1c88",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6916,7 +7197,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "90fd1ac4-1bc1-487a-9487-baf9c4f3cebe",
+                            "id": "65290a4c-b867-4c64-8234-9546b7271543",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -6956,7 +7237,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "bb035aea-1248-48ff-9a75-63428fa43d58",
+                            "id": "befa2f44-b4d4-4389-869c-77a53196a514",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -6996,7 +7277,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "69b0f339-52cb-4d2f-bcf9-bbfb04c37d07",
+                            "id": "111fb4c1-ae24-44d5-a754-1fb42676b442",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -7039,7 +7320,7 @@
                     "event": []
                 },
                 {
-                    "id": "66c8a400-f048-4442-8ca9-fa46d63bcf60",
+                    "id": "04f0e8e8-a137-4b28-99cb-73511715c5dc",
                     "name": "Update User Notification Settings",
                     "request": {
                         "name": "Update User Notification Settings",
@@ -7088,7 +7369,7 @@
                     },
                     "response": [
                         {
-                            "id": "a25a1f52-20b4-46bb-baf8-955ad8a68b93",
+                            "id": "67e96770-c16e-43c9-bdc4-860a022a0b28",
                             "name": "OK - Whether or not the update was successful",
                             "originalRequest": {
                                 "url": {
@@ -7136,7 +7417,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "05611953-43d7-4b93-82e0-2a3b010820bd",
+                            "id": "5770f429-b072-41a8-b39c-6d3a1c275eee",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -7184,7 +7465,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9a8f061c-b29c-4d70-98b7-1c2e024332f0",
+                            "id": "9ee421ec-bd01-4bc0-aacf-4d5937eaa83e",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7232,7 +7513,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3a52f52d-defc-401c-9edb-0dfec5d0b8f4",
+                            "id": "2a628e0a-3d08-41fb-8983-7762463679f7",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7280,7 +7561,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d3cea820-f47a-486c-8463-8f7b4a4bcc2a",
+                            "id": "273b71b9-c5b4-495f-89cd-102957f5b62f",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -7328,7 +7609,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9c209132-7790-4aec-831b-ad60d3ecc150",
+                            "id": "57930828-3ae3-4030-8b94-e70bde3e09b1",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -7382,15 +7663,15 @@
             "event": []
         },
         {
-            "id": "19236758-5980-41fd-9b62-8a194a03255d",
+            "id": "27b7c8a3-e56a-46fc-85be-589b636a6560",
             "name": "Media",
             "description": {
-                "content": "TODO",
+                "content": "Video media management.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "56e17255-20b6-40ed-abc7-ec2cf65c8530",
+                    "id": "dd156528-a5bc-49f9-88f9-469768dfd586",
                     "name": "Watch Key",
                     "request": {
                         "name": "Watch Key",
@@ -7423,7 +7704,7 @@
                     },
                     "response": [
                         {
-                            "id": "5a106331-a9bf-419d-8b58-331559423467",
+                            "id": "3bd1c5bf-5f9d-4319-b785-c2640280b33d",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -7462,7 +7743,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "766a0175-a337-4749-b1bf-eb09197e0b6f",
+                            "id": "125d10f9-4bb5-4315-b57b-ea46d480e2c3",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -7501,7 +7782,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7293a695-1476-478e-a58d-f2f5ba40309a",
+                            "id": "02b9a8ab-66db-48a1-9e4b-12d4f0e5c17a",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7540,7 +7821,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1cde44c3-aa8e-4526-81a1-67a36e146e8f",
+                            "id": "c3fdabcb-374b-4aab-9980-e8844cebd96b",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7579,7 +7860,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "94589d48-3ed0-49fd-bd6e-df26e0481b54",
+                            "id": "23e22390-ff71-47da-abf7-ec63169de72d",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -7618,7 +7899,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "269685b4-9d87-4c35-8aed-e4f2193cb956",
+                            "id": "8f1301f7-2cab-480e-92f2-f7980388bd06",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -7663,15 +7944,15 @@
             "event": []
         },
         {
-            "id": "759b9694-985f-4171-bd4c-fc912549d308",
+            "id": "2897b096-8cc3-4730-83ef-908013e51bc0",
             "name": "Comment",
             "description": {
-                "content": "TODO",
+                "content": "Comment retrieval, posting, and interacting.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "8fd6226b-eebf-47a0-8cef-23383b1a89c9",
+                    "id": "2c69a9df-efc0-4b6c-b4f8-579a2ca5d886",
                     "name": "Post Comment",
                     "request": {
                         "name": "Post Comment",
@@ -7718,7 +7999,7 @@
                     },
                     "response": [
                         {
-                            "id": "07953d4e-6e12-4b62-a23c-8e0b886c6a9c",
+                            "id": "701c01f1-f327-4f0a-a309-9ec533db4485",
                             "name": "OK - Commented posted successfully, returning comment details",
                             "originalRequest": {
                                 "url": {
@@ -7764,7 +8045,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "19f0e823-4739-43b5-aa2f-797b42b8504f",
+                            "id": "f101827e-5e96-426f-8f76-dc879d48d5e7",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -7810,7 +8091,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "dc800c37-57d6-43ca-a6c9-78b935a5583b",
+                            "id": "8eef9229-5970-48e0-810f-3a5b5a1e3902",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7856,7 +8137,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9ef3a1fa-5c8a-443e-abcb-049a9d4bb2cb",
+                            "id": "be267bae-688b-4f39-a225-0b70330abaaf",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -7902,7 +8183,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cd0f2f6f-a7c6-4492-a82a-cbdcb79ba80b",
+                            "id": "12340c6f-ca61-4696-b85a-56c0e06c8144",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -7948,7 +8229,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "412e15ae-b209-4ba9-b6a2-88ae666363f1",
+                            "id": "74c2de7b-4f44-4fd2-b111-8ff9fb26a478",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -7997,7 +8278,7 @@
                     "event": []
                 },
                 {
-                    "id": "f92a4d2d-1a8a-4a1b-af3a-78963bb963e0",
+                    "id": "71014c71-b940-4282-8a2c-e15d0cd4c23e",
                     "name": "Get Comments",
                     "request": {
                         "name": "Get Comments",
@@ -8048,7 +8329,7 @@
                     },
                     "response": [
                         {
-                            "id": "8d6adb3e-a986-4f8c-a5a2-c528f2725067",
+                            "id": "2d0db5f2-89d1-4688-bd4c-41d46f944133",
                             "name": "OK - All comments returned for the query parameters",
                             "originalRequest": {
                                 "url": {
@@ -8099,7 +8380,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0ad7e445-14a9-4045-896b-e52677a506fd",
+                            "id": "0066adfe-fc02-4925-aa6d-d77514955c33",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -8150,7 +8431,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "61ad4b51-7882-465b-b8aa-4763d5deba24",
+                            "id": "210a1cdc-1a32-4b14-9333-4941a01898d3",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8201,7 +8482,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3995b5d5-4bfa-45ed-9c5c-7dc6494ac885",
+                            "id": "b6d15a5d-c726-4df9-be4e-dcc7336d6ebf",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8252,7 +8533,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9bccbd37-6161-48b5-82c9-c809692d0f31",
+                            "id": "f18dc668-dc9a-48a7-8980-0821550eac8c",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -8303,7 +8584,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4cc83415-3cfe-4991-aeca-9e0d83e09503",
+                            "id": "e411fafe-c912-4daa-a38a-3d7a7b619a5f",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -8357,7 +8638,7 @@
                     "event": []
                 },
                 {
-                    "id": "f6e783b4-4138-44f5-8134-52c417f9e45b",
+                    "id": "28b97521-cec0-4667-83fc-b994dc74b782",
                     "name": "Get Comment Replies",
                     "request": {
                         "name": "Get Comment Replies",
@@ -8415,7 +8696,7 @@
                     },
                     "response": [
                         {
-                            "id": "2ff5f32b-2623-48ce-a1e9-77930a2fb31f",
+                            "id": "d9479443-7589-4f0a-ba1b-d7d54ac7e8b7",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -8471,7 +8752,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b6b61fc2-9270-42b5-ae61-75fe3a52a0fa",
+                            "id": "e0cdbc02-fcd7-400f-a238-02c4fec84406",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -8527,7 +8808,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8cb7d51b-a058-4524-849a-81a287d2fcfb",
+                            "id": "82f7c5d8-b0f0-44d4-9ca9-19ded1673451",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8583,7 +8864,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "107233e7-d876-422f-a80d-f010839d6fb8",
+                            "id": "4ab4275c-3db3-4e0b-bb08-7aedf8f59015",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8639,7 +8920,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3418f150-9bc4-4e0a-aff9-9af140d59395",
+                            "id": "4cd037a9-37a2-4225-be81-020a154b37ea",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -8695,7 +8976,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "84433c6d-b190-471b-844f-701521a9c7f8",
+                            "id": "d3bfbe98-5571-4097-a415-9aae2178bd82",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -8754,7 +9035,7 @@
                     "event": []
                 },
                 {
-                    "id": "a0114d97-37c3-486f-b448-8f3afb351130",
+                    "id": "0cc9a094-6b34-416b-a123-d9d181624932",
                     "name": "Like Comment",
                     "request": {
                         "name": "Like Comment",
@@ -8802,7 +9083,7 @@
                     },
                     "response": [
                         {
-                            "id": "5991586b-668c-42dd-ab40-3991f0a3745e",
+                            "id": "e1d7497b-6bc3-4d59-bf0e-cdfc08757703",
                             "name": "OK - Comment successfully liked",
                             "originalRequest": {
                                 "url": {
@@ -8849,7 +9130,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "9b0414eb-c6af-435e-b308-02c9153dfd90",
+                            "id": "a4550d96-01b1-477f-b588-7155f7e6dd77",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -8896,7 +9177,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9e21d56f-4be6-4617-a1d8-2657714c545f",
+                            "id": "6b381a9a-1292-419a-bd09-b9c9d493cf3a",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8943,7 +9224,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4663b595-4ec7-4d99-9cbd-ec131565040d",
+                            "id": "a9e5fe6b-7048-4004-8989-ad861b2a78ed",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -8990,7 +9271,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "deddd31d-e280-47a9-ad8c-04726ad823d9",
+                            "id": "a4e6c49b-4181-4b74-b884-9faece9560f4",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -9037,7 +9318,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e47b903f-9152-4d15-8b2f-ffe9bd226d2c",
+                            "id": "cd3a52d3-5e13-46da-95fb-bafecff9b477",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -9087,7 +9368,7 @@
                     "event": []
                 },
                 {
-                    "id": "13de4da4-e506-4920-a0be-440365653325",
+                    "id": "a985ffca-e9bd-4672-acb7-46b80d769f70",
                     "name": "Dislike Comment",
                     "request": {
                         "name": "Dislike Comment",
@@ -9135,7 +9416,7 @@
                     },
                     "response": [
                         {
-                            "id": "6fc16414-4bf5-4310-b759-c0c34616f78c",
+                            "id": "21257c9e-79b4-48d5-a959-a0bfae1e48da",
                             "name": "OK - Comment successfully disliked",
                             "originalRequest": {
                                 "url": {
@@ -9182,7 +9463,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "15b6cc49-e2aa-43ee-b670-e3770f96f3af",
+                            "id": "12b608db-42ce-4842-8428-c28b5125861b",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -9229,7 +9510,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f31f7183-1cb7-4777-b32d-af41975807f7",
+                            "id": "aad77309-919e-4439-b753-cef236f4aad4",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -9276,7 +9557,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3209c583-1d12-46a9-a265-9e40911e6a16",
+                            "id": "15c49793-4b80-4884-af71-ef5d27bab7d9",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -9323,7 +9604,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "02dc9da3-cb5b-4c94-9ce6-4121adcdc845",
+                            "id": "86d5f0a7-1c51-4616-9705-55cd20d64c5f",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -9370,7 +9651,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "deb140d9-2cec-4620-a22b-06d902b9ca05",
+                            "id": "b02ebc98-0602-4966-89a5-a4eddac11181",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -9423,15 +9704,15 @@
             "event": []
         },
         {
-            "id": "26a48e93-83f7-4ef5-ab6e-148f94e05a37",
+            "id": "b9407c3b-a8bb-4413-97e5-b05408fc0172",
             "name": "Content",
             "description": {
-                "content": "TODO",
+                "content": "Content retrieval and interacting.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "a58131c1-d21c-4cb8-8f3e-ca515abd0bba",
+                    "id": "108e417a-9e45-4abf-8a79-18de0ff02794",
                     "name": "Get Creator Blog Posts",
                     "request": {
                         "name": "Get Creator Blog Posts",
@@ -9489,7 +9770,7 @@
                     },
                     "response": [
                         {
-                            "id": "4530f562-8800-463f-9e7c-f3e77078935a",
+                            "id": "1e3d1964-4ead-4bdc-a465-f3a081728342",
                             "name": "OK - Creator posted returned",
                             "originalRequest": {
                                 "url": {
@@ -9545,7 +9826,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f13c63fd-ebe8-4c68-9d2c-db303f036c0e",
+                            "id": "a9074ef7-a611-49d8-8f24-c5b660204998",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -9601,7 +9882,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "64ed4194-ef12-48a7-aa93-4f390b6d7110",
+                            "id": "b068425e-29bd-4739-a927-9b3a8c42f0fb",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -9657,7 +9938,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6bc5926b-3610-453f-972a-48a1f63cf5be",
+                            "id": "9283ef3b-0f57-498f-8e84-da07c6b8edac",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -9713,7 +9994,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "98ac13fb-3d40-4392-a896-8d12d43c9e36",
+                            "id": "f7abecf4-9249-44d5-b56c-da9d27116361",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -9769,7 +10050,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9991e720-0461-4680-ace5-34872ee852d1",
+                            "id": "c7600f0b-a8eb-4286-bd63-e91fc5e327fb",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -9828,7 +10109,7 @@
                     "event": []
                 },
                 {
-                    "id": "c5b681de-ef43-4484-b9a6-5ef064798b29",
+                    "id": "d492c536-5a0c-4600-aaa4-db81cdeb0404",
                     "name": "Get Multi Creator Blog Posts",
                     "request": {
                         "name": "Get Multi Creator Blog Posts",
@@ -9893,7 +10174,7 @@
                     },
                     "response": [
                         {
-                            "id": "b1ccdab3-e6a1-49d8-8a53-bd64c1521915",
+                            "id": "5c9778a9-61e4-4c3a-a2eb-0551a23f0e42",
                             "name": "OK - Posts returned",
                             "originalRequest": {
                                 "url": {
@@ -9954,7 +10235,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "60e3f0a0-8638-4137-b9ab-5c7a79ca87de",
+                            "id": "9659a1ce-f4c6-4c03-9223-31715733da96",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -10015,7 +10296,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f35b7a32-6f21-4a0c-a26e-d85e0731bab2",
+                            "id": "0d057663-213b-4375-895b-792bfd3f15de",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10076,7 +10357,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d1bf16f7-10ac-4ded-b83c-e2e89cb1ad7d",
+                            "id": "65c29b31-bbdf-4504-a02e-a52bb821b83b",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10137,7 +10418,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a3e7369f-0bb1-4b9a-a792-a709df105765",
+                            "id": "a4dc0054-5d8f-4a82-8934-852078ab388e",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -10198,7 +10479,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "712565f7-8b35-48fb-a07a-01e8a0321420",
+                            "id": "6309ba6f-95da-4e1f-9666-6f4e7b45396c",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -10262,7 +10543,7 @@
                     "event": []
                 },
                 {
-                    "id": "144fafab-e46b-46fb-a98d-c9d4536eb88f",
+                    "id": "8e8affdb-288c-4c93-bb9c-48be50a6e12e",
                     "name": "Get Blog Post",
                     "request": {
                         "name": "Get Blog Post",
@@ -10302,7 +10583,7 @@
                     },
                     "response": [
                         {
-                            "id": "a4ca8bb4-be28-423b-9885-ba219129cca8",
+                            "id": "ca83c82b-bd9f-4a04-88a4-c34edff684ee",
                             "name": "OK - Detailed post information",
                             "originalRequest": {
                                 "url": {
@@ -10346,7 +10627,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "508383fc-ae62-44fd-82d2-61b9c4df0693",
+                            "id": "a2665372-7d4e-43a3-89c7-7f64cbbf95ae",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -10390,7 +10671,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6d207563-32ea-4d0b-a2f0-e79cf566d7c1",
+                            "id": "267ccc10-5e83-4544-aa48-9d0a1873de93",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10434,7 +10715,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6109c99a-1d8b-4e4b-ad1c-fc056123be36",
+                            "id": "bd87acdf-775b-413f-b51d-431bde4705bd",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10478,7 +10759,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a3cea667-2e8a-4d73-9c51-ab2a732eb6a5",
+                            "id": "e6a64228-7f5f-4b53-8068-bc26df87ca1d",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -10522,7 +10803,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d43c288f-61f7-4a7e-b0c5-43c75081a589",
+                            "id": "d7d356c0-c302-42b0-9029-01c2e7ed277b",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -10569,7 +10850,7 @@
                     "event": []
                 },
                 {
-                    "id": "17f8cd00-bc5d-4988-bf83-38928d9e29de",
+                    "id": "9f828ebb-c59d-456a-a3fe-66a40402d30a",
                     "name": "Get Related Blog Posts",
                     "request": {
                         "name": "Get Related Blog Posts",
@@ -10609,7 +10890,7 @@
                     },
                     "response": [
                         {
-                            "id": "ec52989c-686f-41a1-9225-ec2918a2386a",
+                            "id": "7e477bbd-afe7-418b-b2f0-82c053a5038d",
                             "name": "OK - Related post details",
                             "originalRequest": {
                                 "url": {
@@ -10653,7 +10934,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "adf3d2dd-1fea-45be-b7cf-7eff3aafc2b0",
+                            "id": "ef310ead-90ac-4d7a-a041-dee6742a93f0",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -10697,7 +10978,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6b150cf0-3670-4de0-9b64-ff7189d47287",
+                            "id": "0260cf3a-1f7a-4b92-af13-84673178e7ad",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10741,7 +11022,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3ed6eccf-7986-4869-9f58-f879329557f9",
+                            "id": "656df5ed-24b4-48b4-aae5-760490f66714",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -10785,7 +11066,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "89c543bb-ef6d-4a24-b1c8-97d21b5ee5f4",
+                            "id": "ecfd3b25-c899-460c-9ad0-9ac85322306a",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -10829,7 +11110,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "72b11fbe-cadc-4a98-b4dc-88d795f32b5f",
+                            "id": "7416c13f-a3c2-43e2-ab40-27646c0f12b0",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -10876,7 +11157,7 @@
                     "event": []
                 },
                 {
-                    "id": "5ffb2f15-fbee-4485-be76-45425c5095c2",
+                    "id": "cfa9972a-08fb-4441-87fd-1faf64d500dc",
                     "name": "Get Video Content",
                     "request": {
                         "name": "Get Video Content",
@@ -10916,7 +11197,7 @@
                     },
                     "response": [
                         {
-                            "id": "00d3ad09-ac24-4c3a-a075-83e941867e1c",
+                            "id": "6d1344ed-ef42-4542-8c2b-ebf9bfbb1e92",
                             "name": "OK - Video details returned",
                             "originalRequest": {
                                 "url": {
@@ -10960,7 +11241,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7827f64b-65fe-4502-801f-e1dfa6f1cfdb",
+                            "id": "55d22ce6-2bb9-4860-bc64-e2ea38cfb36f",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -11004,7 +11285,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "616ac10c-3bc2-4a8a-a09f-4fff24f7e129",
+                            "id": "a3632003-7f2a-46a7-b9dc-cdc25abc14b8",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -11048,7 +11329,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "30b1c74f-5a2b-4ebc-b7fc-9ddbe36dd21f",
+                            "id": "eca172ab-85f2-4476-9838-99ddc3db9763",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -11092,7 +11373,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1946e2d9-1feb-4557-a35b-32c984a59b24",
+                            "id": "1cbef6c8-1187-4e69-8eb6-75542b30e79b",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -11136,7 +11417,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ab7848a3-15c0-42e8-bcbc-e8fc141c49a7",
+                            "id": "8d659d64-02da-460f-ada8-f0240f7978b4",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -11186,15 +11467,15 @@
             "event": []
         },
         {
-            "id": "07d6fc7b-502e-40f3-b032-5d2feed5efa1",
+            "id": "8d00b56c-5584-4c80-98b6-89fe1cc976f2",
             "name": "LoyaltyRewards",
             "description": {
-                "content": "TODO",
+                "content": "Loyalty rewards information and claiming.",
                 "type": "text/plain"
             },
             "item": [
                 {
-                    "id": "9947746c-aa2a-415c-8765-49fec06fae6b",
+                    "id": "3afc19fa-d2eb-440c-ab9d-fe4d24012d34",
                     "name": "List Creator Loyalty Reward",
                     "request": {
                         "name": "List Creator Loyalty Reward",
@@ -11228,7 +11509,7 @@
                     },
                     "response": [
                         {
-                            "id": "78ff3e84-168a-4d58-88f5-750babe5b00f",
+                            "id": "30981415-d95d-4d68-8c5c-66b0c96031a9",
                             "name": "OK",
                             "originalRequest": {
                                 "url": {
@@ -11268,7 +11549,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f2f0ba03-1109-43e5-8e7f-c41608f3b394",
+                            "id": "3cccb0cd-9810-417f-9972-c19c231efeb4",
                             "name": "Bad Request - The request has errors and the server did not process it.",
                             "originalRequest": {
                                 "url": {
@@ -11308,7 +11589,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "54a433c8-4c97-41f0-bf66-6a6a67259855",
+                            "id": "d77f93bf-d78b-40e3-b264-c4ff75b67802",
                             "name": "Unauthenticated - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -11348,7 +11629,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b525454b-d3b0-4461-85b1-e20594bb721c",
+                            "id": "655e8b87-0096-45a1-b42e-b834686794b9",
                             "name": "Forbidden - The request was not authenticated to make the request.",
                             "originalRequest": {
                                 "url": {
@@ -11388,7 +11669,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "39943b26-53ca-452a-befd-2ae9fd120093",
+                            "id": "37a21985-24e8-410e-b119-0bcd8d0d57cc",
                             "name": "Not Found - The resource was not found.",
                             "originalRequest": {
                                 "url": {
@@ -11428,7 +11709,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6defe4d0-5d75-455a-9871-7a31dd7d18ba",
+                            "id": "5aae1782-4dae-4ae6-a54b-562e1a655a9a",
                             "name": "Unexpected response code",
                             "originalRequest": {
                                 "url": {
@@ -11509,7 +11790,7 @@
         ]
     },
     "info": {
-        "_postman_id": "241ce655-58ea-403d-a49d-c71c36cc37ae",
+        "_postman_id": "505748f3-7116-4b9b-ba61-ace38f511fdf",
         "name": "Floatplane API",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": {

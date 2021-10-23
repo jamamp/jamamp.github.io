@@ -59,7 +59,7 @@ When dealing with cookies in native applications (not via a website inside of a 
 
 <h1 id="floatplane-api-auth">Auth</h1>
 
-TODO
+Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators.
 
 ## login
 
@@ -1262,7 +1262,7 @@ This operation does not require authentication
 
 <h1 id="floatplane-api-cdn">CDN</h1>
 
-TODO
+Content Delivery mechanisms for Floatplane media.
 
 ## getDeliveryInfo
 
@@ -1613,7 +1613,7 @@ CookieAuth
 
 <h1 id="floatplane-api-connectedaccounts">ConnectedAccounts</h1>
 
-TODO
+3rd party account management, such as Discord or LTT Forums.
 
 ## listConnections
 
@@ -1929,7 +1929,7 @@ CookieAuth
 
 <h1 id="floatplane-api-creator">Creator</h1>
 
-TODO
+Get and discover creators on the platform. Creator invitation and profile management.
 
 ## getInfo
 
@@ -3841,7 +3841,7 @@ CookieAuth
 
 <h1 id="floatplane-api-creatorsubscriptionplan">CreatorSubscriptionPlan</h1>
 
-TODO
+Manage creator subscription plans.
 
 ## getCreatorSubInfoPublic
 
@@ -4217,9 +4217,356 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-faq">FAQ</h1>
+
+Get FAQs.
+
+## getFaqSections
+
+<a id="opIdgetFaqSections"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET {scheme}://www.floatplane.com/api/v2/faq/list \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET {scheme}://www.floatplane.com/api/v2/faq/list HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/faq/list',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get '{scheme}://www.floatplane.com/api/v2/faq/list',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('{scheme}://www.floatplane.com/api/v2/faq/list', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/faq/list', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/faq/list");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/faq/list", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v2/faq/list`
+
+*Get Faq Sections*
+
+Retrieve a list of FAQ sections to display to the user. Each section contains one or more FAQ items. This is normally accessible from https://www.floatplane.com/support. Note that the answers to the FAQs will contain HTML.
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  {
+    "faqs": [
+      {
+        "createdAt": "2019-10-03T18:45:49.157Z",
+        "updatedAt": "2019-12-19T22:06:01.843Z",
+        "id": "5d9641ddbced315cc7d9135f",
+        "question": "How do you get the PewPew emote? ",
+        "answer": "<p><span style=\"background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);\">The PewPew emote was as an account reward for users who had succesfully set up a payment method on Floatplane.com before January 1st 2019.</span></p>",
+        "status": "public",
+        "link": "g-pewpew-emote",
+        "order": 1,
+        "faqSection": "5d9641d0b3e3285cfffe44a9"
+      }
+    ],
+    "createdAt": "2019-10-03T18:45:36.840Z",
+    "updatedAt": "2019-12-19T22:08:50.481Z",
+    "id": "5d9641d0b3e3285cfffe44a9",
+    "name": "General",
+    "description": "For general questions about Floatplane",
+    "status": "public",
+    "order": 1
+  },
+  {
+    "faqs": [
+      {
+        "createdAt": "2019-10-03T18:26:28.413Z",
+        "updatedAt": "2020-01-28T03:23:15.918Z",
+        "id": "5d963d54221c575ce366b7e7",
+        "question": "Can you upgrade me to the LTT supporter (1080p) subscription? ",
+        "answer": "<p>At this time there is no difference between the two channels in regards to features that are unlocked. The only difference between the two is the price.</p>",
+        "status": "public",
+        "link": "sub-u-payment",
+        "order": 1,
+        "faqSection": "5d8d1be612c2535c9dc067d1"
+      }
+    ],
+    "createdAt": "2019-09-26T20:13:26.431Z",
+    "updatedAt": "2020-01-28T03:24:33.443Z",
+    "id": "5d8d1be612c2535c9dc067d1",
+    "name": "Subscription and Payment ",
+    "description": "Life isn't always about money but this section is. If you have a payment or subscription issue look here.  ",
+    "status": "public",
+    "order": 2
+  }
+]
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="getfaqsections-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getfaqsections-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[[FaqSectionModel](#schemafaqsectionmodel)]|false|none|none|
+|» faqs|[object]|true|none|none|
+|»» createdAt|string(date-time)|true|none|none|
+|»» updatedAt|string(date-time)|true|none|none|
+|»» id|string|true|none|none|
+|»» question|string|true|none|none|
+|»» answer|string|true|none|This field may contain HTML that should be rendered.|
+|»» status|string|true|none|none|
+|»» link|string|true|none|none|
+|»» order|number|true|none|none|
+|»» faqSection|string|true|none|none|
+|» createdAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)|true|none|none|
+|» id|string|true|none|none|
+|» name|string|true|none|none|
+|» description|string|true|none|none|
+|» status|string|true|none|none|
+|» order|number|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|status|public|
+|status|public|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
 <h1 id="floatplane-api-payments">Payments</h1>
 
-TODO
+User payment method/address/invoice management.
 
 ## listPaymentMethods
 
@@ -5134,7 +5481,7 @@ CookieAuth
 
 <h1 id="floatplane-api-subscriptions">Subscriptions</h1>
 
-TODO
+Get user subscriptions.
 
 ## listUserSubscriptionsV3
 
@@ -5475,7 +5822,7 @@ CookieAuth
 
 <h1 id="floatplane-api-user">User</h1>
 
-TODO
+User discovery and profile management.
 
 ## getUserInfo
 
@@ -8147,7 +8494,7 @@ CookieAuth
 
 <h1 id="floatplane-api-media">Media</h1>
 
-TODO
+Video media management.
 
 ## watchKey
 
@@ -8419,7 +8766,7 @@ CookieAuth
 
 <h1 id="floatplane-api-comment">Comment</h1>
 
-TODO
+Comment retrieval, posting, and interacting.
 
 ## postComment
 
@@ -10069,7 +10416,7 @@ CookieAuth
 
 <h1 id="floatplane-api-content">Content</h1>
 
-TODO
+Content retrieval and interacting.
 
 ## getCreatorBlogPosts
 
@@ -13089,7 +13436,7 @@ CookieAuth
 
 <h1 id="floatplane-api-loyaltyrewards">LoyaltyRewards</h1>
 
-TODO
+Loyalty rewards information and claiming.
 
 ## listCreatorLoyaltyReward
 
@@ -16104,4 +16451,66 @@ Represents some basic information of a user (id, username, and profile image).
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |creator|string|true|none|none|
+
+<h2 id="tocS_FaqSectionModel">FaqSectionModel</h2>
+<!-- backwards compatibility -->
+<a id="schemafaqsectionmodel"></a>
+<a id="schema_FaqSectionModel"></a>
+<a id="tocSfaqsectionmodel"></a>
+<a id="tocsfaqsectionmodel"></a>
+
+```json
+{
+  "faqs": [
+    {
+      "createdAt": "2019-08-24T14:15:22Z",
+      "updatedAt": "2019-08-24T14:15:22Z",
+      "id": "string",
+      "question": "string",
+      "answer": "string",
+      "status": "public",
+      "link": "string",
+      "order": 0,
+      "faqSection": "string"
+    }
+  ],
+  "createdAt": "2019-08-24T14:15:22Z",
+  "updatedAt": "2019-08-24T14:15:22Z",
+  "id": "string",
+  "name": "string",
+  "description": "string",
+  "status": "public",
+  "order": 0
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|faqs|[object]|true|none|none|
+|» createdAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)|true|none|none|
+|» id|string|true|none|none|
+|» question|string|true|none|none|
+|» answer|string|true|none|This field may contain HTML that should be rendered.|
+|» status|string|true|none|none|
+|» link|string|true|none|none|
+|» order|number|true|none|none|
+|» faqSection|string|true|none|none|
+|createdAt|string(date-time)|true|none|none|
+|updatedAt|string(date-time)|true|none|none|
+|id|string|true|none|none|
+|name|string|true|none|none|
+|description|string|true|none|none|
+|status|string|true|none|none|
+|order|number|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|status|public|
+|status|public|
 

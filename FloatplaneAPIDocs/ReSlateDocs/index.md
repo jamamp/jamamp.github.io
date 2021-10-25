@@ -57,9 +57,9 @@ Base URLs:
 
 When dealing with cookies in native applications (not via a website inside of a browser), please keep in mind that some languages/libraries may keep cookies across requests by default, and some may not. For instance, in Swift the `URLSession.shared` object with default configuration will automatically track and persist cookies across requests.
 
-<h1 id="floatplane-api-auth">Auth</h1>
+<h1 id="floatplane-api-authv2">AuthV2</h1>
 
-Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators.
+Sign up, login, 2FA, and logout. Additionally, login spoofing for administrators.
 
 ## login
 
@@ -974,6 +974,10 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-authv3">AuthV3</h1>
+
+Captchas information.
+
 ## getCaptchaInfo
 
 <a id="opIdgetCaptchaInfo"></a>
@@ -1260,7 +1264,7 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-cdn">CDN</h1>
+<h1 id="floatplane-api-cdnv2">CDNV2</h1>
 
 Content Delivery mechanisms for Floatplane media.
 
@@ -1611,7 +1615,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-connectedaccounts">ConnectedAccounts</h1>
+<h1 id="floatplane-api-connectedaccountsv2">ConnectedAccountsV2</h1>
 
 3rd party account management, such as Discord or LTT Forums.
 
@@ -1927,7 +1931,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creator">Creator</h1>
+<h1 id="floatplane-api-creatorv2">CreatorV2</h1>
 
 Get and discover creators on the platform. Creator invitation and profile management.
 
@@ -2775,6 +2779,10 @@ Status Code **200**
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-creatorv3">CreatorV3</h1>
+
+Get and discover creators on the platform. Creator invitation and profile management.
 
 ## getCreator
 
@@ -3839,7 +3847,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorsubscriptionplan">CreatorSubscriptionPlan</h1>
+<h1 id="floatplane-api-creatorsubscriptionplanv2">CreatorSubscriptionPlanV2</h1>
 
 Manage creator subscription plans.
 
@@ -4217,7 +4225,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-faq">FAQ</h1>
+<h1 id="floatplane-api-faqv2">FAQV2</h1>
 
 Get FAQs.
 
@@ -4559,12 +4567,11 @@ Status Code **200**
 |status|public|
 |status|public|
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
+<aside class="success">
+This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-payments">Payments</h1>
+<h1 id="floatplane-api-paymentsv2">PaymentsV2</h1>
 
 User payment method/address/invoice management.
 
@@ -5479,7 +5486,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-subscriptions">Subscriptions</h1>
+<h1 id="floatplane-api-subscriptionsv3">SubscriptionsV3</h1>
 
 Get user subscriptions.
 
@@ -5820,7 +5827,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-user">User</h1>
+<h1 id="floatplane-api-userv2">UserV2</h1>
 
 User discovery and profile management.
 
@@ -6977,6 +6984,10 @@ true
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-userv3">UserV3</h1>
+
+User discovery and profile management.
 
 ## getActivityFeedV3
 
@@ -8492,279 +8503,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-media">Media</h1>
-
-Video media management.
-
-## watchKey
-
-<a id="opIdwatchKey"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/watchkey \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET {scheme}://www.floatplane.com/api/v2/video/watchkey HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/video/watchkey',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/watchkey',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/watchkey', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/watchkey', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/watchkey");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/watchkey", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v2/video/watchkey`
-
-*Watch Key*
-
-TODO. This seems to originate from the `.m3u8` file captured from the CDN endpoint, and is not usually called directly from code.
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="watchkey-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="watchkey-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-<h1 id="floatplane-api-comment">Comment</h1>
+<h1 id="floatplane-api-commentv3">CommentV3</h1>
 
 Comment retrieval, posting, and interacting.
 
@@ -10414,7 +10153,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-content">Content</h1>
+<h1 id="floatplane-api-contentv3">ContentV3</h1>
 
 Content retrieval and interacting.
 
@@ -13434,7 +13173,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-loyaltyrewards">LoyaltyRewards</h1>
+<h1 id="floatplane-api-loyaltyrewardsv3">LoyaltyRewardsV3</h1>
 
 Loyalty rewards information and claiming.
 

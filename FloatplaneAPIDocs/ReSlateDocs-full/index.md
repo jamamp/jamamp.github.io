@@ -57,7 +57,7 @@ Base URLs:
 
 When dealing with cookies in native applications (not via a website inside of a browser), please keep in mind that some languages/libraries may keep cookies across requests by default, and some may not. For instance, in Swift the `URLSession.shared` object with default configuration will automatically track and persist cookies across requests.
 
-<h1 id="floatplane-api-activation">Activation</h1>
+<h1 id="floatplane-api-activationv2">ActivationV2</h1>
 
 Activate new user accounts and confirming activation via email.
 
@@ -597,7 +597,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_creatoragreement">ACP_CreatorAgreement</h1>
+<h1 id="floatplane-api-acp_creatoragreementv2">ACP_CreatorAgreementV2</h1>
 
 List and edit Creator<->Floatplane agreements.
 
@@ -1405,9 +1405,9 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_creator">ACP_Creator</h1>
+<h1 id="floatplane-api-acp_creatorv2">ACP_CreatorV2</h1>
 
-Creator management for creating, editing, and inviting creators.
+Creator management for creating and editing creators.
 
 ## getCreatorList
 
@@ -4625,6 +4625,10 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-acp_creatorv3">ACP_CreatorV3</h1>
+
+Creator management for inviting creators.
+
 ## getCreatorInviteCodeList
 
 <a id="opIdgetCreatorInviteCodeList"></a>
@@ -5161,7 +5165,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_dashboard">ACP_Dashboard</h1>
+<h1 id="floatplane-api-acp_dashboardv2">ACP_DashboardV2</h1>
 
 Dashboard for viewing, starting, and stopping jobs.
 
@@ -5969,7 +5973,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_faq">ACP_FAQ</h1>
+<h1 id="floatplane-api-acp_faqv2">ACP_FAQV2</h1>
 
 Manage and edit FAQ entries. See https://www.floatplane.com/support
 
@@ -8385,7 +8389,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_feature">ACP_Feature</h1>
+<h1 id="floatplane-api-acp_featurev2">ACP_FeatureV2</h1>
 
 Manage and edit features.
 
@@ -9997,7 +10001,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_moderator">ACP_Moderator</h1>
+<h1 id="floatplane-api-acp_moderatorv2">ACP_ModeratorV2</h1>
 
 Manage and edit moderators and global moderators.
 
@@ -11877,7 +11881,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_user">ACP_User</h1>
+<h1 id="floatplane-api-acp_userv2">ACP_UserV2</h1>
 
 Manage and edit users globally by administrators.
 
@@ -12830,7 +12834,7 @@ func main() {
 
 *Find User*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -15510,7 +15514,7 @@ func main() {
 
 *Delete User*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -16437,6 +16441,10 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-acp_userv3">ACP_UserV3</h1>
+
+Manage and edit users globally by administrators.
+
 ## scheduleDeletionACP
 
 <a id="opIdscheduleDeletionACP"></a>
@@ -17118,7 +17126,7 @@ func main() {
 
 *Get Subject Access Data*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -17241,9 +17249,9 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-administration">Administration</h1>
+<h1 id="floatplane-api-administrationv2">AdministrationV2</h1>
 
-Manage and edit moderators and global moderators.
+Manage and edit moderators and global moderators. This entire section is deprecated.
 
 ## addGlobalModerator
 
@@ -17390,7 +17398,7 @@ func main() {
 
 *Add Global Moderator*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -17658,7 +17666,7 @@ func main() {
 
 *Remove Global Moderator*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -17926,7 +17934,7 @@ func main() {
 
 *Remove Moderator*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -18194,7 +18202,7 @@ func main() {
 
 *Get Moderator*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="getmoderator-parameters">Parameters</h3>
 
@@ -18468,7 +18476,7 @@ func main() {
 
 *List Moderators*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -18591,9 +18599,9 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-auth">Auth</h1>
+<h1 id="floatplane-api-authv2">AuthV2</h1>
 
-Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators.
+Sign up, login, 2FA, and logout. Additionally, login spoofing for administrators.
 
 ## login
 
@@ -20312,6 +20320,10 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-authv3">AuthV3</h1>
+
+Captchas information.
+
 ## getCaptchaInfo
 
 <a id="opIdgetCaptchaInfo"></a>
@@ -20598,7 +20610,7 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-braintree">BrainTree</h1>
+<h1 id="floatplane-api-braintreev2">BrainTreeV2</h1>
 
 BrainTree payment integration
 
@@ -20870,7 +20882,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cdn">CDN</h1>
+<h1 id="floatplane-api-cdnv2">CDNV2</h1>
 
 Content Delivery mechanisms for Floatplane media.
 
@@ -21221,7 +21233,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-connectedaccounts">ConnectedAccounts</h1>
+<h1 id="floatplane-api-connectedaccountsv2">ConnectedAccountsV2</h1>
 
 3rd party account management, such as Discord or LTT Forums.
 
@@ -22889,7 +22901,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatoradministration">CreatorAdministration</h1>
+<h1 id="floatplane-api-creatoradministrationv2">CreatorAdministrationV2</h1>
 
 Creator-specific moderator management.
 
@@ -23161,1365 +23173,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-## addCreatorModeratorByPath
-
-<a id="opIdaddCreatorModeratorByPath"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v2/creators/{creator}/administration/moderators/add`
-
-*Add Creator Moderator By Path*
-
-TODO
-
-<h3 id="addcreatormoderatorbypath-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|creator|path|string|true|none|
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="addcreatormoderatorbypath-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="addcreatormoderatorbypath-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## removeCreatorModeratorAdmin
-
-<a id="opIdremoveCreatorModeratorAdmin"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v2/creator/administration/moderators/remove`
-
-*Remove Creator Moderator*
-
-TODO
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="removecreatormoderatoradmin-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="removecreatormoderatoradmin-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## removeCreatorModeratorByPath
-
-<a id="opIdremoveCreatorModeratorByPath"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v2/creators/{creator}/administration/moderators/remove`
-
-*Remove Creator Moderator By Path*
-
-TODO
-
-<h3 id="removecreatormoderatorbypath-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|creator|path|string|true|none|
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="removecreatormoderatorbypath-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="removecreatormoderatorbypath-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## listModerators
-
-<a id="opIdlistModerators"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v2/creator/administration/moderators/list`
-
-*List Moderators*
-
-TODO
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="listmoderators-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="listmoderators-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## listModeratorsByPath
-
-<a id="opIdlistModeratorsByPath"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v2/creators/{creator}/administration/moderators/list`
-
-*List Moderators By Path*
-
-TODO
-
-<h3 id="listmoderatorsbypath-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|creator|path|string|true|none|
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="listmoderatorsbypath-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="listmoderatorsbypath-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-<h1 id="floatplane-api-creator">Creator</h1>
+<h1 id="floatplane-api-creatorv2">CreatorV2</h1>
 
 Get and discover creators on the platform. Creator invitation and profile management.
 
@@ -25513,7 +24167,7 @@ func main() {
 
 *List Videos*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -25781,7 +24435,7 @@ func main() {
 
 *List Playlists*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -26049,7 +24703,7 @@ func main() {
 
 *List Creators*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -26317,7 +24971,7 @@ func main() {
 
 *Discover Creators*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -28047,6 +26701,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-creatorv3">CreatorV3</h1>
+
+Get and discover creators on the platform. Creator invitation and profile management.
 
 ## getCreator
 
@@ -29792,7 +28450,7 @@ func main() {
 
 *List Creator Categories*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -30719,7 +29377,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatoragreement">CreatorAgreement</h1>
+<h1 id="floatplane-api-creatoragreementv2">CreatorAgreementV2</h1>
 
 Get and agree to Creator<->Floatplane agreements.
 
@@ -31259,7 +29917,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorplanfeaturelevels">CreatorPlanFeatureLevels</h1>
+<h1 id="floatplane-api-creatorplanfeaturelevelsv2">CreatorPlanFeatureLevelsV2</h1>
 
 Manage features for creator subscription plans.
 
@@ -32067,7 +30725,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorsubscriptionplan">CreatorSubscriptionPlan</h1>
+<h1 id="floatplane-api-creatorsubscriptionplanv2">CreatorSubscriptionPlanV2</h1>
 
 Manage creator subscription plans.
 
@@ -32752,7 +31410,7 @@ func main() {
 
 *List Subscription Plans*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -33249,6 +31907,10 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-api-creatorsubscriptionplanv3">CreatorSubscriptionPlanV3</h1>
+
+Manage creator subscription plans.
+
 ## getPlansForContent
 
 <a id="opIdgetPlansForContent"></a>
@@ -33517,7 +32179,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-discordbot">DiscordBot</h1>
+<h1 id="floatplane-api-discordbotv2">DiscordBotV2</h1>
 
 Manage Discord bots.
 
@@ -33666,7 +32328,7 @@ func main() {
 
 *Link*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -35665,7 +34327,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-edges">Edges</h1>
+<h1 id="floatplane-api-edgesv2">EdgesV2</h1>
 
 Get edge server information for media playback.
 
@@ -35932,9 +34594,8 @@ TODO
 
 <h3 id="getedges-responseschema">Response Schema</h3>
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
+<aside class="success">
+This operation does not require authentication
 </aside>
 
 ## getVideoUrl
@@ -36205,7 +34866,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-faq">FAQ</h1>
+<h1 id="floatplane-api-faqv2">FAQV2</h1>
 
 Get FAQs.
 
@@ -36547,12 +35208,11 @@ Status Code **200**
 |status|public|
 |status|public|
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
+<aside class="success">
+This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-iframe">Iframe</h1>
+<h1 id="floatplane-api-iframev2">IframeV2</h1>
 
 Get video iframe data.
 
@@ -36701,7 +35361,7 @@ func main() {
 
 *Get Video Player*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="getvideoplayer-parameters">Parameters</h3>
 
@@ -36830,7 +35490,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-imageoptimizations">ImageOptimizations</h1>
+<h1 id="floatplane-api-imageoptimizationsv2">ImageOptimizationsV2</h1>
 
 Manage image media optimizations.
 
@@ -36979,7 +35639,7 @@ func main() {
 
 *Get Optimizations*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -37101,6 +35761,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-imageoptimizationsv3">ImageOptimizationsV3</h1>
+
+Manage image media optimizations.
 
 ## getOptimizationsV2
 
@@ -37370,7 +36034,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-livestream">Livestream</h1>
+<h1 id="floatplane-api-livestreamv2">LivestreamV2</h1>
 
 Livestream chat and management.
 
@@ -38178,7 +36842,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-moderation">Moderation</h1>
+<h1 id="floatplane-api-moderationv2">ModerationV2</h1>
 
 Moderation actions, for users and comments.
 
@@ -38327,7 +36991,7 @@ func main() {
 
 *Ban User*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -38595,7 +37259,7 @@ func main() {
 
 *Unban User*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -38863,7 +37527,7 @@ func main() {
 
 *List Ban*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -39131,7 +37795,7 @@ func main() {
 
 *Hide Comment*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -39399,7 +38063,7 @@ func main() {
 
 *Unhide Comment*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -39667,7 +38331,7 @@ func main() {
 
 *Moderate Video Comment*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -39935,7 +38599,7 @@ func main() {
 
 *User Ban Status*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -40203,7 +38867,7 @@ func main() {
 
 *User Unban*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -40471,7 +39135,7 @@ func main() {
 
 *User Info*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -40593,6 +39257,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-moderationv3">ModerationV3</h1>
+
+Moderation actions, for users and comments.
 
 ## banUserV3
 
@@ -43006,7 +41674,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-passwordreset">PasswordReset</h1>
+<h1 id="floatplane-api-passwordresetv2">PasswordResetV2</h1>
 
 Password management.
 
@@ -43814,7 +42482,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-payments">Payments</h1>
+<h1 id="floatplane-api-paymentsv2">PaymentsV2</h1>
 
 User payment method/address/invoice management.
 
@@ -47232,7 +45900,7 @@ func main() {
 
 *Webhook*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="webhook-parameters">Parameters</h3>
 
@@ -47506,7 +46174,7 @@ func main() {
 
 *Webhook With Subprocessor*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="webhookwithsubprocessor-parameters">Parameters</h3>
 
@@ -47958,7 +46626,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-socket">Socket</h1>
+<h1 id="floatplane-api-socketv2">SocketV2</h1>
 
 Socket subscriptions and connections.
 
@@ -48107,7 +46775,7 @@ func main() {
 
 *Subscribe User*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -48375,7 +47043,7 @@ func main() {
 
 *Subscribe User By Id*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="subscribeuserbyid-parameters">Parameters</h3>
 
@@ -48503,6 +47171,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-socketv3">SocketV3</h1>
+
+Socket subscriptions and connections.
 
 ## socketConnect
 
@@ -49040,7 +47712,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-stripe">Stripe</h1>
+<h1 id="floatplane-api-stripev2">StripeV2</h1>
 
 Stripe metadata.
 
@@ -49312,7 +47984,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-subscriptions">Subscriptions</h1>
+<h1 id="floatplane-api-subscriptionsv2">SubscriptionsV2</h1>
 
 Get user subscriptions.
 
@@ -49461,7 +48133,7 @@ func main() {
 
 *List User Subscriptions*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -49729,7 +48401,7 @@ func main() {
 
 *Does User Have Sub*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -49851,6 +48523,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-subscriptionsv3">SubscriptionsV3</h1>
+
+Get user subscriptions.
 
 ## listUserSubscriptionsV3
 
@@ -50334,7 +49010,7 @@ func main() {
 
 *Does User Have Sub*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -50457,7 +49133,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-support">Support</h1>
+<h1 id="floatplane-api-supportv2">SupportV2</h1>
 
 User support ticket management
 
@@ -50997,7 +49673,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-sync">Sync</h1>
+<h1 id="floatplane-api-syncv2">SyncV2</h1>
 
 Sync connections.
 
@@ -51146,7 +49822,7 @@ func main() {
 
 *Connect*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -51414,7 +50090,7 @@ func main() {
 
 *Disconnect*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -51537,7 +50213,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-transcoding">Transcoding</h1>
+<h1 id="floatplane-api-transcodingv2">TranscodingV2</h1>
 
 Creator transcoding progress, notifications, and subscriptions.
 
@@ -51686,7 +50362,7 @@ func main() {
 
 *Get Transcode Progress*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -51954,7 +50630,7 @@ func main() {
 
 *Progress Subscribe*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -52222,7 +50898,7 @@ func main() {
 
 *Progress Unsubscribe*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -52344,6 +51020,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-transcodingv3">TranscodingV3</h1>
+
+Creator transcoding progress, notifications, and subscriptions.
 
 ## getActiveProcesses
 
@@ -52758,7 +51438,7 @@ func main() {
 
 *Progress Subscribe*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -53026,7 +51706,7 @@ func main() {
 
 *Progress Unsubscribe*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -53149,7 +51829,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-user">User</h1>
+<h1 id="floatplane-api-userv2">UserV2</h1>
 
 User discovery and profile management.
 
@@ -53602,7 +52282,7 @@ func main() {
 
 *Self*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -55784,7 +54464,7 @@ func main() {
 
 *Get Activity Feed*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -56052,7 +54732,7 @@ func main() {
 
 *Get External Links*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -56320,7 +55000,7 @@ func main() {
 
 *Update External Links*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -58733,7 +57413,7 @@ func main() {
 
 *Get User Notification Settings*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -59001,7 +57681,7 @@ func main() {
 
 *Update User Notification Settings*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -59398,6 +58078,10 @@ true
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-userv3">UserV3</h1>
+
+User discovery and profile management.
 
 ## getActivityFeedV3
 
@@ -61209,7 +59893,7 @@ func main() {
 
 *Get Achievement Perks*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -61985,7 +60669,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videocomments">VideoComments</h1>
+<h1 id="floatplane-api-videocommentsv2">VideoCommentsV2</h1>
 
 Video comment viewing and posting.
 
@@ -62134,7 +60818,7 @@ func main() {
 
 *Get Video Comments*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -62402,7 +61086,7 @@ func main() {
 
 *Add Video Comment*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -62670,7 +61354,7 @@ func main() {
 
 *Get Video Comment Replies*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -62793,7 +61477,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videocommentinteractions">VideoCommentInteractions</h1>
+<h1 id="floatplane-api-videocommentinteractionsv2">VideoCommentInteractionsV2</h1>
 
 Video comment interaction management.
 
@@ -62942,7 +61626,7 @@ func main() {
 
 *Clear Interaction*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -63210,7 +61894,7 @@ func main() {
 
 *Set Interaction*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -63333,7 +62017,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-media">Media</h1>
+<h1 id="floatplane-api-mediav2">MediaV2</h1>
 
 Video media management.
 
@@ -63750,7 +62434,7 @@ func main() {
 
 *Get Video*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -64018,7 +62702,7 @@ func main() {
 
 *Get Related Videos*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -64286,7 +62970,7 @@ func main() {
 
 *Update Video*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -64554,7 +63238,7 @@ func main() {
 
 *Delete Video*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -64822,7 +63506,7 @@ func main() {
 
 *Get List*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -64945,7 +63629,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-video">Video</h1>
+<h1 id="floatplane-api-videov2">VideoV2</h1>
 
 Video Dash key management.
 
@@ -65094,7 +63778,7 @@ func main() {
 
 *Get Dash Clear Keys*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -65362,7 +64046,7 @@ func main() {
 
 *Get Dash Clear Keys Over Post*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -65630,7 +64314,7 @@ func main() {
 
 *Get Dash Signed Chunk Url*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -65753,7 +64437,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-playlist">Playlist</h1>
+<h1 id="floatplane-api-playlistv2">PlaylistV2</h1>
 
 Get playlists.
 
@@ -65902,7 +64586,7 @@ func main() {
 
 *List Videos*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -66025,7 +64709,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videoupload">VideoUpload</h1>
+<h1 id="floatplane-api-videouploadv2">VideoUploadV2</h1>
 
 Video uploading and management.
 
@@ -66174,7 +64858,7 @@ func main() {
 
 *Create Multipart Upload*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -66442,7 +65126,7 @@ func main() {
 
 *Get Uploaded Parts*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -66710,7 +65394,7 @@ func main() {
 
 *Sign Part Upload*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -66978,7 +65662,7 @@ func main() {
 
 *Abort Multipart Upload*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -67246,7 +65930,7 @@ func main() {
 
 *Complete Multipart Upload*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -67514,7 +66198,7 @@ func main() {
 
 *Upload Thumbnail*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -67637,7 +66321,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webnotification">WebNotification</h1>
+<h1 id="floatplane-api-webnotificationv2">WebNotificationV2</h1>
 
 Web push notification information and subscriptions.
 
@@ -67786,7 +66470,7 @@ func main() {
 
 *Get App Info*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -68054,7 +66738,7 @@ func main() {
 
 *Register*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -68322,7 +67006,7 @@ func main() {
 
 *Unregister*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -68590,7 +67274,7 @@ func main() {
 
 *Get Token Info*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -68712,6 +67396,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-webnotificationv3">WebNotificationV3</h1>
+
+Web push notification information and subscriptions.
 
 ## getAppInfoV3
 
@@ -69517,7 +68205,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webhook">Webhook</h1>
+<h1 id="floatplane-api-webhookv2">WebhookV2</h1>
 
 Webhook management.
 
@@ -69666,7 +68354,7 @@ func main() {
 
 *Connected Account*
 
-TODO
+TODO - Not used in Floatplane code.
 
 <h3 id="connectedaccount-parameters">Parameters</h3>
 
@@ -69794,6 +68482,10 @@ TODO
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+
+<h1 id="floatplane-api-webhookv3">WebhookV3</h1>
+
+Webhook management.
 
 ## livestreamPublish
 
@@ -69940,7 +68632,7 @@ func main() {
 
 *Livestream Publish*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -70063,7 +68755,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_transcoding">ACP_Transcoding</h1>
+<h1 id="floatplane-api-acp_transcodingv3">ACP_TranscodingV3</h1>
 
 Creator content uploading, status, and management.
 
@@ -74355,7 +73047,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_blogpost">CMS_BlogPost</h1>
+<h1 id="floatplane-api-cms_blogpostv3">CMS_BlogPostV3</h1>
 
 CMS blog post editing and posting.
 
@@ -75967,7 +74659,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_content">CMS_Content</h1>
+<h1 id="floatplane-api-cms_contentv3">CMS_ContentV3</h1>
 
 CMS content editing and posting.
 
@@ -78528,7 +77220,7 @@ func main() {
 
 *Get Content*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -78919,7 +77611,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_creatorwarehouse">CMS_CreatorWarehouse</h1>
+<h1 id="floatplane-api-cms_creatorwarehousev3">CMS_CreatorWarehouseV3</h1>
 
 CMS Creator Warehouse management.
 
@@ -82675,7 +81367,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_livestream">CMS_Livestream</h1>
+<h1 id="floatplane-api-cms_livestreamv3">CMS_LivestreamV3</h1>
 
 CMS Livestream information.
 
@@ -82947,7 +81639,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_creatorsubscriptionplan">CMS_CreatorSubscriptionPlan</h1>
+<h1 id="floatplane-api-cms_creatorsubscriptionplanv3">CMS_CreatorSubscriptionPlanV3</h1>
 
 CMS creator subscription plan and subscriber information.
 
@@ -83755,7 +82447,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-comment">Comment</h1>
+<h1 id="floatplane-api-commentv3">CommentV3</h1>
 
 Comment retrieval, posting, and interacting.
 
@@ -85405,7 +84097,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-content">Content</h1>
+<h1 id="floatplane-api-contentv3">ContentV3</h1>
 
 Content retrieval and interacting.
 
@@ -89374,7 +88066,7 @@ func main() {
 
 *Get Content*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -90178,7 +88870,7 @@ func main() {
 
 *Get Picture Url*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -90301,7 +88993,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-contentupload">ContentUpload</h1>
+<h1 id="floatplane-api-contentuploadv3">ContentUploadV3</h1>
 
 Content uploading.
 
@@ -91790,7 +90482,7 @@ func main() {
 
 *Upload Thumbnail*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -92058,7 +90750,7 @@ func main() {
 
 *Thumbnail Update Subscribe*
 
-TODO
+TODO - Not used in Floatplane code.
 
 > Example responses
 
@@ -92181,279 +90873,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-thumbnailupdateunsubscribe">thumbnailUpdateUnsubscribe</h1>
-
-Thumnail management.
-
-## thumbnailUpdateUnsubscribe
-
-<a id="opIdthumbnailUpdateUnsubscribe"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe HTTP/1.1
-
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v3/content/thumbnail/unsubscribe`
-
-*Thumbnail Update Unsubscribe*
-
-TODO
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="thumbnailupdateunsubscribe-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="thumbnailupdateunsubscribe-responseschema">Response Schema</h3>
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-<h1 id="floatplane-api-loyaltyrewards">LoyaltyRewards</h1>
+<h1 id="floatplane-api-loyaltyrewardsv3">LoyaltyRewardsV3</h1>
 
 Loyalty rewards information and claiming.
 
@@ -92993,7 +91413,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-vpn">Vpn</h1>
+<h1 id="floatplane-api-vpnv3">VpnV3</h1>
 
 Experimental VPN configuration.
 
@@ -93946,7 +92366,7 @@ func main() {
 
 *Get User Profile Links Ephemeral*
 
-TODO
+TODO - Not used in Floatplane code yet.
 
 > Example responses
 
@@ -94331,6 +92751,1636 @@ TODO
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getserverlist-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+<h1 id="floatplane-api-creatoradministration">CreatorAdministration</h1>
+
+## addCreatorModeratorByPath
+
+<a id="opIdaddCreatorModeratorByPath"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v2/creators/{creator}/administration/moderators/add`
+
+*Add Creator Moderator By Path*
+
+TODO
+
+<h3 id="addcreatormoderatorbypath-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|creator|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="addcreatormoderatorbypath-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="addcreatormoderatorbypath-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## removeCreatorModeratorAdmin
+
+<a id="opIdremoveCreatorModeratorAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v2/creator/administration/moderators/remove`
+
+*Remove Creator Moderator*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="removecreatormoderatoradmin-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="removecreatormoderatoradmin-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## removeCreatorModeratorByPath
+
+<a id="opIdremoveCreatorModeratorByPath"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v2/creators/{creator}/administration/moderators/remove`
+
+*Remove Creator Moderator By Path*
+
+TODO
+
+<h3 id="removecreatormoderatorbypath-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|creator|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="removecreatormoderatorbypath-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="removecreatormoderatorbypath-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## listModerators
+
+<a id="opIdlistModerators"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v2/creator/administration/moderators/list`
+
+*List Moderators*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="listmoderators-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="listmoderators-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## listModeratorsByPath
+
+<a id="opIdlistModeratorsByPath"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v2/creators/{creator}/administration/moderators/list`
+
+*List Moderators By Path*
+
+TODO
+
+<h3 id="listmoderatorsbypath-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|creator|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="listmoderatorsbypath-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="listmoderatorsbypath-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+<h1 id="floatplane-api-thumbnailupdateunsubscribev3">thumbnailUpdateUnsubscribeV3</h1>
+
+## thumbnailUpdateUnsubscribe
+
+<a id="opIdthumbnailUpdateUnsubscribe"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v3/content/thumbnail/unsubscribe`
+
+*Thumbnail Update Unsubscribe*
+
+TODO - Not used in Floatplane code.
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="thumbnailupdateunsubscribe-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="thumbnailupdateunsubscribe-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:

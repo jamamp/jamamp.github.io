@@ -20,55 +20,63 @@
     ],
     "tags": [
         {
-            "name": "Auth",
-            "description": "Sign up, login, 2FA, logout, and captchas. Additionally, login spoofing for administrators."
+            "name": "AuthV2",
+            "description": "Sign up, login, 2FA, and logout. Additionally, login spoofing for administrators."
         },
         {
-            "name": "CDN",
+            "name": "AuthV3",
+            "description": "Captchas information."
+        },
+        {
+            "name": "CDNV2",
             "description": "Content Delivery mechanisms for Floatplane media."
         },
         {
-            "name": "ConnectedAccounts",
+            "name": "ConnectedAccountsV2",
             "description": "3rd party account management, such as Discord or LTT Forums."
         },
         {
-            "name": "Creator",
+            "name": "CreatorV2",
             "description": "Get and discover creators on the platform. Creator invitation and profile management."
         },
         {
-            "name": "CreatorSubscriptionPlan",
+            "name": "CreatorV3",
+            "description": "Get and discover creators on the platform. Creator invitation and profile management."
+        },
+        {
+            "name": "CreatorSubscriptionPlanV2",
             "description": "Manage creator subscription plans."
         },
         {
-            "name": "FAQ",
+            "name": "FAQV2",
             "description": "Get FAQs."
         },
         {
-            "name": "Payments",
+            "name": "PaymentsV2",
             "description": "User payment method/address/invoice management."
         },
         {
-            "name": "Subscriptions",
+            "name": "SubscriptionsV3",
             "description": "Get user subscriptions."
         },
         {
-            "name": "User",
+            "name": "UserV2",
             "description": "User discovery and profile management."
         },
         {
-            "name": "Media",
-            "description": "Video media management."
+            "name": "UserV3",
+            "description": "User discovery and profile management."
         },
         {
-            "name": "Comment",
+            "name": "CommentV3",
             "description": "Comment retrieval, posting, and interacting."
         },
         {
-            "name": "Content",
+            "name": "ContentV3",
             "description": "Content retrieval and interacting."
         },
         {
-            "name": "LoyaltyRewards",
+            "name": "LoyaltyRewardsV3",
             "description": "Loyalty rewards information and claiming."
         }
     ],
@@ -2574,7 +2582,7 @@
                 "summary": "Login",
                 "description": "Login to Floatplane with the provided username and password, retrieving the authentication/authorization cookie from the response for subsequent requests.",
                 "tags": [
-                    "Auth"
+                    "AuthV2"
                 ],
                 "security": [],
                 "parameters": [],
@@ -2679,7 +2687,7 @@
                 "summary": "Logout",
                 "description": "Log out of Floatplane, invalidating the authentication/authorization cookie.",
                 "tags": [
-                    "Auth"
+                    "AuthV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -2726,7 +2734,7 @@
                 "summary": "Check For 2FA Login",
                 "description": "Complete the login process if a two-factor authentication token is required from the beginning of the login process.",
                 "tags": [
-                    "Auth"
+                    "AuthV2"
                 ],
                 "parameters": [],
                 "requestBody": {
@@ -2824,7 +2832,7 @@
                 "description": "Gets the site keys used for Google Recaptcha V2 and V3. These are useful when providing a captcha token when logging in or signing up.",
                 "security": [],
                 "tags": [
-                    "Auth"
+                    "AuthV3"
                 ],
                 "parameters": [],
                 "responses": {
@@ -2891,7 +2899,7 @@
                 "summary": "Get Delivery Info",
                 "description": "Given an video/audio attachment identifier, retrieves the information necessary to play, download, or livestream the video/audio at various quality levels.",
                 "tags": [
-                    "CDN"
+                    "CDNV2"
                 ],
                 "parameters": [
                     {
@@ -3007,7 +3015,7 @@
                 "summary": "List Connections",
                 "description": "List the available 3rd party accounts for the user's profile.",
                 "tags": [
-                    "ConnectedAccounts"
+                    "ConnectedAccountsV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -3075,7 +3083,7 @@
                 "summary": "Get Info",
                 "description": "Retrieve detailed information on one or more creators on Floatplane.",
                 "tags": [
-                    "Creator"
+                    "CreatorV2"
                 ],
                 "parameters": [
                     {
@@ -3216,7 +3224,7 @@
                 "summary": "Get Info By Name",
                 "description": "Retrieve detailed information on one or more creators on Floatplane.",
                 "tags": [
-                    "Creator"
+                    "CreatorV2"
                 ],
                 "parameters": [
                     {
@@ -3380,7 +3388,7 @@
                 "summary": "Get Creator",
                 "description": "Retrieve detailed information about a specific creator.",
                 "tags": [
-                    "Creator"
+                    "CreatorV3"
                 ],
                 "parameters": [
                     {
@@ -3548,7 +3556,7 @@
                 "summary": "Get Creators",
                 "description": "Retrieve and search for all creators on Floatplane. Useful for creator discovery and filtering.",
                 "tags": [
-                    "Creator"
+                    "CreatorV3"
                 ],
                 "parameters": [
                     {
@@ -3929,7 +3937,7 @@
                 "summary": "Get Creator Sub Info Public",
                 "description": "Retrieve detailed information about a creator's subscription plans and their subscriber count.",
                 "tags": [
-                    "CreatorSubscriptionPlan"
+                    "CreatorSubscriptionPlanV2"
                 ],
                 "parameters": [
                     {
@@ -4073,11 +4081,12 @@
         },
         "/api/v2/faq/list": {
             "get": {
+                "security": [],
                 "operationId": "getFaqSections",
                 "summary": "Get Faq Sections",
                 "description": "Retrieve a list of FAQ sections to display to the user. Each section contains one or more FAQ items. This is normally accessible from https://www.floatplane.com/support. Note that the answers to the FAQs will contain HTML.",
                 "tags": [
-                    "FAQ"
+                    "FAQV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4164,7 +4173,7 @@
                 "summary": "List Payment Methods",
                 "description": "Retrieve a list of saved payment methods for the user's account. Payment methods are how the user can pay for their subscription to creators on the platform.",
                 "tags": [
-                    "Payments"
+                    "PaymentsV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4219,7 +4228,7 @@
                 "summary": "List Addresses",
                 "description": "Retrieve a list of billing addresses saved to the user's account, to be used in conjunction with a payment method when purchasing subscriptions to creators.",
                 "tags": [
-                    "Payments"
+                    "PaymentsV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4272,7 +4281,7 @@
                 "summary": "List Invoices",
                 "description": "Retrieve a list of paid or unpaid subscription invoices for the user.",
                 "tags": [
-                    "Payments"
+                    "PaymentsV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4367,7 +4376,7 @@
                 "summary": "List User Subscriptions",
                 "description": "Retrieve a list of all active subscriptions for the user.",
                 "tags": [
-                    "Subscriptions"
+                    "SubscriptionsV3"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4448,7 +4457,7 @@
                 "summary": "Info",
                 "description": "Retrieve more detailed information about one or more users from their identifiers.",
                 "tags": [
-                    "User"
+                    "UserV2"
                 ],
                 "parameters": [
                     {
@@ -4530,7 +4539,7 @@
                 "summary": "Get Info By Name",
                 "description": "Retrieve more detailed information about one or more users from their usernames.",
                 "tags": [
-                    "User"
+                    "UserV2"
                 ],
                 "parameters": [
                     {
@@ -4614,7 +4623,7 @@
                 "summary": "Get Security",
                 "description": "Retrieve information about the current security configuration for the user.",
                 "tags": [
-                    "User"
+                    "UserV2"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4656,7 +4665,7 @@
                 "summary": "User Creator Ban Status",
                 "description": "Determine whether or not the user is banned for a given creator.",
                 "tags": [
-                    "User"
+                    "UserV2"
                 ],
                 "parameters": [
                     {
@@ -4705,7 +4714,7 @@
                 "summary": "Get Activity Feed",
                 "description": "Retrieve recent activity for a user, such as comments and other interactions they have made on posts for creators.",
                 "tags": [
-                    "User"
+                    "UserV3"
                 ],
                 "parameters": [
                     {
@@ -4766,7 +4775,7 @@
                 "summary": "Get External Links",
                 "description": "Retrieve configured social media links from a user's profile.",
                 "tags": [
-                    "User"
+                    "UserV3"
                 ],
                 "parameters": [
                     {
@@ -4824,7 +4833,7 @@
                 "summary": "Get Self",
                 "description": "Retrieve more detailed information about the user, including their name and email.",
                 "tags": [
-                    "User"
+                    "UserV3"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4887,7 +4896,7 @@
                 "summary": "Get User Notification Settings",
                 "description": "Retrieve notification details for a user. The details are split into seperate settings for each subscribed creator.",
                 "tags": [
-                    "User"
+                    "UserV3"
                 ],
                 "parameters": [],
                 "responses": {
@@ -4962,7 +4971,7 @@
                 "summary": "Update User Notification Settings",
                 "description": "Enable or disable email or push notifications for a specific creator.",
                 "tags": [
-                    "User"
+                    "UserV3"
                 ],
                 "parameters": [],
                 "requestBody": {
@@ -5010,50 +5019,13 @@
                 }
             }
         },
-        "/api/v2/video/watchkey": {
-            "get": {
-                "operationId": "watchKey",
-                "summary": "Watch Key",
-                "description": "TODO. This seems to originate from the `.m3u8` file captured from the CDN endpoint, and is not usually called directly from code.",
-                "tags": [
-                    "Media"
-                ],
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/401Unauthenticated"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/404NotFound"
-                    },
-                    "default": {
-                        "$ref": "#/components/responses/Unexpected"
-                    }
-                }
-            }
-        },
         "/api/v3/comment": {
             "post": {
                 "operationId": "postComment",
                 "summary": "Post Comment",
                 "description": "Post a new comment to a blog post object.",
                 "tags": [
-                    "Comment"
+                    "CommentV3"
                 ],
                 "parameters": [],
                 "requestBody": {
@@ -5141,7 +5113,7 @@
                 "summary": "Get Comments",
                 "description": "Get comments for a blog post object. Note that replies to each comment tend to be limited to 3. The extra replies can be retrieved via `getCommentReplies`. The difference in `$response.body#/0/totalReplies` and `$response.body#/0/replies`'s length can determine if more comments need to be loaded.",
                 "tags": [
-                    "Comment"
+                    "CommentV3"
                 ],
                 "parameters": [
                     {
@@ -5269,7 +5241,7 @@
                 "summary": "Get Comment Replies",
                 "description": "Retrieve more replies from a comment.",
                 "tags": [
-                    "Comment"
+                    "CommentV3"
                 ],
                 "parameters": [
                     {
@@ -5383,7 +5355,7 @@
                 "summary": "Like Comment",
                 "description": "Like a comment on a blog post.",
                 "tags": [
-                    "Comment"
+                    "CommentV3"
                 ],
                 "parameters": [],
                 "requestBody": {
@@ -5436,7 +5408,7 @@
                 "summary": "Dislike Comment",
                 "description": "Dislike a comment on a blog post.",
                 "tags": [
-                    "Comment"
+                    "CommentV3"
                 ],
                 "parameters": [],
                 "requestBody": {
@@ -5489,7 +5461,7 @@
                 "summary": "Get Creator Blog Posts",
                 "description": "Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.",
                 "tags": [
-                    "Content"
+                    "ContentV3"
                 ],
                 "parameters": [
                     {
@@ -5934,7 +5906,7 @@
                 "summary": "Get Multi Creator Blog Posts",
                 "description": "Retrieve paginated blog posts from multiple creators for the home page.",
                 "tags": [
-                    "Content"
+                    "ContentV3"
                 ],
                 "parameters": [
                     {
@@ -6397,7 +6369,7 @@
                 "summary": "Get Blog Post",
                 "description": "Retrieve more details on a specific blog post object for viewing.",
                 "tags": [
-                    "Content"
+                    "ContentV3"
                 ],
                 "parameters": [
                     {
@@ -6547,7 +6519,7 @@
                 "summary": "Get Related Blog Posts",
                 "description": "Retrieve a list of blog posts that are related to the post being viewed.",
                 "tags": [
-                    "Content"
+                    "ContentV3"
                 ],
                 "parameters": [
                     {
@@ -7121,7 +7093,7 @@
                 "summary": "Get Video Content",
                 "description": "Retrieve more information on a video attachment from a blog post in order to consume the video content.",
                 "tags": [
-                    "Content"
+                    "ContentV3"
                 ],
                 "parameters": [
                     {
@@ -7224,7 +7196,7 @@
                 "summary": "List Creator Loyalty Reward",
                 "description": "Retrieve a list of loyalty rewards for the user. The reason for why this is a POST and not a GET is unknown.",
                 "tags": [
-                    "LoyaltyRewards"
+                    "LoyaltyRewardsV3"
                 ],
                 "parameters": [],
                 "responses": {

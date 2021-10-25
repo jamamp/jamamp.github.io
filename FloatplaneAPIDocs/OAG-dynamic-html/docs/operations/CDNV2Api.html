@@ -1,0 +1,40 @@
+<div class="main-content">
+  <h2><a name=""></a></h2>
+  <p>This is the  API</p>
+
+  <h2><a name="getDeliveryInfo"></a>getDeliveryInfo</h2>
+  <hr>
+  <p></p>
+  <p>Given an video/audio attachment identifier, retrieves the information necessary to play, download, or livestream the video/audio at various quality levels.</p>
+  <h3 class="section">URL</h3>
+  <code>https://www.floatplane.com/api/v2/cdn/delivery</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>GET</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="CdnDeliveryV2Response"><a href="">CdnDeliveryV2Response</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">type</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">Used to determine which kind of retrieval method is requested for the video.  - VOD &#x3D; stream a Video On Demand - AOD &#x3D; stream Audio On Demand - Live &#x3D; Livestream the content - Download &#x3D; Download the content for the user to play later.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">guid</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">The GUID of the attachment for a post, retrievable from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; object.</p>
+	  </li>
+  </ul>
+</div>

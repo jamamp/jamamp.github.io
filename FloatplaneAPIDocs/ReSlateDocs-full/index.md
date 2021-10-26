@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.5.1
+title: Floatplane API v3.5.1-a
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,36 +19,78 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.5.1</h1>
+<h1 id="floatplane-api">Floatplane API v3.5.1-a</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-This document describes the API layer of https://floatplane.com, a content creation website created by Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
+Homepage: [https://jman012.github.io/FloatplaneAPIDocs](https://jman012.github.io/FloatplaneAPIDocs)
 
-While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have "TODO" as the description, and are automatically removed before document generation.
+This document describes the API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
 
-The following are descriptions of common objects and concepts within the Floatplane API.
+While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have "TODO" as the description, and are automatically removed before document generation. If you are viewing the "Trimmed" version of this document, they have been removed for brevity.
 
-- Creator
-	- The highest-level object in Floatplane is the Creator. This is an entity, such as Linus Tech Tips, that produces Content for Users who subscribe to them. One Creator creates and owns Content objects, as well as some Subscription Plans.
-- Subscription Plan
-	- A way for Users to subscribe to Creators in order to gain access to view Content.
-- Content
+## API Object Organization
+
+- **Users** and **Creators** exist on Floatplane at the highest level
+	- The highest-level object in Floatplane is the Creator. This is an entity, such as Linus Tech Tips, that produces media for Users.
+- A Creator owns one or more **Subscription Plans**
+- A User can view a Creator's Content if they are subscribed to them
+- A Creator publishes **Content**, in the form of **Blog Posts**
 	- Content is produced by Creators, and show up for subscribed Users to view when it is released. A piece of Content is meant to be generic, and may contain different types of sub-Content. Currently, the only type is a Blog Post.
-- Blog Post
 	- A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.
-- Attachments
+- A Blog Post is comprised of one or more of: video, audio, picture, or gallery **Attachments**
 	- A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.
+- A Creator may also have a single **Livestream**
+
+## API Flow
+
+As of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.
+
+1. Login
+	1. `/api/v3/auth/captcha/info` - Get captcha information
+	1. `/api/v2/auth/login` - Login with username, password, and optional captcha token
+	1. `/api/v2/auth/checkFor2faLogin` - Optionally provide 2FA token to complete login
+	1. `/api/v2/auth/logout` - Logout at a later point in time
+1. Home page
+	1. `/api/v3/user/subscriptions` - Get the user's active subscriptions
+	1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions
+		1. Supply all creator identifiers from the subscriptions
+		1. This should be paginated
+	1. `/api/v2/creator/info` - Also show a list of creators that the user can select
+		1. Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.
+1. Creator page
+	1. `/api/v3/creator/info` - Get more details for the creator to display, including if livestreams are available
+	1. `/api/v3/content/creator` - Show recent content by the creator
+	1. `/api/v2/plan/info` - Show available plans the user can subscribe to for the creator
+1. Content page
+	1. `/api/v3/content/post` - Show more detailed information about a piece of content, including text description, available attachments, metadata, interactions, etc.
+	1. `/api/v3/content/related` - List some related content for the user to watch next
+	1. `/api/v3/comment` - Load comments for the content for the user to read
+		1. There are several more comment APIs to post, like, dislike, etc.
+	1. `/api/v2/user/ban/status` - Determine if the user is banned from this creator
+	1. `/api/v3/content/{video|audio|picture|gallery}` - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.
+	1. `/api/v2/cdn/delivery` - For video and audio, this is required to get the information to stream or download the content in media players
+1. Livestream
+	1. `/api/v2/cdn/delivery` - Using the type "livestream" to load the livestream media in a media player
+	1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.
+1. User Profile
+	1. `/api/v3/user/self` - Display username, name, email, and profile pictures
+
+## API Organization
 
 The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/vendor.js`. This is in order to use the best organization from the original developers' point of view.
 
+For instance, Floatplane's authentication endpoints are organized into `Auth.v2.login(...)`, `Auth.v2.logout()`, and `Auth.v3.getCaptchaInfo()`. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits `Auth` into `AuthV2` and `AuthV3` to emulate the nested structure.
+
+## Notes
+
+Note that the Floatplane API does support the use of [ETags](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane's API server.
+
 Base URLs:
 
-* <a href="{scheme}://www.floatplane.com">{scheme}://www.floatplane.com</a>
+* <a href="https://www.floatplane.com">https://www.floatplane.com</a>
 
-    * **scheme** -  Default: https
-
-        * https
+License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MIT</a>
 
 # Authentication
 
@@ -69,14 +111,14 @@ Activate new user accounts and confirming activation via email.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/activation/email/confirm \
+curl -X POST https://www.floatplane.com/api/v2/activation/email/confirm \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/activation/email/confirm HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/activation/email/confirm HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -87,7 +129,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/activation/email/confirm',
+fetch('https://www.floatplane.com/api/v2/activation/email/confirm',
 {
   method: 'POST',
 
@@ -109,7 +151,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/activation/email/confirm',
+result = RestClient.post 'https://www.floatplane.com/api/v2/activation/email/confirm',
   params: {
   }, headers: headers
 
@@ -123,7 +165,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/activation/email/confirm', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/activation/email/confirm', headers = headers)
 
 print(r.json())
 
@@ -144,7 +186,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/activation/email/confirm', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/activation/email/confirm', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -161,7 +203,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/activation/email/confirm");
+URL obj = new URL("https://www.floatplane.com/api/v2/activation/email/confirm");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -192,7 +234,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/activation/email/confirm", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/activation/email/confirm", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -337,14 +379,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/activation/email/request \
+curl -X POST https://www.floatplane.com/api/v2/activation/email/request \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/activation/email/request HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/activation/email/request HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -355,7 +397,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/activation/email/request',
+fetch('https://www.floatplane.com/api/v2/activation/email/request',
 {
   method: 'POST',
 
@@ -377,7 +419,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/activation/email/request',
+result = RestClient.post 'https://www.floatplane.com/api/v2/activation/email/request',
   params: {
   }, headers: headers
 
@@ -391,7 +433,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/activation/email/request', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/activation/email/request', headers = headers)
 
 print(r.json())
 
@@ -412,7 +454,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/activation/email/request', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/activation/email/request', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -429,7 +471,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/activation/email/request");
+URL obj = new URL("https://www.floatplane.com/api/v2/activation/email/request");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -460,7 +502,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/activation/email/request", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/activation/email/request", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -609,14 +651,14 @@ List and edit Creator<->Floatplane agreements.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/creatoragreement/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creatoragreement/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -627,7 +669,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list',
+fetch('https://www.floatplane.com/api/acp/v2/creatoragreement/list',
 {
   method: 'GET',
 
@@ -649,7 +691,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creatoragreement/list',
   params: {
   }, headers: headers
 
@@ -663,7 +705,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creatoragreement/list', headers = headers)
 
 print(r.json())
 
@@ -684,7 +726,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creatoragreement/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -701,7 +743,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creatoragreement/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -732,7 +774,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creatoragreement/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -877,14 +919,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement \
+curl -X GET https://www.floatplane.com/api/acp/v2/creatoragreement \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creatoragreement HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -895,7 +937,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement',
+fetch('https://www.floatplane.com/api/acp/v2/creatoragreement',
 {
   method: 'GET',
 
@@ -917,7 +959,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creatoragreement',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creatoragreement',
   params: {
   }, headers: headers
 
@@ -931,7 +973,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creatoragreement', headers = headers)
 
 print(r.json())
 
@@ -952,7 +994,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creatoragreement', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creatoragreement', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -969,7 +1011,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creatoragreement");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creatoragreement");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1000,7 +1042,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creatoragreement", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creatoragreement", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1145,14 +1187,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit \
+curl -X GET https://www.floatplane.com/api/acp/v2/creatoragreement/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creatoragreement/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -1163,7 +1205,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit',
+fetch('https://www.floatplane.com/api/acp/v2/creatoragreement/edit',
 {
   method: 'GET',
 
@@ -1185,7 +1227,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creatoragreement/edit',
   params: {
   }, headers: headers
 
@@ -1199,7 +1241,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creatoragreement/edit', headers = headers)
 
 print(r.json())
 
@@ -1220,7 +1262,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creatoragreement/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1237,7 +1279,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creatoragreement/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1268,7 +1310,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creatoragreement/edit", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creatoragreement/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1417,14 +1459,14 @@ Creator management for creating and editing creators.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -1435,7 +1477,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/list',
+fetch('https://www.floatplane.com/api/acp/v2/creator/list',
 {
   method: 'GET',
 
@@ -1457,7 +1499,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/list',
   params: {
   }, headers: headers
 
@@ -1471,7 +1513,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/list', headers = headers)
 
 print(r.json())
 
@@ -1492,7 +1534,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1509,7 +1551,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1540,7 +1582,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1685,14 +1727,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -1703,7 +1745,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/',
+fetch('https://www.floatplane.com/api/acp/v2/creator/',
 {
   method: 'GET',
 
@@ -1725,7 +1767,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/',
   params: {
   }, headers: headers
 
@@ -1739,7 +1781,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/', headers = headers)
 
 print(r.json())
 
@@ -1760,7 +1802,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -1777,7 +1819,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1808,7 +1850,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -1953,14 +1995,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -1971,7 +2013,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list',
+fetch('https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list',
 {
   method: 'GET',
 
@@ -1993,7 +2035,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list',
   params: {
   }, headers: headers
 
@@ -2007,7 +2049,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list', headers = headers)
 
 print(r.json())
 
@@ -2028,7 +2070,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2045,7 +2087,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2076,7 +2118,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/subscriptionplans/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2221,14 +2263,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/urlname/availability \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/urlname/availability HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -2239,7 +2281,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability',
+fetch('https://www.floatplane.com/api/acp/v2/creator/urlname/availability',
 {
   method: 'GET',
 
@@ -2261,7 +2303,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/urlname/availability',
   params: {
   }, headers: headers
 
@@ -2275,7 +2317,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/urlname/availability', headers = headers)
 
 print(r.json())
 
@@ -2296,7 +2338,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/urlname/availability', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2313,7 +2355,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/urlname/availability");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2344,7 +2386,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/urlname/availability", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/urlname/availability", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2489,14 +2531,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/category/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/category/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/category/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/category/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -2507,7 +2549,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/category/list',
+fetch('https://www.floatplane.com/api/acp/v2/creator/category/list',
 {
   method: 'GET',
 
@@ -2529,7 +2571,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/category/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/category/list',
   params: {
   }, headers: headers
 
@@ -2543,7 +2585,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/category/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/category/list', headers = headers)
 
 print(r.json())
 
@@ -2564,7 +2606,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/category/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/category/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2581,7 +2623,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/category/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/category/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -2612,7 +2654,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/category/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/category/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -2757,14 +2799,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -2775,7 +2817,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/create',
+fetch('https://www.floatplane.com/api/acp/v2/creator/create',
 {
   method: 'POST',
 
@@ -2797,7 +2839,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/create',
   params: {
   }, headers: headers
 
@@ -2811,7 +2853,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/create', headers = headers)
 
 print(r.json())
 
@@ -2832,7 +2874,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -2849,7 +2891,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -2880,7 +2922,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3025,14 +3067,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/cover/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/cover/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -3043,7 +3085,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload',
+fetch('https://www.floatplane.com/api/acp/v2/creator/cover/upload',
 {
   method: 'POST',
 
@@ -3065,7 +3107,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/cover/upload',
   params: {
   }, headers: headers
 
@@ -3079,7 +3121,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/cover/upload', headers = headers)
 
 print(r.json())
 
@@ -3100,7 +3142,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/cover/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3117,7 +3159,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/cover/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -3148,7 +3190,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/cover/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/cover/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3293,14 +3335,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/creator/titles \
+curl -X GET https://www.floatplane.com/api/acp/v2/creator/titles \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/creator/titles HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/creator/titles HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -3311,7 +3353,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/titles',
+fetch('https://www.floatplane.com/api/acp/v2/creator/titles',
 {
   method: 'GET',
 
@@ -3333,7 +3375,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/creator/titles',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/creator/titles',
   params: {
   }, headers: headers
 
@@ -3347,7 +3389,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/creator/titles', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/creator/titles', headers = headers)
 
 print(r.json())
 
@@ -3368,7 +3410,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/creator/titles', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/creator/titles', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3385,7 +3427,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/titles");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/titles");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -3416,7 +3458,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/creator/titles", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/creator/titles", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3561,14 +3603,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/update \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/update HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -3579,7 +3621,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/update',
+fetch('https://www.floatplane.com/api/acp/v2/creator/update',
 {
   method: 'POST',
 
@@ -3601,7 +3643,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/update',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/update',
   params: {
   }, headers: headers
 
@@ -3615,7 +3657,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/update', headers = headers)
 
 print(r.json())
 
@@ -3636,7 +3678,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3653,7 +3695,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/update");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -3684,7 +3726,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -3829,14 +3871,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -3847,7 +3889,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update',
+fetch('https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update',
 {
   method: 'POST',
 
@@ -3869,7 +3911,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update',
   params: {
   }, headers: headers
 
@@ -3883,7 +3925,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update', headers = headers)
 
 print(r.json())
 
@@ -3904,7 +3946,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -3921,7 +3963,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -3952,7 +3994,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/subscriptionplan/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4097,14 +4139,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/card/upload \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/card/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/card/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/card/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -4115,7 +4157,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload',
+fetch('https://www.floatplane.com/api/acp/v2/creator/card/upload',
 {
   method: 'POST',
 
@@ -4137,7 +4179,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/card/upload',
   params: {
   }, headers: headers
 
@@ -4151,7 +4193,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/card/upload', headers = headers)
 
 print(r.json())
 
@@ -4172,7 +4214,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/card/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4189,7 +4231,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/card/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -4220,7 +4262,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/card/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/card/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4365,14 +4407,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload \
+curl -X POST https://www.floatplane.com/api/acp/v2/creator/icon/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/creator/icon/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -4383,7 +4425,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload',
+fetch('https://www.floatplane.com/api/acp/v2/creator/icon/upload',
 {
   method: 'POST',
 
@@ -4405,7 +4447,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/creator/icon/upload',
   params: {
   }, headers: headers
 
@@ -4419,7 +4461,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/creator/icon/upload', headers = headers)
 
 print(r.json())
 
@@ -4440,7 +4482,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/creator/icon/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4457,7 +4499,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/creator/icon/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -4488,7 +4530,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/creator/icon/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/creator/icon/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4637,14 +4679,14 @@ Creator management for inviting creators.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v3/creator/invite/list \
+curl -X GET https://www.floatplane.com/api/acp/v3/creator/invite/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v3/creator/invite/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v3/creator/invite/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -4655,7 +4697,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list',
+fetch('https://www.floatplane.com/api/acp/v3/creator/invite/list',
 {
   method: 'GET',
 
@@ -4677,7 +4719,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v3/creator/invite/list',
   params: {
   }, headers: headers
 
@@ -4691,7 +4733,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v3/creator/invite/list', headers = headers)
 
 print(r.json())
 
@@ -4712,7 +4754,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v3/creator/invite/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4729,7 +4771,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v3/creator/invite/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -4760,7 +4802,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v3/creator/invite/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v3/creator/invite/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -4905,14 +4947,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v3/creator/invite/create \
+curl -X POST https://www.floatplane.com/api/acp/v3/creator/invite/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v3/creator/invite/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v3/creator/invite/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -4923,7 +4965,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create',
+fetch('https://www.floatplane.com/api/acp/v3/creator/invite/create',
 {
   method: 'POST',
 
@@ -4945,7 +4987,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v3/creator/invite/create',
   params: {
   }, headers: headers
 
@@ -4959,7 +5001,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v3/creator/invite/create', headers = headers)
 
 print(r.json())
 
@@ -4980,7 +5022,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v3/creator/invite/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -4997,7 +5039,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v3/creator/invite/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -5028,7 +5070,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v3/creator/invite/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v3/creator/invite/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -5177,14 +5219,14 @@ Dashboard for viewing, starting, and stopping jobs.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/dashboard/job/status/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/dashboard/job/status/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -5195,7 +5237,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/',
+fetch('https://www.floatplane.com/api/acp/v2/dashboard/job/status/',
 {
   method: 'GET',
 
@@ -5217,7 +5259,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/dashboard/job/status/',
   params: {
   }, headers: headers
 
@@ -5231,7 +5273,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/dashboard/job/status/', headers = headers)
 
 print(r.json())
 
@@ -5252,7 +5294,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/dashboard/job/status/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -5269,7 +5311,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/dashboard/job/status/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -5300,7 +5342,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/status/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/dashboard/job/status/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -5445,14 +5487,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/ \
+curl -X POST https://www.floatplane.com/api/acp/v2/dashboard/job/start/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/ HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/dashboard/job/start/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -5463,7 +5505,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/',
+fetch('https://www.floatplane.com/api/acp/v2/dashboard/job/start/',
 {
   method: 'POST',
 
@@ -5485,7 +5527,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/dashboard/job/start/',
   params: {
   }, headers: headers
 
@@ -5499,7 +5541,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/dashboard/job/start/', headers = headers)
 
 print(r.json())
 
@@ -5520,7 +5562,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/dashboard/job/start/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -5537,7 +5579,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/dashboard/job/start/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -5568,7 +5610,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/start/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/dashboard/job/start/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -5713,14 +5755,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/ \
+curl -X POST https://www.floatplane.com/api/acp/v2/dashboard/job/stop/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/ HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/dashboard/job/stop/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -5731,7 +5773,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/',
+fetch('https://www.floatplane.com/api/acp/v2/dashboard/job/stop/',
 {
   method: 'POST',
 
@@ -5753,7 +5795,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/dashboard/job/stop/',
   params: {
   }, headers: headers
 
@@ -5767,7 +5809,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/dashboard/job/stop/', headers = headers)
 
 print(r.json())
 
@@ -5788,7 +5830,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/dashboard/job/stop/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -5805,7 +5847,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/dashboard/job/stop/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -5836,7 +5878,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/dashboard/job/stop/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/dashboard/job/stop/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -5985,14 +6027,14 @@ Manage and edit FAQ entries. See https://www.floatplane.com/support
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/section/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/section/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/section/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/section/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -6003,7 +6045,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/section/list',
+fetch('https://www.floatplane.com/api/acp/v2/section/list',
 {
   method: 'GET',
 
@@ -6025,7 +6067,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/section/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/section/list',
   params: {
   }, headers: headers
 
@@ -6039,7 +6081,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/section/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/section/list', headers = headers)
 
 print(r.json())
 
@@ -6060,7 +6102,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/section/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/section/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -6077,7 +6119,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/section/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/section/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -6108,7 +6150,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/section/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/section/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -6253,14 +6295,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/section/edit \
+curl -X POST https://www.floatplane.com/api/acp/v2/section/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/section/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/section/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -6271,7 +6313,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/section/edit',
+fetch('https://www.floatplane.com/api/acp/v2/section/edit',
 {
   method: 'POST',
 
@@ -6293,7 +6335,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/section/edit',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/section/edit',
   params: {
   }, headers: headers
 
@@ -6307,7 +6349,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/section/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/section/edit', headers = headers)
 
 print(r.json())
 
@@ -6328,7 +6370,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/section/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/section/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -6345,7 +6387,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/section/edit");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/section/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -6376,7 +6418,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/section/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/section/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -6521,14 +6563,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/section/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/section/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/section/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/section/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -6539,7 +6581,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/section/',
+fetch('https://www.floatplane.com/api/acp/v2/section/',
 {
   method: 'GET',
 
@@ -6561,7 +6603,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/section/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/section/',
   params: {
   }, headers: headers
 
@@ -6575,7 +6617,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/section/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/section/', headers = headers)
 
 print(r.json())
 
@@ -6596,7 +6638,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/section/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/section/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -6613,7 +6655,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/section/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/section/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -6644,7 +6686,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/section/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/section/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -6789,14 +6831,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/article/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/article/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/article/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/article/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -6807,7 +6849,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/article/',
+fetch('https://www.floatplane.com/api/acp/v2/article/',
 {
   method: 'GET',
 
@@ -6829,7 +6871,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/article/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/article/',
   params: {
   }, headers: headers
 
@@ -6843,7 +6885,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/article/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/article/', headers = headers)
 
 print(r.json())
 
@@ -6864,7 +6906,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/article/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/article/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -6881,7 +6923,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/article/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/article/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -6912,7 +6954,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/article/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/article/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -7057,14 +7099,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/article/edit \
+curl -X POST https://www.floatplane.com/api/acp/v2/article/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/article/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/article/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -7075,7 +7117,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/article/edit',
+fetch('https://www.floatplane.com/api/acp/v2/article/edit',
 {
   method: 'POST',
 
@@ -7097,7 +7139,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/article/edit',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/article/edit',
   params: {
   }, headers: headers
 
@@ -7111,7 +7153,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/article/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/article/edit', headers = headers)
 
 print(r.json())
 
@@ -7132,7 +7174,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/article/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/article/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -7149,7 +7191,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/article/edit");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/article/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -7180,7 +7222,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/article/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/article/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -7325,14 +7367,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/image/upload \
+curl -X POST https://www.floatplane.com/api/acp/v2/image/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/image/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/image/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -7343,7 +7385,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/image/upload',
+fetch('https://www.floatplane.com/api/acp/v2/image/upload',
 {
   method: 'POST',
 
@@ -7365,7 +7407,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/image/upload',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/image/upload',
   params: {
   }, headers: headers
 
@@ -7379,7 +7421,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/image/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/image/upload', headers = headers)
 
 print(r.json())
 
@@ -7400,7 +7442,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/image/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/image/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -7417,7 +7459,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/image/upload");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/image/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -7448,7 +7490,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/image/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/image/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -7593,14 +7635,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/image/list \
+curl -X POST https://www.floatplane.com/api/acp/v2/image/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/image/list HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/image/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -7611,7 +7653,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/image/list',
+fetch('https://www.floatplane.com/api/acp/v2/image/list',
 {
   method: 'POST',
 
@@ -7633,7 +7675,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/image/list',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/image/list',
   params: {
   }, headers: headers
 
@@ -7647,7 +7689,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/image/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/image/list', headers = headers)
 
 print(r.json())
 
@@ -7668,7 +7710,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/image/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/image/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -7685,7 +7727,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/image/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/image/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -7716,7 +7758,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/image/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/image/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -7861,14 +7903,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/section/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/section/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/section/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/section/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -7879,7 +7921,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/section/create',
+fetch('https://www.floatplane.com/api/acp/v2/section/create',
 {
   method: 'POST',
 
@@ -7901,7 +7943,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/section/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/section/create',
   params: {
   }, headers: headers
 
@@ -7915,7 +7957,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/section/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/section/create', headers = headers)
 
 print(r.json())
 
@@ -7936,7 +7978,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/section/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/section/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -7953,7 +7995,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/section/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/section/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -7984,7 +8026,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/section/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/section/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -8129,14 +8171,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/article/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/article/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/article/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/article/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -8147,7 +8189,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/article/create',
+fetch('https://www.floatplane.com/api/acp/v2/article/create',
 {
   method: 'POST',
 
@@ -8169,7 +8211,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/article/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/article/create',
   params: {
   }, headers: headers
 
@@ -8183,7 +8225,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/article/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/article/create', headers = headers)
 
 print(r.json())
 
@@ -8204,7 +8246,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/article/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/article/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -8221,7 +8263,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/article/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/article/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -8252,7 +8294,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/article/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/article/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -8401,14 +8443,14 @@ Manage and edit features.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/feature/configs \
+curl -X GET https://www.floatplane.com/api/acp/v2/feature/configs \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/feature/configs HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/feature/configs HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -8419,7 +8461,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/configs',
+fetch('https://www.floatplane.com/api/acp/v2/feature/configs',
 {
   method: 'GET',
 
@@ -8441,7 +8483,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/feature/configs',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/feature/configs',
   params: {
   }, headers: headers
 
@@ -8455,7 +8497,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/feature/configs', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/feature/configs', headers = headers)
 
 print(r.json())
 
@@ -8476,7 +8518,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/feature/configs', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/feature/configs', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -8493,7 +8535,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/configs");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/configs");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -8524,7 +8566,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/feature/configs", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/feature/configs", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -8669,14 +8711,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/feature/save \
+curl -X POST https://www.floatplane.com/api/acp/v2/feature/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/feature/save HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/feature/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -8687,7 +8729,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/save',
+fetch('https://www.floatplane.com/api/acp/v2/feature/save',
 {
   method: 'POST',
 
@@ -8709,7 +8751,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/feature/save',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/feature/save',
   params: {
   }, headers: headers
 
@@ -8723,7 +8765,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/feature/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/feature/save', headers = headers)
 
 print(r.json())
 
@@ -8744,7 +8786,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/feature/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/feature/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -8761,7 +8803,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/save");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -8792,7 +8834,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/feature/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/feature/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -8937,14 +8979,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save \
+curl -X POST https://www.floatplane.com/api/acp/v2/feature/dependencies/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/feature/dependencies/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -8955,7 +8997,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save',
+fetch('https://www.floatplane.com/api/acp/v2/feature/dependencies/save',
 {
   method: 'POST',
 
@@ -8977,7 +9019,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/feature/dependencies/save',
   params: {
   }, headers: headers
 
@@ -8991,7 +9033,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/feature/dependencies/save', headers = headers)
 
 print(r.json())
 
@@ -9012,7 +9054,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/feature/dependencies/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -9029,7 +9071,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/dependencies/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -9060,7 +9102,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/feature/dependencies/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/feature/dependencies/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -9205,14 +9247,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/feature/category/save \
+curl -X POST https://www.floatplane.com/api/acp/v2/feature/category/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/feature/category/save HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/feature/category/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -9223,7 +9265,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/category/save',
+fetch('https://www.floatplane.com/api/acp/v2/feature/category/save',
 {
   method: 'POST',
 
@@ -9245,7 +9287,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/feature/category/save',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/feature/category/save',
   params: {
   }, headers: headers
 
@@ -9259,7 +9301,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/feature/category/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/feature/category/save', headers = headers)
 
 print(r.json())
 
@@ -9280,7 +9322,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/feature/category/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/feature/category/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -9297,7 +9339,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/category/save");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/category/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -9328,7 +9370,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/feature/category/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/feature/category/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -9473,14 +9515,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/feature/type/save \
+curl -X POST https://www.floatplane.com/api/acp/v2/feature/type/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/feature/type/save HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/feature/type/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -9491,7 +9533,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/type/save',
+fetch('https://www.floatplane.com/api/acp/v2/feature/type/save',
 {
   method: 'POST',
 
@@ -9513,7 +9555,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/feature/type/save',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/feature/type/save',
   params: {
   }, headers: headers
 
@@ -9527,7 +9569,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/feature/type/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/feature/type/save', headers = headers)
 
 print(r.json())
 
@@ -9548,7 +9590,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/feature/type/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/feature/type/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -9565,7 +9607,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/type/save");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/type/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -9596,7 +9638,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/feature/type/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/feature/type/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -9741,14 +9783,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save \
+curl -X POST https://www.floatplane.com/api/acp/v2/feature/resolution/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/feature/resolution/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -9759,7 +9801,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save',
+fetch('https://www.floatplane.com/api/acp/v2/feature/resolution/save',
 {
   method: 'POST',
 
@@ -9781,7 +9823,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/feature/resolution/save',
   params: {
   }, headers: headers
 
@@ -9795,7 +9837,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/feature/resolution/save', headers = headers)
 
 print(r.json())
 
@@ -9816,7 +9858,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/feature/resolution/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -9833,7 +9875,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/feature/resolution/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -9864,7 +9906,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/feature/resolution/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/feature/resolution/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -10013,14 +10055,14 @@ Manage and edit moderators and global moderators.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/moderator/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/moderator/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/moderator/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/moderator/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -10031,7 +10073,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/list',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/list',
 {
   method: 'GET',
 
@@ -10053,7 +10095,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/moderator/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/moderator/list',
   params: {
   }, headers: headers
 
@@ -10067,7 +10109,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/moderator/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/moderator/list', headers = headers)
 
 print(r.json())
 
@@ -10088,7 +10130,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/moderator/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/moderator/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -10105,7 +10147,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -10136,7 +10178,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/moderator/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/moderator/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -10281,14 +10323,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/moderator/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/moderator/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/moderator/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/moderator/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -10299,7 +10341,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/create',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/create',
 {
   method: 'POST',
 
@@ -10321,7 +10363,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/moderator/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/moderator/create',
   params: {
   }, headers: headers
 
@@ -10335,7 +10377,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/moderator/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/moderator/create', headers = headers)
 
 print(r.json())
 
@@ -10356,7 +10398,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/moderator/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/moderator/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -10373,7 +10415,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -10404,7 +10446,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/moderator/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/moderator/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -10549,14 +10591,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/moderator/update/global \
+curl -X POST https://www.floatplane.com/api/acp/v2/moderator/update/global \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/moderator/update/global HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/moderator/update/global HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -10567,7 +10609,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/update/global',
 {
   method: 'POST',
 
@@ -10589,7 +10631,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/moderator/update/global',
   params: {
   }, headers: headers
 
@@ -10603,7 +10645,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/moderator/update/global', headers = headers)
 
 print(r.json())
 
@@ -10624,7 +10666,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/moderator/update/global', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -10641,7 +10683,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/update/global");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -10672,7 +10714,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/moderator/update/global", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/moderator/update/global", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -10817,14 +10859,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove \
+curl -X POST https://www.floatplane.com/api/acp/v2/moderator/creator/remove \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/moderator/creator/remove HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -10835,7 +10877,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/creator/remove',
 {
   method: 'POST',
 
@@ -10857,7 +10899,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/moderator/creator/remove',
   params: {
   }, headers: headers
 
@@ -10871,7 +10913,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/moderator/creator/remove', headers = headers)
 
 print(r.json())
 
@@ -10892,7 +10934,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/moderator/creator/remove', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -10909,7 +10951,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/creator/remove");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -10940,7 +10982,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/remove", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/moderator/creator/remove", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -11085,14 +11127,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/ \
+curl -X POST https://www.floatplane.com/api/acp/v2/moderator/creator/add/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/ HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/moderator/creator/add/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -11103,7 +11145,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/creator/add/',
 {
   method: 'POST',
 
@@ -11125,7 +11167,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/moderator/creator/add/',
   params: {
   }, headers: headers
 
@@ -11139,7 +11181,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/moderator/creator/add/', headers = headers)
 
 print(r.json())
 
@@ -11160,7 +11202,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/moderator/creator/add/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -11177,7 +11219,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/creator/add/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -11208,7 +11250,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/add/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/moderator/creator/add/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -11353,14 +11395,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available \
+curl -X GET https://www.floatplane.com/api/acp/v2/moderator/creator/available \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/moderator/creator/available HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -11371,7 +11413,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/creator/available',
 {
   method: 'GET',
 
@@ -11393,7 +11435,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/moderator/creator/available',
   params: {
   }, headers: headers
 
@@ -11407,7 +11449,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/moderator/creator/available', headers = headers)
 
 print(r.json())
 
@@ -11428,7 +11470,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/moderator/creator/available', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -11445,7 +11487,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/creator/available");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -11476,7 +11518,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/available", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/moderator/creator/available", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -11621,14 +11663,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/moderator/creator/list/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/moderator/creator/list/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -11639,7 +11681,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/',
+fetch('https://www.floatplane.com/api/acp/v2/moderator/creator/list/',
 {
   method: 'GET',
 
@@ -11661,7 +11703,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/moderator/creator/list/',
   params: {
   }, headers: headers
 
@@ -11675,7 +11717,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/moderator/creator/list/', headers = headers)
 
 print(r.json())
 
@@ -11696,7 +11738,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/moderator/creator/list/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -11713,7 +11755,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/moderator/creator/list/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -11744,7 +11786,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/moderator/creator/list/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/moderator/creator/list/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -11893,14 +11935,14 @@ Manage and edit users globally by administrators.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -11911,7 +11953,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/list',
+fetch('https://www.floatplane.com/api/acp/v2/user/list',
 {
   method: 'GET',
 
@@ -11933,7 +11975,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/list',
   params: {
   }, headers: headers
 
@@ -11947,7 +11989,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/list', headers = headers)
 
 print(r.json())
 
@@ -11968,7 +12010,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -11985,7 +12027,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -12016,7 +12058,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -12161,14 +12203,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/ \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/ HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -12179,7 +12221,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/',
+fetch('https://www.floatplane.com/api/acp/v2/user/',
 {
   method: 'GET',
 
@@ -12201,7 +12243,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/',
   params: {
   }, headers: headers
 
@@ -12215,7 +12257,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/', headers = headers)
 
 print(r.json())
 
@@ -12236,7 +12278,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -12253,7 +12295,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -12284,7 +12326,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -12429,14 +12471,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/list/notmoderator \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/list/notmoderator HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -12447,7 +12489,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator',
+fetch('https://www.floatplane.com/api/acp/v2/user/list/notmoderator',
 {
   method: 'GET',
 
@@ -12469,7 +12511,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/list/notmoderator',
   params: {
   }, headers: headers
 
@@ -12483,7 +12525,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/list/notmoderator', headers = headers)
 
 print(r.json())
 
@@ -12504,7 +12546,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/list/notmoderator', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -12521,7 +12563,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/list/notmoderator");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -12552,7 +12594,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/list/notmoderator", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/list/notmoderator", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -12697,14 +12739,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/find \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/find \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/find HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/find HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -12715,7 +12757,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/find',
+fetch('https://www.floatplane.com/api/acp/v2/user/find',
 {
   method: 'GET',
 
@@ -12737,7 +12779,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/find',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/find',
   params: {
   }, headers: headers
 
@@ -12751,7 +12793,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/find', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/find', headers = headers)
 
 print(r.json())
 
@@ -12772,7 +12814,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/find', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/find', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -12789,7 +12831,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/find");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/find");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -12820,7 +12862,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/find", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/find", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -12965,14 +13007,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/admin/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/admin/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/admin/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/admin/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -12983,7 +13025,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/admin/create',
+fetch('https://www.floatplane.com/api/acp/v2/user/admin/create',
 {
   method: 'POST',
 
@@ -13005,7 +13047,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/admin/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/admin/create',
   params: {
   }, headers: headers
 
@@ -13019,7 +13061,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/admin/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/admin/create', headers = headers)
 
 print(r.json())
 
@@ -13040,7 +13082,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/admin/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/admin/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -13057,7 +13099,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/admin/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/admin/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -13088,7 +13130,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/admin/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/admin/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -13233,14 +13275,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/subscription/add \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/subscription/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/subscription/add HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/subscription/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -13251,7 +13293,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add',
+fetch('https://www.floatplane.com/api/acp/v2/user/subscription/add',
 {
   method: 'POST',
 
@@ -13273,7 +13315,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/subscription/add',
   params: {
   }, headers: headers
 
@@ -13287,7 +13329,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/subscription/add', headers = headers)
 
 print(r.json())
 
@@ -13308,7 +13350,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/subscription/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -13325,7 +13367,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/subscription/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -13356,7 +13398,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/subscription/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/subscription/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -13501,14 +13543,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/username/availability \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/username/availability \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/username/availability HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/username/availability HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -13519,7 +13561,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/username/availability',
+fetch('https://www.floatplane.com/api/acp/v2/user/username/availability',
 {
   method: 'GET',
 
@@ -13541,7 +13583,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/username/availability',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/username/availability',
   params: {
   }, headers: headers
 
@@ -13555,7 +13597,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/username/availability', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/username/availability', headers = headers)
 
 print(r.json())
 
@@ -13576,7 +13618,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/username/availability', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/username/availability', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -13593,7 +13635,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/username/availability");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/username/availability");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -13624,7 +13666,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/username/availability", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/username/availability", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -13769,14 +13811,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/email/availability \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/email/availability \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/email/availability HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/email/availability HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -13787,7 +13829,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/email/availability',
+fetch('https://www.floatplane.com/api/acp/v2/user/email/availability',
 {
   method: 'GET',
 
@@ -13809,7 +13851,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/email/availability',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/email/availability',
   params: {
   }, headers: headers
 
@@ -13823,7 +13865,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/email/availability', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/email/availability', headers = headers)
 
 print(r.json())
 
@@ -13844,7 +13886,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/email/availability', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/email/availability', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -13861,7 +13903,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/email/availability");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/email/availability");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -13892,7 +13934,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/email/availability", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/email/availability", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -14037,14 +14079,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/avatar/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/avatar/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -14055,7 +14097,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload',
+fetch('https://www.floatplane.com/api/acp/v2/user/avatar/upload',
 {
   method: 'POST',
 
@@ -14077,7 +14119,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/avatar/upload',
   params: {
   }, headers: headers
 
@@ -14091,7 +14133,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/avatar/upload', headers = headers)
 
 print(r.json())
 
@@ -14112,7 +14154,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/avatar/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -14129,7 +14171,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/avatar/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -14160,7 +14202,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/avatar/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/avatar/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -14305,14 +14347,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/edit \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -14323,7 +14365,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/edit',
+fetch('https://www.floatplane.com/api/acp/v2/user/edit',
 {
   method: 'POST',
 
@@ -14345,7 +14387,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/edit',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/edit',
   params: {
   }, headers: headers
 
@@ -14359,7 +14401,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/edit', headers = headers)
 
 print(r.json())
 
@@ -14380,7 +14422,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -14397,7 +14439,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/edit");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -14428,7 +14470,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -14573,14 +14615,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/usersubscription/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/usersubscription/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -14591,7 +14633,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list',
+fetch('https://www.floatplane.com/api/acp/v2/user/usersubscription/list',
 {
   method: 'GET',
 
@@ -14613,7 +14655,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/usersubscription/list',
   params: {
   }, headers: headers
 
@@ -14627,7 +14669,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/usersubscription/list', headers = headers)
 
 print(r.json())
 
@@ -14648,7 +14690,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/usersubscription/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -14665,7 +14707,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/usersubscription/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -14696,7 +14738,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/usersubscription/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -14841,14 +14883,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/usersubscription/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/usersubscription/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -14859,7 +14901,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete',
+fetch('https://www.floatplane.com/api/acp/v2/user/usersubscription/delete',
 {
   method: 'POST',
 
@@ -14881,7 +14923,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/usersubscription/delete',
   params: {
   }, headers: headers
 
@@ -14895,7 +14937,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/usersubscription/delete', headers = headers)
 
 print(r.json())
 
@@ -14916,7 +14958,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/usersubscription/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -14933,7 +14975,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/usersubscription/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -14964,7 +15006,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/usersubscription/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/usersubscription/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -15109,14 +15151,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/administrator/update \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/administrator/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/administrator/update HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/administrator/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -15127,7 +15169,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update',
+fetch('https://www.floatplane.com/api/acp/v2/user/administrator/update',
 {
   method: 'POST',
 
@@ -15149,7 +15191,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/administrator/update',
   params: {
   }, headers: headers
 
@@ -15163,7 +15205,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/administrator/update', headers = headers)
 
 print(r.json())
 
@@ -15184,7 +15226,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/administrator/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -15201,7 +15243,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/administrator/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -15232,7 +15274,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/administrator/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/administrator/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -15377,14 +15419,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/delete \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -15395,7 +15437,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/delete',
+fetch('https://www.floatplane.com/api/acp/v2/user/delete',
 {
   method: 'POST',
 
@@ -15417,7 +15459,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/delete',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/delete',
   params: {
   }, headers: headers
 
@@ -15431,7 +15473,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/delete', headers = headers)
 
 print(r.json())
 
@@ -15452,7 +15494,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -15469,7 +15511,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/delete");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -15500,7 +15542,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -15645,14 +15687,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v2/user/create \
+curl -X POST https://www.floatplane.com/api/acp/v2/user/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v2/user/create HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v2/user/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -15663,7 +15705,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/create',
+fetch('https://www.floatplane.com/api/acp/v2/user/create',
 {
   method: 'POST',
 
@@ -15685,7 +15727,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v2/user/create',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v2/user/create',
   params: {
   }, headers: headers
 
@@ -15699,7 +15741,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v2/user/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v2/user/create', headers = headers)
 
 print(r.json())
 
@@ -15720,7 +15762,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v2/user/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v2/user/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -15737,7 +15779,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/create");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -15768,7 +15810,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v2/user/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v2/user/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -15913,14 +15955,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/payment/invoice/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/payment/invoice/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -15931,7 +15973,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list',
+fetch('https://www.floatplane.com/api/acp/v2/user/payment/invoice/list',
 {
   method: 'GET',
 
@@ -15953,7 +15995,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/payment/invoice/list',
   params: {
   }, headers: headers
 
@@ -15967,7 +16009,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/payment/invoice/list', headers = headers)
 
 print(r.json())
 
@@ -15988,7 +16030,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/payment/invoice/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -16005,7 +16047,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/payment/invoice/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -16036,7 +16078,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/payment/invoice/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/payment/invoice/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -16181,14 +16223,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data \
+curl -X GET https://www.floatplane.com/api/acp/v2/user/payment/processor/data \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v2/user/payment/processor/data HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -16199,7 +16241,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data',
+fetch('https://www.floatplane.com/api/acp/v2/user/payment/processor/data',
 {
   method: 'GET',
 
@@ -16221,7 +16263,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v2/user/payment/processor/data',
   params: {
   }, headers: headers
 
@@ -16235,7 +16277,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v2/user/payment/processor/data', headers = headers)
 
 print(r.json())
 
@@ -16256,7 +16298,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v2/user/payment/processor/data', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -16273,7 +16315,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data");
+URL obj = new URL("https://www.floatplane.com/api/acp/v2/user/payment/processor/data");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -16304,7 +16346,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v2/user/payment/processor/data", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v2/user/payment/processor/data", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -16453,14 +16495,14 @@ Manage and edit users globally by administrators.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v3/user/delete \
+curl -X POST https://www.floatplane.com/api/acp/v3/user/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v3/user/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v3/user/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -16471,7 +16513,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v3/user/delete',
+fetch('https://www.floatplane.com/api/acp/v3/user/delete',
 {
   method: 'POST',
 
@@ -16493,7 +16535,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v3/user/delete',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v3/user/delete',
   params: {
   }, headers: headers
 
@@ -16507,7 +16549,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v3/user/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v3/user/delete', headers = headers)
 
 print(r.json())
 
@@ -16528,7 +16570,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v3/user/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v3/user/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -16545,7 +16587,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v3/user/delete");
+URL obj = new URL("https://www.floatplane.com/api/acp/v3/user/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -16576,7 +16618,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v3/user/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v3/user/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -16721,14 +16763,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/acp/v3/user/undelete \
+curl -X POST https://www.floatplane.com/api/acp/v3/user/undelete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/acp/v3/user/undelete HTTP/1.1
-
+POST https://www.floatplane.com/api/acp/v3/user/undelete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -16739,7 +16781,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v3/user/undelete',
+fetch('https://www.floatplane.com/api/acp/v3/user/undelete',
 {
   method: 'POST',
 
@@ -16761,7 +16803,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/acp/v3/user/undelete',
+result = RestClient.post 'https://www.floatplane.com/api/acp/v3/user/undelete',
   params: {
   }, headers: headers
 
@@ -16775,7 +16817,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/acp/v3/user/undelete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/acp/v3/user/undelete', headers = headers)
 
 print(r.json())
 
@@ -16796,7 +16838,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/acp/v3/user/undelete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/acp/v3/user/undelete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -16813,7 +16855,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v3/user/undelete");
+URL obj = new URL("https://www.floatplane.com/api/acp/v3/user/undelete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -16844,7 +16886,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/acp/v3/user/undelete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/acp/v3/user/undelete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -16989,14 +17031,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/acp/v3/user/sar \
+curl -X GET https://www.floatplane.com/api/acp/v3/user/sar \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/acp/v3/user/sar HTTP/1.1
-
+GET https://www.floatplane.com/api/acp/v3/user/sar HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -17007,7 +17049,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/acp/v3/user/sar',
+fetch('https://www.floatplane.com/api/acp/v3/user/sar',
 {
   method: 'GET',
 
@@ -17029,7 +17071,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/acp/v3/user/sar',
+result = RestClient.get 'https://www.floatplane.com/api/acp/v3/user/sar',
   params: {
   }, headers: headers
 
@@ -17043,7 +17085,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/acp/v3/user/sar', headers = headers)
+r = requests.get('https://www.floatplane.com/api/acp/v3/user/sar', headers = headers)
 
 print(r.json())
 
@@ -17064,7 +17106,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/acp/v3/user/sar', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/acp/v3/user/sar', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -17081,7 +17123,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/acp/v3/user/sar");
+URL obj = new URL("https://www.floatplane.com/api/acp/v3/user/sar");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -17112,7 +17154,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/acp/v3/user/sar", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/acp/v3/user/sar", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -17261,14 +17303,14 @@ Manage and edit moderators and global moderators. This entire section is depreca
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/administration/moderators/global/add \
+curl -X POST https://www.floatplane.com/api/v2/administration/moderators/global/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/administration/moderators/global/add HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/administration/moderators/global/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -17279,7 +17321,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add',
+fetch('https://www.floatplane.com/api/v2/administration/moderators/global/add',
 {
   method: 'POST',
 
@@ -17301,7 +17343,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add',
+result = RestClient.post 'https://www.floatplane.com/api/v2/administration/moderators/global/add',
   params: {
   }, headers: headers
 
@@ -17315,7 +17357,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/administration/moderators/global/add', headers = headers)
 
 print(r.json())
 
@@ -17336,7 +17378,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/administration/moderators/global/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -17353,7 +17395,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add");
+URL obj = new URL("https://www.floatplane.com/api/v2/administration/moderators/global/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -17384,7 +17426,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/administration/moderators/global/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/administration/moderators/global/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -17529,14 +17571,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove \
+curl -X POST https://www.floatplane.com/api/v2/administration/moderators/global/remove \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/administration/moderators/global/remove HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -17547,7 +17589,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove',
+fetch('https://www.floatplane.com/api/v2/administration/moderators/global/remove',
 {
   method: 'POST',
 
@@ -17569,7 +17611,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove',
+result = RestClient.post 'https://www.floatplane.com/api/v2/administration/moderators/global/remove',
   params: {
   }, headers: headers
 
@@ -17583,7 +17625,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/administration/moderators/global/remove', headers = headers)
 
 print(r.json())
 
@@ -17604,7 +17646,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/administration/moderators/global/remove', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -17621,7 +17663,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove");
+URL obj = new URL("https://www.floatplane.com/api/v2/administration/moderators/global/remove");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -17652,7 +17694,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/administration/moderators/global/remove", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/administration/moderators/global/remove", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -17797,14 +17839,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/administration/moderators/remove \
+curl -X POST https://www.floatplane.com/api/v2/administration/moderators/remove \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/administration/moderators/remove HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/administration/moderators/remove HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -17815,7 +17857,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/administration/moderators/remove',
+fetch('https://www.floatplane.com/api/v2/administration/moderators/remove',
 {
   method: 'POST',
 
@@ -17837,7 +17879,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/administration/moderators/remove',
+result = RestClient.post 'https://www.floatplane.com/api/v2/administration/moderators/remove',
   params: {
   }, headers: headers
 
@@ -17851,7 +17893,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/administration/moderators/remove', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/administration/moderators/remove', headers = headers)
 
 print(r.json())
 
@@ -17872,7 +17914,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/administration/moderators/remove', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/administration/moderators/remove', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -17889,7 +17931,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/administration/moderators/remove");
+URL obj = new URL("https://www.floatplane.com/api/v2/administration/moderators/remove");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -17920,7 +17962,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/administration/moderators/remove", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/administration/moderators/remove", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -18065,14 +18107,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user} \
+curl -X GET https://www.floatplane.com/api/v2/administration/moderators/get/{user} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user} HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/administration/moderators/get/{user} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -18083,7 +18125,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}',
+fetch('https://www.floatplane.com/api/v2/administration/moderators/get/{user}',
 {
   method: 'GET',
 
@@ -18105,7 +18147,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}',
+result = RestClient.get 'https://www.floatplane.com/api/v2/administration/moderators/get/{user}',
   params: {
   }, headers: headers
 
@@ -18119,7 +18161,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/administration/moderators/get/{user}', headers = headers)
 
 print(r.json())
 
@@ -18140,7 +18182,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/administration/moderators/get/{user}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -18157,7 +18199,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}");
+URL obj = new URL("https://www.floatplane.com/api/v2/administration/moderators/get/{user}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -18188,7 +18230,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/administration/moderators/get/{user}", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/administration/moderators/get/{user}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -18339,14 +18381,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/administration/moderators/list \
+curl -X GET https://www.floatplane.com/api/v2/administration/moderators/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/administration/moderators/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/administration/moderators/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -18357,7 +18399,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/administration/moderators/list',
+fetch('https://www.floatplane.com/api/v2/administration/moderators/list',
 {
   method: 'GET',
 
@@ -18379,7 +18421,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/administration/moderators/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/administration/moderators/list',
   params: {
   }, headers: headers
 
@@ -18393,7 +18435,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/administration/moderators/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/administration/moderators/list', headers = headers)
 
 print(r.json())
 
@@ -18414,7 +18456,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/administration/moderators/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/administration/moderators/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -18431,7 +18473,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/administration/moderators/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/administration/moderators/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -18462,7 +18504,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/administration/moderators/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/administration/moderators/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -18611,15 +18653,15 @@ Sign up, login, 2FA, and logout. Additionally, login spoofing for administrators
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/login \
+curl -X POST https://www.floatplane.com/api/v2/auth/login \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/login HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/login HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: application/json
 
@@ -18636,7 +18678,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/login',
+fetch('https://www.floatplane.com/api/v2/auth/login',
 {
   method: 'POST',
   body: inputBody,
@@ -18659,7 +18701,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/login',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/login',
   params: {
   }, headers: headers
 
@@ -18674,7 +18716,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/login', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/login', headers = headers)
 
 print(r.json())
 
@@ -18696,7 +18738,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/login', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/login', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -18713,7 +18755,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/login");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/login");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -18745,7 +18787,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/login", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/login", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -18933,14 +18975,14 @@ This operation does not require authentication
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/logout \
+curl -X POST https://www.floatplane.com/api/v2/auth/logout \
   -H 'Accept: text/plain'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/logout HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/logout HTTP/1.1
+Host: www.floatplane.com
 Accept: text/plain
 
 ```
@@ -18951,7 +18993,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/logout',
+fetch('https://www.floatplane.com/api/v2/auth/logout',
 {
   method: 'POST',
 
@@ -18973,7 +19015,7 @@ headers = {
   'Accept' => 'text/plain'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/logout',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/logout',
   params: {
   }, headers: headers
 
@@ -18987,7 +19029,7 @@ headers = {
   'Accept': 'text/plain'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/logout', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/logout', headers = headers)
 
 print(r.json())
 
@@ -19008,7 +19050,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/logout', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/logout', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -19025,7 +19067,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/logout");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/logout");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -19056,7 +19098,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/logout", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/logout", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -19205,14 +19247,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/spoof/begin \
+curl -X POST https://www.floatplane.com/api/v2/auth/spoof/begin \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/spoof/begin HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/spoof/begin HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -19223,7 +19265,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/spoof/begin',
+fetch('https://www.floatplane.com/api/v2/auth/spoof/begin',
 {
   method: 'POST',
 
@@ -19245,7 +19287,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/spoof/begin',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/spoof/begin',
   params: {
   }, headers: headers
 
@@ -19259,7 +19301,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/spoof/begin', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/spoof/begin', headers = headers)
 
 print(r.json())
 
@@ -19280,7 +19322,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/spoof/begin', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/spoof/begin', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -19297,7 +19339,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/spoof/begin");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/spoof/begin");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -19328,7 +19370,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/spoof/begin", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/spoof/begin", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -19473,14 +19515,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/spoof/end \
+curl -X POST https://www.floatplane.com/api/v2/auth/spoof/end \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/spoof/end HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/spoof/end HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -19491,7 +19533,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/spoof/end',
+fetch('https://www.floatplane.com/api/v2/auth/spoof/end',
 {
   method: 'POST',
 
@@ -19513,7 +19555,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/spoof/end',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/spoof/end',
   params: {
   }, headers: headers
 
@@ -19527,7 +19569,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/spoof/end', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/spoof/end', headers = headers)
 
 print(r.json())
 
@@ -19548,7 +19590,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/spoof/end', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/spoof/end', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -19565,7 +19607,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/spoof/end");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/spoof/end");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -19596,7 +19638,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/spoof/end", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/spoof/end", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -19741,14 +19783,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/signup \
+curl -X POST https://www.floatplane.com/api/v2/auth/signup \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/signup HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/signup HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -19759,7 +19801,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/signup',
+fetch('https://www.floatplane.com/api/v2/auth/signup',
 {
   method: 'POST',
 
@@ -19781,7 +19823,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/signup',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/signup',
   params: {
   }, headers: headers
 
@@ -19795,7 +19837,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/signup', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/signup', headers = headers)
 
 print(r.json())
 
@@ -19816,7 +19858,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/signup', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/signup', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -19833,7 +19875,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/signup");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/signup");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -19864,7 +19906,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/signup", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/signup", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -20009,15 +20051,15 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin \
+curl -X POST https://www.floatplane.com/api/v2/auth/checkFor2faLogin \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/auth/checkFor2faLogin HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: application/json
 
@@ -20032,7 +20074,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin',
+fetch('https://www.floatplane.com/api/v2/auth/checkFor2faLogin',
 {
   method: 'POST',
   body: inputBody,
@@ -20055,7 +20097,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin',
+result = RestClient.post 'https://www.floatplane.com/api/v2/auth/checkFor2faLogin',
   params: {
   }, headers: headers
 
@@ -20070,7 +20112,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/auth/checkFor2faLogin', headers = headers)
 
 print(r.json())
 
@@ -20092,7 +20134,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/auth/checkFor2faLogin', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -20109,7 +20151,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin");
+URL obj = new URL("https://www.floatplane.com/api/v2/auth/checkFor2faLogin");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -20141,7 +20183,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/auth/checkFor2faLogin", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/auth/checkFor2faLogin", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -20332,14 +20374,14 @@ Captchas information.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/auth/captcha/info \
+curl -X GET https://www.floatplane.com/api/v3/auth/captcha/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/auth/captcha/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/auth/captcha/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -20350,7 +20392,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/auth/captcha/info',
+fetch('https://www.floatplane.com/api/v3/auth/captcha/info',
 {
   method: 'GET',
 
@@ -20372,7 +20414,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/auth/captcha/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/auth/captcha/info',
   params: {
   }, headers: headers
 
@@ -20386,7 +20428,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/auth/captcha/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/auth/captcha/info', headers = headers)
 
 print(r.json())
 
@@ -20407,7 +20449,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/auth/captcha/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/auth/captcha/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -20424,7 +20466,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/auth/captcha/info");
+URL obj = new URL("https://www.floatplane.com/api/v3/auth/captcha/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -20455,7 +20497,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/auth/captcha/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/auth/captcha/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -20622,14 +20664,14 @@ BrainTree payment integration
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/braintree/token \
+curl -X GET https://www.floatplane.com/api/v2/payment/braintree/token \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/braintree/token HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/braintree/token HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -20640,7 +20682,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/braintree/token',
+fetch('https://www.floatplane.com/api/v2/payment/braintree/token',
 {
   method: 'GET',
 
@@ -20662,7 +20704,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/braintree/token',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/braintree/token',
   params: {
   }, headers: headers
 
@@ -20676,7 +20718,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/braintree/token', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/braintree/token', headers = headers)
 
 print(r.json())
 
@@ -20697,7 +20739,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/braintree/token', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/braintree/token', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -20714,7 +20756,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/braintree/token");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/braintree/token");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -20745,7 +20787,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/braintree/token", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/braintree/token", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -20894,14 +20936,14 @@ Content Delivery mechanisms for Floatplane media.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string \
+curl -X GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -20912,7 +20954,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string',
+fetch('https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string',
 {
   method: 'GET',
 
@@ -20934,7 +20976,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/cdn/delivery',
+result = RestClient.get 'https://www.floatplane.com/api/v2/cdn/delivery',
   params: {
   'type' => 'string',
 'guid' => 'string'
@@ -20950,7 +20992,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/cdn/delivery', params={
+r = requests.get('https://www.floatplane.com/api/v2/cdn/delivery', params={
   'type': 'vod',  'guid': 'string'
 }, headers = headers)
 
@@ -20973,7 +21015,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/cdn/delivery', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/cdn/delivery', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -20990,7 +21032,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -21021,7 +21063,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/cdn/delivery", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/cdn/delivery", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -21245,14 +21287,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/connect/{site} \
+curl -X GET https://www.floatplane.com/api/v2/connect/{site} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/connect/{site} HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/connect/{site} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -21263,7 +21305,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/{site}',
+fetch('https://www.floatplane.com/api/v2/connect/{site}',
 {
   method: 'GET',
 
@@ -21285,7 +21327,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/connect/{site}',
+result = RestClient.get 'https://www.floatplane.com/api/v2/connect/{site}',
   params: {
   }, headers: headers
 
@@ -21299,7 +21341,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/connect/{site}', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/connect/{site}', headers = headers)
 
 print(r.json())
 
@@ -21320,7 +21362,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/connect/{site}', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/connect/{site}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -21337,7 +21379,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/{site}");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/{site}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -21368,7 +21410,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/connect/{site}", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/connect/{site}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -21519,14 +21561,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/connect/{site}/callback \
+curl -X GET https://www.floatplane.com/api/v2/connect/{site}/callback \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/connect/{site}/callback HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/connect/{site}/callback HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -21537,7 +21579,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/{site}/callback',
+fetch('https://www.floatplane.com/api/v2/connect/{site}/callback',
 {
   method: 'GET',
 
@@ -21559,7 +21601,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/connect/{site}/callback',
+result = RestClient.get 'https://www.floatplane.com/api/v2/connect/{site}/callback',
   params: {
   }, headers: headers
 
@@ -21573,7 +21615,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/connect/{site}/callback', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/connect/{site}/callback', headers = headers)
 
 print(r.json())
 
@@ -21594,7 +21636,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/connect/{site}/callback', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/connect/{site}/callback', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -21611,7 +21653,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/{site}/callback");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/{site}/callback");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -21642,7 +21684,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/connect/{site}/callback", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/connect/{site}/callback", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -21793,14 +21835,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/connect/complete \
+curl -X POST https://www.floatplane.com/api/v2/connect/complete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/connect/complete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/connect/complete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -21811,7 +21853,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/complete',
+fetch('https://www.floatplane.com/api/v2/connect/complete',
 {
   method: 'POST',
 
@@ -21833,7 +21875,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/connect/complete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/connect/complete',
   params: {
   }, headers: headers
 
@@ -21847,7 +21889,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/connect/complete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/connect/complete', headers = headers)
 
 print(r.json())
 
@@ -21868,7 +21910,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/connect/complete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/connect/complete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -21885,7 +21927,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/complete");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/complete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -21916,7 +21958,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/connect/complete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/connect/complete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -22061,14 +22103,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/connect/refresh \
+curl -X POST https://www.floatplane.com/api/v2/connect/refresh \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/connect/refresh HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/connect/refresh HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -22079,7 +22121,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/refresh',
+fetch('https://www.floatplane.com/api/v2/connect/refresh',
 {
   method: 'POST',
 
@@ -22101,7 +22143,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/connect/refresh',
+result = RestClient.post 'https://www.floatplane.com/api/v2/connect/refresh',
   params: {
   }, headers: headers
 
@@ -22115,7 +22157,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/connect/refresh', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/connect/refresh', headers = headers)
 
 print(r.json())
 
@@ -22136,7 +22178,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/connect/refresh', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/connect/refresh', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -22153,7 +22195,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/refresh");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/refresh");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -22184,7 +22226,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/connect/refresh", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/connect/refresh", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -22329,14 +22371,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/connect/dissociate \
+curl -X POST https://www.floatplane.com/api/v2/connect/dissociate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/connect/dissociate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/connect/dissociate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -22347,7 +22389,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/dissociate',
+fetch('https://www.floatplane.com/api/v2/connect/dissociate',
 {
   method: 'POST',
 
@@ -22369,7 +22411,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/connect/dissociate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/connect/dissociate',
   params: {
   }, headers: headers
 
@@ -22383,7 +22425,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/connect/dissociate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/connect/dissociate', headers = headers)
 
 print(r.json())
 
@@ -22404,7 +22446,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/connect/dissociate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/connect/dissociate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -22421,7 +22463,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/dissociate");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/dissociate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -22452,7 +22494,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/connect/dissociate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/connect/dissociate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -22597,14 +22639,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/connect/list \
+curl -X GET https://www.floatplane.com/api/v2/connect/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/connect/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/connect/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -22615,7 +22657,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/connect/list',
+fetch('https://www.floatplane.com/api/v2/connect/list',
 {
   method: 'GET',
 
@@ -22637,7 +22679,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/connect/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/connect/list',
   params: {
   }, headers: headers
 
@@ -22651,7 +22693,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/connect/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/connect/list', headers = headers)
 
 print(r.json())
 
@@ -22672,7 +22714,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/connect/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/connect/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -22689,7 +22731,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/connect/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/connect/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -22720,7 +22762,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/connect/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/connect/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -22913,14 +22955,14 @@ Creator-specific moderator management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add \
+curl -X POST https://www.floatplane.com/api/v2/creator/administration/moderators/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creator/administration/moderators/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -22931,7 +22973,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add',
+fetch('https://www.floatplane.com/api/v2/creator/administration/moderators/add',
 {
   method: 'POST',
 
@@ -22953,7 +22995,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creator/administration/moderators/add',
   params: {
   }, headers: headers
 
@@ -22967,7 +23009,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creator/administration/moderators/add', headers = headers)
 
 print(r.json())
 
@@ -22988,7 +23030,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creator/administration/moderators/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -23005,7 +23047,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/administration/moderators/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -23036,7 +23078,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creator/administration/moderators/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -23185,14 +23227,14 @@ Get and discover creators on the platform. Creator invitation and profile manage
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/info?creatorGUID=string \
+curl -X GET https://www.floatplane.com/api/v2/creator/info?creatorGUID=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/info?creatorGUID=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/info?creatorGUID=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -23203,7 +23245,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/info?creatorGUID=string',
+fetch('https://www.floatplane.com/api/v2/creator/info?creatorGUID=string',
 {
   method: 'GET',
 
@@ -23225,7 +23267,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/info',
   params: {
   'creatorGUID' => 'array[string]'
 }, headers: headers
@@ -23240,7 +23282,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/info', params={
+r = requests.get('https://www.floatplane.com/api/v2/creator/info', params={
   'creatorGUID': [
   "string"
 ]
@@ -23265,7 +23307,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -23282,7 +23324,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/info?creatorGUID=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/info?creatorGUID=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -23313,7 +23355,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -23596,14 +23638,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/named?creatorURL=string \
+curl -X GET https://www.floatplane.com/api/v2/creator/named?creatorURL=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/named?creatorURL=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/named?creatorURL=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -23614,7 +23656,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/named?creatorURL=string',
+fetch('https://www.floatplane.com/api/v2/creator/named?creatorURL=string',
 {
   method: 'GET',
 
@@ -23636,7 +23678,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/named',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/named',
   params: {
   'creatorURL' => 'array[string]'
 }, headers: headers
@@ -23651,7 +23693,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/named', params={
+r = requests.get('https://www.floatplane.com/api/v2/creator/named', params={
   'creatorURL': [
   "string"
 ]
@@ -23676,7 +23718,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/named', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/named', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -23693,7 +23735,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/named?creatorURL=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/named?creatorURL=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -23724,7 +23766,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/named", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/named", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -24030,14 +24072,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/videos \
+curl -X GET https://www.floatplane.com/api/v2/creator/videos \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/videos HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/videos HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -24048,7 +24090,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/videos',
+fetch('https://www.floatplane.com/api/v2/creator/videos',
 {
   method: 'GET',
 
@@ -24070,7 +24112,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/videos',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/videos',
   params: {
   }, headers: headers
 
@@ -24084,7 +24126,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/videos', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/videos', headers = headers)
 
 print(r.json())
 
@@ -24105,7 +24147,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/videos', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/videos', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -24122,7 +24164,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/videos");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/videos");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -24153,7 +24195,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/videos", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/videos", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -24298,14 +24340,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/playlists \
+curl -X GET https://www.floatplane.com/api/v2/creator/playlists \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/playlists HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/playlists HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -24316,7 +24358,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/playlists',
+fetch('https://www.floatplane.com/api/v2/creator/playlists',
 {
   method: 'GET',
 
@@ -24338,7 +24380,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/playlists',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/playlists',
   params: {
   }, headers: headers
 
@@ -24352,7 +24394,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/playlists', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/playlists', headers = headers)
 
 print(r.json())
 
@@ -24373,7 +24415,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/playlists', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/playlists', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -24390,7 +24432,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/playlists");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/playlists");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -24421,7 +24463,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/playlists", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/playlists", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -24566,14 +24608,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/list \
+curl -X GET https://www.floatplane.com/api/v2/creator/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -24584,7 +24626,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/list',
+fetch('https://www.floatplane.com/api/v2/creator/list',
 {
   method: 'GET',
 
@@ -24606,7 +24648,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/list',
   params: {
   }, headers: headers
 
@@ -24620,7 +24662,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/list', headers = headers)
 
 print(r.json())
 
@@ -24641,7 +24683,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -24658,7 +24700,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -24689,7 +24731,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -24834,14 +24876,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/discover \
+curl -X GET https://www.floatplane.com/api/v2/creator/discover \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/discover HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/discover HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -24852,7 +24894,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/discover',
+fetch('https://www.floatplane.com/api/v2/creator/discover',
 {
   method: 'GET',
 
@@ -24874,7 +24916,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/discover',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/discover',
   params: {
   }, headers: headers
 
@@ -24888,7 +24930,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/discover', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/discover', headers = headers)
 
 print(r.json())
 
@@ -24909,7 +24951,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/discover', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/discover', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -24926,7 +24968,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/discover");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/discover");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -24957,7 +24999,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/discover", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/discover", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -25102,14 +25144,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creatorcategory/list \
+curl -X GET https://www.floatplane.com/api/v2/creatorcategory/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creatorcategory/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creatorcategory/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -25120,7 +25162,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creatorcategory/list',
+fetch('https://www.floatplane.com/api/v2/creatorcategory/list',
 {
   method: 'GET',
 
@@ -25142,7 +25184,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creatorcategory/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creatorcategory/list',
   params: {
   }, headers: headers
 
@@ -25156,7 +25198,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creatorcategory/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creatorcategory/list', headers = headers)
 
 print(r.json())
 
@@ -25177,7 +25219,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creatorcategory/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creatorcategory/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -25194,7 +25236,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creatorcategory/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/creatorcategory/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -25225,7 +25267,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creatorcategory/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creatorcategory/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -25370,14 +25412,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/social/update \
+curl -X POST https://www.floatplane.com/api/v2/creator/social/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creator/social/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creator/social/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -25388,7 +25430,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/social/update',
+fetch('https://www.floatplane.com/api/v2/creator/social/update',
 {
   method: 'POST',
 
@@ -25410,7 +25452,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/social/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creator/social/update',
   params: {
   }, headers: headers
 
@@ -25424,7 +25466,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/social/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creator/social/update', headers = headers)
 
 print(r.json())
 
@@ -25445,7 +25487,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/social/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creator/social/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -25462,7 +25504,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/social/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/social/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -25493,7 +25535,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/social/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creator/social/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -25638,14 +25680,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/social/get \
+curl -X GET https://www.floatplane.com/api/v2/creator/social/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/social/get HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/social/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -25656,7 +25698,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/social/get',
+fetch('https://www.floatplane.com/api/v2/creator/social/get',
 {
   method: 'GET',
 
@@ -25678,7 +25720,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/social/get',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/social/get',
   params: {
   }, headers: headers
 
@@ -25692,7 +25734,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/social/get', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/social/get', headers = headers)
 
 print(r.json())
 
@@ -25713,7 +25755,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/social/get', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/social/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -25730,7 +25772,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/social/get");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/social/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -25761,7 +25803,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/social/get", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/social/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -25906,14 +25948,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/image/update \
+curl -X POST https://www.floatplane.com/api/v2/creator/image/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creator/image/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creator/image/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -25924,7 +25966,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/image/update',
+fetch('https://www.floatplane.com/api/v2/creator/image/update',
 {
   method: 'POST',
 
@@ -25946,7 +25988,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/image/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creator/image/update',
   params: {
   }, headers: headers
 
@@ -25960,7 +26002,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/image/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creator/image/update', headers = headers)
 
 print(r.json())
 
@@ -25981,7 +26023,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/image/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creator/image/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -25998,7 +26040,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/image/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/image/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -26029,7 +26071,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/image/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creator/image/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -26174,14 +26216,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/info/update \
+curl -X POST https://www.floatplane.com/api/v2/creator/info/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creator/info/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creator/info/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -26192,7 +26234,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/info/update',
+fetch('https://www.floatplane.com/api/v2/creator/info/update',
 {
   method: 'POST',
 
@@ -26214,7 +26256,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/info/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creator/info/update',
   params: {
   }, headers: headers
 
@@ -26228,7 +26270,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/info/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creator/info/update', headers = headers)
 
 print(r.json())
 
@@ -26249,7 +26291,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/info/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creator/info/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -26266,7 +26308,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/info/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/info/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -26297,7 +26339,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/info/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creator/info/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -26442,14 +26484,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/info/get \
+curl -X GET https://www.floatplane.com/api/v2/creator/info/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/info/get HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/info/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -26460,7 +26502,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/info/get',
+fetch('https://www.floatplane.com/api/v2/creator/info/get',
 {
   method: 'GET',
 
@@ -26482,7 +26524,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/info/get',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/info/get',
   params: {
   }, headers: headers
 
@@ -26496,7 +26538,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/info/get', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/info/get', headers = headers)
 
 print(r.json())
 
@@ -26517,7 +26559,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/info/get', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/info/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -26534,7 +26576,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/info/get");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/info/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -26565,7 +26607,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/info/get", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/info/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -26714,14 +26756,14 @@ Get and discover creators on the platform. Creator invitation and profile manage
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/info?id=string \
+curl -X GET https://www.floatplane.com/api/v3/creator/info?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/info?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/info?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -26732,7 +26774,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/info?id=string',
+fetch('https://www.floatplane.com/api/v3/creator/info?id=string',
 {
   method: 'GET',
 
@@ -26754,7 +26796,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/info',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -26769,7 +26811,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/info', params={
+r = requests.get('https://www.floatplane.com/api/v3/creator/info', params={
   'id': 'string'
 }, headers = headers)
 
@@ -26792,7 +26834,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -26809,7 +26851,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/info?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/info?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -26840,7 +26882,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -27108,14 +27150,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/list?search=string \
+curl -X GET https://www.floatplane.com/api/v3/creator/list?search=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/list?search=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/list?search=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -27126,7 +27168,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/list?search=string',
+fetch('https://www.floatplane.com/api/v3/creator/list?search=string',
 {
   method: 'GET',
 
@@ -27148,7 +27190,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/list',
   params: {
   'search' => 'string'
 }, headers: headers
@@ -27163,7 +27205,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/list', params={
+r = requests.get('https://www.floatplane.com/api/v3/creator/list', params={
   'search': 'string'
 }, headers = headers)
 
@@ -27186,7 +27228,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -27203,7 +27245,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/list?search=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/list?search=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -27234,7 +27276,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -27777,14 +27819,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/named \
+curl -X GET https://www.floatplane.com/api/v3/creator/named \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/named HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/named HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -27795,7 +27837,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/named',
+fetch('https://www.floatplane.com/api/v3/creator/named',
 {
   method: 'GET',
 
@@ -27817,7 +27859,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/named',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/named',
   params: {
   }, headers: headers
 
@@ -27831,7 +27873,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/named', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/creator/named', headers = headers)
 
 print(r.json())
 
@@ -27852,7 +27894,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/named', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/named', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -27869,7 +27911,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/named");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/named");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -27900,7 +27942,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/named", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/named", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -28045,14 +28087,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/discover \
+curl -X GET https://www.floatplane.com/api/v3/creator/discover \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/discover HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/discover HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -28063,7 +28105,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/discover',
+fetch('https://www.floatplane.com/api/v3/creator/discover',
 {
   method: 'GET',
 
@@ -28085,7 +28127,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/discover',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/discover',
   params: {
   }, headers: headers
 
@@ -28099,7 +28141,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/discover', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/creator/discover', headers = headers)
 
 print(r.json())
 
@@ -28120,7 +28162,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/discover', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/discover', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -28137,7 +28179,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/discover");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/discover");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -28168,7 +28210,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/discover", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/discover", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -28313,14 +28355,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/category/list \
+curl -X GET https://www.floatplane.com/api/v3/creator/category/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/category/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/category/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -28331,7 +28373,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/category/list',
+fetch('https://www.floatplane.com/api/v3/creator/category/list',
 {
   method: 'GET',
 
@@ -28353,7 +28395,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/category/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/category/list',
   params: {
   }, headers: headers
 
@@ -28367,7 +28409,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/category/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/creator/category/list', headers = headers)
 
 print(r.json())
 
@@ -28388,7 +28430,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/category/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/category/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -28405,7 +28447,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/category/list");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/category/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -28436,7 +28478,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/category/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/category/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -28581,14 +28623,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/creator/invite/bind \
+curl -X POST https://www.floatplane.com/api/v3/creator/invite/bind \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/creator/invite/bind HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/creator/invite/bind HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -28599,7 +28641,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/invite/bind',
+fetch('https://www.floatplane.com/api/v3/creator/invite/bind',
 {
   method: 'POST',
 
@@ -28621,7 +28663,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/creator/invite/bind',
+result = RestClient.post 'https://www.floatplane.com/api/v3/creator/invite/bind',
   params: {
   }, headers: headers
 
@@ -28635,7 +28677,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/creator/invite/bind', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/creator/invite/bind', headers = headers)
 
 print(r.json())
 
@@ -28656,7 +28698,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/creator/invite/bind', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/creator/invite/bind', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -28673,7 +28715,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/invite/bind");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/invite/bind");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -28704,7 +28746,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/creator/invite/bind", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/creator/invite/bind", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -28849,14 +28891,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/creator/invite/info \
+curl -X GET https://www.floatplane.com/api/v3/creator/invite/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/creator/invite/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/creator/invite/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -28867,7 +28909,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/invite/info',
+fetch('https://www.floatplane.com/api/v3/creator/invite/info',
 {
   method: 'GET',
 
@@ -28889,7 +28931,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/creator/invite/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/invite/info',
   params: {
   }, headers: headers
 
@@ -28903,7 +28945,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/creator/invite/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/creator/invite/info', headers = headers)
 
 print(r.json())
 
@@ -28924,7 +28966,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/creator/invite/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/invite/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -28941,7 +28983,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/invite/info");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/invite/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -28972,7 +29014,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/creator/invite/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/invite/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -29117,14 +29159,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/creator/invite/claim \
+curl -X POST https://www.floatplane.com/api/v3/creator/invite/claim \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/creator/invite/claim HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/creator/invite/claim HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -29135,7 +29177,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/creator/invite/claim',
+fetch('https://www.floatplane.com/api/v3/creator/invite/claim',
 {
   method: 'POST',
 
@@ -29157,7 +29199,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/creator/invite/claim',
+result = RestClient.post 'https://www.floatplane.com/api/v3/creator/invite/claim',
   params: {
   }, headers: headers
 
@@ -29171,7 +29213,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/creator/invite/claim', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/creator/invite/claim', headers = headers)
 
 print(r.json())
 
@@ -29192,7 +29234,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/creator/invite/claim', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/creator/invite/claim', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -29209,7 +29251,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/creator/invite/claim");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/invite/claim");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -29240,7 +29282,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/creator/invite/claim", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/creator/invite/claim", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -29389,14 +29431,14 @@ Get and agree to Creator<->Floatplane agreements.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/api/creator/agreement/ \
+curl -X GET https://www.floatplane.com/api/v2/api/creator/agreement/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/api/creator/agreement/ HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/api/creator/agreement/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -29407,7 +29449,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/api/creator/agreement/',
+fetch('https://www.floatplane.com/api/v2/api/creator/agreement/',
 {
   method: 'GET',
 
@@ -29429,7 +29471,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/api/creator/agreement/',
+result = RestClient.get 'https://www.floatplane.com/api/v2/api/creator/agreement/',
   params: {
   }, headers: headers
 
@@ -29443,7 +29485,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/api/creator/agreement/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/api/creator/agreement/', headers = headers)
 
 print(r.json())
 
@@ -29464,7 +29506,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/api/creator/agreement/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/api/creator/agreement/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -29481,7 +29523,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/api/creator/agreement/");
+URL obj = new URL("https://www.floatplane.com/api/v2/api/creator/agreement/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -29512,7 +29554,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/api/creator/agreement/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/api/creator/agreement/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -29657,14 +29699,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm \
+curl -X POST https://www.floatplane.com/api/v2/api/creator/agreement/confirm \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/api/creator/agreement/confirm HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -29675,7 +29717,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm',
+fetch('https://www.floatplane.com/api/v2/api/creator/agreement/confirm',
 {
   method: 'POST',
 
@@ -29697,7 +29739,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm',
+result = RestClient.post 'https://www.floatplane.com/api/v2/api/creator/agreement/confirm',
   params: {
   }, headers: headers
 
@@ -29711,7 +29753,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/api/creator/agreement/confirm', headers = headers)
 
 print(r.json())
 
@@ -29732,7 +29774,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/api/creator/agreement/confirm', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -29749,7 +29791,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm");
+URL obj = new URL("https://www.floatplane.com/api/v2/api/creator/agreement/confirm");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -29780,7 +29822,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/api/creator/agreement/confirm", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/api/creator/agreement/confirm", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -29929,14 +29971,14 @@ Manage features for creator subscription plans.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list \
+curl -X GET https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -29947,7 +29989,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list',
+fetch('https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list',
 {
   method: 'GET',
 
@@ -29969,7 +30011,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list',
   params: {
   }, headers: headers
 
@@ -29983,7 +30025,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list', headers = headers)
 
 print(r.json())
 
@@ -30004,7 +30046,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -30021,7 +30063,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -30052,7 +30094,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creatorplanfeaturelevel/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -30197,14 +30239,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost \
+curl -X GET https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -30215,7 +30257,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost',
+fetch('https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost',
 {
   method: 'GET',
 
@@ -30237,7 +30279,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost',
   params: {
   }, headers: headers
 
@@ -30251,7 +30293,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost', headers = headers)
 
 print(r.json())
 
@@ -30272,7 +30314,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -30289,7 +30331,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost");
+URL obj = new URL("https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -30320,7 +30362,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creatorplanfeaturelevel/cost", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -30465,14 +30507,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/plan/feature/list \
+curl -X GET https://www.floatplane.com/api/v2/plan/feature/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/plan/feature/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/plan/feature/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -30483,7 +30525,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/plan/feature/list',
+fetch('https://www.floatplane.com/api/v2/plan/feature/list',
 {
   method: 'GET',
 
@@ -30505,7 +30547,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/plan/feature/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/plan/feature/list',
   params: {
   }, headers: headers
 
@@ -30519,7 +30561,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/plan/feature/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/plan/feature/list', headers = headers)
 
 print(r.json())
 
@@ -30540,7 +30582,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/plan/feature/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/plan/feature/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -30557,7 +30599,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/plan/feature/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/plan/feature/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -30588,7 +30630,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/plan/feature/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/plan/feature/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -30737,14 +30779,14 @@ Manage creator subscription plans.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/plan/publish \
+curl -X POST https://www.floatplane.com/api/v2/plan/publish \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/plan/publish HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/plan/publish HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -30755,7 +30797,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/plan/publish',
+fetch('https://www.floatplane.com/api/v2/plan/publish',
 {
   method: 'POST',
 
@@ -30777,7 +30819,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/plan/publish',
+result = RestClient.post 'https://www.floatplane.com/api/v2/plan/publish',
   params: {
   }, headers: headers
 
@@ -30791,7 +30833,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/plan/publish', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/plan/publish', headers = headers)
 
 print(r.json())
 
@@ -30812,7 +30854,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/plan/publish', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/plan/publish', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -30829,7 +30871,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/plan/publish");
+URL obj = new URL("https://www.floatplane.com/api/v2/plan/publish");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -30860,7 +30902,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/plan/publish", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/plan/publish", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -31005,14 +31047,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/plan/update \
+curl -X POST https://www.floatplane.com/api/v2/plan/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/plan/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/plan/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -31023,7 +31065,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/plan/update',
+fetch('https://www.floatplane.com/api/v2/plan/update',
 {
   method: 'POST',
 
@@ -31045,7 +31087,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/plan/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/plan/update',
   params: {
   }, headers: headers
 
@@ -31059,7 +31101,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/plan/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/plan/update', headers = headers)
 
 print(r.json())
 
@@ -31080,7 +31122,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/plan/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/plan/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -31097,7 +31139,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/plan/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/plan/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -31128,7 +31170,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/plan/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/plan/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -31273,14 +31315,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/plan/list \
+curl -X POST https://www.floatplane.com/api/v2/plan/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/plan/list HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/plan/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -31291,7 +31333,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/plan/list',
+fetch('https://www.floatplane.com/api/v2/plan/list',
 {
   method: 'POST',
 
@@ -31313,7 +31355,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/plan/list',
+result = RestClient.post 'https://www.floatplane.com/api/v2/plan/list',
   params: {
   }, headers: headers
 
@@ -31327,7 +31369,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/plan/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/plan/list', headers = headers)
 
 print(r.json())
 
@@ -31348,7 +31390,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/plan/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/plan/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -31365,7 +31407,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/plan/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/plan/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -31396,7 +31438,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/plan/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/plan/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -31541,14 +31583,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/plan/info?creatorId=string \
+curl -X GET https://www.floatplane.com/api/v2/plan/info?creatorId=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/plan/info?creatorId=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/plan/info?creatorId=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -31559,7 +31601,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/plan/info?creatorId=string',
+fetch('https://www.floatplane.com/api/v2/plan/info?creatorId=string',
 {
   method: 'GET',
 
@@ -31581,7 +31623,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/plan/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/plan/info',
   params: {
   'creatorId' => 'string'
 }, headers: headers
@@ -31596,7 +31638,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/plan/info', params={
+r = requests.get('https://www.floatplane.com/api/v2/plan/info', params={
   'creatorId': 'string'
 }, headers = headers)
 
@@ -31619,7 +31661,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/plan/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/plan/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -31636,7 +31678,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/plan/info?creatorId=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/plan/info?creatorId=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -31667,7 +31709,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/plan/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/plan/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -31919,14 +31961,14 @@ Manage creator subscription plans.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/plan/content \
+curl -X GET https://www.floatplane.com/api/v3/plan/content \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/plan/content HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/plan/content HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -31937,7 +31979,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/plan/content',
+fetch('https://www.floatplane.com/api/v3/plan/content',
 {
   method: 'GET',
 
@@ -31959,7 +32001,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/plan/content',
+result = RestClient.get 'https://www.floatplane.com/api/v3/plan/content',
   params: {
   }, headers: headers
 
@@ -31973,7 +32015,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/plan/content', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/plan/content', headers = headers)
 
 print(r.json())
 
@@ -31994,7 +32036,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/plan/content', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/plan/content', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -32011,7 +32053,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/plan/content");
+URL obj = new URL("https://www.floatplane.com/api/v3/plan/content");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -32042,7 +32084,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/plan/content", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/plan/content", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -32191,14 +32233,14 @@ Manage Discord bots.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/discord/bot/link \
+curl -X GET https://www.floatplane.com/api/v2/discord/bot/link \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/discord/bot/link HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/discord/bot/link HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -32209,7 +32251,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/link',
+fetch('https://www.floatplane.com/api/v2/discord/bot/link',
 {
   method: 'GET',
 
@@ -32231,7 +32273,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/discord/bot/link',
+result = RestClient.get 'https://www.floatplane.com/api/v2/discord/bot/link',
   params: {
   }, headers: headers
 
@@ -32245,7 +32287,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/discord/bot/link', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/discord/bot/link', headers = headers)
 
 print(r.json())
 
@@ -32266,7 +32308,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/discord/bot/link', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/discord/bot/link', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -32283,7 +32325,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/link");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/link");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -32314,7 +32356,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/discord/bot/link", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/discord/bot/link", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -32459,14 +32501,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/discord/bot/link/callback \
+curl -X GET https://www.floatplane.com/api/v2/discord/bot/link/callback \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/discord/bot/link/callback HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/discord/bot/link/callback HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -32477,7 +32519,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback',
+fetch('https://www.floatplane.com/api/v2/discord/bot/link/callback',
 {
   method: 'GET',
 
@@ -32499,7 +32541,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback',
+result = RestClient.get 'https://www.floatplane.com/api/v2/discord/bot/link/callback',
   params: {
   }, headers: headers
 
@@ -32513,7 +32555,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/discord/bot/link/callback', headers = headers)
 
 print(r.json())
 
@@ -32534,7 +32576,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/discord/bot/link/callback', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -32551,7 +32593,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/link/callback");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -32582,7 +32624,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/discord/bot/link/callback", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/discord/bot/link/callback", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -32727,14 +32769,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/discord/bot/list \
+curl -X GET https://www.floatplane.com/api/v2/discord/bot/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/discord/bot/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/discord/bot/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -32745,7 +32787,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/list',
+fetch('https://www.floatplane.com/api/v2/discord/bot/list',
 {
   method: 'GET',
 
@@ -32767,7 +32809,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/discord/bot/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/discord/bot/list',
   params: {
   }, headers: headers
 
@@ -32781,7 +32823,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/discord/bot/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/discord/bot/list', headers = headers)
 
 print(r.json())
 
@@ -32802,7 +32844,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/discord/bot/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/discord/bot/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -32819,7 +32861,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -32850,7 +32892,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/discord/bot/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/discord/bot/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -32995,14 +33037,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/discord/bot/unlink \
+curl -X POST https://www.floatplane.com/api/v2/discord/bot/unlink \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/discord/bot/unlink HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/discord/bot/unlink HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -33013,7 +33055,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/unlink',
+fetch('https://www.floatplane.com/api/v2/discord/bot/unlink',
 {
   method: 'POST',
 
@@ -33035,7 +33077,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/discord/bot/unlink',
+result = RestClient.post 'https://www.floatplane.com/api/v2/discord/bot/unlink',
   params: {
   }, headers: headers
 
@@ -33049,7 +33091,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/discord/bot/unlink', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/discord/bot/unlink', headers = headers)
 
 print(r.json())
 
@@ -33070,7 +33112,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/discord/bot/unlink', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/discord/bot/unlink', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -33087,7 +33129,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/unlink");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/unlink");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -33118,7 +33160,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/discord/bot/unlink", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/discord/bot/unlink", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -33263,14 +33305,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/discord/bot/info \
+curl -X GET https://www.floatplane.com/api/v2/discord/bot/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/discord/bot/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/discord/bot/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -33281,7 +33323,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/info',
+fetch('https://www.floatplane.com/api/v2/discord/bot/info',
 {
   method: 'GET',
 
@@ -33303,7 +33345,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/discord/bot/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/discord/bot/info',
   params: {
   }, headers: headers
 
@@ -33317,7 +33359,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/discord/bot/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/discord/bot/info', headers = headers)
 
 print(r.json())
 
@@ -33338,7 +33380,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/discord/bot/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/discord/bot/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -33355,7 +33397,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/info");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -33386,7 +33428,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/discord/bot/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/discord/bot/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -33531,14 +33573,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate \
+curl -X GET https://www.floatplane.com/api/v2/discord/bot/invite/generate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/discord/bot/invite/generate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -33549,7 +33591,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate',
+fetch('https://www.floatplane.com/api/v2/discord/bot/invite/generate',
 {
   method: 'GET',
 
@@ -33571,7 +33613,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate',
+result = RestClient.get 'https://www.floatplane.com/api/v2/discord/bot/invite/generate',
   params: {
   }, headers: headers
 
@@ -33585,7 +33627,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/discord/bot/invite/generate', headers = headers)
 
 print(r.json())
 
@@ -33606,7 +33648,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/discord/bot/invite/generate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -33623,7 +33665,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/invite/generate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -33654,7 +33696,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/discord/bot/invite/generate", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/discord/bot/invite/generate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -33799,14 +33841,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/discord/bot/update \
+curl -X POST https://www.floatplane.com/api/v2/discord/bot/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/discord/bot/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/discord/bot/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -33817,7 +33859,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/bot/update',
+fetch('https://www.floatplane.com/api/v2/discord/bot/update',
 {
   method: 'POST',
 
@@ -33839,7 +33881,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/discord/bot/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/discord/bot/update',
   params: {
   }, headers: headers
 
@@ -33853,7 +33895,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/discord/bot/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/discord/bot/update', headers = headers)
 
 print(r.json())
 
@@ -33874,7 +33916,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/discord/bot/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/discord/bot/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -33891,7 +33933,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/bot/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/bot/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -33922,7 +33964,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/discord/bot/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/discord/bot/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -34067,14 +34109,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/discord/server/join \
+curl -X POST https://www.floatplane.com/api/v2/discord/server/join \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/discord/server/join HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/discord/server/join HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -34085,7 +34127,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/discord/server/join',
+fetch('https://www.floatplane.com/api/v2/discord/server/join',
 {
   method: 'POST',
 
@@ -34107,7 +34149,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/discord/server/join',
+result = RestClient.post 'https://www.floatplane.com/api/v2/discord/server/join',
   params: {
   }, headers: headers
 
@@ -34121,7 +34163,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/discord/server/join', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/discord/server/join', headers = headers)
 
 print(r.json())
 
@@ -34142,7 +34184,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/discord/server/join', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/discord/server/join', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -34159,7 +34201,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/discord/server/join");
+URL obj = new URL("https://www.floatplane.com/api/v2/discord/server/join");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -34190,7 +34232,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/discord/server/join", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/discord/server/join", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -34339,14 +34381,14 @@ Get edge server information for media playback.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/edges \
+curl -X GET https://www.floatplane.com/api/v2/edges \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/edges HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/edges HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -34357,7 +34399,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/edges',
+fetch('https://www.floatplane.com/api/v2/edges',
 {
   method: 'GET',
 
@@ -34379,7 +34421,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/edges',
+result = RestClient.get 'https://www.floatplane.com/api/v2/edges',
   params: {
   }, headers: headers
 
@@ -34393,7 +34435,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/edges', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/edges', headers = headers)
 
 print(r.json())
 
@@ -34414,7 +34456,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/edges', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/edges', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -34431,7 +34473,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/edges");
+URL obj = new URL("https://www.floatplane.com/api/v2/edges");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -34462,7 +34504,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/edges", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/edges", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -34606,14 +34648,14 @@ This operation does not require authentication
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/url \
+curl -X GET https://www.floatplane.com/api/v2/video/url \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/url HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/url HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -34624,7 +34666,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/url',
+fetch('https://www.floatplane.com/api/v2/video/url',
 {
   method: 'GET',
 
@@ -34646,7 +34688,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/url',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/url',
   params: {
   }, headers: headers
 
@@ -34660,7 +34702,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/url', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/url', headers = headers)
 
 print(r.json())
 
@@ -34681,7 +34723,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/url', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/url', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -34698,7 +34740,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/url");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/url");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -34729,7 +34771,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/url", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/url", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -34878,14 +34920,14 @@ Get FAQs.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/faq/list \
+curl -X GET https://www.floatplane.com/api/v2/faq/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/faq/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/faq/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -34896,7 +34938,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/faq/list',
+fetch('https://www.floatplane.com/api/v2/faq/list',
 {
   method: 'GET',
 
@@ -34918,7 +34960,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/faq/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/faq/list',
   params: {
   }, headers: headers
 
@@ -34932,7 +34974,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/faq/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/faq/list', headers = headers)
 
 print(r.json())
 
@@ -34953,7 +34995,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/faq/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/faq/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -34970,7 +35012,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/faq/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/faq/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -35001,7 +35043,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/faq/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/faq/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -35224,14 +35266,14 @@ Get video iframe data.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/get/player/{guid} \
+curl -X GET https://www.floatplane.com/api/v2/get/player/{guid} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/get/player/{guid} HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/get/player/{guid} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -35242,7 +35284,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/get/player/{guid}',
+fetch('https://www.floatplane.com/api/v2/get/player/{guid}',
 {
   method: 'GET',
 
@@ -35264,7 +35306,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/get/player/{guid}',
+result = RestClient.get 'https://www.floatplane.com/api/v2/get/player/{guid}',
   params: {
   }, headers: headers
 
@@ -35278,7 +35320,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/get/player/{guid}', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/get/player/{guid}', headers = headers)
 
 print(r.json())
 
@@ -35299,7 +35341,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/get/player/{guid}', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/get/player/{guid}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -35316,7 +35358,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/get/player/{guid}");
+URL obj = new URL("https://www.floatplane.com/api/v2/get/player/{guid}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -35347,7 +35389,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/get/player/{guid}", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/get/player/{guid}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -35502,14 +35544,14 @@ Manage image media optimizations.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/image/optimizations/ \
+curl -X GET https://www.floatplane.com/api/v2/image/optimizations/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/image/optimizations/ HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/image/optimizations/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -35520,7 +35562,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/image/optimizations/',
+fetch('https://www.floatplane.com/api/v2/image/optimizations/',
 {
   method: 'GET',
 
@@ -35542,7 +35584,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/image/optimizations/',
+result = RestClient.get 'https://www.floatplane.com/api/v2/image/optimizations/',
   params: {
   }, headers: headers
 
@@ -35556,7 +35598,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/image/optimizations/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/image/optimizations/', headers = headers)
 
 print(r.json())
 
@@ -35577,7 +35619,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/image/optimizations/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/image/optimizations/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -35594,7 +35636,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/image/optimizations/");
+URL obj = new URL("https://www.floatplane.com/api/v2/image/optimizations/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -35625,7 +35667,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/image/optimizations/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/image/optimizations/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -35774,14 +35816,14 @@ Manage image media optimizations.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/image/optimizations/ \
+curl -X GET https://www.floatplane.com/api/v3/image/optimizations/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/image/optimizations/ HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/image/optimizations/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -35792,7 +35834,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/image/optimizations/',
+fetch('https://www.floatplane.com/api/v3/image/optimizations/',
 {
   method: 'GET',
 
@@ -35814,7 +35856,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/image/optimizations/',
+result = RestClient.get 'https://www.floatplane.com/api/v3/image/optimizations/',
   params: {
   }, headers: headers
 
@@ -35828,7 +35870,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/image/optimizations/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/image/optimizations/', headers = headers)
 
 print(r.json())
 
@@ -35849,7 +35891,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/image/optimizations/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/image/optimizations/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -35866,7 +35908,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/image/optimizations/");
+URL obj = new URL("https://www.floatplane.com/api/v3/image/optimizations/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -35897,7 +35939,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/image/optimizations/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/image/optimizations/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -36046,14 +36088,14 @@ Livestream chat and management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/v2/live/popout \
+curl -X GET https://www.floatplane.com/v2/live/popout \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/v2/live/popout HTTP/1.1
-
+GET https://www.floatplane.com/v2/live/popout HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -36064,7 +36106,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/v2/live/popout',
+fetch('https://www.floatplane.com/v2/live/popout',
 {
   method: 'GET',
 
@@ -36086,7 +36128,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/v2/live/popout',
+result = RestClient.get 'https://www.floatplane.com/v2/live/popout',
   params: {
   }, headers: headers
 
@@ -36100,7 +36142,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/v2/live/popout', headers = headers)
+r = requests.get('https://www.floatplane.com/v2/live/popout', headers = headers)
 
 print(r.json())
 
@@ -36121,7 +36163,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/v2/live/popout', array(
+    $response = $client->request('GET','https://www.floatplane.com/v2/live/popout', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -36138,7 +36180,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/v2/live/popout");
+URL obj = new URL("https://www.floatplane.com/v2/live/popout");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -36169,7 +36211,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/v2/live/popout", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/v2/live/popout", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -36314,14 +36356,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/live/config/update \
+curl -X POST https://www.floatplane.com/api/v2/live/config/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/live/config/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/live/config/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -36332,7 +36374,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/live/config/update',
+fetch('https://www.floatplane.com/api/v2/live/config/update',
 {
   method: 'POST',
 
@@ -36354,7 +36396,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/live/config/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/live/config/update',
   params: {
   }, headers: headers
 
@@ -36368,7 +36410,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/live/config/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/live/config/update', headers = headers)
 
 print(r.json())
 
@@ -36389,7 +36431,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/live/config/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/live/config/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -36406,7 +36448,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/live/config/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/live/config/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -36437,7 +36479,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/live/config/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/live/config/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -36582,14 +36624,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/live/thumbnail/upload \
+curl -X POST https://www.floatplane.com/api/v2/live/thumbnail/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/live/thumbnail/upload HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/live/thumbnail/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -36600,7 +36642,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload',
+fetch('https://www.floatplane.com/api/v2/live/thumbnail/upload',
 {
   method: 'POST',
 
@@ -36622,7 +36664,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload',
+result = RestClient.post 'https://www.floatplane.com/api/v2/live/thumbnail/upload',
   params: {
   }, headers: headers
 
@@ -36636,7 +36678,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/live/thumbnail/upload', headers = headers)
 
 print(r.json())
 
@@ -36657,7 +36699,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/live/thumbnail/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -36674,7 +36716,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload");
+URL obj = new URL("https://www.floatplane.com/api/v2/live/thumbnail/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -36705,7 +36747,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/live/thumbnail/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/live/thumbnail/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -36854,14 +36896,14 @@ Moderation actions, for users and comments.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/moderation/user/ban \
+curl -X POST https://www.floatplane.com/api/v2/moderation/user/ban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/moderation/user/ban HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/moderation/user/ban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -36872,7 +36914,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/user/ban',
+fetch('https://www.floatplane.com/api/v2/moderation/user/ban',
 {
   method: 'POST',
 
@@ -36894,7 +36936,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/moderation/user/ban',
+result = RestClient.post 'https://www.floatplane.com/api/v2/moderation/user/ban',
   params: {
   }, headers: headers
 
@@ -36908,7 +36950,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/moderation/user/ban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/moderation/user/ban', headers = headers)
 
 print(r.json())
 
@@ -36929,7 +36971,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/moderation/user/ban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/moderation/user/ban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -36946,7 +36988,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/user/ban");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/user/ban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -36977,7 +37019,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/moderation/user/ban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/moderation/user/ban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -37122,14 +37164,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/moderation/user/unban \
+curl -X POST https://www.floatplane.com/api/v2/moderation/user/unban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/moderation/user/unban HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/moderation/user/unban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -37140,7 +37182,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/user/unban',
+fetch('https://www.floatplane.com/api/v2/moderation/user/unban',
 {
   method: 'POST',
 
@@ -37162,7 +37204,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/moderation/user/unban',
+result = RestClient.post 'https://www.floatplane.com/api/v2/moderation/user/unban',
   params: {
   }, headers: headers
 
@@ -37176,7 +37218,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/moderation/user/unban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/moderation/user/unban', headers = headers)
 
 print(r.json())
 
@@ -37197,7 +37239,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/moderation/user/unban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/moderation/user/unban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -37214,7 +37256,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/user/unban");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/user/unban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -37245,7 +37287,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/moderation/user/unban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/moderation/user/unban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -37390,14 +37432,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/moderation/user/ban/list \
+curl -X GET https://www.floatplane.com/api/v2/moderation/user/ban/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/moderation/user/ban/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/moderation/user/ban/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -37408,7 +37450,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list',
+fetch('https://www.floatplane.com/api/v2/moderation/user/ban/list',
 {
   method: 'GET',
 
@@ -37430,7 +37472,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/moderation/user/ban/list',
   params: {
   }, headers: headers
 
@@ -37444,7 +37486,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/moderation/user/ban/list', headers = headers)
 
 print(r.json())
 
@@ -37465,7 +37507,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/moderation/user/ban/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -37482,7 +37524,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/user/ban/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -37513,7 +37555,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/moderation/user/ban/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/moderation/user/ban/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -37658,14 +37700,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/moderation/comment/hide \
+curl -X POST https://www.floatplane.com/api/v2/moderation/comment/hide \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/moderation/comment/hide HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/moderation/comment/hide HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -37676,7 +37718,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/comment/hide',
+fetch('https://www.floatplane.com/api/v2/moderation/comment/hide',
 {
   method: 'POST',
 
@@ -37698,7 +37740,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/moderation/comment/hide',
+result = RestClient.post 'https://www.floatplane.com/api/v2/moderation/comment/hide',
   params: {
   }, headers: headers
 
@@ -37712,7 +37754,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/moderation/comment/hide', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/moderation/comment/hide', headers = headers)
 
 print(r.json())
 
@@ -37733,7 +37775,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/moderation/comment/hide', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/moderation/comment/hide', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -37750,7 +37792,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/comment/hide");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/comment/hide");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -37781,7 +37823,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/moderation/comment/hide", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/moderation/comment/hide", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -37926,14 +37968,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/moderation/comment/unhide \
+curl -X POST https://www.floatplane.com/api/v2/moderation/comment/unhide \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/moderation/comment/unhide HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/moderation/comment/unhide HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -37944,7 +37986,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide',
+fetch('https://www.floatplane.com/api/v2/moderation/comment/unhide',
 {
   method: 'POST',
 
@@ -37966,7 +38008,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide',
+result = RestClient.post 'https://www.floatplane.com/api/v2/moderation/comment/unhide',
   params: {
   }, headers: headers
 
@@ -37980,7 +38022,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/moderation/comment/unhide', headers = headers)
 
 print(r.json())
 
@@ -38001,7 +38043,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/moderation/comment/unhide', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -38018,7 +38060,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/comment/unhide");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -38049,7 +38091,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/moderation/comment/unhide", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/moderation/comment/unhide", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -38194,14 +38236,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/comment/moderate/ \
+curl -X POST https://www.floatplane.com/api/v2/comment/moderate/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/comment/moderate/ HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/comment/moderate/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -38212,7 +38254,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/comment/moderate/',
+fetch('https://www.floatplane.com/api/v2/comment/moderate/',
 {
   method: 'POST',
 
@@ -38234,7 +38276,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/comment/moderate/',
+result = RestClient.post 'https://www.floatplane.com/api/v2/comment/moderate/',
   params: {
   }, headers: headers
 
@@ -38248,7 +38290,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/comment/moderate/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/comment/moderate/', headers = headers)
 
 print(r.json())
 
@@ -38269,7 +38311,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/comment/moderate/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/comment/moderate/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -38286,7 +38328,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/comment/moderate/");
+URL obj = new URL("https://www.floatplane.com/api/v2/comment/moderate/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -38317,7 +38359,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/comment/moderate/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/comment/moderate/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -38462,14 +38504,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/moderator/userBanStatus \
+curl -X GET https://www.floatplane.com/api/v2/moderator/userBanStatus \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/moderator/userBanStatus HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/moderator/userBanStatus HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -38480,7 +38522,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus',
+fetch('https://www.floatplane.com/api/v2/moderator/userBanStatus',
 {
   method: 'GET',
 
@@ -38502,7 +38544,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus',
+result = RestClient.get 'https://www.floatplane.com/api/v2/moderator/userBanStatus',
   params: {
   }, headers: headers
 
@@ -38516,7 +38558,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/moderator/userBanStatus', headers = headers)
 
 print(r.json())
 
@@ -38537,7 +38579,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/moderator/userBanStatus', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -38554,7 +38596,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderator/userBanStatus");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -38585,7 +38627,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/moderator/userBanStatus", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/moderator/userBanStatus", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -38730,14 +38772,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/moderator/user/unban \
+curl -X POST https://www.floatplane.com/api/v2/moderator/user/unban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/moderator/user/unban HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/moderator/user/unban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -38748,7 +38790,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderator/user/unban',
+fetch('https://www.floatplane.com/api/v2/moderator/user/unban',
 {
   method: 'POST',
 
@@ -38770,7 +38812,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/moderator/user/unban',
+result = RestClient.post 'https://www.floatplane.com/api/v2/moderator/user/unban',
   params: {
   }, headers: headers
 
@@ -38784,7 +38826,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/moderator/user/unban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/moderator/user/unban', headers = headers)
 
 print(r.json())
 
@@ -38805,7 +38847,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/moderator/user/unban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/moderator/user/unban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -38822,7 +38864,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderator/user/unban");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderator/user/unban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -38853,7 +38895,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/moderator/user/unban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/moderator/user/unban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -38998,14 +39040,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/moderation/user/info \
+curl -X GET https://www.floatplane.com/api/v2/moderation/user/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/moderation/user/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/moderation/user/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -39016,7 +39058,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/moderation/user/info',
+fetch('https://www.floatplane.com/api/v2/moderation/user/info',
 {
   method: 'GET',
 
@@ -39038,7 +39080,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/moderation/user/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/moderation/user/info',
   params: {
   }, headers: headers
 
@@ -39052,7 +39094,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/moderation/user/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/moderation/user/info', headers = headers)
 
 print(r.json())
 
@@ -39073,7 +39115,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/moderation/user/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/moderation/user/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -39090,7 +39132,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/moderation/user/info");
+URL obj = new URL("https://www.floatplane.com/api/v2/moderation/user/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -39121,7 +39163,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/moderation/user/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/moderation/user/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -39270,14 +39312,14 @@ Moderation actions, for users and comments.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/moderation/user/ban \
+curl -X POST https://www.floatplane.com/api/v3/moderation/user/ban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/moderation/user/ban HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/moderation/user/ban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -39288,7 +39330,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/user/ban',
+fetch('https://www.floatplane.com/api/v3/moderation/user/ban',
 {
   method: 'POST',
 
@@ -39310,7 +39352,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/moderation/user/ban',
+result = RestClient.post 'https://www.floatplane.com/api/v3/moderation/user/ban',
   params: {
   }, headers: headers
 
@@ -39324,7 +39366,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/moderation/user/ban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/moderation/user/ban', headers = headers)
 
 print(r.json())
 
@@ -39345,7 +39387,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/moderation/user/ban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/moderation/user/ban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -39362,7 +39404,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/user/ban");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/user/ban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -39393,7 +39435,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/moderation/user/ban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/moderation/user/ban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -39538,14 +39580,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/moderation/user/unban \
+curl -X POST https://www.floatplane.com/api/v3/moderation/user/unban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/moderation/user/unban HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/moderation/user/unban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -39556,7 +39598,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/user/unban',
+fetch('https://www.floatplane.com/api/v3/moderation/user/unban',
 {
   method: 'POST',
 
@@ -39578,7 +39620,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/moderation/user/unban',
+result = RestClient.post 'https://www.floatplane.com/api/v3/moderation/user/unban',
   params: {
   }, headers: headers
 
@@ -39592,7 +39634,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/moderation/user/unban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/moderation/user/unban', headers = headers)
 
 print(r.json())
 
@@ -39613,7 +39655,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/moderation/user/unban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/moderation/user/unban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -39630,7 +39672,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/user/unban");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/user/unban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -39661,7 +39703,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/moderation/user/unban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/moderation/user/unban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -39806,14 +39848,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/moderation/user/ban/list \
+curl -X GET https://www.floatplane.com/api/v3/moderation/user/ban/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/moderation/user/ban/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/moderation/user/ban/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -39824,7 +39866,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list',
+fetch('https://www.floatplane.com/api/v3/moderation/user/ban/list',
 {
   method: 'GET',
 
@@ -39846,7 +39888,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/moderation/user/ban/list',
   params: {
   }, headers: headers
 
@@ -39860,7 +39902,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/moderation/user/ban/list', headers = headers)
 
 print(r.json())
 
@@ -39881,7 +39923,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/moderation/user/ban/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -39898,7 +39940,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/user/ban/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -39929,7 +39971,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/moderation/user/ban/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/moderation/user/ban/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -40074,14 +40116,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/moderation/comment/hide \
+curl -X POST https://www.floatplane.com/api/v3/moderation/comment/hide \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/moderation/comment/hide HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/moderation/comment/hide HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -40092,7 +40134,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/comment/hide',
+fetch('https://www.floatplane.com/api/v3/moderation/comment/hide',
 {
   method: 'POST',
 
@@ -40114,7 +40156,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/moderation/comment/hide',
+result = RestClient.post 'https://www.floatplane.com/api/v3/moderation/comment/hide',
   params: {
   }, headers: headers
 
@@ -40128,7 +40170,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/moderation/comment/hide', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/moderation/comment/hide', headers = headers)
 
 print(r.json())
 
@@ -40149,7 +40191,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/moderation/comment/hide', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/moderation/comment/hide', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -40166,7 +40208,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/comment/hide");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/comment/hide");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -40197,7 +40239,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/moderation/comment/hide", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/moderation/comment/hide", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -40342,14 +40384,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/moderation/comment/unhide \
+curl -X POST https://www.floatplane.com/api/v3/moderation/comment/unhide \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/moderation/comment/unhide HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/moderation/comment/unhide HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -40360,7 +40402,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide',
+fetch('https://www.floatplane.com/api/v3/moderation/comment/unhide',
 {
   method: 'POST',
 
@@ -40382,7 +40424,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide',
+result = RestClient.post 'https://www.floatplane.com/api/v3/moderation/comment/unhide',
   params: {
   }, headers: headers
 
@@ -40396,7 +40438,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/moderation/comment/unhide', headers = headers)
 
 print(r.json())
 
@@ -40417,7 +40459,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/moderation/comment/unhide', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -40434,7 +40476,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/comment/unhide");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -40465,7 +40507,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/moderation/comment/unhide", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/moderation/comment/unhide", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -40610,14 +40652,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/comment/moderate/ \
+curl -X POST https://www.floatplane.com/api/v3/comment/moderate/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/comment/moderate/ HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/comment/moderate/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -40628,7 +40670,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment/moderate/',
+fetch('https://www.floatplane.com/api/v3/comment/moderate/',
 {
   method: 'POST',
 
@@ -40650,7 +40692,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/comment/moderate/',
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/moderate/',
   params: {
   }, headers: headers
 
@@ -40664,7 +40706,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/comment/moderate/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/comment/moderate/', headers = headers)
 
 print(r.json())
 
@@ -40685,7 +40727,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/comment/moderate/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/moderate/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -40702,7 +40744,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment/moderate/");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/moderate/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -40733,7 +40775,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/comment/moderate/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/moderate/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -40878,14 +40920,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/moderator/userBanStatus \
+curl -X GET https://www.floatplane.com/api/v3/moderator/userBanStatus \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/moderator/userBanStatus HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/moderator/userBanStatus HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -40896,7 +40938,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus',
+fetch('https://www.floatplane.com/api/v3/moderator/userBanStatus',
 {
   method: 'GET',
 
@@ -40918,7 +40960,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus',
+result = RestClient.get 'https://www.floatplane.com/api/v3/moderator/userBanStatus',
   params: {
   }, headers: headers
 
@@ -40932,7 +40974,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/moderator/userBanStatus', headers = headers)
 
 print(r.json())
 
@@ -40953,7 +40995,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/moderator/userBanStatus', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -40970,7 +41012,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderator/userBanStatus");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -41001,7 +41043,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/moderator/userBanStatus", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/moderator/userBanStatus", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -41146,14 +41188,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/moderator/user/unban \
+curl -X POST https://www.floatplane.com/api/v3/moderator/user/unban \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/moderator/user/unban HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/moderator/user/unban HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -41164,7 +41206,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderator/user/unban',
+fetch('https://www.floatplane.com/api/v3/moderator/user/unban',
 {
   method: 'POST',
 
@@ -41186,7 +41228,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/moderator/user/unban',
+result = RestClient.post 'https://www.floatplane.com/api/v3/moderator/user/unban',
   params: {
   }, headers: headers
 
@@ -41200,7 +41242,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/moderator/user/unban', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/moderator/user/unban', headers = headers)
 
 print(r.json())
 
@@ -41221,7 +41263,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/moderator/user/unban', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/moderator/user/unban', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -41238,7 +41280,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderator/user/unban");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderator/user/unban");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -41269,7 +41311,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/moderator/user/unban", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/moderator/user/unban", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -41414,14 +41456,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/moderation/user/info \
+curl -X GET https://www.floatplane.com/api/v3/moderation/user/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/moderation/user/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/moderation/user/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -41432,7 +41474,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/moderation/user/info',
+fetch('https://www.floatplane.com/api/v3/moderation/user/info',
 {
   method: 'GET',
 
@@ -41454,7 +41496,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/moderation/user/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/moderation/user/info',
   params: {
   }, headers: headers
 
@@ -41468,7 +41510,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/moderation/user/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/moderation/user/info', headers = headers)
 
 print(r.json())
 
@@ -41489,7 +41531,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/moderation/user/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/moderation/user/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -41506,7 +41548,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/moderation/user/info");
+URL obj = new URL("https://www.floatplane.com/api/v3/moderation/user/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -41537,7 +41579,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/moderation/user/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/moderation/user/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -41686,14 +41728,14 @@ Password management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/password/reset/request \
+curl -X POST https://www.floatplane.com/api/v2/user/password/reset/request \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/password/reset/request HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/password/reset/request HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -41704,7 +41746,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/password/reset/request',
+fetch('https://www.floatplane.com/api/v2/user/password/reset/request',
 {
   method: 'POST',
 
@@ -41726,7 +41768,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/password/reset/request',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/password/reset/request',
   params: {
   }, headers: headers
 
@@ -41740,7 +41782,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/password/reset/request', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/password/reset/request', headers = headers)
 
 print(r.json())
 
@@ -41761,7 +41803,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/password/reset/request', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/password/reset/request', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -41778,7 +41820,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/password/reset/request");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/password/reset/request");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -41809,7 +41851,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/password/reset/request", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/password/reset/request", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -41954,14 +41996,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/password/reset \
+curl -X POST https://www.floatplane.com/api/v2/user/password/reset \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/password/reset HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/password/reset HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -41972,7 +42014,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/password/reset',
+fetch('https://www.floatplane.com/api/v2/user/password/reset',
 {
   method: 'POST',
 
@@ -41994,7 +42036,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/password/reset',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/password/reset',
   params: {
   }, headers: headers
 
@@ -42008,7 +42050,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/password/reset', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/password/reset', headers = headers)
 
 print(r.json())
 
@@ -42029,7 +42071,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/password/reset', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/password/reset', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -42046,7 +42088,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/password/reset");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/password/reset");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -42077,7 +42119,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/password/reset", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/password/reset", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -42222,14 +42264,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/password/reset/validate \
+curl -X POST https://www.floatplane.com/api/v2/user/password/reset/validate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/password/reset/validate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/password/reset/validate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -42240,7 +42282,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/password/reset/validate',
+fetch('https://www.floatplane.com/api/v2/user/password/reset/validate',
 {
   method: 'POST',
 
@@ -42262,7 +42304,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/password/reset/validate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/password/reset/validate',
   params: {
   }, headers: headers
 
@@ -42276,7 +42318,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/password/reset/validate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/password/reset/validate', headers = headers)
 
 print(r.json())
 
@@ -42297,7 +42339,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/password/reset/validate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/password/reset/validate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -42314,7 +42356,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/password/reset/validate");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/password/reset/validate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -42345,7 +42387,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/password/reset/validate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/password/reset/validate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -42494,14 +42536,14 @@ User payment method/address/invoice management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/method/list \
+curl -X GET https://www.floatplane.com/api/v2/payment/method/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/method/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/method/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -42512,7 +42554,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/method/list',
+fetch('https://www.floatplane.com/api/v2/payment/method/list',
 {
   method: 'GET',
 
@@ -42534,7 +42576,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/method/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/method/list',
   params: {
   }, headers: headers
 
@@ -42548,7 +42590,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/method/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/method/list', headers = headers)
 
 print(r.json())
 
@@ -42569,7 +42611,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/method/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/method/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -42586,7 +42628,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/method/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/method/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -42617,7 +42659,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/method/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/method/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -42790,14 +42832,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/method/add \
+curl -X POST https://www.floatplane.com/api/v2/payment/method/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/method/add HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/method/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -42808,7 +42850,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/method/add',
+fetch('https://www.floatplane.com/api/v2/payment/method/add',
 {
   method: 'POST',
 
@@ -42830,7 +42872,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/method/add',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/method/add',
   params: {
   }, headers: headers
 
@@ -42844,7 +42886,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/method/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/method/add', headers = headers)
 
 print(r.json())
 
@@ -42865,7 +42907,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/method/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/method/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -42882,7 +42924,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/method/add");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/method/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -42913,7 +42955,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/method/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/method/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -43058,14 +43100,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/method/delete \
+curl -X POST https://www.floatplane.com/api/v2/payment/method/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/method/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/method/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -43076,7 +43118,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/method/delete',
+fetch('https://www.floatplane.com/api/v2/payment/method/delete',
 {
   method: 'POST',
 
@@ -43098,7 +43140,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/method/delete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/method/delete',
   params: {
   }, headers: headers
 
@@ -43112,7 +43154,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/method/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/method/delete', headers = headers)
 
 print(r.json())
 
@@ -43133,7 +43175,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/method/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/method/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -43150,7 +43192,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/method/delete");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/method/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -43181,7 +43223,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/method/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/method/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -43326,14 +43368,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/method/set \
+curl -X POST https://www.floatplane.com/api/v2/payment/method/set \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/method/set HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/method/set HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -43344,7 +43386,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/method/set',
+fetch('https://www.floatplane.com/api/v2/payment/method/set',
 {
   method: 'POST',
 
@@ -43366,7 +43408,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/method/set',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/method/set',
   params: {
   }, headers: headers
 
@@ -43380,7 +43422,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/method/set', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/method/set', headers = headers)
 
 print(r.json())
 
@@ -43401,7 +43443,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/method/set', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/method/set', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -43418,7 +43460,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/method/set");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/method/set");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -43449,7 +43491,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/method/set", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/method/set", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -43594,14 +43636,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/tax/estimate \
+curl -X GET https://www.floatplane.com/api/v2/payment/tax/estimate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/tax/estimate HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/tax/estimate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -43612,7 +43654,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/tax/estimate',
+fetch('https://www.floatplane.com/api/v2/payment/tax/estimate',
 {
   method: 'GET',
 
@@ -43634,7 +43676,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/tax/estimate',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/tax/estimate',
   params: {
   }, headers: headers
 
@@ -43648,7 +43690,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/tax/estimate', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/tax/estimate', headers = headers)
 
 print(r.json())
 
@@ -43669,7 +43711,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/tax/estimate', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/tax/estimate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -43686,7 +43728,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/tax/estimate");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/tax/estimate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -43717,7 +43759,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/tax/estimate", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/tax/estimate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -43862,14 +43904,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/subscription/purchase \
+curl -X POST https://www.floatplane.com/api/v2/payment/subscription/purchase \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/subscription/purchase HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/subscription/purchase HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -43880,7 +43922,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase',
+fetch('https://www.floatplane.com/api/v2/payment/subscription/purchase',
 {
   method: 'POST',
 
@@ -43902,7 +43944,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/subscription/purchase',
   params: {
   }, headers: headers
 
@@ -43916,7 +43958,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/subscription/purchase', headers = headers)
 
 print(r.json())
 
@@ -43937,7 +43979,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/subscription/purchase', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -43954,7 +43996,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/subscription/purchase");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -43985,7 +44027,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/subscription/purchase", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/subscription/purchase", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -44130,14 +44172,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/subscription/cancel \
+curl -X POST https://www.floatplane.com/api/v2/payment/subscription/cancel \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/subscription/cancel HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/subscription/cancel HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -44148,7 +44190,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel',
+fetch('https://www.floatplane.com/api/v2/payment/subscription/cancel',
 {
   method: 'POST',
 
@@ -44170,7 +44212,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/subscription/cancel',
   params: {
   }, headers: headers
 
@@ -44184,7 +44226,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/subscription/cancel', headers = headers)
 
 print(r.json())
 
@@ -44205,7 +44247,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/subscription/cancel', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -44222,7 +44264,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/subscription/cancel");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -44253,7 +44295,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/subscription/cancel", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/subscription/cancel", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -44398,14 +44440,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/address/list \
+curl -X GET https://www.floatplane.com/api/v2/payment/address/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/address/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/address/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -44416,7 +44458,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/address/list',
+fetch('https://www.floatplane.com/api/v2/payment/address/list',
 {
   method: 'GET',
 
@@ -44438,7 +44480,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/address/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/address/list',
   params: {
   }, headers: headers
 
@@ -44452,7 +44494,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/address/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/address/list', headers = headers)
 
 print(r.json())
 
@@ -44473,7 +44515,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/address/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/address/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -44490,7 +44532,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/address/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/address/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -44521,7 +44563,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/address/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/address/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -44691,14 +44733,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/address/add \
+curl -X POST https://www.floatplane.com/api/v2/payment/address/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/address/add HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/address/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -44709,7 +44751,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/address/add',
+fetch('https://www.floatplane.com/api/v2/payment/address/add',
 {
   method: 'POST',
 
@@ -44731,7 +44773,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/address/add',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/address/add',
   params: {
   }, headers: headers
 
@@ -44745,7 +44787,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/address/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/address/add', headers = headers)
 
 print(r.json())
 
@@ -44766,7 +44808,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/address/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/address/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -44783,7 +44825,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/address/add");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/address/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -44814,7 +44856,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/address/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/address/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -44959,14 +45001,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/address/update \
+curl -X POST https://www.floatplane.com/api/v2/payment/address/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/address/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/address/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -44977,7 +45019,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/address/update',
+fetch('https://www.floatplane.com/api/v2/payment/address/update',
 {
   method: 'POST',
 
@@ -44999,7 +45041,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/address/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/address/update',
   params: {
   }, headers: headers
 
@@ -45013,7 +45055,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/address/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/address/update', headers = headers)
 
 print(r.json())
 
@@ -45034,7 +45076,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/address/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/address/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -45051,7 +45093,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/address/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/address/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -45082,7 +45124,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/address/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/address/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -45227,14 +45269,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/address/delete \
+curl -X POST https://www.floatplane.com/api/v2/payment/address/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/address/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/address/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -45245,7 +45287,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/address/delete',
+fetch('https://www.floatplane.com/api/v2/payment/address/delete',
 {
   method: 'POST',
 
@@ -45267,7 +45309,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/address/delete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/address/delete',
   params: {
   }, headers: headers
 
@@ -45281,7 +45323,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/address/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/address/delete', headers = headers)
 
 print(r.json())
 
@@ -45302,7 +45344,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/address/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/address/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -45319,7 +45361,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/address/delete");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/address/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -45350,7 +45392,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/address/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/address/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -45495,14 +45537,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/address/set \
+curl -X POST https://www.floatplane.com/api/v2/payment/address/set \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/address/set HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/address/set HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -45513,7 +45555,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/address/set',
+fetch('https://www.floatplane.com/api/v2/payment/address/set',
 {
   method: 'POST',
 
@@ -45535,7 +45577,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/address/set',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/address/set',
   params: {
   }, headers: headers
 
@@ -45549,7 +45591,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/address/set', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/address/set', headers = headers)
 
 print(r.json())
 
@@ -45570,7 +45612,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/address/set', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/address/set', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -45587,7 +45629,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/address/set");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/address/set");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -45618,7 +45660,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/address/set", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/address/set", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -45763,14 +45805,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor} \
+curl -X POST https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor} HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -45781,7 +45823,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}',
+fetch('https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}',
 {
   method: 'POST',
 
@@ -45803,7 +45845,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}',
   params: {
   }, headers: headers
 
@@ -45817,7 +45859,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}', headers = headers)
 
 print(r.json())
 
@@ -45838,7 +45880,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -45855,7 +45897,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -45886,7 +45928,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -46037,14 +46079,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor} \
+curl -X POST https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor} HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -46055,7 +46097,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}',
+fetch('https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}',
 {
   method: 'POST',
 
@@ -46077,7 +46119,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}',
+result = RestClient.post 'https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}',
   params: {
   }, headers: headers
 
@@ -46091,7 +46133,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}', headers = headers)
 
 print(r.json())
 
@@ -46112,7 +46154,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -46129,7 +46171,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -46160,7 +46202,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/payment/webhook/{paymentProcessor}/{subPaymentProcessor}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -46312,14 +46354,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/invoice/list \
+curl -X GET https://www.floatplane.com/api/v2/payment/invoice/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/invoice/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/invoice/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -46330,7 +46372,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/invoice/list',
+fetch('https://www.floatplane.com/api/v2/payment/invoice/list',
 {
   method: 'GET',
 
@@ -46352,7 +46394,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/invoice/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/invoice/list',
   params: {
   }, headers: headers
 
@@ -46366,7 +46408,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/invoice/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/invoice/list', headers = headers)
 
 print(r.json())
 
@@ -46387,7 +46429,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/invoice/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/invoice/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -46404,7 +46446,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/invoice/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/invoice/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -46435,7 +46477,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/invoice/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/invoice/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -46638,14 +46680,14 @@ Socket subscriptions and connections.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/socket/subscribe/user \
+curl -X POST https://www.floatplane.com/api/v2/socket/subscribe/user \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/socket/subscribe/user HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/socket/subscribe/user HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -46656,7 +46698,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/socket/subscribe/user',
+fetch('https://www.floatplane.com/api/v2/socket/subscribe/user',
 {
   method: 'POST',
 
@@ -46678,7 +46720,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/socket/subscribe/user',
+result = RestClient.post 'https://www.floatplane.com/api/v2/socket/subscribe/user',
   params: {
   }, headers: headers
 
@@ -46692,7 +46734,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/socket/subscribe/user', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/socket/subscribe/user', headers = headers)
 
 print(r.json())
 
@@ -46713,7 +46755,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/socket/subscribe/user', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/socket/subscribe/user', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -46730,7 +46772,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/socket/subscribe/user");
+URL obj = new URL("https://www.floatplane.com/api/v2/socket/subscribe/user");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -46761,7 +46803,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/socket/subscribe/user", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/socket/subscribe/user", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -46906,14 +46948,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id} \
+curl -X POST https://www.floatplane.com/api/v2/socket/subscribe/user/{id} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id} HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/socket/subscribe/user/{id} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -46924,7 +46966,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}',
+fetch('https://www.floatplane.com/api/v2/socket/subscribe/user/{id}',
 {
   method: 'POST',
 
@@ -46946,7 +46988,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}',
+result = RestClient.post 'https://www.floatplane.com/api/v2/socket/subscribe/user/{id}',
   params: {
   }, headers: headers
 
@@ -46960,7 +47002,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/socket/subscribe/user/{id}', headers = headers)
 
 print(r.json())
 
@@ -46981,7 +47023,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/socket/subscribe/user/{id}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -46998,7 +47040,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}");
+URL obj = new URL("https://www.floatplane.com/api/v2/socket/subscribe/user/{id}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -47029,7 +47071,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/socket/subscribe/user/{id}", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/socket/subscribe/user/{id}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -47184,14 +47226,14 @@ Socket subscriptions and connections.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/socket/connect \
+curl -X POST https://www.floatplane.com/api/v3/socket/connect \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/socket/connect HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/socket/connect HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -47202,7 +47244,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/socket/connect',
+fetch('https://www.floatplane.com/api/v3/socket/connect',
 {
   method: 'POST',
 
@@ -47224,7 +47266,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/socket/connect',
+result = RestClient.post 'https://www.floatplane.com/api/v3/socket/connect',
   params: {
   }, headers: headers
 
@@ -47238,7 +47280,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/socket/connect', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/socket/connect', headers = headers)
 
 print(r.json())
 
@@ -47259,7 +47301,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/socket/connect', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/socket/connect', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -47276,7 +47318,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/socket/connect");
+URL obj = new URL("https://www.floatplane.com/api/v3/socket/connect");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -47307,7 +47349,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/socket/connect", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/socket/connect", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -47452,14 +47494,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/socket/disconnect \
+curl -X POST https://www.floatplane.com/api/v3/socket/disconnect \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/socket/disconnect HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/socket/disconnect HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -47470,7 +47512,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/socket/disconnect',
+fetch('https://www.floatplane.com/api/v3/socket/disconnect',
 {
   method: 'POST',
 
@@ -47492,7 +47534,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/socket/disconnect',
+result = RestClient.post 'https://www.floatplane.com/api/v3/socket/disconnect',
   params: {
   }, headers: headers
 
@@ -47506,7 +47548,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/socket/disconnect', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/socket/disconnect', headers = headers)
 
 print(r.json())
 
@@ -47527,7 +47569,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/socket/disconnect', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/socket/disconnect', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -47544,7 +47586,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/socket/disconnect");
+URL obj = new URL("https://www.floatplane.com/api/v3/socket/disconnect");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -47575,7 +47617,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/socket/disconnect", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/socket/disconnect", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -47724,14 +47766,14 @@ Stripe metadata.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/payment/stripe/pk \
+curl -X GET https://www.floatplane.com/api/v2/payment/stripe/pk \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/payment/stripe/pk HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/payment/stripe/pk HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -47742,7 +47784,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/payment/stripe/pk',
+fetch('https://www.floatplane.com/api/v2/payment/stripe/pk',
 {
   method: 'GET',
 
@@ -47764,7 +47806,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/payment/stripe/pk',
+result = RestClient.get 'https://www.floatplane.com/api/v2/payment/stripe/pk',
   params: {
   }, headers: headers
 
@@ -47778,7 +47820,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/payment/stripe/pk', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/payment/stripe/pk', headers = headers)
 
 print(r.json())
 
@@ -47799,7 +47841,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/payment/stripe/pk', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/payment/stripe/pk', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -47816,7 +47858,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/payment/stripe/pk");
+URL obj = new URL("https://www.floatplane.com/api/v2/payment/stripe/pk");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -47847,7 +47889,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/payment/stripe/pk", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/payment/stripe/pk", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -47996,14 +48038,14 @@ Get user subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/subscriptions \
+curl -X GET https://www.floatplane.com/api/v2/user/subscriptions \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/subscriptions HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/subscriptions HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -48014,7 +48056,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/subscriptions',
+fetch('https://www.floatplane.com/api/v2/user/subscriptions',
 {
   method: 'GET',
 
@@ -48036,7 +48078,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/subscriptions',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/subscriptions',
   params: {
   }, headers: headers
 
@@ -48050,7 +48092,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/subscriptions', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/subscriptions', headers = headers)
 
 print(r.json())
 
@@ -48071,7 +48113,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/subscriptions', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/subscriptions', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -48088,7 +48130,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/subscriptions");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/subscriptions");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -48119,7 +48161,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/subscriptions", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/subscriptions", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -48264,14 +48306,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/subscribed \
+curl -X POST https://www.floatplane.com/api/v2/user/subscribed \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/subscribed HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/subscribed HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -48282,7 +48324,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/subscribed',
+fetch('https://www.floatplane.com/api/v2/user/subscribed',
 {
   method: 'POST',
 
@@ -48304,7 +48346,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/subscribed',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/subscribed',
   params: {
   }, headers: headers
 
@@ -48318,7 +48360,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/subscribed', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/subscribed', headers = headers)
 
 print(r.json())
 
@@ -48339,7 +48381,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/subscribed', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/subscribed', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -48356,7 +48398,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/subscribed");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/subscribed");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -48387,7 +48429,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/subscribed", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/subscribed", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -48536,14 +48578,14 @@ Get user subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/subscriptions \
+curl -X GET https://www.floatplane.com/api/v3/user/subscriptions \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/subscriptions HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/subscriptions HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -48554,7 +48596,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/subscriptions',
+fetch('https://www.floatplane.com/api/v3/user/subscriptions',
 {
   method: 'GET',
 
@@ -48576,7 +48618,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/subscriptions',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/subscriptions',
   params: {
   }, headers: headers
 
@@ -48590,7 +48632,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/subscriptions', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/user/subscriptions', headers = headers)
 
 print(r.json())
 
@@ -48611,7 +48653,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/subscriptions', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/subscriptions', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -48628,7 +48670,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/subscriptions");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/subscriptions");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -48659,7 +48701,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/subscriptions", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/subscriptions", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -48873,14 +48915,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/subscribed \
+curl -X POST https://www.floatplane.com/api/v3/user/subscribed \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/subscribed HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/subscribed HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -48891,7 +48933,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/subscribed',
+fetch('https://www.floatplane.com/api/v3/user/subscribed',
 {
   method: 'POST',
 
@@ -48913,7 +48955,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/subscribed',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/subscribed',
   params: {
   }, headers: headers
 
@@ -48927,7 +48969,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/subscribed', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/subscribed', headers = headers)
 
 print(r.json())
 
@@ -48948,7 +48990,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/subscribed', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/subscribed', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -48965,7 +49007,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/subscribed");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/subscribed");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -48996,7 +49038,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/subscribed", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/subscribed", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -49145,14 +49187,14 @@ User support ticket management
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/support/ \
+curl -X POST https://www.floatplane.com/api/v2/support/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/support/ HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/support/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -49163,7 +49205,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/support/',
+fetch('https://www.floatplane.com/api/v2/support/',
 {
   method: 'POST',
 
@@ -49185,7 +49227,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/support/',
+result = RestClient.post 'https://www.floatplane.com/api/v2/support/',
   params: {
   }, headers: headers
 
@@ -49199,7 +49241,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/support/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/support/', headers = headers)
 
 print(r.json())
 
@@ -49220,7 +49262,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/support/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/support/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -49237,7 +49279,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/support/");
+URL obj = new URL("https://www.floatplane.com/api/v2/support/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -49268,7 +49310,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/support/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/support/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -49413,14 +49455,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/support/ticket/types \
+curl -X GET https://www.floatplane.com/api/v2/support/ticket/types \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/support/ticket/types HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/support/ticket/types HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -49431,7 +49473,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/support/ticket/types',
+fetch('https://www.floatplane.com/api/v2/support/ticket/types',
 {
   method: 'GET',
 
@@ -49453,7 +49495,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/support/ticket/types',
+result = RestClient.get 'https://www.floatplane.com/api/v2/support/ticket/types',
   params: {
   }, headers: headers
 
@@ -49467,7 +49509,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/support/ticket/types', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/support/ticket/types', headers = headers)
 
 print(r.json())
 
@@ -49488,7 +49530,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/support/ticket/types', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/support/ticket/types', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -49505,7 +49547,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/support/ticket/types");
+URL obj = new URL("https://www.floatplane.com/api/v2/support/ticket/types");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -49536,7 +49578,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/support/ticket/types", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/support/ticket/types", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -49685,14 +49727,14 @@ Sync connections.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/sync/connect \
+curl -X POST https://www.floatplane.com/api/v2/sync/connect \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/sync/connect HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/sync/connect HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -49703,7 +49745,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/sync/connect',
+fetch('https://www.floatplane.com/api/v2/sync/connect',
 {
   method: 'POST',
 
@@ -49725,7 +49767,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/sync/connect',
+result = RestClient.post 'https://www.floatplane.com/api/v2/sync/connect',
   params: {
   }, headers: headers
 
@@ -49739,7 +49781,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/sync/connect', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/sync/connect', headers = headers)
 
 print(r.json())
 
@@ -49760,7 +49802,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/sync/connect', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/sync/connect', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -49777,7 +49819,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/sync/connect");
+URL obj = new URL("https://www.floatplane.com/api/v2/sync/connect");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -49808,7 +49850,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/sync/connect", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/sync/connect", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -49953,14 +49995,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/sync/disconnect \
+curl -X POST https://www.floatplane.com/api/v2/sync/disconnect \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/sync/disconnect HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/sync/disconnect HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -49971,7 +50013,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/sync/disconnect',
+fetch('https://www.floatplane.com/api/v2/sync/disconnect',
 {
   method: 'POST',
 
@@ -49993,7 +50035,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/sync/disconnect',
+result = RestClient.post 'https://www.floatplane.com/api/v2/sync/disconnect',
   params: {
   }, headers: headers
 
@@ -50007,7 +50049,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/sync/disconnect', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/sync/disconnect', headers = headers)
 
 print(r.json())
 
@@ -50028,7 +50070,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/sync/disconnect', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/sync/disconnect', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -50045,7 +50087,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/sync/disconnect");
+URL obj = new URL("https://www.floatplane.com/api/v2/sync/disconnect");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -50076,7 +50118,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/sync/disconnect", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/sync/disconnect", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -50225,14 +50267,14 @@ Creator transcoding progress, notifications, and subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/transcode/progress \
+curl -X GET https://www.floatplane.com/api/v2/video/transcode/progress \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/transcode/progress HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/transcode/progress HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -50243,7 +50285,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/transcode/progress',
+fetch('https://www.floatplane.com/api/v2/video/transcode/progress',
 {
   method: 'GET',
 
@@ -50265,7 +50307,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/transcode/progress',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/transcode/progress',
   params: {
   }, headers: headers
 
@@ -50279,7 +50321,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/transcode/progress', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/transcode/progress', headers = headers)
 
 print(r.json())
 
@@ -50300,7 +50342,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/transcode/progress', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/transcode/progress', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -50317,7 +50359,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/transcode/progress");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/transcode/progress");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -50348,7 +50390,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/transcode/progress", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/transcode/progress", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -50493,14 +50535,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe \
+curl -X POST https://www.floatplane.com/api/v2/video/transcode/progress/subscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/transcode/progress/subscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -50511,7 +50553,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe',
+fetch('https://www.floatplane.com/api/v2/video/transcode/progress/subscribe',
 {
   method: 'POST',
 
@@ -50533,7 +50575,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/transcode/progress/subscribe',
   params: {
   }, headers: headers
 
@@ -50547,7 +50589,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/transcode/progress/subscribe', headers = headers)
 
 print(r.json())
 
@@ -50568,7 +50610,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/transcode/progress/subscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -50585,7 +50627,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/transcode/progress/subscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -50616,7 +50658,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/transcode/progress/subscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/transcode/progress/subscribe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -50761,14 +50803,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe \
+curl -X POST https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -50779,7 +50821,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe',
+fetch('https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe',
 {
   method: 'POST',
 
@@ -50801,7 +50843,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe',
   params: {
   }, headers: headers
 
@@ -50815,7 +50857,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe', headers = headers)
 
 print(r.json())
 
@@ -50836,7 +50878,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -50853,7 +50895,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -50884,7 +50926,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/transcode/progress/unsubscribe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -51033,14 +51075,14 @@ Creator transcoding progress, notifications, and subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/processing/active \
+curl -X GET https://www.floatplane.com/api/cms/v3/processing/active \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/processing/active HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/processing/active HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -51051,7 +51093,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/processing/active',
+fetch('https://www.floatplane.com/api/cms/v3/processing/active',
 {
   method: 'GET',
 
@@ -51073,7 +51115,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/processing/active',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/processing/active',
   params: {
   }, headers: headers
 
@@ -51087,7 +51129,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/processing/active', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/processing/active', headers = headers)
 
 print(r.json())
 
@@ -51108,7 +51150,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/processing/active', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/processing/active', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -51125,7 +51167,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/processing/active");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/processing/active");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -51156,7 +51198,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/processing/active", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/processing/active", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -51301,14 +51343,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe \
+curl -X POST https://www.floatplane.com/api/cms/v3/transcode/subscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/transcode/subscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -51319,7 +51361,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe',
+fetch('https://www.floatplane.com/api/cms/v3/transcode/subscribe',
 {
   method: 'POST',
 
@@ -51341,7 +51383,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/transcode/subscribe',
   params: {
   }, headers: headers
 
@@ -51355,7 +51397,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/transcode/subscribe', headers = headers)
 
 print(r.json())
 
@@ -51376,7 +51418,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/transcode/subscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -51393,7 +51435,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/transcode/subscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -51424,7 +51466,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/transcode/subscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/transcode/subscribe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -51569,14 +51611,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe \
+curl -X POST https://www.floatplane.com/api/cms/v3/transcode/unsubscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/transcode/unsubscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -51587,7 +51629,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe',
+fetch('https://www.floatplane.com/api/cms/v3/transcode/unsubscribe',
 {
   method: 'POST',
 
@@ -51609,7 +51651,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/transcode/unsubscribe',
   params: {
   }, headers: headers
 
@@ -51623,7 +51665,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/transcode/unsubscribe', headers = headers)
 
 print(r.json())
 
@@ -51644,7 +51686,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/transcode/unsubscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -51661,7 +51703,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/transcode/unsubscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -51692,7 +51734,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/transcode/unsubscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/transcode/unsubscribe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -51841,14 +51883,14 @@ User discovery and profile management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/info?id=string \
+curl -X GET https://www.floatplane.com/api/v2/user/info?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/info?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/info?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -51859,7 +51901,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/info?id=string',
+fetch('https://www.floatplane.com/api/v2/user/info?id=string',
 {
   method: 'GET',
 
@@ -51881,7 +51923,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/info',
   params: {
   'id' => 'array[string]'
 }, headers: headers
@@ -51896,7 +51938,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/info', params={
+r = requests.get('https://www.floatplane.com/api/v2/user/info', params={
   'id': [
   "string"
 ]
@@ -51921,7 +51963,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -51938,7 +51980,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/info?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/info?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -51969,7 +52011,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -52145,14 +52187,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/self \
+curl -X GET https://www.floatplane.com/api/v2/user/self \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/self HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/self HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -52163,7 +52205,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/self',
+fetch('https://www.floatplane.com/api/v2/user/self',
 {
   method: 'GET',
 
@@ -52185,7 +52227,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/self',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/self',
   params: {
   }, headers: headers
 
@@ -52199,7 +52241,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/self', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/self', headers = headers)
 
 print(r.json())
 
@@ -52220,7 +52262,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/self', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/self', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -52237,7 +52279,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/self");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/self");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -52268,7 +52310,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/self", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/self", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -52413,14 +52455,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/named?username=string \
+curl -X GET https://www.floatplane.com/api/v2/user/named?username=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/named?username=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/named?username=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -52431,7 +52473,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/named?username=string',
+fetch('https://www.floatplane.com/api/v2/user/named?username=string',
 {
   method: 'GET',
 
@@ -52453,7 +52495,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/named',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/named',
   params: {
   'username' => 'array[string]'
 }, headers: headers
@@ -52468,7 +52510,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/named', params={
+r = requests.get('https://www.floatplane.com/api/v2/user/named', params={
   'username': [
   "string"
 ]
@@ -52493,7 +52535,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/named', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/named', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -52510,7 +52552,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/named?username=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/named?username=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -52541,7 +52583,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/named", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/named", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -52719,14 +52761,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/update \
+curl -X POST https://www.floatplane.com/api/v2/user/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -52737,7 +52779,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/update',
+fetch('https://www.floatplane.com/api/v2/user/update',
 {
   method: 'POST',
 
@@ -52759,7 +52801,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/update',
   params: {
   }, headers: headers
 
@@ -52773,7 +52815,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/update', headers = headers)
 
 print(r.json())
 
@@ -52794,7 +52836,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -52811,7 +52853,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -52842,7 +52884,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -52987,14 +53029,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/email/update \
+curl -X POST https://www.floatplane.com/api/v2/user/email/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/email/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/email/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -53005,7 +53047,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/email/update',
+fetch('https://www.floatplane.com/api/v2/user/email/update',
 {
   method: 'POST',
 
@@ -53027,7 +53069,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/email/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/email/update',
   params: {
   }, headers: headers
 
@@ -53041,7 +53083,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/email/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/email/update', headers = headers)
 
 print(r.json())
 
@@ -53062,7 +53104,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/email/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/email/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -53079,7 +53121,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/email/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/email/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -53110,7 +53152,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/email/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/email/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -53255,14 +53297,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/email/update/complete \
+curl -X POST https://www.floatplane.com/api/v2/user/email/update/complete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/email/update/complete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/email/update/complete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -53273,7 +53315,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/email/update/complete',
+fetch('https://www.floatplane.com/api/v2/user/email/update/complete',
 {
   method: 'POST',
 
@@ -53295,7 +53337,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/email/update/complete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/email/update/complete',
   params: {
   }, headers: headers
 
@@ -53309,7 +53351,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/email/update/complete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/email/update/complete', headers = headers)
 
 print(r.json())
 
@@ -53330,7 +53372,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/email/update/complete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/email/update/complete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -53347,7 +53389,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/email/update/complete");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/email/update/complete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -53378,7 +53420,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/email/update/complete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/email/update/complete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -53523,14 +53565,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/avatar \
+curl -X POST https://www.floatplane.com/api/v2/user/avatar \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/avatar HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/avatar HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -53541,7 +53583,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/avatar',
+fetch('https://www.floatplane.com/api/v2/user/avatar',
 {
   method: 'POST',
 
@@ -53563,7 +53605,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/avatar',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/avatar',
   params: {
   }, headers: headers
 
@@ -53577,7 +53619,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/avatar', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/avatar', headers = headers)
 
 print(r.json())
 
@@ -53598,7 +53640,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/avatar', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/avatar', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -53615,7 +53657,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/avatar");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/avatar");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -53646,7 +53688,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/avatar", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/avatar", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -53791,14 +53833,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/password/change \
+curl -X POST https://www.floatplane.com/api/v2/user/password/change \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/password/change HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/password/change HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -53809,7 +53851,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/password/change',
+fetch('https://www.floatplane.com/api/v2/user/password/change',
 {
   method: 'POST',
 
@@ -53831,7 +53873,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/password/change',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/password/change',
   params: {
   }, headers: headers
 
@@ -53845,7 +53887,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/password/change', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/password/change', headers = headers)
 
 print(r.json())
 
@@ -53866,7 +53908,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/password/change', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/password/change', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -53883,7 +53925,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/password/change");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/password/change");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -53914,7 +53956,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/password/change", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/password/change", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -54059,14 +54101,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/creator \
+curl -X GET https://www.floatplane.com/api/v2/user/creator \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/creator HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/creator HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -54077,7 +54119,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/creator',
+fetch('https://www.floatplane.com/api/v2/user/creator',
 {
   method: 'GET',
 
@@ -54099,7 +54141,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/creator',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/creator',
   params: {
   }, headers: headers
 
@@ -54113,7 +54155,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/creator', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/creator', headers = headers)
 
 print(r.json())
 
@@ -54134,7 +54176,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/creator', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/creator', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -54151,7 +54193,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/creator");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/creator");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -54182,7 +54224,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/creator", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/creator", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -54327,14 +54369,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/activity \
+curl -X GET https://www.floatplane.com/api/v2/user/activity \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/activity HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/activity HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -54345,7 +54387,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/activity',
+fetch('https://www.floatplane.com/api/v2/user/activity',
 {
   method: 'GET',
 
@@ -54367,7 +54409,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/activity',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/activity',
   params: {
   }, headers: headers
 
@@ -54381,7 +54423,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/activity', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/activity', headers = headers)
 
 print(r.json())
 
@@ -54402,7 +54444,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/activity', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/activity', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -54419,7 +54461,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/activity");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/activity");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -54450,7 +54492,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/activity", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/activity", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -54595,14 +54637,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/links \
+curl -X GET https://www.floatplane.com/api/v2/user/links \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/links HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/links HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -54613,7 +54655,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/links',
+fetch('https://www.floatplane.com/api/v2/user/links',
 {
   method: 'GET',
 
@@ -54635,7 +54677,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/links',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/links',
   params: {
   }, headers: headers
 
@@ -54649,7 +54691,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/links', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/links', headers = headers)
 
 print(r.json())
 
@@ -54670,7 +54712,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/links', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/links', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -54687,7 +54729,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/links");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/links");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -54718,7 +54760,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/links", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/links", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -54863,14 +54905,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/links \
+curl -X POST https://www.floatplane.com/api/v2/user/links \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/links HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/links HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -54881,7 +54923,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/links',
+fetch('https://www.floatplane.com/api/v2/user/links',
 {
   method: 'POST',
 
@@ -54903,7 +54945,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/links',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/links',
   params: {
   }, headers: headers
 
@@ -54917,7 +54959,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/links', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/links', headers = headers)
 
 print(r.json())
 
@@ -54938,7 +54980,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/links', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/links', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -54955,7 +54997,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/links");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/links");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -54986,7 +55028,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/links", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/links", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -55131,14 +55173,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/administrator \
+curl -X GET https://www.floatplane.com/api/v2/user/administrator \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/administrator HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/administrator HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -55149,7 +55191,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/administrator',
+fetch('https://www.floatplane.com/api/v2/user/administrator',
 {
   method: 'GET',
 
@@ -55171,7 +55213,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/administrator',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/administrator',
   params: {
   }, headers: headers
 
@@ -55185,7 +55227,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/administrator', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/administrator', headers = headers)
 
 print(r.json())
 
@@ -55206,7 +55248,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/administrator', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/administrator', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -55223,7 +55265,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/administrator");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/administrator");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -55254,7 +55296,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/administrator", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/administrator", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -55399,14 +55441,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/security \
+curl -X GET https://www.floatplane.com/api/v2/user/security \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/security HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/security HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -55417,7 +55459,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security',
+fetch('https://www.floatplane.com/api/v2/user/security',
 {
   method: 'GET',
 
@@ -55439,7 +55481,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/security',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/security',
   params: {
   }, headers: headers
 
@@ -55453,7 +55495,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/security', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/security', headers = headers)
 
 print(r.json())
 
@@ -55474,7 +55516,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/security', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/security', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -55491,7 +55533,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -55522,7 +55564,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/security", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/security", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -55668,14 +55710,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/2fa \
+curl -X POST https://www.floatplane.com/api/v2/user/security/2fa \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/2fa HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/2fa HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -55686,7 +55728,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/2fa',
+fetch('https://www.floatplane.com/api/v2/user/security/2fa',
 {
   method: 'POST',
 
@@ -55708,7 +55750,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/2fa',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/2fa',
   params: {
   }, headers: headers
 
@@ -55722,7 +55764,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/2fa', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/2fa', headers = headers)
 
 print(r.json())
 
@@ -55743,7 +55785,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/2fa', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/2fa', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -55760,7 +55802,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/2fa");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/2fa");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -55791,7 +55833,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/2fa", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/2fa", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -55936,14 +55978,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/2fa/activate \
+curl -X POST https://www.floatplane.com/api/v2/user/security/2fa/activate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/2fa/activate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/2fa/activate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -55954,7 +55996,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate',
+fetch('https://www.floatplane.com/api/v2/user/security/2fa/activate',
 {
   method: 'POST',
 
@@ -55976,7 +56018,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/2fa/activate',
   params: {
   }, headers: headers
 
@@ -55990,7 +56032,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/2fa/activate', headers = headers)
 
 print(r.json())
 
@@ -56011,7 +56053,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/2fa/activate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -56028,7 +56070,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/2fa/activate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -56059,7 +56101,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/2fa/activate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/2fa/activate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -56204,14 +56246,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate \
+curl -X POST https://www.floatplane.com/api/v2/user/security/2fa/deactivate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/2fa/deactivate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -56222,7 +56264,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate',
+fetch('https://www.floatplane.com/api/v2/user/security/2fa/deactivate',
 {
   method: 'POST',
 
@@ -56244,7 +56286,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/2fa/deactivate',
   params: {
   }, headers: headers
 
@@ -56258,7 +56300,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/2fa/deactivate', headers = headers)
 
 print(r.json())
 
@@ -56279,7 +56321,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/2fa/deactivate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -56296,7 +56338,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/2fa/deactivate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -56327,7 +56369,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/2fa/deactivate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/2fa/deactivate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -56472,14 +56514,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate \
+curl -X POST https://www.floatplane.com/api/v2/user/security/backupcode/activate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/backupcode/activate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -56490,7 +56532,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate',
+fetch('https://www.floatplane.com/api/v2/user/security/backupcode/activate',
 {
   method: 'POST',
 
@@ -56512,7 +56554,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/backupcode/activate',
   params: {
   }, headers: headers
 
@@ -56526,7 +56568,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/backupcode/activate', headers = headers)
 
 print(r.json())
 
@@ -56547,7 +56589,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/backupcode/activate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -56564,7 +56606,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/backupcode/activate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -56595,7 +56637,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/backupcode/activate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/backupcode/activate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -56740,14 +56782,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate \
+curl -X POST https://www.floatplane.com/api/v2/user/security/backupcode/deactivate \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/backupcode/deactivate HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -56758,7 +56800,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate',
+fetch('https://www.floatplane.com/api/v2/user/security/backupcode/deactivate',
 {
   method: 'POST',
 
@@ -56780,7 +56822,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/backupcode/deactivate',
   params: {
   }, headers: headers
 
@@ -56794,7 +56836,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/backupcode/deactivate', headers = headers)
 
 print(r.json())
 
@@ -56815,7 +56857,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/backupcode/deactivate', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -56832,7 +56874,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/backupcode/deactivate");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -56863,7 +56905,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/backupcode/deactivate", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/backupcode/deactivate", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -57008,14 +57050,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode \
+curl -X POST https://www.floatplane.com/api/v2/user/security/backupcode \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/security/backupcode HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/security/backupcode HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -57026,7 +57068,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/security/backupcode',
+fetch('https://www.floatplane.com/api/v2/user/security/backupcode',
 {
   method: 'POST',
 
@@ -57048,7 +57090,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/security/backupcode',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/security/backupcode',
   params: {
   }, headers: headers
 
@@ -57062,7 +57104,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/security/backupcode', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/security/backupcode', headers = headers)
 
 print(r.json())
 
@@ -57083,7 +57125,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/security/backupcode', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/security/backupcode', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -57100,7 +57142,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/security/backupcode");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/security/backupcode");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -57131,7 +57173,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/security/backupcode", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/security/backupcode", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -57276,14 +57318,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/notificationsetting \
+curl -X GET https://www.floatplane.com/api/v2/user/notificationsetting \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/notificationsetting HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/notificationsetting HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -57294,7 +57336,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/notificationsetting',
+fetch('https://www.floatplane.com/api/v2/user/notificationsetting',
 {
   method: 'GET',
 
@@ -57316,7 +57358,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/notificationsetting',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/notificationsetting',
   params: {
   }, headers: headers
 
@@ -57330,7 +57372,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/notificationsetting', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/user/notificationsetting', headers = headers)
 
 print(r.json())
 
@@ -57351,7 +57393,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/notificationsetting', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/notificationsetting', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -57368,7 +57410,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/notificationsetting");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/notificationsetting");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -57399,7 +57441,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/notificationsetting", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/notificationsetting", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -57544,14 +57586,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/user/notificationsetting \
+curl -X POST https://www.floatplane.com/api/v2/user/notificationsetting \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/user/notificationsetting HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/user/notificationsetting HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -57562,7 +57604,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/notificationsetting',
+fetch('https://www.floatplane.com/api/v2/user/notificationsetting',
 {
   method: 'POST',
 
@@ -57584,7 +57626,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/user/notificationsetting',
+result = RestClient.post 'https://www.floatplane.com/api/v2/user/notificationsetting',
   params: {
   }, headers: headers
 
@@ -57598,7 +57640,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/user/notificationsetting', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/user/notificationsetting', headers = headers)
 
 print(r.json())
 
@@ -57619,7 +57661,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/user/notificationsetting', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/notificationsetting', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -57636,7 +57678,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/notificationsetting");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/notificationsetting");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -57667,7 +57709,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/user/notificationsetting", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/notificationsetting", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -57812,14 +57854,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/user/ban/status?creator=string \
+curl -X GET https://www.floatplane.com/api/v2/user/ban/status?creator=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/user/ban/status?creator=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/user/ban/status?creator=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -57830,7 +57872,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/user/ban/status?creator=string',
+fetch('https://www.floatplane.com/api/v2/user/ban/status?creator=string',
 {
   method: 'GET',
 
@@ -57852,7 +57894,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/user/ban/status',
+result = RestClient.get 'https://www.floatplane.com/api/v2/user/ban/status',
   params: {
   'creator' => 'string'
 }, headers: headers
@@ -57867,7 +57909,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/user/ban/status', params={
+r = requests.get('https://www.floatplane.com/api/v2/user/ban/status', params={
   'creator': 'string'
 }, headers = headers)
 
@@ -57890,7 +57932,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/user/ban/status', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/ban/status', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -57907,7 +57949,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/user/ban/status?creator=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/user/ban/status?creator=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -57938,7 +57980,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/user/ban/status", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/ban/status", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -58091,14 +58133,14 @@ User discovery and profile management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/activity?id=string \
+curl -X GET https://www.floatplane.com/api/v3/user/activity?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/activity?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/activity?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -58109,7 +58151,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/activity?id=string',
+fetch('https://www.floatplane.com/api/v3/user/activity?id=string',
 {
   method: 'GET',
 
@@ -58131,7 +58173,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/activity',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/activity',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -58146,7 +58188,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/activity', params={
+r = requests.get('https://www.floatplane.com/api/v3/user/activity', params={
   'id': 'string'
 }, headers = headers)
 
@@ -58169,7 +58211,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/activity', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/activity', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -58186,7 +58228,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/activity?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/activity?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -58217,7 +58259,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/activity", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/activity", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -58378,14 +58420,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/links?id=string \
+curl -X GET https://www.floatplane.com/api/v3/user/links?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/links?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/links?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -58396,7 +58438,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/links?id=string',
+fetch('https://www.floatplane.com/api/v3/user/links?id=string',
 {
   method: 'GET',
 
@@ -58418,7 +58460,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/links',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/links',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -58433,7 +58475,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/links', params={
+r = requests.get('https://www.floatplane.com/api/v3/user/links', params={
   'id': 'string'
 }, headers = headers)
 
@@ -58456,7 +58498,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/links', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/links', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -58473,7 +58515,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/links?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/links?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -58504,7 +58546,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/links", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/links", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -58662,14 +58704,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/links \
+curl -X POST https://www.floatplane.com/api/v3/user/links \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/links HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/links HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -58680,7 +58722,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/links',
+fetch('https://www.floatplane.com/api/v3/user/links',
 {
   method: 'POST',
 
@@ -58702,7 +58744,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/links',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/links',
   params: {
   }, headers: headers
 
@@ -58716,7 +58758,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/links', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/links', headers = headers)
 
 print(r.json())
 
@@ -58737,7 +58779,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/links', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/links', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -58754,7 +58796,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/links");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/links");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -58785,7 +58827,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/links", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/links", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -58930,14 +58972,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/self \
+curl -X GET https://www.floatplane.com/api/v3/user/self \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/self HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/self HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -58948,7 +58990,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/self',
+fetch('https://www.floatplane.com/api/v3/user/self',
 {
   method: 'GET',
 
@@ -58970,7 +59012,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/self',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/self',
   params: {
   }, headers: headers
 
@@ -58984,7 +59026,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/self', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/user/self', headers = headers)
 
 print(r.json())
 
@@ -59005,7 +59047,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/self', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/self', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -59022,7 +59064,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/self");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/self");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -59053,7 +59095,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/self", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/self", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -59220,14 +59262,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/delete \
+curl -X POST https://www.floatplane.com/api/v3/user/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -59238,7 +59280,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/delete',
+fetch('https://www.floatplane.com/api/v3/user/delete',
 {
   method: 'POST',
 
@@ -59260,7 +59302,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/delete',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/delete',
   params: {
   }, headers: headers
 
@@ -59274,7 +59316,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/delete', headers = headers)
 
 print(r.json())
 
@@ -59295,7 +59337,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -59312,7 +59354,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/delete");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -59343,7 +59385,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -59488,14 +59530,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/undelete \
+curl -X POST https://www.floatplane.com/api/v3/user/undelete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/undelete HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/undelete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -59506,7 +59548,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/undelete',
+fetch('https://www.floatplane.com/api/v3/user/undelete',
 {
   method: 'POST',
 
@@ -59528,7 +59570,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/undelete',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/undelete',
   params: {
   }, headers: headers
 
@@ -59542,7 +59584,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/undelete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/undelete', headers = headers)
 
 print(r.json())
 
@@ -59563,7 +59605,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/undelete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/undelete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -59580,7 +59622,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/undelete");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/undelete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -59611,7 +59653,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/undelete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/undelete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -59756,14 +59798,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/achievement/perks \
+curl -X GET https://www.floatplane.com/api/v3/user/achievement/perks \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/achievement/perks HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/achievement/perks HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -59774,7 +59816,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/achievement/perks',
+fetch('https://www.floatplane.com/api/v3/user/achievement/perks',
 {
   method: 'GET',
 
@@ -59796,7 +59838,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/achievement/perks',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/achievement/perks',
   params: {
   }, headers: headers
 
@@ -59810,7 +59852,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/achievement/perks', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/user/achievement/perks', headers = headers)
 
 print(r.json())
 
@@ -59831,7 +59873,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/achievement/perks', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/achievement/perks', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -59848,7 +59890,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/achievement/perks");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/achievement/perks");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -59879,7 +59921,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/achievement/perks", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/achievement/perks", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -60024,14 +60066,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/user/notification/list \
+curl -X GET https://www.floatplane.com/api/v3/user/notification/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/user/notification/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/user/notification/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -60042,7 +60084,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/notification/list',
+fetch('https://www.floatplane.com/api/v3/user/notification/list',
 {
   method: 'GET',
 
@@ -60064,7 +60106,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/user/notification/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/user/notification/list',
   params: {
   }, headers: headers
 
@@ -60078,7 +60120,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/user/notification/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/user/notification/list', headers = headers)
 
 print(r.json())
 
@@ -60099,7 +60141,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/user/notification/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/notification/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -60116,7 +60158,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/notification/list");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/notification/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -60147,7 +60189,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/user/notification/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/notification/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -60384,15 +60426,15 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/notification/update \
+curl -X POST https://www.floatplane.com/api/v3/user/notification/update \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/notification/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/notification/update HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: application/json
 
@@ -60409,7 +60451,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/notification/update',
+fetch('https://www.floatplane.com/api/v3/user/notification/update',
 {
   method: 'POST',
   body: inputBody,
@@ -60432,7 +60474,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/notification/update',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/notification/update',
   params: {
   }, headers: headers
 
@@ -60447,7 +60489,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/notification/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/notification/update', headers = headers)
 
 print(r.json())
 
@@ -60469,7 +60511,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/notification/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/notification/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -60486,7 +60528,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/notification/update");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/notification/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -60518,7 +60560,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/notification/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/notification/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -60681,14 +60723,14 @@ Video comment viewing and posting.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/comments \
+curl -X GET https://www.floatplane.com/api/v2/video/comments \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/comments HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/comments HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -60699,7 +60741,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/comments',
+fetch('https://www.floatplane.com/api/v2/video/comments',
 {
   method: 'GET',
 
@@ -60721,7 +60763,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/comments',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/comments',
   params: {
   }, headers: headers
 
@@ -60735,7 +60777,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/comments', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/comments', headers = headers)
 
 print(r.json())
 
@@ -60756,7 +60798,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/comments', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/comments', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -60773,7 +60815,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/comments");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/comments");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -60804,7 +60846,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/comments", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/comments", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -60949,14 +60991,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/comment \
+curl -X POST https://www.floatplane.com/api/v2/video/comment \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/comment HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/comment HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -60967,7 +61009,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/comment',
+fetch('https://www.floatplane.com/api/v2/video/comment',
 {
   method: 'POST',
 
@@ -60989,7 +61031,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/comment',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/comment',
   params: {
   }, headers: headers
 
@@ -61003,7 +61045,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/comment', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/comment', headers = headers)
 
 print(r.json())
 
@@ -61024,7 +61066,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/comment', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/comment', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -61041,7 +61083,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/comment");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/comment");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -61072,7 +61114,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/comment", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/comment", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -61217,14 +61259,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/comment/replies \
+curl -X GET https://www.floatplane.com/api/v2/video/comment/replies \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/comment/replies HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/comment/replies HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -61235,7 +61277,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/comment/replies',
+fetch('https://www.floatplane.com/api/v2/video/comment/replies',
 {
   method: 'GET',
 
@@ -61257,7 +61299,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/comment/replies',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/comment/replies',
   params: {
   }, headers: headers
 
@@ -61271,7 +61313,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/comment/replies', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/comment/replies', headers = headers)
 
 print(r.json())
 
@@ -61292,7 +61334,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/comment/replies', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/comment/replies', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -61309,7 +61351,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/comment/replies");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/comment/replies");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -61340,7 +61382,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/comment/replies", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/comment/replies", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -61489,14 +61531,14 @@ Video comment interaction management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear \
+curl -X POST https://www.floatplane.com/api/v2/video/comment/interaction/clear \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/comment/interaction/clear HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -61507,7 +61549,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear',
+fetch('https://www.floatplane.com/api/v2/video/comment/interaction/clear',
 {
   method: 'POST',
 
@@ -61529,7 +61571,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/comment/interaction/clear',
   params: {
   }, headers: headers
 
@@ -61543,7 +61585,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/comment/interaction/clear', headers = headers)
 
 print(r.json())
 
@@ -61564,7 +61606,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/comment/interaction/clear', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -61581,7 +61623,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/comment/interaction/clear");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -61612,7 +61654,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/comment/interaction/clear", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/comment/interaction/clear", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -61757,14 +61799,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/comment/interaction/set \
+curl -X POST https://www.floatplane.com/api/v2/video/comment/interaction/set \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/comment/interaction/set HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/comment/interaction/set HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -61775,7 +61817,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set',
+fetch('https://www.floatplane.com/api/v2/video/comment/interaction/set',
 {
   method: 'POST',
 
@@ -61797,7 +61839,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/comment/interaction/set',
   params: {
   }, headers: headers
 
@@ -61811,7 +61853,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/comment/interaction/set', headers = headers)
 
 print(r.json())
 
@@ -61832,7 +61874,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/comment/interaction/set', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -61849,7 +61891,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/comment/interaction/set");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -61880,7 +61922,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/comment/interaction/set", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/comment/interaction/set", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -62029,14 +62071,14 @@ Video media management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/watchkey \
+curl -X GET https://www.floatplane.com/api/v2/video/watchkey \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/watchkey HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/watchkey HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -62047,7 +62089,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/watchkey',
+fetch('https://www.floatplane.com/api/v2/video/watchkey',
 {
   method: 'GET',
 
@@ -62069,7 +62111,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/watchkey',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/watchkey',
   params: {
   }, headers: headers
 
@@ -62083,7 +62125,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/watchkey', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/watchkey', headers = headers)
 
 print(r.json())
 
@@ -62104,7 +62146,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/watchkey', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/watchkey', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -62121,7 +62163,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/watchkey");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/watchkey");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -62152,7 +62194,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/watchkey", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/watchkey", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -62297,14 +62339,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/info \
+curl -X GET https://www.floatplane.com/api/v2/video/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -62315,7 +62357,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/info',
+fetch('https://www.floatplane.com/api/v2/video/info',
 {
   method: 'GET',
 
@@ -62337,7 +62379,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/info',
   params: {
   }, headers: headers
 
@@ -62351,7 +62393,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/info', headers = headers)
 
 print(r.json())
 
@@ -62372,7 +62414,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -62389,7 +62431,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/info");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -62420,7 +62462,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -62565,14 +62607,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/related \
+curl -X GET https://www.floatplane.com/api/v2/video/related \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/related HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/related HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -62583,7 +62625,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/related',
+fetch('https://www.floatplane.com/api/v2/video/related',
 {
   method: 'GET',
 
@@ -62605,7 +62647,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/related',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/related',
   params: {
   }, headers: headers
 
@@ -62619,7 +62661,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/related', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/related', headers = headers)
 
 print(r.json())
 
@@ -62640,7 +62682,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/related', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/related', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -62657,7 +62699,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/related");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/related");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -62688,7 +62730,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/related", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/related", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -62833,14 +62875,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/update \
+curl -X POST https://www.floatplane.com/api/v2/video/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/update HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -62851,7 +62893,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/update',
+fetch('https://www.floatplane.com/api/v2/video/update',
 {
   method: 'POST',
 
@@ -62873,7 +62915,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/update',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/update',
   params: {
   }, headers: headers
 
@@ -62887,7 +62929,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/update', headers = headers)
 
 print(r.json())
 
@@ -62908,7 +62950,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -62925,7 +62967,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/update");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -62956,7 +62998,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -63101,14 +63143,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/delete \
+curl -X POST https://www.floatplane.com/api/v2/video/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -63119,7 +63161,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/delete',
+fetch('https://www.floatplane.com/api/v2/video/delete',
 {
   method: 'POST',
 
@@ -63141,7 +63183,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/delete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/delete',
   params: {
   }, headers: headers
 
@@ -63155,7 +63197,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/delete', headers = headers)
 
 print(r.json())
 
@@ -63176,7 +63218,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -63193,7 +63235,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/delete");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -63224,7 +63266,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -63369,14 +63411,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/list \
+curl -X GET https://www.floatplane.com/api/v2/video/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -63387,7 +63429,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/list',
+fetch('https://www.floatplane.com/api/v2/video/list',
 {
   method: 'GET',
 
@@ -63409,7 +63451,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/list',
   params: {
   }, headers: headers
 
@@ -63423,7 +63465,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/list', headers = headers)
 
 print(r.json())
 
@@ -63444,7 +63486,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -63461,7 +63503,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -63492,7 +63534,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -63641,14 +63683,14 @@ Video Dash key management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/dash/watchkey \
+curl -X GET https://www.floatplane.com/api/v2/video/dash/watchkey \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/dash/watchkey HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/dash/watchkey HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -63659,7 +63701,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/dash/watchkey',
+fetch('https://www.floatplane.com/api/v2/video/dash/watchkey',
 {
   method: 'GET',
 
@@ -63681,7 +63723,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/dash/watchkey',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/dash/watchkey',
   params: {
   }, headers: headers
 
@@ -63695,7 +63737,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/dash/watchkey', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/dash/watchkey', headers = headers)
 
 print(r.json())
 
@@ -63716,7 +63758,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/dash/watchkey', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/dash/watchkey', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -63733,7 +63775,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/dash/watchkey");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/dash/watchkey");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -63764,7 +63806,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/dash/watchkey", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/dash/watchkey", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -63909,14 +63951,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/dash/watchkey \
+curl -X POST https://www.floatplane.com/api/v2/video/dash/watchkey \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/dash/watchkey HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/dash/watchkey HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -63927,7 +63969,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/dash/watchkey',
+fetch('https://www.floatplane.com/api/v2/video/dash/watchkey',
 {
   method: 'POST',
 
@@ -63949,7 +63991,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/dash/watchkey',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/dash/watchkey',
   params: {
   }, headers: headers
 
@@ -63963,7 +64005,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/dash/watchkey', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/dash/watchkey', headers = headers)
 
 print(r.json())
 
@@ -63984,7 +64026,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/dash/watchkey', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/dash/watchkey', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -64001,7 +64043,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/dash/watchkey");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/dash/watchkey");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -64032,7 +64074,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/dash/watchkey", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/dash/watchkey", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -64177,14 +64219,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed \
+curl -X GET https://www.floatplane.com/api/v2/video/dash/chunk/signed \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/dash/chunk/signed HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -64195,7 +64237,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed',
+fetch('https://www.floatplane.com/api/v2/video/dash/chunk/signed',
 {
   method: 'GET',
 
@@ -64217,7 +64259,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/dash/chunk/signed',
   params: {
   }, headers: headers
 
@@ -64231,7 +64273,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/dash/chunk/signed', headers = headers)
 
 print(r.json())
 
@@ -64252,7 +64294,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/dash/chunk/signed', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -64269,7 +64311,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/dash/chunk/signed");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -64300,7 +64342,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/dash/chunk/signed", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/dash/chunk/signed", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -64449,14 +64491,14 @@ Get playlists.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/playlist/videos \
+curl -X GET https://www.floatplane.com/api/v2/playlist/videos \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/playlist/videos HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/playlist/videos HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -64467,7 +64509,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/playlist/videos',
+fetch('https://www.floatplane.com/api/v2/playlist/videos',
 {
   method: 'GET',
 
@@ -64489,7 +64531,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/playlist/videos',
+result = RestClient.get 'https://www.floatplane.com/api/v2/playlist/videos',
   params: {
   }, headers: headers
 
@@ -64503,7 +64545,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/playlist/videos', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/playlist/videos', headers = headers)
 
 print(r.json())
 
@@ -64524,7 +64566,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/playlist/videos', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/playlist/videos', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -64541,7 +64583,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/playlist/videos");
+URL obj = new URL("https://www.floatplane.com/api/v2/playlist/videos");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -64572,7 +64614,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/playlist/videos", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/playlist/videos", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -64721,14 +64763,14 @@ Video uploading and management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart \
+curl -X POST https://www.floatplane.com/api/v2/video/upload/s3/multipart \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/upload/s3/multipart HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -64739,7 +64781,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart',
+fetch('https://www.floatplane.com/api/v2/video/upload/s3/multipart',
 {
   method: 'POST',
 
@@ -64761,7 +64803,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/upload/s3/multipart',
   params: {
   }, headers: headers
 
@@ -64775,7 +64817,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/upload/s3/multipart', headers = headers)
 
 print(r.json())
 
@@ -64796,7 +64838,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/upload/s3/multipart', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -64813,7 +64855,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/s3/multipart");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -64844,7 +64886,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/upload/s3/multipart", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -64989,14 +65031,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart \
+curl -X GET https://www.floatplane.com/api/v2/video/upload/s3/multipart \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/upload/s3/multipart HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -65007,7 +65049,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart',
+fetch('https://www.floatplane.com/api/v2/video/upload/s3/multipart',
 {
   method: 'GET',
 
@@ -65029,7 +65071,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/upload/s3/multipart',
   params: {
   }, headers: headers
 
@@ -65043,7 +65085,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/upload/s3/multipart', headers = headers)
 
 print(r.json())
 
@@ -65064,7 +65106,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/upload/s3/multipart', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -65081,7 +65123,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/s3/multipart");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -65112,7 +65154,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/upload/s3/multipart", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -65257,14 +65299,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign \
+curl -X GET https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -65275,7 +65317,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign',
+fetch('https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign',
 {
   method: 'GET',
 
@@ -65297,7 +65339,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign',
+result = RestClient.get 'https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign',
   params: {
   }, headers: headers
 
@@ -65311,7 +65353,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign', headers = headers)
 
 print(r.json())
 
@@ -65332,7 +65374,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -65349,7 +65391,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -65380,7 +65422,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/sign", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/video/upload/s3/multipart/sign", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -65525,14 +65567,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort \
+curl -X POST https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -65543,7 +65585,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort',
+fetch('https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort',
 {
   method: 'POST',
 
@@ -65565,7 +65607,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort',
   params: {
   }, headers: headers
 
@@ -65579,7 +65621,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort', headers = headers)
 
 print(r.json())
 
@@ -65600,7 +65642,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -65617,7 +65659,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -65648,7 +65690,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/abort", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/upload/s3/multipart/abort", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -65793,14 +65835,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete \
+curl -X POST https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -65811,7 +65853,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete',
+fetch('https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete',
 {
   method: 'POST',
 
@@ -65833,7 +65875,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete',
   params: {
   }, headers: headers
 
@@ -65847,7 +65889,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete', headers = headers)
 
 print(r.json())
 
@@ -65868,7 +65910,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -65885,7 +65927,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -65916,7 +65958,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/upload/s3/multipart/complete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/upload/s3/multipart/complete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -66061,14 +66103,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/video/upload/thumbnail \
+curl -X POST https://www.floatplane.com/api/v2/video/upload/thumbnail \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/video/upload/thumbnail HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/video/upload/thumbnail HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -66079,7 +66121,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail',
+fetch('https://www.floatplane.com/api/v2/video/upload/thumbnail',
 {
   method: 'POST',
 
@@ -66101,7 +66143,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail',
+result = RestClient.post 'https://www.floatplane.com/api/v2/video/upload/thumbnail',
   params: {
   }, headers: headers
 
@@ -66115,7 +66157,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/video/upload/thumbnail', headers = headers)
 
 print(r.json())
 
@@ -66136,7 +66178,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/video/upload/thumbnail', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -66153,7 +66195,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail");
+URL obj = new URL("https://www.floatplane.com/api/v2/video/upload/thumbnail");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -66184,7 +66226,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/video/upload/thumbnail", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/video/upload/thumbnail", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -66333,14 +66375,14 @@ Web push notification information and subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/push/web/info \
+curl -X GET https://www.floatplane.com/api/v2/push/web/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/push/web/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/push/web/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -66351,7 +66393,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/push/web/info',
+fetch('https://www.floatplane.com/api/v2/push/web/info',
 {
   method: 'GET',
 
@@ -66373,7 +66415,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/push/web/info',
+result = RestClient.get 'https://www.floatplane.com/api/v2/push/web/info',
   params: {
   }, headers: headers
 
@@ -66387,7 +66429,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/push/web/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/push/web/info', headers = headers)
 
 print(r.json())
 
@@ -66408,7 +66450,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/push/web/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/push/web/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -66425,7 +66467,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/push/web/info");
+URL obj = new URL("https://www.floatplane.com/api/v2/push/web/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -66456,7 +66498,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/push/web/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/push/web/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -66601,14 +66643,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/push/web/register \
+curl -X POST https://www.floatplane.com/api/v2/push/web/register \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/push/web/register HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/push/web/register HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -66619,7 +66661,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/push/web/register',
+fetch('https://www.floatplane.com/api/v2/push/web/register',
 {
   method: 'POST',
 
@@ -66641,7 +66683,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/push/web/register',
+result = RestClient.post 'https://www.floatplane.com/api/v2/push/web/register',
   params: {
   }, headers: headers
 
@@ -66655,7 +66697,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/push/web/register', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/push/web/register', headers = headers)
 
 print(r.json())
 
@@ -66676,7 +66718,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/push/web/register', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/push/web/register', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -66693,7 +66735,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/push/web/register");
+URL obj = new URL("https://www.floatplane.com/api/v2/push/web/register");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -66724,7 +66766,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/push/web/register", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/push/web/register", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -66869,14 +66911,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/push/web/revoke \
+curl -X POST https://www.floatplane.com/api/v2/push/web/revoke \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/push/web/revoke HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/push/web/revoke HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -66887,7 +66929,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/push/web/revoke',
+fetch('https://www.floatplane.com/api/v2/push/web/revoke',
 {
   method: 'POST',
 
@@ -66909,7 +66951,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/push/web/revoke',
+result = RestClient.post 'https://www.floatplane.com/api/v2/push/web/revoke',
   params: {
   }, headers: headers
 
@@ -66923,7 +66965,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/push/web/revoke', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/push/web/revoke', headers = headers)
 
 print(r.json())
 
@@ -66944,7 +66986,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/push/web/revoke', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/push/web/revoke', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -66961,7 +67003,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/push/web/revoke");
+URL obj = new URL("https://www.floatplane.com/api/v2/push/web/revoke");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -66992,7 +67034,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/push/web/revoke", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/push/web/revoke", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -67137,14 +67179,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/push/web/tokenInfo \
+curl -X GET https://www.floatplane.com/api/v2/push/web/tokenInfo \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/push/web/tokenInfo HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/push/web/tokenInfo HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -67155,7 +67197,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo',
+fetch('https://www.floatplane.com/api/v2/push/web/tokenInfo',
 {
   method: 'GET',
 
@@ -67177,7 +67219,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo',
+result = RestClient.get 'https://www.floatplane.com/api/v2/push/web/tokenInfo',
   params: {
   }, headers: headers
 
@@ -67191,7 +67233,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/push/web/tokenInfo', headers = headers)
 
 print(r.json())
 
@@ -67212,7 +67254,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/push/web/tokenInfo', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -67229,7 +67271,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo");
+URL obj = new URL("https://www.floatplane.com/api/v2/push/web/tokenInfo");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -67260,7 +67302,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/push/web/tokenInfo", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/push/web/tokenInfo", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -67409,14 +67451,14 @@ Web push notification information and subscriptions.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/push/web/info \
+curl -X GET https://www.floatplane.com/api/v3/push/web/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/push/web/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/push/web/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -67427,7 +67469,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/push/web/info',
+fetch('https://www.floatplane.com/api/v3/push/web/info',
 {
   method: 'GET',
 
@@ -67449,7 +67491,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/push/web/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/push/web/info',
   params: {
   }, headers: headers
 
@@ -67463,7 +67505,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/push/web/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/push/web/info', headers = headers)
 
 print(r.json())
 
@@ -67484,7 +67526,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/push/web/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/push/web/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -67501,7 +67543,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/push/web/info");
+URL obj = new URL("https://www.floatplane.com/api/v3/push/web/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -67532,7 +67574,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/push/web/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/push/web/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -67677,14 +67719,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/push/web/register \
+curl -X POST https://www.floatplane.com/api/v3/push/web/register \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/push/web/register HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/push/web/register HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -67695,7 +67737,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/push/web/register',
+fetch('https://www.floatplane.com/api/v3/push/web/register',
 {
   method: 'POST',
 
@@ -67717,7 +67759,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/push/web/register',
+result = RestClient.post 'https://www.floatplane.com/api/v3/push/web/register',
   params: {
   }, headers: headers
 
@@ -67731,7 +67773,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/push/web/register', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/push/web/register', headers = headers)
 
 print(r.json())
 
@@ -67752,7 +67794,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/push/web/register', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/push/web/register', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -67769,7 +67811,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/push/web/register");
+URL obj = new URL("https://www.floatplane.com/api/v3/push/web/register");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -67800,7 +67842,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/push/web/register", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/push/web/register", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -67945,14 +67987,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/push/web/revoke \
+curl -X POST https://www.floatplane.com/api/v3/push/web/revoke \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/push/web/revoke HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/push/web/revoke HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -67963,7 +68005,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/push/web/revoke',
+fetch('https://www.floatplane.com/api/v3/push/web/revoke',
 {
   method: 'POST',
 
@@ -67985,7 +68027,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/push/web/revoke',
+result = RestClient.post 'https://www.floatplane.com/api/v3/push/web/revoke',
   params: {
   }, headers: headers
 
@@ -67999,7 +68041,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/push/web/revoke', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/push/web/revoke', headers = headers)
 
 print(r.json())
 
@@ -68020,7 +68062,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/push/web/revoke', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/push/web/revoke', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -68037,7 +68079,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/push/web/revoke");
+URL obj = new URL("https://www.floatplane.com/api/v3/push/web/revoke");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -68068,7 +68110,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/push/web/revoke", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/push/web/revoke", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -68217,14 +68259,14 @@ Webhook management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site} \
+curl -X POST https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site} \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site} HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site} HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -68235,7 +68277,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}',
+fetch('https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}',
 {
   method: 'POST',
 
@@ -68257,7 +68299,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}',
+result = RestClient.post 'https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}',
   params: {
   }, headers: headers
 
@@ -68271,7 +68313,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}', headers = headers)
 
 print(r.json())
 
@@ -68292,7 +68334,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -68309,7 +68351,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}");
+URL obj = new URL("https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -68340,7 +68382,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/webhooks/connectedAccount/{site}", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -68495,14 +68537,14 @@ Webhook management.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/webhooks/livestream \
+curl -X POST https://www.floatplane.com/api/v3/webhooks/livestream \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/webhooks/livestream HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/webhooks/livestream HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -68513,7 +68555,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/webhooks/livestream',
+fetch('https://www.floatplane.com/api/v3/webhooks/livestream',
 {
   method: 'POST',
 
@@ -68535,7 +68577,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/webhooks/livestream',
+result = RestClient.post 'https://www.floatplane.com/api/v3/webhooks/livestream',
   params: {
   }, headers: headers
 
@@ -68549,7 +68591,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/webhooks/livestream', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/webhooks/livestream', headers = headers)
 
 print(r.json())
 
@@ -68570,7 +68612,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/webhooks/livestream', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/webhooks/livestream', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -68587,7 +68629,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/webhooks/livestream");
+URL obj = new URL("https://www.floatplane.com/api/v3/webhooks/livestream");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -68618,7 +68660,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/webhooks/livestream", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/webhooks/livestream", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -68767,14 +68809,14 @@ Creator content uploading, status, and management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/content/list \
+curl -X GET https://www.floatplane.com/acp/v3/content/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/content/list HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/content/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -68785,7 +68827,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/content/list',
+fetch('https://www.floatplane.com/acp/v3/content/list',
 {
   method: 'GET',
 
@@ -68807,7 +68849,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/content/list',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/content/list',
   params: {
   }, headers: headers
 
@@ -68821,7 +68863,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/content/list', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/content/list', headers = headers)
 
 print(r.json())
 
@@ -68842,7 +68884,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/content/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/content/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -68859,7 +68901,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/content/list");
+URL obj = new URL("https://www.floatplane.com/acp/v3/content/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -68890,7 +68932,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/content/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/content/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -69035,14 +69077,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/content \
+curl -X GET https://www.floatplane.com/acp/v3/content \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/content HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/content HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -69053,7 +69095,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/content',
+fetch('https://www.floatplane.com/acp/v3/content',
 {
   method: 'GET',
 
@@ -69075,7 +69117,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/content',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/content',
   params: {
   }, headers: headers
 
@@ -69089,7 +69131,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/content', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/content', headers = headers)
 
 print(r.json())
 
@@ -69110,7 +69152,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/content', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/content', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -69127,7 +69169,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/content");
+URL obj = new URL("https://www.floatplane.com/acp/v3/content");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -69158,7 +69200,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/content", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/content", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -69303,14 +69345,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/content \
+curl -X POST https://www.floatplane.com/acp/v3/content \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/content HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/content HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -69321,7 +69363,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/content',
+fetch('https://www.floatplane.com/acp/v3/content',
 {
   method: 'POST',
 
@@ -69343,7 +69385,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/content',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/content',
   params: {
   }, headers: headers
 
@@ -69357,7 +69399,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/content', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/content', headers = headers)
 
 print(r.json())
 
@@ -69378,7 +69420,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/content', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/content', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -69395,7 +69437,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/content");
+URL obj = new URL("https://www.floatplane.com/acp/v3/content");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -69426,7 +69468,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/content", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/content", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -69571,14 +69613,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/order/list \
+curl -X GET https://www.floatplane.com/acp/v3/order/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/order/list HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/order/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -69589,7 +69631,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/order/list',
+fetch('https://www.floatplane.com/acp/v3/order/list',
 {
   method: 'GET',
 
@@ -69611,7 +69653,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/order/list',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/order/list',
   params: {
   }, headers: headers
 
@@ -69625,7 +69667,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/order/list', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/order/list', headers = headers)
 
 print(r.json())
 
@@ -69646,7 +69688,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/order/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/order/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -69663,7 +69705,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/order/list");
+URL obj = new URL("https://www.floatplane.com/acp/v3/order/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -69694,7 +69736,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/order/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/order/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -69839,14 +69881,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/order \
+curl -X GET https://www.floatplane.com/acp/v3/order \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/order HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/order HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -69857,7 +69899,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/order',
+fetch('https://www.floatplane.com/acp/v3/order',
 {
   method: 'GET',
 
@@ -69879,7 +69921,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/order',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/order',
   params: {
   }, headers: headers
 
@@ -69893,7 +69935,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/order', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/order', headers = headers)
 
 print(r.json())
 
@@ -69914,7 +69956,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/order', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/order', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -69931,7 +69973,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/order");
+URL obj = new URL("https://www.floatplane.com/acp/v3/order");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -69962,7 +70004,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/order", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/order", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -70107,14 +70149,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/order \
+curl -X POST https://www.floatplane.com/acp/v3/order \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/order HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/order HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -70125,7 +70167,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/order',
+fetch('https://www.floatplane.com/acp/v3/order',
 {
   method: 'POST',
 
@@ -70147,7 +70189,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/order',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/order',
   params: {
   }, headers: headers
 
@@ -70161,7 +70203,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/order', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/order', headers = headers)
 
 print(r.json())
 
@@ -70182,7 +70224,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/order', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/order', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -70199,7 +70241,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/order");
+URL obj = new URL("https://www.floatplane.com/acp/v3/order");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -70230,7 +70272,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/order", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/order", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -70375,14 +70417,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/manager \
+curl -X POST https://www.floatplane.com/acp/v3/manager \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/manager HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/manager HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -70393,7 +70435,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/manager',
+fetch('https://www.floatplane.com/acp/v3/manager',
 {
   method: 'POST',
 
@@ -70415,7 +70457,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/manager',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/manager',
   params: {
   }, headers: headers
 
@@ -70429,7 +70471,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/manager', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/manager', headers = headers)
 
 print(r.json())
 
@@ -70450,7 +70492,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/manager', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/manager', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -70467,7 +70509,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/manager");
+URL obj = new URL("https://www.floatplane.com/acp/v3/manager");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -70498,7 +70540,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/manager", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/manager", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -70643,14 +70685,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/order/create \
+curl -X POST https://www.floatplane.com/acp/v3/order/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/order/create HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/order/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -70661,7 +70703,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/order/create',
+fetch('https://www.floatplane.com/acp/v3/order/create',
 {
   method: 'POST',
 
@@ -70683,7 +70725,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/order/create',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/order/create',
   params: {
   }, headers: headers
 
@@ -70697,7 +70739,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/order/create', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/order/create', headers = headers)
 
 print(r.json())
 
@@ -70718,7 +70760,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/order/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/order/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -70735,7 +70777,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/order/create");
+URL obj = new URL("https://www.floatplane.com/acp/v3/order/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -70766,7 +70808,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/order/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/order/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -70911,14 +70953,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/order/augment \
+curl -X POST https://www.floatplane.com/acp/v3/order/augment \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/order/augment HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/order/augment HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -70929,7 +70971,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/order/augment',
+fetch('https://www.floatplane.com/acp/v3/order/augment',
 {
   method: 'POST',
 
@@ -70951,7 +70993,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/order/augment',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/order/augment',
   params: {
   }, headers: headers
 
@@ -70965,7 +71007,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/order/augment', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/order/augment', headers = headers)
 
 print(r.json())
 
@@ -70986,7 +71028,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/order/augment', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/order/augment', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -71003,7 +71045,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/order/augment");
+URL obj = new URL("https://www.floatplane.com/acp/v3/order/augment");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -71034,7 +71076,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/order/augment", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/order/augment", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -71179,14 +71221,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/upload/list \
+curl -X GET https://www.floatplane.com/acp/v3/upload/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/upload/list HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/upload/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -71197,7 +71239,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/upload/list',
+fetch('https://www.floatplane.com/acp/v3/upload/list',
 {
   method: 'GET',
 
@@ -71219,7 +71261,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/upload/list',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/upload/list',
   params: {
   }, headers: headers
 
@@ -71233,7 +71275,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/upload/list', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/upload/list', headers = headers)
 
 print(r.json())
 
@@ -71254,7 +71296,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/upload/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/upload/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -71271,7 +71313,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/upload/list");
+URL obj = new URL("https://www.floatplane.com/acp/v3/upload/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -71302,7 +71344,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/upload/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/upload/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -71447,14 +71489,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/upload \
+curl -X GET https://www.floatplane.com/acp/v3/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/upload HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -71465,7 +71507,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/upload',
+fetch('https://www.floatplane.com/acp/v3/upload',
 {
   method: 'GET',
 
@@ -71487,7 +71529,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/upload',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/upload',
   params: {
   }, headers: headers
 
@@ -71501,7 +71543,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/upload', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/upload', headers = headers)
 
 print(r.json())
 
@@ -71522,7 +71564,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/upload', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -71539,7 +71581,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/upload");
+URL obj = new URL("https://www.floatplane.com/acp/v3/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -71570,7 +71612,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/upload", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -71715,14 +71757,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/upload \
+curl -X POST https://www.floatplane.com/acp/v3/upload \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/upload HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/upload HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -71733,7 +71775,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/upload',
+fetch('https://www.floatplane.com/acp/v3/upload',
 {
   method: 'POST',
 
@@ -71755,7 +71797,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/upload',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/upload',
   params: {
   }, headers: headers
 
@@ -71769,7 +71811,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/upload', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/upload', headers = headers)
 
 print(r.json())
 
@@ -71790,7 +71832,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/upload', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/upload', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -71807,7 +71849,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/upload");
+URL obj = new URL("https://www.floatplane.com/acp/v3/upload");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -71838,7 +71880,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/upload", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/upload", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -71983,14 +72025,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/job \
+curl -X GET https://www.floatplane.com/acp/v3/job \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/job HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/job HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -72001,7 +72043,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/job',
+fetch('https://www.floatplane.com/acp/v3/job',
 {
   method: 'GET',
 
@@ -72023,7 +72065,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/job',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/job',
   params: {
   }, headers: headers
 
@@ -72037,7 +72079,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/job', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/job', headers = headers)
 
 print(r.json())
 
@@ -72058,7 +72100,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/job', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/job', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -72075,7 +72117,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/job");
+URL obj = new URL("https://www.floatplane.com/acp/v3/job");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -72106,7 +72148,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/job", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/job", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -72251,14 +72293,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/job \
+curl -X POST https://www.floatplane.com/acp/v3/job \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/job HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/job HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -72269,7 +72311,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/job',
+fetch('https://www.floatplane.com/acp/v3/job',
 {
   method: 'POST',
 
@@ -72291,7 +72333,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/job',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/job',
   params: {
   }, headers: headers
 
@@ -72305,7 +72347,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/job', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/job', headers = headers)
 
 print(r.json())
 
@@ -72326,7 +72368,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/job', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/job', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -72343,7 +72385,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/job");
+URL obj = new URL("https://www.floatplane.com/acp/v3/job");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -72374,7 +72416,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/job", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/job", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -72519,14 +72561,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/acp/v3/task \
+curl -X GET https://www.floatplane.com/acp/v3/task \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/acp/v3/task HTTP/1.1
-
+GET https://www.floatplane.com/acp/v3/task HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -72537,7 +72579,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/task',
+fetch('https://www.floatplane.com/acp/v3/task',
 {
   method: 'GET',
 
@@ -72559,7 +72601,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/acp/v3/task',
+result = RestClient.get 'https://www.floatplane.com/acp/v3/task',
   params: {
   }, headers: headers
 
@@ -72573,7 +72615,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/acp/v3/task', headers = headers)
+r = requests.get('https://www.floatplane.com/acp/v3/task', headers = headers)
 
 print(r.json())
 
@@ -72594,7 +72636,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/acp/v3/task', array(
+    $response = $client->request('GET','https://www.floatplane.com/acp/v3/task', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -72611,7 +72653,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/task");
+URL obj = new URL("https://www.floatplane.com/acp/v3/task");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -72642,7 +72684,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/acp/v3/task", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/acp/v3/task", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -72787,14 +72829,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/acp/v3/task \
+curl -X POST https://www.floatplane.com/acp/v3/task \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/acp/v3/task HTTP/1.1
-
+POST https://www.floatplane.com/acp/v3/task HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -72805,7 +72847,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/acp/v3/task',
+fetch('https://www.floatplane.com/acp/v3/task',
 {
   method: 'POST',
 
@@ -72827,7 +72869,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/acp/v3/task',
+result = RestClient.post 'https://www.floatplane.com/acp/v3/task',
   params: {
   }, headers: headers
 
@@ -72841,7 +72883,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/acp/v3/task', headers = headers)
+r = requests.post('https://www.floatplane.com/acp/v3/task', headers = headers)
 
 print(r.json())
 
@@ -72862,7 +72904,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/acp/v3/task', array(
+    $response = $client->request('POST','https://www.floatplane.com/acp/v3/task', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -72879,7 +72921,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/acp/v3/task");
+URL obj = new URL("https://www.floatplane.com/acp/v3/task");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -72910,7 +72952,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/acp/v3/task", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/acp/v3/task", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -73059,14 +73101,14 @@ CMS blog post editing and posting.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/blogPost/get \
+curl -X GET https://www.floatplane.com/api/cms/v3/blogPost/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/blogPost/get HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/blogPost/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -73077,7 +73119,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/get',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/get',
 {
   method: 'GET',
 
@@ -73099,7 +73141,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/blogPost/get',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/blogPost/get',
   params: {
   }, headers: headers
 
@@ -73113,7 +73155,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/blogPost/get', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/blogPost/get', headers = headers)
 
 print(r.json())
 
@@ -73134,7 +73176,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/blogPost/get', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/blogPost/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -73151,7 +73193,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/get");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -73182,7 +73224,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/get", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/blogPost/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -73327,14 +73369,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/blogPost/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/blogPost/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/blogPost/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/blogPost/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -73345,7 +73387,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/list',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/list',
 {
   method: 'GET',
 
@@ -73367,7 +73409,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/blogPost/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/blogPost/list',
   params: {
   }, headers: headers
 
@@ -73381,7 +73423,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/blogPost/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/blogPost/list', headers = headers)
 
 print(r.json())
 
@@ -73402,7 +73444,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/blogPost/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/blogPost/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -73419,7 +73461,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -73450,7 +73492,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/blogPost/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -73595,14 +73637,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/create \
+curl -X POST https://www.floatplane.com/api/cms/v3/blogPost/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/create HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/blogPost/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -73613,7 +73655,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/create',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/create',
 {
   method: 'POST',
 
@@ -73635,7 +73677,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/blogPost/create',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/blogPost/create',
   params: {
   }, headers: headers
 
@@ -73649,7 +73691,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/blogPost/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/blogPost/create', headers = headers)
 
 print(r.json())
 
@@ -73670,7 +73712,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/blogPost/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/blogPost/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -73687,7 +73729,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/create");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -73718,7 +73760,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/blogPost/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -73863,14 +73905,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/edit \
+curl -X POST https://www.floatplane.com/api/cms/v3/blogPost/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/blogPost/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -73881,7 +73923,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/edit',
 {
   method: 'POST',
 
@@ -73903,7 +73945,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/blogPost/edit',
   params: {
   }, headers: headers
 
@@ -73917,7 +73959,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/blogPost/edit', headers = headers)
 
 print(r.json())
 
@@ -73938,7 +73980,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/blogPost/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -73955,7 +73997,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -73986,7 +74028,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/blogPost/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -74131,14 +74173,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/delete \
+curl -X POST https://www.floatplane.com/api/cms/v3/blogPost/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/blogPost/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -74149,7 +74191,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/delete',
 {
   method: 'POST',
 
@@ -74171,7 +74213,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/blogPost/delete',
   params: {
   }, headers: headers
 
@@ -74185,7 +74227,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/blogPost/delete', headers = headers)
 
 print(r.json())
 
@@ -74206,7 +74248,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/blogPost/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -74223,7 +74265,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -74254,7 +74296,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/blogPost/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -74399,14 +74441,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update \
+curl -X POST https://www.floatplane.com/api/cms/v3/blogPost/attachments/update \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/blogPost/attachments/update HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -74417,7 +74459,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update',
+fetch('https://www.floatplane.com/api/cms/v3/blogPost/attachments/update',
 {
   method: 'POST',
 
@@ -74439,7 +74481,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/blogPost/attachments/update',
   params: {
   }, headers: headers
 
@@ -74453,7 +74495,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/blogPost/attachments/update', headers = headers)
 
 print(r.json())
 
@@ -74474,7 +74516,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/blogPost/attachments/update', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -74491,7 +74533,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/blogPost/attachments/update");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -74522,7 +74564,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/blogPost/attachments/update", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/blogPost/attachments/update", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -74671,14 +74713,14 @@ CMS content editing and posting.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/content/edit \
+curl -X POST https://www.floatplane.com/api/cms/v3/content/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/content/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/content/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -74689,7 +74731,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/edit',
+fetch('https://www.floatplane.com/api/cms/v3/content/edit',
 {
   method: 'POST',
 
@@ -74711,7 +74753,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/content/edit',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/content/edit',
   params: {
   }, headers: headers
 
@@ -74725,7 +74767,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/content/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/content/edit', headers = headers)
 
 print(r.json())
 
@@ -74746,7 +74788,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/content/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/content/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -74763,7 +74805,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/edit");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -74794,7 +74836,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/content/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/content/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -74939,14 +74981,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/video/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/video/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/video/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/video/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -74957,7 +74999,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/video/list',
+fetch('https://www.floatplane.com/api/cms/v3/content/video/list',
 {
   method: 'GET',
 
@@ -74979,7 +75021,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/video/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/video/list',
   params: {
   }, headers: headers
 
@@ -74993,7 +75035,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/video/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/video/list', headers = headers)
 
 print(r.json())
 
@@ -75014,7 +75056,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/video/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/video/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -75031,7 +75073,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/video/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/video/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -75062,7 +75104,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/video/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/video/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -75207,14 +75249,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/audio/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/audio/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/audio/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/audio/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -75225,7 +75267,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/audio/list',
+fetch('https://www.floatplane.com/api/cms/v3/content/audio/list',
 {
   method: 'GET',
 
@@ -75247,7 +75289,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/audio/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/audio/list',
   params: {
   }, headers: headers
 
@@ -75261,7 +75303,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/audio/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/audio/list', headers = headers)
 
 print(r.json())
 
@@ -75282,7 +75324,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/audio/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/audio/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -75299,7 +75341,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/audio/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/audio/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -75330,7 +75372,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/audio/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/audio/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -75475,14 +75517,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/picture/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/picture/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/picture/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/picture/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -75493,7 +75535,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/picture/list',
+fetch('https://www.floatplane.com/api/cms/v3/content/picture/list',
 {
   method: 'GET',
 
@@ -75515,7 +75557,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/picture/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/picture/list',
   params: {
   }, headers: headers
 
@@ -75529,7 +75571,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/picture/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/picture/list', headers = headers)
 
 print(r.json())
 
@@ -75550,7 +75592,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/picture/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/picture/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -75567,7 +75609,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/picture/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/picture/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -75598,7 +75640,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/picture/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/picture/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -75743,14 +75785,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/gallery/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/gallery/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/gallery/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/gallery/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -75761,7 +75803,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list',
+fetch('https://www.floatplane.com/api/cms/v3/content/gallery/list',
 {
   method: 'GET',
 
@@ -75783,7 +75825,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/gallery/list',
   params: {
   }, headers: headers
 
@@ -75797,7 +75839,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/gallery/list', headers = headers)
 
 print(r.json())
 
@@ -75818,7 +75860,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/gallery/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -75835,7 +75877,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/gallery/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -75866,7 +75908,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/gallery/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/gallery/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -76011,14 +76053,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/video/ \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/video/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/video/ HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/video/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -76029,7 +76071,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/video/',
+fetch('https://www.floatplane.com/api/cms/v3/content/video/',
 {
   method: 'GET',
 
@@ -76051,7 +76093,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/video/',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/video/',
   params: {
   }, headers: headers
 
@@ -76065,7 +76107,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/video/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/video/', headers = headers)
 
 print(r.json())
 
@@ -76086,7 +76128,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/video/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/video/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -76103,7 +76145,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/video/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/video/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -76134,7 +76176,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/video/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/video/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -76279,14 +76321,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/audio/ \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/audio/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/audio/ HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/audio/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -76297,7 +76339,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/audio/',
+fetch('https://www.floatplane.com/api/cms/v3/content/audio/',
 {
   method: 'GET',
 
@@ -76319,7 +76361,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/audio/',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/audio/',
   params: {
   }, headers: headers
 
@@ -76333,7 +76375,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/audio/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/audio/', headers = headers)
 
 print(r.json())
 
@@ -76354,7 +76396,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/audio/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/audio/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -76371,7 +76413,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/audio/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/audio/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -76402,7 +76444,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/audio/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/audio/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -76547,14 +76589,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/picture/ \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/picture/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/picture/ HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/picture/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -76565,7 +76607,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/picture/',
+fetch('https://www.floatplane.com/api/cms/v3/content/picture/',
 {
   method: 'GET',
 
@@ -76587,7 +76629,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/picture/',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/picture/',
   params: {
   }, headers: headers
 
@@ -76601,7 +76643,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/picture/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/picture/', headers = headers)
 
 print(r.json())
 
@@ -76622,7 +76664,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/picture/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/picture/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -76639,7 +76681,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/picture/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/picture/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -76670,7 +76712,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/picture/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/picture/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -76815,14 +76857,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/gallery/ \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/gallery/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/gallery/ HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/gallery/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -76833,7 +76875,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/gallery/',
+fetch('https://www.floatplane.com/api/cms/v3/content/gallery/',
 {
   method: 'GET',
 
@@ -76855,7 +76897,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/gallery/',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/gallery/',
   params: {
   }, headers: headers
 
@@ -76869,7 +76911,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/gallery/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/gallery/', headers = headers)
 
 print(r.json())
 
@@ -76890,7 +76932,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/gallery/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/gallery/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -76907,7 +76949,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/gallery/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/gallery/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -76938,7 +76980,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/gallery/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/gallery/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -77083,14 +77125,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/content/ \
+curl -X GET https://www.floatplane.com/api/cms/v3/content/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/content/ HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/content/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -77101,7 +77143,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/',
+fetch('https://www.floatplane.com/api/cms/v3/content/',
 {
   method: 'GET',
 
@@ -77123,7 +77165,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/content/',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/content/',
   params: {
   }, headers: headers
 
@@ -77137,7 +77179,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/content/', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/content/', headers = headers)
 
 print(r.json())
 
@@ -77158,7 +77200,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/content/', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/content/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -77175,7 +77217,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -77206,7 +77248,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/content/", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/content/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -77351,14 +77393,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/content/delete \
+curl -X POST https://www.floatplane.com/api/cms/v3/content/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/content/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/content/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -77369,7 +77411,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/content/delete',
+fetch('https://www.floatplane.com/api/cms/v3/content/delete',
 {
   method: 'POST',
 
@@ -77391,7 +77433,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/content/delete',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/content/delete',
   params: {
   }, headers: headers
 
@@ -77405,7 +77447,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/content/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/content/delete', headers = headers)
 
 print(r.json())
 
@@ -77426,7 +77468,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/content/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/content/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -77443,7 +77485,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/content/delete");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/content/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -77474,7 +77516,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/content/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/content/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -77623,14 +77665,14 @@ CMS Creator Warehouse management.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse \
+curl -X GET https://www.floatplane.com/api/cms/v3/creatorwarehouse \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/creatorwarehouse HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -77641,7 +77683,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse',
 {
   method: 'GET',
 
@@ -77663,7 +77705,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/creatorwarehouse',
   params: {
   }, headers: headers
 
@@ -77677,7 +77719,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/creatorwarehouse', headers = headers)
 
 print(r.json())
 
@@ -77698,7 +77740,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/creatorwarehouse', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -77715,7 +77757,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -77746,7 +77788,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/creatorwarehouse", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -77891,14 +77933,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/save \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/save HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -77909,7 +77951,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/save',
 {
   method: 'POST',
 
@@ -77931,7 +77973,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/save',
   params: {
   }, headers: headers
 
@@ -77945,7 +77987,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/save', headers = headers)
 
 print(r.json())
 
@@ -77966,7 +78008,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/save', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -77983,7 +78025,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/save");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -78014,7 +78056,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/save", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/save", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -78159,14 +78201,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -78177,7 +78219,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list',
 {
   method: 'POST',
 
@@ -78199,7 +78241,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list',
   params: {
   }, headers: headers
 
@@ -78213,7 +78255,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list', headers = headers)
 
 print(r.json())
 
@@ -78234,7 +78276,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -78251,7 +78293,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -78282,7 +78324,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -78427,14 +78469,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/ \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/ \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/ HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/ HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -78445,7 +78487,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/',
 {
   method: 'POST',
 
@@ -78467,7 +78509,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/',
   params: {
   }, headers: headers
 
@@ -78481,7 +78523,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/', headers = headers)
 
 print(r.json())
 
@@ -78502,7 +78544,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -78519,7 +78561,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -78550,7 +78592,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -78695,14 +78737,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -78713,7 +78755,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create',
 {
   method: 'POST',
 
@@ -78735,7 +78777,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create',
   params: {
   }, headers: headers
 
@@ -78749,7 +78791,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create', headers = headers)
 
 print(r.json())
 
@@ -78770,7 +78812,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -78787,7 +78829,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -78818,7 +78860,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/create", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -78963,14 +79005,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -78981,7 +79023,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit',
 {
   method: 'POST',
 
@@ -79003,7 +79045,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit',
   params: {
   }, headers: headers
 
@@ -79017,7 +79059,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit', headers = headers)
 
 print(r.json())
 
@@ -79038,7 +79080,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -79055,7 +79097,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -79086,7 +79128,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/edit", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -79231,14 +79273,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -79249,7 +79291,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete',
 {
   method: 'POST',
 
@@ -79271,7 +79313,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete',
   params: {
   }, headers: headers
 
@@ -79285,7 +79327,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete', headers = headers)
 
 print(r.json())
 
@@ -79306,7 +79348,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -79323,7 +79365,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -79354,7 +79396,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/pricerule/delete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -79499,14 +79541,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -79517,7 +79559,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list',
 {
   method: 'POST',
 
@@ -79539,7 +79581,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list',
   params: {
   }, headers: headers
 
@@ -79553,7 +79595,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list', headers = headers)
 
 print(r.json())
 
@@ -79574,7 +79616,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -79591,7 +79633,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -79622,7 +79664,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -79767,14 +79809,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -79785,7 +79827,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list',
 {
   method: 'POST',
 
@@ -79807,7 +79849,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list',
   params: {
   }, headers: headers
 
@@ -79821,7 +79863,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list', headers = headers)
 
 print(r.json())
 
@@ -79842,7 +79884,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -79859,7 +79901,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -79890,7 +79932,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -80035,14 +80077,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -80053,7 +80095,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get',
 {
   method: 'POST',
 
@@ -80075,7 +80117,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get',
   params: {
   }, headers: headers
 
@@ -80089,7 +80131,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get', headers = headers)
 
 print(r.json())
 
@@ -80110,7 +80152,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -80127,7 +80169,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -80158,7 +80200,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -80303,14 +80345,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -80321,7 +80363,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list',
 {
   method: 'POST',
 
@@ -80343,7 +80385,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list',
   params: {
   }, headers: headers
 
@@ -80357,7 +80399,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list', headers = headers)
 
 print(r.json())
 
@@ -80378,7 +80420,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -80395,7 +80437,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -80426,7 +80468,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/shop/shippingcountries/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -80571,14 +80613,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -80589,7 +80631,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get',
 {
   method: 'POST',
 
@@ -80611,7 +80653,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get',
   params: {
   }, headers: headers
 
@@ -80625,7 +80667,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get', headers = headers)
 
 print(r.json())
 
@@ -80646,7 +80688,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -80663,7 +80705,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -80694,7 +80736,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/products/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -80839,14 +80881,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -80857,7 +80899,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get',
 {
   method: 'POST',
 
@@ -80879,7 +80921,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get',
   params: {
   }, headers: headers
 
@@ -80893,7 +80935,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get', headers = headers)
 
 print(r.json())
 
@@ -80914,7 +80956,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -80931,7 +80973,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -80962,7 +81004,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/collections/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -81107,14 +81149,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get \
+curl -X POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -81125,7 +81167,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get',
+fetch('https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get',
 {
   method: 'POST',
 
@@ -81147,7 +81189,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get',
   params: {
   }, headers: headers
 
@@ -81161,7 +81203,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get', headers = headers)
 
 print(r.json())
 
@@ -81182,7 +81224,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -81199,7 +81241,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -81230,7 +81272,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/creatorwarehouse/countries/get", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -81379,14 +81421,14 @@ CMS Livestream information.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/live/info \
+curl -X GET https://www.floatplane.com/api/cms/v3/live/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/live/info HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/live/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -81397,7 +81439,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/live/info',
+fetch('https://www.floatplane.com/api/cms/v3/live/info',
 {
   method: 'GET',
 
@@ -81419,7 +81461,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/live/info',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/live/info',
   params: {
   }, headers: headers
 
@@ -81433,7 +81475,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/live/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/live/info', headers = headers)
 
 print(r.json())
 
@@ -81454,7 +81496,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/live/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/live/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -81471,7 +81513,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/live/info");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/live/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -81502,7 +81544,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/live/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/live/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -81651,14 +81693,14 @@ CMS creator subscription plan and subscriber information.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/cms/v3/plan/list \
+curl -X POST https://www.floatplane.com/api/cms/v3/plan/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/cms/v3/plan/list HTTP/1.1
-
+POST https://www.floatplane.com/api/cms/v3/plan/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -81669,7 +81711,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/plan/list',
+fetch('https://www.floatplane.com/api/cms/v3/plan/list',
 {
   method: 'POST',
 
@@ -81691,7 +81733,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/cms/v3/plan/list',
+result = RestClient.post 'https://www.floatplane.com/api/cms/v3/plan/list',
   params: {
   }, headers: headers
 
@@ -81705,7 +81747,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/cms/v3/plan/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/cms/v3/plan/list', headers = headers)
 
 print(r.json())
 
@@ -81726,7 +81768,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/cms/v3/plan/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/cms/v3/plan/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -81743,7 +81785,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/plan/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/plan/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -81774,7 +81816,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/cms/v3/plan/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/cms/v3/plan/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -81919,14 +81961,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/subscribers/list \
+curl -X GET https://www.floatplane.com/api/cms/v3/subscribers/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/subscribers/list HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/subscribers/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -81937,7 +81979,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/subscribers/list',
+fetch('https://www.floatplane.com/api/cms/v3/subscribers/list',
 {
   method: 'GET',
 
@@ -81959,7 +82001,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/subscribers/list',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/subscribers/list',
   params: {
   }, headers: headers
 
@@ -81973,7 +82015,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/subscribers/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/subscribers/list', headers = headers)
 
 print(r.json())
 
@@ -81994,7 +82036,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/subscribers/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/subscribers/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -82011,7 +82053,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/subscribers/list");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/subscribers/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -82042,7 +82084,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/subscribers/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/subscribers/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -82187,14 +82229,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/cms/v3/subscribers/download \
+curl -X GET https://www.floatplane.com/api/cms/v3/subscribers/download \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/cms/v3/subscribers/download HTTP/1.1
-
+GET https://www.floatplane.com/api/cms/v3/subscribers/download HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -82205,7 +82247,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/cms/v3/subscribers/download',
+fetch('https://www.floatplane.com/api/cms/v3/subscribers/download',
 {
   method: 'GET',
 
@@ -82227,7 +82269,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/cms/v3/subscribers/download',
+result = RestClient.get 'https://www.floatplane.com/api/cms/v3/subscribers/download',
   params: {
   }, headers: headers
 
@@ -82241,7 +82283,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/cms/v3/subscribers/download', headers = headers)
+r = requests.get('https://www.floatplane.com/api/cms/v3/subscribers/download', headers = headers)
 
 print(r.json())
 
@@ -82262,7 +82304,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/cms/v3/subscribers/download', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/cms/v3/subscribers/download', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -82279,7 +82321,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/cms/v3/subscribers/download");
+URL obj = new URL("https://www.floatplane.com/api/cms/v3/subscribers/download");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -82310,7 +82352,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/cms/v3/subscribers/download", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/cms/v3/subscribers/download", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -82459,15 +82501,15 @@ Comment retrieval, posting, and interacting.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/comment \
+curl -X POST https://www.floatplane.com/api/v3/comment \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/comment HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/comment HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: application/json
 
@@ -82483,7 +82525,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment',
+fetch('https://www.floatplane.com/api/v3/comment',
 {
   method: 'POST',
   body: inputBody,
@@ -82506,7 +82548,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/comment',
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment',
   params: {
   }, headers: headers
 
@@ -82521,7 +82563,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/comment', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/comment', headers = headers)
 
 print(r.json())
 
@@ -82543,7 +82585,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/comment', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -82560,7 +82602,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -82592,7 +82634,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/comment", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -82787,14 +82829,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/comment?blogPost=string&limit=0 \
+curl -X GET https://www.floatplane.com/api/v3/comment?blogPost=string&limit=0 \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/comment?blogPost=string&limit=0 HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/comment?blogPost=string&limit=0 HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -82805,7 +82847,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment?blogPost=string&limit=0',
+fetch('https://www.floatplane.com/api/v3/comment?blogPost=string&limit=0',
 {
   method: 'GET',
 
@@ -82827,7 +82869,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/comment',
+result = RestClient.get 'https://www.floatplane.com/api/v3/comment',
   params: {
   'blogPost' => 'string',
 'limit' => 'integer'
@@ -82843,7 +82885,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/comment', params={
+r = requests.get('https://www.floatplane.com/api/v3/comment', params={
   'blogPost': 'string',  'limit': '0'
 }, headers = headers)
 
@@ -82866,7 +82908,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/comment', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/comment', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -82883,7 +82925,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment?blogPost=string&limit=0");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment?blogPost=string&limit=0");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -82914,7 +82956,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/comment", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/comment", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -83173,14 +83215,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string \
+curl -X GET https://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -83191,7 +83233,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string',
+fetch('https://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string',
 {
   method: 'GET',
 
@@ -83213,7 +83255,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/comment/replies',
+result = RestClient.get 'https://www.floatplane.com/api/v3/comment/replies',
   params: {
   'comment' => 'string',
 'blogPost' => 'string',
@@ -83231,7 +83273,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/comment/replies', params={
+r = requests.get('https://www.floatplane.com/api/v3/comment/replies', params={
   'comment': 'string',  'blogPost': 'string',  'limit': '0',  'rid': 'string'
 }, headers = headers)
 
@@ -83254,7 +83296,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/comment/replies', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/comment/replies', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -83271,7 +83313,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/replies?comment=string&blogPost=string&limit=0&rid=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -83302,7 +83344,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/comment/replies", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/comment/replies", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -83523,15 +83565,15 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/comment/like \
+curl -X POST https://www.floatplane.com/api/v3/comment/like \
   -H 'Content-Type: application/json' \
   -H 'Accept: text/plain'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/comment/like HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/comment/like HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: text/plain
 
@@ -83547,7 +83589,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment/like',
+fetch('https://www.floatplane.com/api/v3/comment/like',
 {
   method: 'POST',
   body: inputBody,
@@ -83570,7 +83612,7 @@ headers = {
   'Accept' => 'text/plain'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/comment/like',
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/like',
   params: {
   }, headers: headers
 
@@ -83585,7 +83627,7 @@ headers = {
   'Accept': 'text/plain'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/comment/like', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/comment/like', headers = headers)
 
 print(r.json())
 
@@ -83607,7 +83649,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/comment/like', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/like', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -83624,7 +83666,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment/like");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/like");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -83656,7 +83698,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/comment/like", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/like", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -83814,15 +83856,15 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/comment/dislike \
+curl -X POST https://www.floatplane.com/api/v3/comment/dislike \
   -H 'Content-Type: application/json' \
   -H 'Accept: text/plain'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/comment/dislike HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/comment/dislike HTTP/1.1
+Host: www.floatplane.com
 Content-Type: application/json
 Accept: text/plain
 
@@ -83838,7 +83880,7 @@ const headers = {
   'Accept':'text/plain'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/comment/dislike',
+fetch('https://www.floatplane.com/api/v3/comment/dislike',
 {
   method: 'POST',
   body: inputBody,
@@ -83861,7 +83903,7 @@ headers = {
   'Accept' => 'text/plain'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/comment/dislike',
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/dislike',
   params: {
   }, headers: headers
 
@@ -83876,7 +83918,7 @@ headers = {
   'Accept': 'text/plain'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/comment/dislike', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/comment/dislike', headers = headers)
 
 print(r.json())
 
@@ -83898,7 +83940,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/comment/dislike', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/dislike', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -83915,7 +83957,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/comment/dislike");
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/dislike");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -83947,7 +83989,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/comment/dislike", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/dislike", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -84109,14 +84151,14 @@ Content retrieval and interacting.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/creator?id=string&limit=1 \
+curl -X GET https://www.floatplane.com/api/v3/content/creator?id=string&limit=1 \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/creator?id=string&limit=1 HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/creator?id=string&limit=1 HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -84127,7 +84169,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/creator?id=string&limit=1',
+fetch('https://www.floatplane.com/api/v3/content/creator?id=string&limit=1',
 {
   method: 'GET',
 
@@ -84149,7 +84191,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/creator',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/creator',
   params: {
   'id' => 'string',
 'limit' => 'integer'
@@ -84165,7 +84207,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/creator', params={
+r = requests.get('https://www.floatplane.com/api/v3/content/creator', params={
   'id': 'string',  'limit': '1'
 }, headers = headers)
 
@@ -84188,7 +84230,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/creator', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/creator', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -84205,7 +84247,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/creator?id=string&limit=1");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/creator?id=string&limit=1");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -84236,7 +84278,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/creator", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/creator", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -84865,14 +84907,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 \
+curl -X GET https://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1 HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -84883,7 +84925,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1',
+fetch('https://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1',
 {
   method: 'GET',
 
@@ -84905,7 +84947,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/creator/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/creator/list',
   params: {
   'ids' => 'array[string]',
 'limit' => 'integer'
@@ -84921,7 +84963,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/creator/list', params={
+r = requests.get('https://www.floatplane.com/api/v3/content/creator/list', params={
   'ids': [
   "string"
 ],  'limit': '1'
@@ -84946,7 +84988,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/creator/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/creator/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -84963,7 +85005,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/creator/list?ids=string&limit=1");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -84994,7 +85036,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/creator/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/creator/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -85509,14 +85551,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/post?id=string \
+curl -X GET https://www.floatplane.com/api/v3/content/post?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/post?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/post?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -85527,7 +85569,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/post?id=string',
+fetch('https://www.floatplane.com/api/v3/content/post?id=string',
 {
   method: 'GET',
 
@@ -85549,7 +85591,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/post',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/post',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -85564,7 +85606,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/post', params={
+r = requests.get('https://www.floatplane.com/api/v3/content/post', params={
   'id': 'string'
 }, headers = headers)
 
@@ -85587,7 +85629,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/post', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/post', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -85604,7 +85646,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/post?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/post?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -85635,7 +85677,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/post", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/post", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -85885,14 +85927,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/related?id=string \
+curl -X GET https://www.floatplane.com/api/v3/content/related?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/related?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/related?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -85903,7 +85945,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/related?id=string',
+fetch('https://www.floatplane.com/api/v3/content/related?id=string',
 {
   method: 'GET',
 
@@ -85925,7 +85967,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/related',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/related',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -85940,7 +85982,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/related', params={
+r = requests.get('https://www.floatplane.com/api/v3/content/related', params={
   'id': 'string'
 }, headers = headers)
 
@@ -85963,7 +86005,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/related', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/related', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -85980,7 +86022,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/related?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/related?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -86011,7 +86053,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/related", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/related", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -86796,14 +86838,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/video?id=string \
+curl -X GET https://www.floatplane.com/api/v3/content/video?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/video?id=string HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/video?id=string HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -86814,7 +86856,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/video?id=string',
+fetch('https://www.floatplane.com/api/v3/content/video?id=string',
 {
   method: 'GET',
 
@@ -86836,7 +86878,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/video',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/video',
   params: {
   'id' => 'string'
 }, headers: headers
@@ -86851,7 +86893,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/video', params={
+r = requests.get('https://www.floatplane.com/api/v3/content/video', params={
   'id': 'string'
 }, headers = headers)
 
@@ -86874,7 +86916,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/video', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/video', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -86891,7 +86933,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/video?id=string");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/video?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -86922,7 +86964,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/video", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/video", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -87125,14 +87167,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/audio \
+curl -X GET https://www.floatplane.com/api/v3/content/audio \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/audio HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/audio HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -87143,7 +87185,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/audio',
+fetch('https://www.floatplane.com/api/v3/content/audio',
 {
   method: 'GET',
 
@@ -87165,7 +87207,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/audio',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/audio',
   params: {
   }, headers: headers
 
@@ -87179,7 +87221,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/audio', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/audio', headers = headers)
 
 print(r.json())
 
@@ -87200,7 +87242,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/audio', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/audio', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -87217,7 +87259,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/audio");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/audio");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -87248,7 +87290,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/audio", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/audio", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -87393,14 +87435,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/picture \
+curl -X GET https://www.floatplane.com/api/v3/content/picture \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/picture HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/picture HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -87411,7 +87453,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/picture',
+fetch('https://www.floatplane.com/api/v3/content/picture',
 {
   method: 'GET',
 
@@ -87433,7 +87475,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/picture',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/picture',
   params: {
   }, headers: headers
 
@@ -87447,7 +87489,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/picture', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/picture', headers = headers)
 
 print(r.json())
 
@@ -87468,7 +87510,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/picture', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/picture', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -87485,7 +87527,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/picture");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/picture");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -87516,7 +87558,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/picture", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/picture", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -87661,14 +87703,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/gallery \
+curl -X GET https://www.floatplane.com/api/v3/content/gallery \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/gallery HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/gallery HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -87679,7 +87721,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/gallery',
+fetch('https://www.floatplane.com/api/v3/content/gallery',
 {
   method: 'GET',
 
@@ -87701,7 +87743,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/gallery',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/gallery',
   params: {
   }, headers: headers
 
@@ -87715,7 +87757,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/gallery', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/gallery', headers = headers)
 
 print(r.json())
 
@@ -87736,7 +87778,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/gallery', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/gallery', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -87753,7 +87795,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/gallery");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/gallery");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -87784,7 +87826,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/gallery", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/gallery", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -87929,14 +87971,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/info \
+curl -X GET https://www.floatplane.com/api/v3/content/info \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/info HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/info HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -87947,7 +87989,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/info',
+fetch('https://www.floatplane.com/api/v3/content/info',
 {
   method: 'GET',
 
@@ -87969,7 +88011,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/info',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/info',
   params: {
   }, headers: headers
 
@@ -87983,7 +88025,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/info', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/info', headers = headers)
 
 print(r.json())
 
@@ -88004,7 +88046,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/info', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/info', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -88021,7 +88063,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/info");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/info");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -88052,7 +88094,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/info", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/info", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -88197,14 +88239,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/like \
+curl -X POST https://www.floatplane.com/api/v3/content/like \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/like HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/like HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -88215,7 +88257,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/like',
+fetch('https://www.floatplane.com/api/v3/content/like',
 {
   method: 'POST',
 
@@ -88237,7 +88279,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/like',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/like',
   params: {
   }, headers: headers
 
@@ -88251,7 +88293,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/like', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/like', headers = headers)
 
 print(r.json())
 
@@ -88272,7 +88314,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/like', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/like', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -88289,7 +88331,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/like");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/like");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -88320,7 +88362,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/like", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/like", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -88465,14 +88507,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/dislike \
+curl -X POST https://www.floatplane.com/api/v3/content/dislike \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/dislike HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/dislike HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -88483,7 +88525,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/dislike',
+fetch('https://www.floatplane.com/api/v3/content/dislike',
 {
   method: 'POST',
 
@@ -88505,7 +88547,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/dislike',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/dislike',
   params: {
   }, headers: headers
 
@@ -88519,7 +88561,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/dislike', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/dislike', headers = headers)
 
 print(r.json())
 
@@ -88540,7 +88582,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/dislike', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/dislike', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -88557,7 +88599,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/dislike");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/dislike");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -88588,7 +88630,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/dislike", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/dislike", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -88733,14 +88775,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/picture/url \
+curl -X GET https://www.floatplane.com/api/v3/content/picture/url \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/picture/url HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/picture/url HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -88751,7 +88793,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/picture/url',
+fetch('https://www.floatplane.com/api/v3/content/picture/url',
 {
   method: 'GET',
 
@@ -88773,7 +88815,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/picture/url',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/picture/url',
   params: {
   }, headers: headers
 
@@ -88787,7 +88829,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/picture/url', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/picture/url', headers = headers)
 
 print(r.json())
 
@@ -88808,7 +88850,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/picture/url', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/picture/url', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -88825,7 +88867,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/picture/url");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/picture/url");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -88856,7 +88898,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/picture/url", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/picture/url", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -89005,14 +89047,14 @@ Content uploading.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart \
+curl -X POST https://www.floatplane.com/api/v3/content/upload/s3/multipart \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/upload/s3/multipart HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -89023,7 +89065,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart',
+fetch('https://www.floatplane.com/api/v3/content/upload/s3/multipart',
 {
   method: 'POST',
 
@@ -89045,7 +89087,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/upload/s3/multipart',
   params: {
   }, headers: headers
 
@@ -89059,7 +89101,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/upload/s3/multipart', headers = headers)
 
 print(r.json())
 
@@ -89080,7 +89122,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/upload/s3/multipart', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -89097,7 +89139,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/s3/multipart");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -89128,7 +89170,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/upload/s3/multipart", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -89273,14 +89315,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart \
+curl -X GET https://www.floatplane.com/api/v3/content/upload/s3/multipart \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/upload/s3/multipart HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -89291,7 +89333,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart',
+fetch('https://www.floatplane.com/api/v3/content/upload/s3/multipart',
 {
   method: 'GET',
 
@@ -89313,7 +89355,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/upload/s3/multipart',
   params: {
   }, headers: headers
 
@@ -89327,7 +89369,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/upload/s3/multipart', headers = headers)
 
 print(r.json())
 
@@ -89348,7 +89390,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/upload/s3/multipart', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -89365,7 +89407,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/s3/multipart");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -89396,7 +89438,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/upload/s3/multipart", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -89541,14 +89583,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign \
+curl -X GET https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -89559,7 +89601,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign',
+fetch('https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign',
 {
   method: 'GET',
 
@@ -89581,7 +89623,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign',
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign',
   params: {
   }, headers: headers
 
@@ -89595,7 +89637,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign', headers = headers)
 
 print(r.json())
 
@@ -89616,7 +89658,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -89633,7 +89675,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -89664,7 +89706,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/sign", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/upload/s3/multipart/sign", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -89809,14 +89851,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort \
+curl -X POST https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -89827,7 +89869,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort',
+fetch('https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort',
 {
   method: 'POST',
 
@@ -89849,7 +89891,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort',
   params: {
   }, headers: headers
 
@@ -89863,7 +89905,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort', headers = headers)
 
 print(r.json())
 
@@ -89884,7 +89926,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -89901,7 +89943,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -89932,7 +89974,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/abort", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/upload/s3/multipart/abort", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90077,14 +90119,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete \
+curl -X POST https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -90095,7 +90137,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete',
+fetch('https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete',
 {
   method: 'POST',
 
@@ -90117,7 +90159,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete',
   params: {
   }, headers: headers
 
@@ -90131,7 +90173,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete', headers = headers)
 
 print(r.json())
 
@@ -90152,7 +90194,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90169,7 +90211,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -90200,7 +90242,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/upload/s3/multipart/complete", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/upload/s3/multipart/complete", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90345,14 +90387,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/upload/thumbnail \
+curl -X POST https://www.floatplane.com/api/v3/content/upload/thumbnail \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/upload/thumbnail HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/upload/thumbnail HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -90363,7 +90405,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail',
+fetch('https://www.floatplane.com/api/v3/content/upload/thumbnail',
 {
   method: 'POST',
 
@@ -90385,7 +90427,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/upload/thumbnail',
   params: {
   }, headers: headers
 
@@ -90399,7 +90441,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/upload/thumbnail', headers = headers)
 
 print(r.json())
 
@@ -90420,7 +90462,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/upload/thumbnail', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90437,7 +90479,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/upload/thumbnail");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -90468,7 +90510,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/upload/thumbnail", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/upload/thumbnail", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90613,14 +90655,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe \
+curl -X POST https://www.floatplane.com/api/v3/content/thumbnail/subscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/thumbnail/subscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -90631,7 +90673,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe',
+fetch('https://www.floatplane.com/api/v3/content/thumbnail/subscribe',
 {
   method: 'POST',
 
@@ -90653,7 +90695,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/thumbnail/subscribe',
   params: {
   }, headers: headers
 
@@ -90667,7 +90709,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/thumbnail/subscribe', headers = headers)
 
 print(r.json())
 
@@ -90688,7 +90730,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/thumbnail/subscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90705,7 +90747,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/thumbnail/subscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -90736,7 +90778,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/thumbnail/subscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/thumbnail/subscribe", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90885,14 +90927,14 @@ Loyalty rewards information and claiming.
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list \
+curl -X POST https://www.floatplane.com/api/v3/user/loyaltyreward/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/loyaltyreward/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -90903,7 +90945,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list',
+fetch('https://www.floatplane.com/api/v3/user/loyaltyreward/list',
 {
   method: 'POST',
 
@@ -90925,7 +90967,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/loyaltyreward/list',
   params: {
   }, headers: headers
 
@@ -90939,7 +90981,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/loyaltyreward/list', headers = headers)
 
 print(r.json())
 
@@ -90960,7 +91002,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/loyaltyreward/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90977,7 +91019,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/loyaltyreward/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -91008,7 +91050,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/list", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/loyaltyreward/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -91153,14 +91195,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim \
+curl -X POST https://www.floatplane.com/api/v3/user/loyaltyreward/claim \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/user/loyaltyreward/claim HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -91171,7 +91213,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim',
+fetch('https://www.floatplane.com/api/v3/user/loyaltyreward/claim',
 {
   method: 'POST',
 
@@ -91193,7 +91235,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim',
+result = RestClient.post 'https://www.floatplane.com/api/v3/user/loyaltyreward/claim',
   params: {
   }, headers: headers
 
@@ -91207,7 +91249,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/user/loyaltyreward/claim', headers = headers)
 
 print(r.json())
 
@@ -91228,7 +91270,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/loyaltyreward/claim', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -91245,7 +91287,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim");
+URL obj = new URL("https://www.floatplane.com/api/v3/user/loyaltyreward/claim");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -91276,7 +91318,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/user/loyaltyreward/claim", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/loyaltyreward/claim", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -91425,14 +91467,14 @@ Experimental VPN configuration.
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled \
+curl -X GET https://www.floatplane.com/api/v3/experiments/vpn/enabled \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/experiments/vpn/enabled HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -91443,7 +91485,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled',
+fetch('https://www.floatplane.com/api/v3/experiments/vpn/enabled',
 {
   method: 'GET',
 
@@ -91465,7 +91507,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled',
+result = RestClient.get 'https://www.floatplane.com/api/v3/experiments/vpn/enabled',
   params: {
   }, headers: headers
 
@@ -91479,7 +91521,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/experiments/vpn/enabled', headers = headers)
 
 print(r.json())
 
@@ -91500,7 +91542,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/experiments/vpn/enabled', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -91517,7 +91559,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled");
+URL obj = new URL("https://www.floatplane.com/api/v3/experiments/vpn/enabled");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -91548,7 +91590,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/experiments/vpn/enabled", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -91693,14 +91735,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled \
+curl -X POST https://www.floatplane.com/api/v3/experiments/vpn/enabled \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/experiments/vpn/enabled HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -91711,7 +91753,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled',
+fetch('https://www.floatplane.com/api/v3/experiments/vpn/enabled',
 {
   method: 'POST',
 
@@ -91733,7 +91775,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled',
+result = RestClient.post 'https://www.floatplane.com/api/v3/experiments/vpn/enabled',
   params: {
   }, headers: headers
 
@@ -91747,7 +91789,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/experiments/vpn/enabled', headers = headers)
 
 print(r.json())
 
@@ -91768,7 +91810,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/experiments/vpn/enabled', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -91785,7 +91827,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled");
+URL obj = new URL("https://www.floatplane.com/api/v3/experiments/vpn/enabled");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -91816,7 +91858,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/experiments/vpn/enabled", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/experiments/vpn/enabled", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -91961,14 +92003,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download \
+curl -X GET https://www.floatplane.com/api/v3/experiments/vpn/profile/download \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/experiments/vpn/profile/download HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -91979,7 +92021,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download',
+fetch('https://www.floatplane.com/api/v3/experiments/vpn/profile/download',
 {
   method: 'GET',
 
@@ -92001,7 +92043,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download',
+result = RestClient.get 'https://www.floatplane.com/api/v3/experiments/vpn/profile/download',
   params: {
   }, headers: headers
 
@@ -92015,7 +92057,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/experiments/vpn/profile/download', headers = headers)
 
 print(r.json())
 
@@ -92036,7 +92078,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/experiments/vpn/profile/download', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -92053,7 +92095,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download");
+URL obj = new URL("https://www.floatplane.com/api/v3/experiments/vpn/profile/download");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -92084,7 +92126,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/download", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/experiments/vpn/profile/download", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -92229,14 +92271,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral \
+curl -X GET https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -92247,7 +92289,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral',
+fetch('https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral',
 {
   method: 'GET',
 
@@ -92269,7 +92311,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral',
+result = RestClient.get 'https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral',
   params: {
   }, headers: headers
 
@@ -92283,7 +92325,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral', headers = headers)
 
 print(r.json())
 
@@ -92304,7 +92346,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -92321,7 +92363,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral");
+URL obj = new URL("https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -92352,7 +92394,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/experiments/vpn/profile/ephemeral", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -92497,14 +92539,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list \
+curl -X GET https://www.floatplane.com/api/v3/experiments/vpn/server/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v3/experiments/vpn/server/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -92515,7 +92557,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list',
+fetch('https://www.floatplane.com/api/v3/experiments/vpn/server/list',
 {
   method: 'GET',
 
@@ -92537,7 +92579,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list',
+result = RestClient.get 'https://www.floatplane.com/api/v3/experiments/vpn/server/list',
   params: {
   }, headers: headers
 
@@ -92551,7 +92593,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/experiments/vpn/server/list', headers = headers)
 
 print(r.json())
 
@@ -92572,7 +92614,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/experiments/vpn/server/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -92589,7 +92631,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list");
+URL obj = new URL("https://www.floatplane.com/api/v3/experiments/vpn/server/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -92620,7 +92662,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v3/experiments/vpn/server/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/experiments/vpn/server/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -92767,14 +92809,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add \
+curl -X POST https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -92785,7 +92827,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
+fetch('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
 {
   method: 'POST',
 
@@ -92807,7 +92849,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add',
   params: {
   }, headers: headers
 
@@ -92821,7 +92863,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', headers = headers)
 
 print(r.json())
 
@@ -92842,7 +92884,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -92859,7 +92901,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add");
+URL obj = new URL("https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -92890,7 +92932,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/add", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -93041,14 +93083,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove \
+curl -X POST https://www.floatplane.com/api/v2/creator/administration/moderators/remove \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creator/administration/moderators/remove HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -93059,7 +93101,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
+fetch('https://www.floatplane.com/api/v2/creator/administration/moderators/remove',
 {
   method: 'POST',
 
@@ -93081,7 +93123,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creator/administration/moderators/remove',
   params: {
   }, headers: headers
 
@@ -93095,7 +93137,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creator/administration/moderators/remove', headers = headers)
 
 print(r.json())
 
@@ -93116,7 +93158,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creator/administration/moderators/remove', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -93133,7 +93175,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/administration/moderators/remove");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -93164,7 +93206,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/remove", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creator/administration/moderators/remove", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -93309,14 +93351,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove \
+curl -X POST https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove HTTP/1.1
-
+POST https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -93327,7 +93369,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
+fetch('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
 {
   method: 'POST',
 
@@ -93349,7 +93391,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
+result = RestClient.post 'https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove',
   params: {
   }, headers: headers
 
@@ -93363,7 +93405,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', headers = headers)
 
 print(r.json())
 
@@ -93384,7 +93426,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -93401,7 +93443,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove");
+URL obj = new URL("https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -93432,7 +93474,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/remove", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -93583,14 +93625,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list \
+curl -X GET https://www.floatplane.com/api/v2/creator/administration/moderators/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creator/administration/moderators/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -93601,7 +93643,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
+fetch('https://www.floatplane.com/api/v2/creator/administration/moderators/list',
 {
   method: 'GET',
 
@@ -93623,7 +93665,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creator/administration/moderators/list',
   params: {
   }, headers: headers
 
@@ -93637,7 +93679,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creator/administration/moderators/list', headers = headers)
 
 print(r.json())
 
@@ -93658,7 +93700,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creator/administration/moderators/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -93675,7 +93717,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/creator/administration/moderators/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -93706,7 +93748,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creator/administration/moderators/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creator/administration/moderators/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -93851,14 +93893,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list \
+curl -X GET https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET {scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list HTTP/1.1
-
+GET https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -93869,7 +93911,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
+fetch('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
 {
   method: 'GET',
 
@@ -93891,7 +93933,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.get '{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
+result = RestClient.get 'https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list',
   params: {
   }, headers: headers
 
@@ -93905,7 +93947,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', headers = headers)
 
 print(r.json())
 
@@ -93926,7 +93968,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', array(
+    $response = $client->request('GET','https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -93943,7 +93985,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list");
+URL obj = new URL("https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -93974,7 +94016,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "{scheme}://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list", data)
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/creators/{creator}/administration/moderators/list", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -94127,14 +94169,14 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe \
+curl -X POST https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-POST {scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe HTTP/1.1
-
+POST https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe HTTP/1.1
+Host: www.floatplane.com
 Accept: application/json
 
 ```
@@ -94145,7 +94187,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
+fetch('https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
 {
   method: 'POST',
 
@@ -94167,7 +94209,7 @@ headers = {
   'Accept' => 'application/json'
 }
 
-result = RestClient.post '{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe',
   params: {
   }, headers: headers
 
@@ -94181,7 +94223,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.post('{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', headers = headers)
 
 print(r.json())
 
@@ -94202,7 +94244,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('POST','{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -94219,7 +94261,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
@@ -94250,7 +94292,7 @@ func main() {
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "{scheme}://www.floatplane.com/api/v3/content/thumbnail/unsubscribe", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/thumbnail/unsubscribe", data)
     req.Header = headers
 
     client := &http.Client{}

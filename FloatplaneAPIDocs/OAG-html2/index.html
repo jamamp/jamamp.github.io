@@ -2928,40 +2928,99 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 3.5.1</div>
+              <div class="app-desc">Version: 3.5.1-a</div>
             <hr>
             <div id="app-description" class="app-desc">
-                <p>This document describes the API layer of https://floatplane.com, a content creation website created by Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.</p>
-<p>While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have &quot;TODO&quot; as the description, and are automatically removed before document generation.</p>
-<p>The following are descriptions of common objects and concepts within the Floatplane API.</p>
+                <p>Homepage: <a href="https://jman012.github.io/FloatplaneAPIDocs">https://jman012.github.io/FloatplaneAPIDocs</a></p>
+<p>This document describes the API layer of <a href="https://www.floatplane.com">https://www.floatplane.com</a>, a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.</p>
+<p>While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have &quot;TODO&quot; as the description, and are automatically removed before document generation. If you are viewing the &quot;Trimmed&quot; version of this document, they have been removed for brevity.</p>
+<h2>API Object Organization</h2>
 <ul>
-<li>Creator
+<li><strong>Users</strong> and <strong>Creators</strong> exist on Floatplane at the highest level
 <ul>
-<li>The highest-level object in Floatplane is the Creator. This is an entity, such as Linus Tech Tips, that produces Content for Users who subscribe to them. One Creator creates and owns Content objects, as well as some Subscription Plans.</li>
+<li>The highest-level object in Floatplane is the Creator. This is an entity, such as Linus Tech Tips, that produces media for Users.</li>
 </ul>
 </li>
-<li>Subscription Plan
-<ul>
-<li>A way for Users to subscribe to Creators in order to gain access to view Content.</li>
-</ul>
-</li>
-<li>Content
+<li>A Creator owns one or more <strong>Subscription Plans</strong></li>
+<li>A User can view a Creator's Content if they are subscribed to them</li>
+<li>A Creator publishes <strong>Content</strong>, in the form of <strong>Blog Posts</strong>
 <ul>
 <li>Content is produced by Creators, and show up for subscribed Users to view when it is released. A piece of Content is meant to be generic, and may contain different types of sub-Content. Currently, the only type is a Blog Post.</li>
-</ul>
-</li>
-<li>Blog Post
-<ul>
 <li>A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.</li>
 </ul>
 </li>
-<li>Attachments
+<li>A Blog Post is comprised of one or more of: video, audio, picture, or gallery <strong>Attachments</strong>
 <ul>
 <li>A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.</li>
 </ul>
 </li>
+<li>A Creator may also have a single <strong>Livestream</strong></li>
 </ul>
+<h2>API Flow</h2>
+<p>As of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.</p>
+<ol>
+<li>Login
+<ol>
+<li><code>/api/v3/auth/captcha/info</code> - Get captcha information</li>
+<li><code>/api/v2/auth/login</code> - Login with username, password, and optional captcha token</li>
+<li><code>/api/v2/auth/checkFor2faLogin</code> - Optionally provide 2FA token to complete login</li>
+<li><code>/api/v2/auth/logout</code> - Logout at a later point in time</li>
+</ol>
+</li>
+<li>Home page
+<ol>
+<li><code>/api/v3/user/subscriptions</code> - Get the user's active subscriptions</li>
+<li><code>/api/v3/content/creator/list</code> - Using the subscriptions, show a home page with content from all subscriptions
+<ol>
+<li>Supply all creator identifiers from the subscriptions</li>
+<li>This should be paginated</li>
+</ol>
+</li>
+<li><code>/api/v2/creator/info</code> - Also show a list of creators that the user can select
+<ol>
+<li>Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Creator page
+<ol>
+<li><code>/api/v3/creator/info</code> - Get more details for the creator to display, including if livestreams are available</li>
+<li><code>/api/v3/content/creator</code> - Show recent content by the creator</li>
+<li><code>/api/v2/plan/info</code> - Show available plans the user can subscribe to for the creator</li>
+</ol>
+</li>
+<li>Content page
+<ol>
+<li><code>/api/v3/content/post</code> - Show more detailed information about a piece of content, including text description, available attachments, metadata, interactions, etc.</li>
+<li><code>/api/v3/content/related</code> - List some related content for the user to watch next</li>
+<li><code>/api/v3/comment</code> - Load comments for the content for the user to read
+<ol>
+<li>There are several more comment APIs to post, like, dislike, etc.</li>
+</ol>
+</li>
+<li><code>/api/v2/user/ban/status</code> - Determine if the user is banned from this creator</li>
+<li><code>/api/v3/content/{video|audio|picture|gallery}</code> - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.</li>
+<li><code>/api/v2/cdn/delivery</code> - For video and audio, this is required to get the information to stream or download the content in media players</li>
+</ol>
+</li>
+<li>Livestream
+<ol>
+<li><code>/api/v2/cdn/delivery</code> - Using the type &quot;livestream&quot; to load the livestream media in a media player</li>
+<li><code>wss://chat.floatplane.com/sails.io/?...</code> - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.</li>
+</ol>
+</li>
+<li>User Profile
+<ol>
+<li><code>/api/v3/user/self</code> - Display username, name, email, and profile pictures</li>
+</ol>
+</li>
+</ol>
+<h2>API Organization</h2>
 <p>The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from <code>frontend.floatplane.com/{version}/vendor.js</code>. This is in order to use the best organization from the original developers' point of view.</p>
+<p>For instance, Floatplane's authentication endpoints are organized into <code>Auth.v2.login(...)</code>, <code>Auth.v2.logout()</code>, and <code>Auth.v3.getCaptchaInfo()</code>. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits <code>Auth</code> into <code>AuthV2</code> and <code>AuthV3</code> to emulate the nested structure.</p>
+<h2>Notes</h2>
+<p>Note that the Floatplane API does support the use of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">ETags</a> for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane's API server.</p>
 
             </div>
           </div>
@@ -33164,8 +33223,8 @@ $(document).ready(function() {
                   <div class="app-desc">Information URL: <a href="https://openapi-generator.tech">https://openapi-generator.tech</a></div>
                   <div class="app-desc">Contact Info: <a href="team@openapitools.org">team@openapitools.org</a></div>
               </p>
-                <div class="license-info">All rights reserved</div>
-                <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+                <div class="license-info">MIT</div>
+                <div class="license-url">https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE</div>
             </div>
           </div>
       </div>

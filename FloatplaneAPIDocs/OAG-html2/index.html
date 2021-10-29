@@ -1882,43 +1882,43 @@ ul.nav-tabs {
     }
   }
 };
-    defs["GetCaptchaInfoRequest"] = {
+    defs["GetCaptchaInfoResponse"] = {
   "required" : [ "v2", "v3" ],
   "type" : "object",
   "properties" : {
     "v2" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2"
     },
     "v3" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v3"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v3"
     }
   }
 };
-    defs["GetCaptchaInfoRequest_v2"] = {
+    defs["GetCaptchaInfoResponse_v2"] = {
   "required" : [ "variants" ],
   "type" : "object",
   "properties" : {
     "variants" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2_variants"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2_variants"
     }
   }
 };
-    defs["GetCaptchaInfoRequest_v2_variants"] = {
+    defs["GetCaptchaInfoResponse_v2_variants"] = {
   "required" : [ "android", "checkbox", "invisible" ],
   "type" : "object",
   "properties" : {
     "android" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2_variants_android"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2_variants_android"
     },
     "checkbox" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2_variants_android"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2_variants_android"
     },
     "invisible" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2_variants_android"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2_variants_android"
     }
   }
 };
-    defs["GetCaptchaInfoRequest_v2_variants_android"] = {
+    defs["GetCaptchaInfoResponse_v2_variants_android"] = {
   "required" : [ "siteKey" ],
   "type" : "object",
   "properties" : {
@@ -1927,21 +1927,21 @@ ul.nav-tabs {
     }
   }
 };
-    defs["GetCaptchaInfoRequest_v3"] = {
+    defs["GetCaptchaInfoResponse_v3"] = {
   "required" : [ "variants" ],
   "type" : "object",
   "properties" : {
     "variants" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v3_variants"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v3_variants"
     }
   }
 };
-    defs["GetCaptchaInfoRequest_v3_variants"] = {
+    defs["GetCaptchaInfoResponse_v3_variants"] = {
   "required" : [ "invisible" ],
   "type" : "object",
   "properties" : {
     "invisible" : {
-      "$ref" : "#/components/schemas/GetCaptchaInfoRequest_v2_variants_android"
+      "$ref" : "#/components/schemas/GetCaptchaInfoResponse_v2_variants_android"
     }
   }
 };
@@ -5481,7 +5481,7 @@ public class AuthV3ApiExample {
         AuthV3Api apiInstance = new AuthV3Api();
         
         try {
-            GetCaptchaInfoRequest result = apiInstance.getCaptchaInfo();
+            GetCaptchaInfoResponse result = apiInstance.getCaptchaInfo();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling AuthV3Api#getCaptchaInfo");
@@ -5500,7 +5500,7 @@ public class AuthV3ApiExample {
         AuthV3Api apiInstance = new AuthV3Api();
         
         try {
-            GetCaptchaInfoRequest result = apiInstance.getCaptchaInfo();
+            GetCaptchaInfoResponse result = apiInstance.getCaptchaInfo();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling AuthV3Api#getCaptchaInfo");
@@ -5521,7 +5521,7 @@ AuthV3Api *apiInstance = [[AuthV3Api alloc] init];
 
 // Get Captcha Info
 [apiInstance getCaptchaInfoWithCompletionHandler: 
-              ^(GetCaptchaInfoRequest output, NSError* error) {
+              ^(GetCaptchaInfoResponse output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -5570,7 +5570,7 @@ namespace Example
 
             try {
                 // Get Captcha Info
-                GetCaptchaInfoRequest result = apiInstance.getCaptchaInfo();
+                GetCaptchaInfoResponse result = apiInstance.getCaptchaInfo();
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling AuthV3Api.getCaptchaInfo: " + e.Message );
@@ -5694,7 +5694,7 @@ pub fn main() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/GetCaptchaInfoRequest"
+        "$ref" : "#/components/schemas/GetCaptchaInfoResponse"
       },
       "example" : {
         "v2" : {

@@ -1295,7 +1295,7 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[GetCaptchaInfoRequest](#schemagetcaptchainforequest)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[GetCaptchaInfoResponse](#schemagetcaptchainforesponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
@@ -14718,12 +14718,12 @@ CookieAuth
 |creators|[any]|false|none|none|
 |scheduledDeletionDate|string|false|none|none|
 
-<h2 id="tocS_GetCaptchaInfoRequest">GetCaptchaInfoRequest</h2>
+<h2 id="tocS_GetCaptchaInfoResponse">GetCaptchaInfoResponse</h2>
 <!-- backwards compatibility -->
-<a id="schemagetcaptchainforequest"></a>
-<a id="schema_GetCaptchaInfoRequest"></a>
-<a id="tocSgetcaptchainforequest"></a>
-<a id="tocsgetcaptchainforequest"></a>
+<a id="schemagetcaptchainforesponse"></a>
+<a id="schema_GetCaptchaInfoResponse"></a>
+<a id="tocSgetcaptchainforesponse"></a>
+<a id="tocsgetcaptchainforesponse"></a>
 
 ```json
 {

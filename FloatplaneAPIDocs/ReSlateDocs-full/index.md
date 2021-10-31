@@ -95,7 +95,7 @@ License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MI
 # Authentication
 
 * API Key (CookieAuth)
-    - Parameter Name: **sails.sid**, in: cookie. Authentication and authorization to Floatplane API calls is governed by the `sailes.sid` HTTP Cookie. To obtain this cookie, you must authenticate to `/api/v2/auth/login`.
+    - Parameter Name: **sails.sid**, in: cookie. Authentication and authorization to Floatplane API calls is governed by the `sails.sid` HTTP Cookie. To obtain this cookie, you must authenticate to `/api/v2/auth/login`.
 
 When dealing with cookies in native applications (not via a website inside of a browser), please keep in mind that some languages/libraries may keep cookies across requests by default, and some may not. For instance, in Swift the `URLSession.shared` object with default configuration will automatically track and persist cookies across requests.
 
@@ -94489,7 +94489,7 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
+|user|[UserModel](#schemausermodel)|false|none|Represents some basic information of a user (id, username, and profile image).|
 |needs2FA|boolean|true|none|If true, the user has not yet been authenticated, and will need to submit the 2FA token to complete authentication.|
 
 <h2 id="tocS_CheckFor2faLoginRequest">CheckFor2faLoginRequest</h2>

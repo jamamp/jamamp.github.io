@@ -785,6 +785,7 @@
 <p>For instance, Floatplane’s authentication endpoints are organized into <code>Auth.v2.login(...)</code>, <code>Auth.v2.logout()</code>, and <code>Auth.v3.getCaptchaInfo()</code>. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits <code>Auth</code> into <code>AuthV2</code> and <code>AuthV3</code> to emulate the nested structure.</p>
 <h2 id="notes">Notes</h2>
 <p>Note that the Floatplane API does support the use of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">ETags</a> for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane’s API server.</p>
+<p>The date-time format used by Floatplane API is not standard ISO 8601 format. The dates/times given by Floatplane include milliseconds. Depending on your code generator, you may need to override the date-time format to something similar to <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, for both encoding and decoding.</p>
 <p>Base URLs:</p>
 <ul>
 <li><a href="https://www.floatplane.com">https://www.floatplane.com</a></li>
@@ -2920,7 +2921,7 @@ CookieAuth
 <tr>
 <td>» liveStream</td>
 <td><a href="#schemalivestreammodel">LiveStreamModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -3032,7 +3033,7 @@ CookieAuth
 <tr>
 <td>»» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -3046,7 +3047,7 @@ CookieAuth
 <tr>
 <td>»» logo</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -4219,7 +4220,7 @@ CookieAuth
 <tr>
 <td>»» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -7417,7 +7418,7 @@ CookieAuth
 <tr>
 <td>»» liveStream</td>
 <td><a href="#schemalivestreammodel">LiveStreamModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -7529,7 +7530,7 @@ CookieAuth
 <tr>
 <td>»»» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -7543,7 +7544,7 @@ CookieAuth
 <tr>
 <td>»»» logo</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -8535,7 +8536,7 @@ CookieAuth
 <tr>
 <td>»» liveStream</td>
 <td><a href="#schemalivestreammodel">LiveStreamModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -8647,7 +8648,7 @@ CookieAuth
 <tr>
 <td>»»» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -8661,7 +8662,7 @@ CookieAuth
 <tr>
 <td>»»» logo</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -9737,7 +9738,7 @@ CookieAuth
 <tr>
 <td>» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11395,7 +11396,7 @@ CookieAuth
 <tr>
 <td>liveStream</td>
 <td><a href="#schemalivestreammodel">LiveStreamModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11633,7 +11634,7 @@ CookieAuth
 <tr>
 <td>» liveStream</td>
 <td><a href="#schemalivestreammodel">LiveStreamModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11788,7 +11789,7 @@ CookieAuth
 <tr>
 <td>priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11802,7 +11803,7 @@ CookieAuth
 <tr>
 <td>logo</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -13063,7 +13064,7 @@ CookieAuth
 <tr>
 <td>» priceYearly</td>
 <td>string</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>

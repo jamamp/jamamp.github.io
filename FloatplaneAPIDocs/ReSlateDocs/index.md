@@ -86,6 +86,8 @@ For instance, Floatplane's authentication endpoints are organized into `Auth.v2.
 
 Note that the Floatplane API does support the use of [ETags](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane's API server.
 
+The date-time format used by Floatplane API is not standard ISO 8601 format. The dates/times given by Floatplane include milliseconds. Depending on your code generator, you may need to override the date-time format to something similar to `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for both encoding and decoding.
+
 Base URLs:
 
 * <a href="https://www.floatplane.com">https://www.floatplane.com</a>
@@ -3843,7 +3845,7 @@ Status Code **200**
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
@@ -3859,9 +3861,9 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string|true|none|none|
-|»» priceYearly|string|true|none|none|
+|»» priceYearly|string|false|none|none|
 |»» currency|string|true|none|none|
-|»» logo|string|true|none|none|
+|»» logo|string|false|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
 |»» allowGrandfatheredAccess|boolean|true|none|none|
@@ -5833,7 +5835,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string|true|none|none|
-|»» priceYearly|string|true|none|none|
+|»» priceYearly|string|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string|false|none|none|
 |»» interval|string|true|none|none|
@@ -10878,7 +10880,7 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
@@ -10894,9 +10896,9 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string|true|none|none|
-|»»» priceYearly|string|true|none|none|
+|»»» priceYearly|string|false|none|none|
 |»»» currency|string|true|none|none|
-|»»» logo|string|true|none|none|
+|»»» logo|string|false|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
 |»»» allowGrandfatheredAccess|boolean|true|none|none|
@@ -12817,7 +12819,7 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
@@ -12833,9 +12835,9 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string|true|none|none|
-|»»» priceYearly|string|true|none|none|
+|»»» priceYearly|string|false|none|none|
 |»»» currency|string|true|none|none|
-|»»» logo|string|true|none|none|
+|»»» logo|string|false|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
 |»»» allowGrandfatheredAccess|boolean|true|none|none|
@@ -13794,7 +13796,7 @@ CookieAuth
 |» featured|boolean|true|none|none|
 |» description|string|true|none|none|
 |» price|string|true|none|none|
-|» priceYearly|string|true|none|none|
+|» priceYearly|string|false|none|none|
 |» paymentID|integer|true|none|none|
 |» currency|string|true|none|none|
 |» trialPeriod|number|true|none|none|
@@ -15130,7 +15132,7 @@ CookieAuth
 |» title|string|true|none|none|
 |cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
@@ -15375,7 +15377,7 @@ CookieAuth
 |»» title|string|false|none|none|
 |» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
@@ -15441,9 +15443,9 @@ CookieAuth
 |title|string|true|none|none|
 |description|string|true|none|none|
 |price|string|true|none|none|
-|priceYearly|string|true|none|none|
+|priceYearly|string|false|none|none|
 |currency|string|true|none|none|
-|logo|string|true|none|none|
+|logo|string|false|none|none|
 |interval|string|true|none|none|
 |featured|boolean|true|none|none|
 |allowGrandfatheredAccess|boolean|true|none|none|
@@ -16223,7 +16225,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» title|string|true|none|none|
 |» description|string|true|none|none|
 |» price|string|true|none|none|
-|» priceYearly|string|true|none|none|
+|» priceYearly|string|false|none|none|
 |» currency|string|true|none|none|
 |» logo|string|false|none|none|
 |» interval|string|true|none|none|

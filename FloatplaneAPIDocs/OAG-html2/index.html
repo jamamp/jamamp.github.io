@@ -954,7 +954,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3_creator"] = {
-  "required" : [ "about", "card", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "card", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1663,7 +1663,7 @@ ul.nav-tabs {
   }
 };
     defs["CreatorModelV3"] = {
-  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2235,7 +2235,7 @@ ul.nav-tabs {
   }
 };
     defs["PlanInfoV2Response_plans"] = {
-  "required" : [ "allowGrandfatheredAccess", "createdAt", "creator", "currency", "description", "discordRoles", "discordServers", "enabled", "enabledGlobal", "featured", "id", "interval", "logo", "paymentID", "price", "priceYearly", "title", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
+  "required" : [ "allowGrandfatheredAccess", "createdAt", "creator", "currency", "description", "discordRoles", "discordServers", "enabled", "enabledGlobal", "featured", "id", "interval", "logo", "paymentID", "price", "title", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
   "type" : "object",
   "properties" : {
     "discordRoles" : {
@@ -2372,7 +2372,7 @@ ul.nav-tabs {
   }
 };
     defs["SubscriptionPlanModel"] = {
-  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "logo", "price", "priceYearly", "title" ],
+  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2675,7 +2675,7 @@ ul.nav-tabs {
   }
 };
     defs["UserSubscriptionModel_plan"] = {
-  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "priceYearly", "title" ],
+  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -3021,6 +3021,7 @@ ul.nav-tabs {
 <p>For instance, Floatplane's authentication endpoints are organized into <code>Auth.v2.login(...)</code>, <code>Auth.v2.logout()</code>, and <code>Auth.v3.getCaptchaInfo()</code>. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits <code>Auth</code> into <code>AuthV2</code> and <code>AuthV3</code> to emulate the nested structure.</p>
 <h2>Notes</h2>
 <p>Note that the Floatplane API does support the use of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">ETags</a> for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane's API server.</p>
+<p>The date-time format used by Floatplane API is not standard ISO 8601 format. The dates/times given by Floatplane include milliseconds. Depending on your code generator, you may need to override the date-time format to something similar to <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, for both encoding and decoding.</p>
 
             </div>
           </div>

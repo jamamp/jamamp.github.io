@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.5.1-a
+title: Floatplane API v3.5.2
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.5.1-a</h1>
+<h1 id="floatplane-api">Floatplane API v3.5.2</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -23590,7 +23590,7 @@ Status Code **200**
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string|true|none|none|
@@ -24024,7 +24024,7 @@ Status Code **200**
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string|true|none|none|
@@ -60369,7 +60369,7 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
@@ -84862,25 +84862,10 @@ Status Code **200**
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |» isAccessible|boolean|true|none|none|
-|» videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
-|»» id|string|true|none|none|
-|»» guid|string|true|none|none|
-|»» title|string|true|none|none|
-|»» type|string|true|none|none|
-|»» description|string|true|none|none|
-|»» releaseDate|string(date-time)|false|none|none|
-|»» duration|number|true|none|none|
-|»» creator|string|true|none|none|
-|»» likes|integer|true|none|none|
-|»» dislikes|integer|true|none|none|
-|»» score|integer|true|none|none|
-|»» isProcessing|boolean|true|none|none|
-|»» primaryBlogPost|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» isAccessible|boolean|true|none|none|
-|» audioAttachments|[any]|true|none|none|
-|» pictureAttachments|[any]|true|none|none|
-|» galleryAttachments|[any]|true|none|none|
+|» videoAttachments|[string]|true|none|none|
+|» audioAttachments|[string]|true|none|none|
+|» pictureAttachments|[string]|true|none|none|
+|» galleryAttachments|[string]|true|none|none|
 
 #### Enumerated Values
 
@@ -86801,25 +86786,10 @@ Status Code **200**
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |» isAccessible|boolean|true|none|none|
-|» videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
-|»» id|string|true|none|none|
-|»» guid|string|true|none|none|
-|»» title|string|true|none|none|
-|»» type|string|true|none|none|
-|»» description|string|true|none|none|
-|»» releaseDate|string(date-time)|false|none|none|
-|»» duration|number|true|none|none|
-|»» creator|string|true|none|none|
-|»» likes|integer|true|none|none|
-|»» dislikes|integer|true|none|none|
-|»» score|integer|true|none|none|
-|»» isProcessing|boolean|true|none|none|
-|»» primaryBlogPost|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» isAccessible|boolean|true|none|none|
-|» audioAttachments|[any]|true|none|none|
-|» pictureAttachments|[any]|true|none|none|
-|» galleryAttachments|[any]|true|none|none|
+|» videoAttachments|[string]|true|none|none|
+|» audioAttachments|[string]|true|none|none|
+|» pictureAttachments|[string]|true|none|none|
+|» galleryAttachments|[string]|true|none|none|
 
 #### Enumerated Values
 
@@ -95136,43 +95106,16 @@ CookieAuth
       },
       "isAccessible": true,
       "videoAttachments": [
-        {
-          "id": "string",
-          "guid": "string",
-          "title": "string",
-          "type": "string",
-          "description": "string",
-          "releaseDate": "2019-08-24T14:15:22Z",
-          "duration": 0,
-          "creator": "string",
-          "likes": 0,
-          "dislikes": 0,
-          "score": 0,
-          "isProcessing": true,
-          "primaryBlogPost": "string",
-          "thumbnail": {
-            "width": 0,
-            "height": 0,
-            "path": "string",
-            "childImages": [
-              {
-                "width": 0,
-                "height": 0,
-                "path": "string"
-              }
-            ]
-          },
-          "isAccessible": true
-        }
+        "string"
       ],
       "audioAttachments": [
-        null
+        "string"
       ],
       "pictureAttachments": [
-        null
+        "string"
       ],
       "galleryAttachments": [
-        null
+        "string"
       ]
     }
   ],
@@ -95373,7 +95316,32 @@ CookieAuth
     null
   ],
   "pictureAttachments": [
-    null
+    {
+      "id": "string",
+      "guid": "string",
+      "title": "string",
+      "type": "string",
+      "description": "string",
+      "likes": 0,
+      "dislikes": 0,
+      "score": 0,
+      "isProcessing": true,
+      "creator": "string",
+      "primaryBlogPost": "string",
+      "thumbnail": {
+        "width": 0,
+        "height": 0,
+        "path": "string",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "string"
+          }
+        ]
+      },
+      "isAccessible": true
+    }
   ],
   "galleryAttachments": [
     null
@@ -95405,7 +95373,7 @@ CookieAuth
 |userInteraction|[any]|false|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
 |audioAttachments|[any]|true|none|none|
-|pictureAttachments|[any]|true|none|none|
+|pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|true|none|none|
 |galleryAttachments|[any]|true|none|none|
 
 #### Enumerated Values
@@ -95930,7 +95898,7 @@ CookieAuth
 |description|string|true|none|none|
 |about|string|true|none|none|
 |category|string|true|none|none|
-|cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |subscriptionPlans|[object]|false|none|none|
@@ -96248,43 +96216,16 @@ CookieAuth
   },
   "isAccessible": true,
   "videoAttachments": [
-    {
-      "id": "string",
-      "guid": "string",
-      "title": "string",
-      "type": "string",
-      "description": "string",
-      "releaseDate": "2019-08-24T14:15:22Z",
-      "duration": 0,
-      "creator": "string",
-      "likes": 0,
-      "dislikes": 0,
-      "score": 0,
-      "isProcessing": true,
-      "primaryBlogPost": "string",
-      "thumbnail": {
-        "width": 0,
-        "height": 0,
-        "path": "string",
-        "childImages": [
-          {
-            "width": 0,
-            "height": 0,
-            "path": "string"
-          }
-        ]
-      },
-      "isAccessible": true
-    }
+    "string"
   ],
   "audioAttachments": [
-    null
+    "string"
   ],
   "pictureAttachments": [
-    null
+    "string"
   ],
   "galleryAttachments": [
-    null
+    "string"
   ]
 }
 
@@ -96328,10 +96269,10 @@ CookieAuth
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|none|
-|videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
-|audioAttachments|[any]|true|none|none|
-|pictureAttachments|[any]|true|none|none|
-|galleryAttachments|[any]|true|none|none|
+|videoAttachments|[string]|true|none|none|
+|audioAttachments|[string]|true|none|none|
+|pictureAttachments|[string]|true|none|none|
+|galleryAttachments|[string]|true|none|none|
 
 #### Enumerated Values
 
@@ -96489,6 +96430,61 @@ CookieAuth
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
 |isProcessing|boolean|true|none|none|
+|primaryBlogPost|string|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|isAccessible|boolean|true|none|none|
+
+<h2 id="tocS_PictureAttachmentModel">PictureAttachmentModel</h2>
+<!-- backwards compatibility -->
+<a id="schemapictureattachmentmodel"></a>
+<a id="schema_PictureAttachmentModel"></a>
+<a id="tocSpictureattachmentmodel"></a>
+<a id="tocspictureattachmentmodel"></a>
+
+```json
+{
+  "id": "string",
+  "guid": "string",
+  "title": "string",
+  "type": "string",
+  "description": "string",
+  "likes": 0,
+  "dislikes": 0,
+  "score": 0,
+  "isProcessing": true,
+  "creator": "string",
+  "primaryBlogPost": "string",
+  "thumbnail": {
+    "width": 0,
+    "height": 0,
+    "path": "string",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "string"
+      }
+    ]
+  },
+  "isAccessible": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|none|
+|guid|string|true|none|none|
+|title|string|true|none|none|
+|type|string|true|none|none|
+|description|string|true|none|none|
+|likes|integer|true|none|none|
+|dislikes|integer|true|none|none|
+|score|integer|true|none|none|
+|isProcessing|boolean|true|none|none|
+|creator|string|true|none|none|
 |primaryBlogPost|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|none|

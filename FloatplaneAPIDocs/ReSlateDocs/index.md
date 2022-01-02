@@ -2352,6 +2352,7 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string|true|none|none|
+|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -2786,6 +2787,7 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string|true|none|none|
+|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -3840,6 +3842,7 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string|true|none|none|
+|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -8207,6 +8210,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
+|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -9210,6 +9214,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
+|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -9592,6 +9597,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
+|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -10875,6 +10881,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
+|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -12799,6 +12806,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string|true|none|none|
+|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -13187,6 +13195,309 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+## getPictureContent
+
+<a id="opIdgetPictureContent"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET https://www.floatplane.com/api/v3/content/picture?id=string \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET https://www.floatplane.com/api/v3/content/picture?id=string HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/content/picture?id=string',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/picture',
+  params: {
+  'id' => 'string'
+}, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('https://www.floatplane.com/api/v3/content/picture', params={
+  'id': 'string'
+}, headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/picture', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/content/picture?id=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/picture", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v3/content/picture`
+
+*Get Picture Content*
+
+Retrieve more information on a picture attachment from a blog post in order to consume the picture content.
+
+<h3 id="getpicturecontent-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|query|string|true|The ID of the picture attachment object, from the `BlogPostModelV3`.|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "id": "ZWKdCy8TMN",
+  "guid": "ZWKdCy8TMN",
+  "title": "\"I hate costumes\" Jonathan",
+  "type": "picture",
+  "description": "",
+  "likes": 1,
+  "dislikes": 0,
+  "score": 1,
+  "isProcessing": false,
+  "creator": "59f94c0bdd241b70349eb72b",
+  "primaryBlogPost": "PGZBzzRWpD",
+  "userInteraction": [],
+  "thumbnail": {
+    "width": 1200,
+    "height": 675,
+    "path": "https://pbs.floatplane.com/picture_thumbnails/ZWKdCy8TMN/239212458322156_1634845035660.jpeg",
+    "childImages": []
+  },
+  "isAccessible": true,
+  "imageFiles": [
+    {
+      "path": "https://pbs.floatplane.com/content_images/59f94c0bdd241b70349eb72b/465975275316873_1634845031494_1164x675.jpeg?AWSAccessKeyId=...&Expires=...&Signature=...",
+      "width": 1164,
+      "height": 675,
+      "size": 165390
+    }
+  ]
+}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="getpicturecontent-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentPictureV3Response](#schemacontentpicturev3response)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
 <h1 id="floatplane-api-loyaltyrewardsv3">LoyaltyRewardsV3</h1>
 
 Loyalty rewards information and claiming.
@@ -13501,6 +13812,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -13643,6 +13955,7 @@ CookieAuth
                 "width": 0,
                 "height": 0,
                 "path": "string",
+                "size": 0,
                 "childImages": [
                   {
                     "width": 0,
@@ -13798,6 +14111,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -13840,6 +14154,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -13927,6 +14242,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -14049,6 +14365,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -14061,6 +14378,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -14077,6 +14395,7 @@ CookieAuth
             "width": 0,
             "height": 0,
             "path": "string",
+            "size": 0,
             "childImages": [
               {
                 "width": 0,
@@ -14094,6 +14413,7 @@ CookieAuth
               "width": 0,
               "height": 0,
               "path": "string",
+              "size": 0,
               "childImages": [
                 {
                   "width": 0,
@@ -14140,6 +14460,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -14154,6 +14475,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -14245,6 +14567,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -14257,6 +14580,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -14273,6 +14597,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -14290,6 +14615,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -14328,6 +14654,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14359,6 +14686,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -14390,6 +14718,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -14466,6 +14795,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14482,6 +14812,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14534,6 +14865,82 @@ CookieAuth
 |» height|integer|true|none|none|
 |» label|string|true|none|none|
 |» order|integer|true|none|none|
+
+<h2 id="tocS_ContentPictureV3Response">ContentPictureV3Response</h2>
+<!-- backwards compatibility -->
+<a id="schemacontentpicturev3response"></a>
+<a id="schema_ContentPictureV3Response"></a>
+<a id="tocScontentpicturev3response"></a>
+<a id="tocscontentpicturev3response"></a>
+
+```json
+{
+  "id": "string",
+  "guid": "string",
+  "title": "string",
+  "type": "string",
+  "description": "string",
+  "likes": 0,
+  "dislikes": 0,
+  "score": 0,
+  "isProcessing": true,
+  "creator": "string",
+  "primaryBlogPost": "string",
+  "userInteraction": [
+    null
+  ],
+  "thumbnail": {
+    "width": 0,
+    "height": 0,
+    "path": "string",
+    "size": 0,
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "string"
+      }
+    ]
+  },
+  "isAccessible": true,
+  "imageFiles": [
+    {
+      "width": 0,
+      "height": 0,
+      "path": "string",
+      "size": 0,
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "string"
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|none|
+|guid|string|true|none|none|
+|title|string|true|none|none|
+|type|string|true|none|none|
+|description|string|true|none|none|
+|likes|integer|true|none|none|
+|dislikes|integer|true|none|none|
+|score|integer|true|none|none|
+|isProcessing|boolean|true|none|none|
+|creator|string|true|none|none|
+|primaryBlogPost|string|true|none|none|
+|userInteraction|[any]|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|isAccessible|boolean|true|none|none|
+|imageFiles|[[ImageModel](#schemaimagemodel)]|true|none|none|
 
 <h2 id="tocS_UserActivityV3Response">UserActivityV3Response</h2>
 <!-- backwards compatibility -->
@@ -14658,6 +15065,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14864,6 +15272,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14876,6 +15285,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -14892,6 +15302,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -14909,6 +15320,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -14988,6 +15400,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15000,6 +15413,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15016,6 +15430,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15033,6 +15448,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -15159,6 +15575,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15171,6 +15588,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15187,6 +15605,7 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -15204,6 +15623,7 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -15250,6 +15670,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15264,6 +15685,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15459,6 +15881,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15516,6 +15939,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15559,6 +15983,7 @@ CookieAuth
   "width": 0,
   "height": 0,
   "path": "string",
+  "size": 0,
   "childImages": [
     {
       "width": 0,
@@ -15577,6 +16002,7 @@ CookieAuth
 |width|integer|true|none|none|
 |height|integer|true|none|none|
 |path|string|true|none|none|
+|size|integer|false|none|none|
 |childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 
 <h2 id="tocS_ChildImageModel">ChildImageModel</h2>
@@ -15619,6 +16045,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15636,6 +16063,7 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15757,6 +16185,7 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15794,6 +16223,7 @@ Represents some basic information of a user (id, username, and profile image).
     "width": 0,
     "height": 0,
     "path": "string",
+    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -15880,6 +16310,7 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -15914,6 +16345,7 @@ Represents some basic information of a user (id, username, and profile image).
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -15985,6 +16417,7 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -16054,6 +16487,7 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -16066,6 +16500,7 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "string",
+      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -16082,6 +16517,7 @@ Represents some basic information of a user (id, username, and profile image).
         "width": 0,
         "height": 0,
         "path": "string",
+        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -16099,6 +16535,7 @@ Represents some basic information of a user (id, username, and profile image).
           "width": 0,
           "height": 0,
           "path": "string",
+          "size": 0,
           "childImages": [
             {
               "width": 0,

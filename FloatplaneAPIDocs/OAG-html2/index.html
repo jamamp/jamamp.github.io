@@ -1433,6 +1433,61 @@ ul.nav-tabs {
     }
   }
 };
+    defs["ContentPictureV3Response"] = {
+  "required" : [ "creator", "description", "dislikes", "guid", "id", "imageFiles", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type", "userInteraction" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "guid" : {
+      "type" : "string"
+    },
+    "title" : {
+      "type" : "string"
+    },
+    "type" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
+    },
+    "likes" : {
+      "type" : "integer"
+    },
+    "dislikes" : {
+      "type" : "integer"
+    },
+    "score" : {
+      "type" : "integer"
+    },
+    "isProcessing" : {
+      "type" : "boolean"
+    },
+    "creator" : {
+      "type" : "string"
+    },
+    "primaryBlogPost" : {
+      "type" : "string"
+    },
+    "userInteraction" : {
+      "type" : "array",
+      "items" : { }
+    },
+    "thumbnail" : {
+      "$ref" : "#/components/schemas/ImageModel"
+    },
+    "isAccessible" : {
+      "type" : "boolean"
+    },
+    "imageFiles" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/components/schemas/ImageModel"
+      }
+    }
+  }
+};
     defs["ContentPostV3Response"] = {
   "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
   "type" : "object",
@@ -1965,6 +2020,9 @@ ul.nav-tabs {
     },
     "path" : {
       "type" : "string"
+    },
+    "size" : {
+      "type" : "integer"
     },
     "childImages" : {
       "type" : "array",
@@ -2892,6 +2950,9 @@ ul.nav-tabs {
                     </li>
                     <li data-group="ContentV3" data-name="getMultiCreatorBlogPosts" class="">
                       <a href="#api-ContentV3-getMultiCreatorBlogPosts">getMultiCreatorBlogPosts</a>
+                    </li>
+                    <li data-group="ContentV3" data-name="getPictureContent" class="">
+                      <a href="#api-ContentV3-getPictureContent">getPictureContent</a>
                     </li>
                     <li data-group="ContentV3" data-name="getRelatedBlogPosts" class="">
                       <a href="#api-ContentV3-getRelatedBlogPosts">getRelatedBlogPosts</a>
@@ -15254,6 +15315,801 @@ For pagination, this is used to determine which posts to skip. There should be o
                                     </script>
                                   </div>
                                   <input id='responses-ContentV3-getMultiCreatorBlogPosts-default-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-ContentV3-getPictureContent">
+                      <article id="api-ContentV3-getPictureContent-0" data-group="User" data-name="getPictureContent" data-version="0">
+                        <div class="pull-left">
+                          <h1>getPictureContent</h1>
+                          <p>Get Picture Content</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Retrieve more information on a picture attachment from a blog post in order to consume the picture content.</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/content/picture</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ContentV3-getPictureContent-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ContentV3-getPictureContent-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ContentV3-getPictureContent-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-python">Python</a></li>
+                          <li class=""><a href="#examples-ContentV3-getPictureContent-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ContentV3-getPictureContent-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+\
+ -H "Accept: application/json"\
+ "https://www.floatplane.com/api/v3/content/picture?id="</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.ContentV3Api;
+
+import java.io.File;
+import java.util.*;
+
+public class ContentV3ApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        
+        // Configure API key authorization: CookieAuth
+        ApiKeyAuth CookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("CookieAuth");
+        CookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //CookieAuth.setApiKeyPrefix("Token");
+        
+        // Create an instance of the API class
+        ContentV3Api apiInstance = new ContentV3Api();
+        String id = id_example; // String | The ID of the picture attachment object, from the `BlogPostModelV3`.
+        
+        try {
+            ContentPictureV3Response result = apiInstance.getPictureContent(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ContentV3Api#getPictureContent");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.ContentV3Api;
+
+public class ContentV3ApiExample {
+    public static void main(String[] args) {
+        ContentV3Api apiInstance = new ContentV3Api();
+        String id = id_example; // String | The ID of the picture attachment object, from the `BlogPostModelV3`.
+        
+        try {
+            ContentPictureV3Response result = apiInstance.getPictureContent(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ContentV3Api#getPictureContent");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: CookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sails.sid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sails.sid"];
+
+
+// Create an instance of the API class
+ContentV3Api *apiInstance = [[ContentV3Api alloc] init];
+String *id = id_example; // The ID of the picture attachment object, from the `BlogPostModelV3`. (default to null)
+
+// Get Picture Content
+[apiInstance getPictureContentWith:id
+              completionHandler: ^(ContentPictureV3Response output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
+var defaultClient = FloatplaneApi.ApiClient.instance;
+
+// Configure API key authorization: CookieAuth
+var CookieAuth = defaultClient.authentications['CookieAuth'];
+CookieAuth.apiKey = "YOUR API KEY";
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
+
+// Create an instance of the API class
+var api = new FloatplaneApi.ContentV3Api()
+var id = id_example; // {String} The ID of the picture attachment object, from the `BlogPostModelV3`.
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getPictureContent(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ContentV3-getPictureContent-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getPictureContentExample
+    {
+        public void main()
+        {
+            // Configure API key authorization: CookieAuth
+            Configuration.Default.ApiKey.Add("sails.sid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sails.sid", "Bearer");
+            
+            // Create an instance of the API class
+            var apiInstance = new ContentV3Api();
+            var id = id_example;  // String | The ID of the picture attachment object, from the `BlogPostModelV3`. (default to null)
+
+            try {
+                // Get Picture Content
+                ContentPictureV3Response result = apiInstance.getPictureContent(id);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling ContentV3Api.getPictureContent: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: CookieAuth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.sid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sails.sid', 'Bearer');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\ContentV3Api();
+$id = id_example; // String | The ID of the picture attachment object, from the `BlogPostModelV3`.
+
+try {
+    $result = $api_instance->getPictureContent($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ContentV3Api->getPictureContent: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::ContentV3Api;
+
+# Configure API key authorization: CookieAuth
+$WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::OPenAPIClient::Configuration::api_key_prefix->{'sails.sid'} = "Bearer";
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::ContentV3Api->new();
+my $id = id_example; # String | The ID of the picture attachment object, from the `BlogPostModelV3`.
+
+eval { 
+    my $result = $api_instance->getPictureContent(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ContentV3Api->getPictureContent: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: CookieAuth
+openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# openapi_client.configuration.api_key_prefix['sails.sid'] = 'Bearer'
+
+# Create an instance of the API class
+api_instance = openapi_client.ContentV3Api()
+id = id_example # String | The ID of the picture attachment object, from the `BlogPostModelV3`. (default to null)
+
+try: 
+    # Get Picture Content
+    api_response = api_instance.get_picture_content(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ContentV3Api->getPictureContent: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate ContentV3Api;
+
+pub fn main() {
+    let id = id_example; // String
+
+    let mut context = ContentV3Api::Context::default();
+    let result = client.getPictureContent(id, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_getPictureContent_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+The ID of the picture attachment object, from the &#x60;BlogPostModelV3&#x60;.
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-ContentV3-getPictureContent-title-200"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-200" class="marked"></p>
+                            <script>
+                              var responseContentV3200_description = `OK`;
+                              var responseContentV3200_description_break = responseContentV3200_description.indexOf('\n');
+                              if (responseContentV3200_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-200").text("Status: 200 - " + responseContentV3200_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-200").text("Status: 200 - " + responseContentV3200_description.substring(0, responseContentV3200_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-200").html(responseContentV3200_description.substring(responseContentV3200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-200-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-200-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-200" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ContentPictureV3Response"
+      },
+      "example" : {
+        "id" : "ZWKdCy8TMN",
+        "guid" : "ZWKdCy8TMN",
+        "title" : "\"I hate costumes\" Jonathan",
+        "type" : "picture",
+        "description" : "",
+        "likes" : 1,
+        "dislikes" : 0,
+        "score" : 1,
+        "isProcessing" : false,
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "primaryBlogPost" : "PGZBzzRWpD",
+        "userInteraction" : [ ],
+        "thumbnail" : {
+          "width" : 1200,
+          "height" : 675,
+          "path" : "https://pbs.floatplane.com/picture_thumbnails/ZWKdCy8TMN/239212458322156_1634845035660.jpeg",
+          "childImages" : [ ]
+        },
+        "isAccessible" : true,
+        "imageFiles" : [ {
+          "path" : "https://pbs.floatplane.com/content_images/59f94c0bdd241b70349eb72b/465975275316873_1634845031494_1164x675.jpeg?AWSAccessKeyId=...&Expires=...&Signature=...",
+          "width" : 1164,
+          "height" : 675,
+          "size" : 165390
+        } ]
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-200-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-ContentV3-getPictureContent-title-400"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-400" class="marked"></p>
+                            <script>
+                              var responseContentV3400_description = `Bad Request - The request has errors and the server did not process it.`;
+                              var responseContentV3400_description_break = responseContentV3400_description.indexOf('\n');
+                              if (responseContentV3400_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-400").text("Status: 400 - " + responseContentV3400_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-400").text("Status: 400 - " + responseContentV3400_description.substring(0, responseContentV3400_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-400").html(responseContentV3400_description.substring(responseContentV3400_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-400" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-400-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-400-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-400-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-400" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request - The request has errors and the server did not process it.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-400-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-ContentV3-getPictureContent-title-401"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-401" class="marked"></p>
+                            <script>
+                              var responseContentV3401_description = `Unauthenticated - The request was not authenticated to make the request.`;
+                              var responseContentV3401_description_break = responseContentV3401_description.indexOf('\n');
+                              if (responseContentV3401_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-401").text("Status: 401 - " + responseContentV3401_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-401").text("Status: 401 - " + responseContentV3401_description.substring(0, responseContentV3401_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-401").html(responseContentV3401_description.substring(responseContentV3401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-401-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-401-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-401" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthenticated - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "erng-ah8e-n0d3",
+        "errors" : [ {
+          "id" : "erng-ah8e-n0d3",
+          "name" : "notLoggedInError",
+          "message" : "You must be logged-in to access this resource."
+        } ],
+        "message" : "You must be logged-in to access this resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-401-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-ContentV3-getPictureContent-title-403"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-403" class="marked"></p>
+                            <script>
+                              var responseContentV3403_description = `Forbidden - The request was not authenticated to make the request.`;
+                              var responseContentV3403_description_break = responseContentV3403_description.indexOf('\n');
+                              if (responseContentV3403_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-403").text("Status: 403 - " + responseContentV3403_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-403").text("Status: 403 - " + responseContentV3403_description.substring(0, responseContentV3403_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-403").html(responseContentV3403_description.substring(responseContentV3403_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-403" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-403-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-403-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-403-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-403" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "missingAchievementError",
+          "message" : "You lack one or more of the required achievements needed to access the requested resource.",
+          "data" : {
+            "requiresAllOfAchievement" : [ {
+              "id" : "6157853e479315db795f7296",
+              "title" : "FloatVPN Alpha",
+              "startDate" : null,
+              "endDate" : null,
+              "icon" : null
+            } ]
+          }
+        } ],
+        "message" : "You lack one or more of the required achievements needed to access the requested resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-403-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-ContentV3-getPictureContent-title-404"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-404" class="marked"></p>
+                            <script>
+                              var responseContentV3404_description = `Not Found - The resource was not found.`;
+                              var responseContentV3404_description_break = responseContentV3404_description.indexOf('\n');
+                              if (responseContentV3404_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-404").text("Status: 404 - " + responseContentV3404_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-404").text("Status: 404 - " + responseContentV3404_description.substring(0, responseContentV3404_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-404").html(responseContentV3404_description.substring(responseContentV3404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-404-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-404-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-404" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found - The resource was not found.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "notFoundError"
+        } ]
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-404-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-ContentV3-getPictureContent-title-default"></h3>
+                            <p id="examples-ContentV3-getPictureContent-description-default" class="marked"></p>
+                            <script>
+                              var responseContentV3default_description = `Unexpected response code`;
+                              var responseContentV3default_description_break = responseContentV3default_description.indexOf('\n');
+                              if (responseContentV3default_description_break == -1) {
+                                $("#examples-ContentV3-getPictureContent-title-default").text("Status: default - " + responseContentV3default_description);
+                              } else {
+                                $("#examples-ContentV3-getPictureContent-title-default").text("Status: default - " + responseContentV3default_description.substring(0, responseContentV3default_description_break));
+                                $("#examples-ContentV3-getPictureContent-description-default").html(responseContentV3default_description.substring(responseContentV3default_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ContentV3-getPictureContent-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ContentV3-getPictureContent-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ContentV3-getPictureContent-default-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ContentV3-getPictureContent-default-schema">
+                                  <div id="responses-ContentV3-getPictureContent-schema-default" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unexpected response code",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ContentV3-getPictureContent-default-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-ContentV3-getPictureContent-schema-default');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ContentV3-getPictureContent-default-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
                         </article>

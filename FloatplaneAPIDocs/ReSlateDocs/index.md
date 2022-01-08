@@ -10366,6 +10366,7 @@ Retrieve a paginated list of blog posts from a creator. Or search for blog posts
 |limit|query|integer|true|The maximum number of posts to return.|
 |fetchAfter|query|integer|false|The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.|
 |search|query|string|false|Search filter to look for specific posts.|
+|tags|query|array[string]|false|An array of tags to search against, possibly in addition to `search`.|
 
 > Example responses
 
@@ -10848,6 +10849,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
+|» tags|[object]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
@@ -12773,6 +12775,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
+|» tags|[object]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
@@ -14327,6 +14330,9 @@ CookieAuth
       "title": "string",
       "text": "string",
       "type": "blogPost",
+      "tags": [
+        {}
+      ],
       "attachmentOrder": [
         "string"
       ],
@@ -14534,6 +14540,9 @@ CookieAuth
   "title": "string",
   "text": "string",
   "type": "blogPost",
+  "tags": [
+    {}
+  ],
   "attachmentOrder": [
     "string"
   ],
@@ -14746,6 +14755,7 @@ CookieAuth
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
+|tags|[object]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |releaseDate|string(date-time)|true|none|none|
@@ -15537,6 +15547,9 @@ CookieAuth
   "title": "string",
   "text": "string",
   "type": "blogPost",
+  "tags": [
+    {}
+  ],
   "attachmentOrder": [
     "string"
   ],
@@ -15720,6 +15733,7 @@ CookieAuth
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
+|tags|[object]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |releaseDate|string(date-time)|true|none|none|

@@ -876,7 +876,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
-  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -895,6 +895,13 @@ ul.nav-tabs {
     "type" : {
       "type" : "string",
       "enum" : [ "blogPost" ]
+    },
+    "tags" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "description" : "TODO - Probably just a string type, but we've yet to see any tags in production."
+      }
     },
     "attachmentOrder" : {
       "type" : "array",
@@ -1489,7 +1496,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPostV3Response"] = {
-  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1508,6 +1515,13 @@ ul.nav-tabs {
     "type" : {
       "type" : "string",
       "enum" : [ "blogPost" ]
+    },
+    "tags" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "description" : "TODO - Probably just a string type, but we've yet to see any tags in production."
+      }
     },
     "attachmentOrder" : {
       "type" : "array",
@@ -13014,7 +13028,7 @@ The ID of the post to be retrieved.
                             <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 \
  -H "Accept: application/json"\
- "https://www.floatplane.com/api/v3/content/creator?id=&limit=&fetchAfter=&search="</code></pre>
+ "https://www.floatplane.com/api/v3/content/creator?id=&limit=&fetchAfter=&search=&tags="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-ContentV3-getCreatorBlogPosts-0-java">
                             <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
@@ -13041,9 +13055,10 @@ public class ContentV3ApiExample {
         Integer limit = 56; // Integer | The maximum number of posts to return.
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
+        array[String] tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
         
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -13064,9 +13079,10 @@ public class ContentV3ApiExample {
         Integer limit = 56; // Integer | The maximum number of posts to return.
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
+        array[String] tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
         
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -13094,12 +13110,14 @@ String *id = id_example; // The GUID of the creator to retrieve posts from. (def
 Integer *limit = 56; // The maximum number of posts to return. (default to null)
 Integer *fetchAfter = 56; // The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 String *search = search_example; // Search filter to look for specific posts. (optional) (default to null)
+array[String] *tags = ; // An array of tags to search against, possibly in addition to `search`. (optional) (default to null)
 
 // Get Creator Blog Posts
 [apiInstance getCreatorBlogPostsWith:id
     limit:limit
     fetchAfter:fetchAfter
     search:search
+    tags:tags
               completionHandler: ^(array[BlogPostModelV3] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -13127,7 +13145,8 @@ var id = id_example; // {String} The GUID of the creator to retrieve posts from.
 var limit = 56; // {Integer} The maximum number of posts to return.
 var opts = {
   'fetchAfter': 56, // {Integer} The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
-  'search': search_example // {String} Search filter to look for specific posts.
+  'search': search_example, // {String} Search filter to look for specific posts.
+  'tags':  // {array[String]} An array of tags to search against, possibly in addition to `search`.
 };
 
 var callback = function(error, data, response) {
@@ -13168,10 +13187,11 @@ namespace Example
             var limit = 56;  // Integer | The maximum number of posts to return. (default to null)
             var fetchAfter = 56;  // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional)  (default to null)
             var search = search_example;  // String | Search filter to look for specific posts. (optional)  (default to null)
+            var tags = new array[String](); // array[String] | An array of tags to search against, possibly in addition to `search`. (optional)  (default to null)
 
             try {
                 // Get Creator Blog Posts
-                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search);
+                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ContentV3Api.getCreatorBlogPosts: " + e.Message );
@@ -13197,9 +13217,10 @@ $id = id_example; // String | The GUID of the creator to retrieve posts from.
 $limit = 56; // Integer | The maximum number of posts to return.
 $fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 $search = search_example; // String | Search filter to look for specific posts.
+$tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
 
 try {
-    $result = $api_instance->getCreatorBlogPosts($id, $limit, $fetchAfter, $search);
+    $result = $api_instance->getCreatorBlogPosts($id, $limit, $fetchAfter, $search, $tags);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ContentV3Api->getCreatorBlogPosts: ', $e->getMessage(), PHP_EOL;
@@ -13223,9 +13244,10 @@ my $id = id_example; # String | The GUID of the creator to retrieve posts from.
 my $limit = 56; # Integer | The maximum number of posts to return.
 my $fetchAfter = 56; # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 my $search = search_example; # String | Search filter to look for specific posts.
+my $tags = []; # array[String] | An array of tags to search against, possibly in addition to `search`.
 
 eval { 
-    my $result = $api_instance->getCreatorBlogPosts(id => $id, limit => $limit, fetchAfter => $fetchAfter, search => $search);
+    my $result = $api_instance->getCreatorBlogPosts(id => $id, limit => $limit, fetchAfter => $fetchAfter, search => $search, tags => $tags);
     print Dumper($result);
 };
 if ($@) {
@@ -13251,10 +13273,11 @@ id = id_example # String | The GUID of the creator to retrieve posts from. (defa
 limit = 56 # Integer | The maximum number of posts to return. (default to null)
 fetchAfter = 56 # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 search = search_example # String | Search filter to look for specific posts. (optional) (default to null)
+tags =  # array[String] | An array of tags to search against, possibly in addition to `search`. (optional) (default to null)
 
 try: 
     # Get Creator Blog Posts
-    api_response = api_instance.get_creator_blog_posts(id, limit, fetchAfter=fetchAfter, search=search)
+    api_response = api_instance.get_creator_blog_posts(id, limit, fetchAfter=fetchAfter, search=search, tags=tags)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ContentV3Api->getCreatorBlogPosts: %s\n" % e)</code></pre>
@@ -13268,9 +13291,10 @@ pub fn main() {
     let limit = 56; // Integer
     let fetchAfter = 56; // Integer
     let search = search_example; // String
+    let tags = ; // array[String]
 
     let mut context = ContentV3Api::Context::default();
-    let result = client.getCreatorBlogPosts(id, limit, fetchAfter, search, &context).wait();
+    let result = client.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, &context).wait();
 
     println!("{:?}", result);
 }
@@ -13374,6 +13398,26 @@ The number of posts to skip. Usually a multiple of &#x60;limit&#x60;, to get the
 
                     <div class="inner description marked">
 Search filter to look for specific posts.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">tags</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_tags">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    array[String]
+                </span>
+
+                    <div class="inner description marked">
+An array of tags to search against, possibly in addition to &#x60;search&#x60;.
                     </div>
             </div>
         </div>

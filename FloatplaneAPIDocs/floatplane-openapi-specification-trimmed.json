@@ -716,6 +716,13 @@
                             "blogPost"
                         ]
                     },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "description": "TODO - Probably just a string type, but we've yet to see any tags in production."
+                        }
+                    },
                     "attachmentOrder": {
                         "type": "array",
                         "items": {
@@ -784,6 +791,7 @@
                     "title",
                     "text",
                     "type",
+                    "tags",
                     "attachmentOrder",
                     "metadata",
                     "releaseDate",
@@ -1503,6 +1511,13 @@
                             "blogPost"
                         ]
                     },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "description": "TODO - Probably just a string type, but we've yet to see any tags in production."
+                        }
+                    },
                     "attachmentOrder": {
                         "type": "array",
                         "items": {
@@ -1654,6 +1669,7 @@
                     "title",
                     "text",
                     "type",
+                    "tags",
                     "attachmentOrder",
                     "metadata",
                     "releaseDate",
@@ -5630,6 +5646,19 @@
                         },
                         "required": false,
                         "description": "Search filter to look for specific posts."
+                    },
+                    {
+                        "in": "query",
+                        "name": "tags",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minItems": 0
+                            }
+                        },
+                        "required": false,
+                        "description": "An array of tags to search against, possibly in addition to `search`."
                     }
                 ],
                 "responses": {

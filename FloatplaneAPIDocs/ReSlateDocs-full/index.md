@@ -84592,6 +84592,7 @@ Retrieve a paginated list of blog posts from a creator. Or search for blog posts
     "title": "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
     "text": "<p>chat on Twitch</p>",
     "type": "blogPost",
+    "tags": [],
     "attachmentOrder": [
       "TViGzkuIic"
     ],
@@ -85974,6 +85975,7 @@ Retrieve more details on a specific blog post object for viewing.
   "title": "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
   "text": "<p>chat on Twitch</p>",
   "type": "blogPost",
+  "tags": [],
   "attachmentOrder": [
     "TViGzkuIic"
   ],
@@ -86351,6 +86353,7 @@ Retrieve a list of blog posts that are related to the post being viewed.
     "title": "Livestream VOD – October 8, 2021 @ 20:26 – I Have MORE to Say About Steam Deck - WAN Show October 8, 2021",
     "text": "<p>Honey automatically applies the best coupon codes to save you money at </p><p>different online checkouts, try it now at <a href=\"https://www.joinhoney.com/linus\">https://www.joinhoney.com/linus</a></p><p><br /></p><p>Buy a Seasonic Ultra Titanium PSU</p><p>On Amazon: <a href=\"https://geni.us/q4lnefC\">https://geni.us/q4lnefC</a></p><p>On NewEgg: <a href=\"https://lmg.gg/8KV3S\">https://lmg.gg/8KV3S</a></p><p><br /></p><p>Visit <a href=\"https://www.squarespace.com/WAN\">https://www.squarespace.com/WAN</a> and use offer code WAN for 10% off</p><p><br /></p><p>Podcast Download: TBD</p><p><br /></p><p>Check out our other Podcasts:</p><p>Carpool Critics Movie Podcast: <a href=\"https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA\">https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA</a></p><p><br /></p><p>Timestamps TBD</p>",
     "type": "blogPost",
+    "tags": [],
     "attachmentOrder": [
       "psqoN3CgMH",
       "KijsTQP8Rr"
@@ -88526,6 +88529,7 @@ CookieAuth
 ```shell
 # You can also use wget
 curl -X POST https://www.floatplane.com/api/v3/content/like \
+  -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
@@ -88533,20 +88537,25 @@ curl -X POST https://www.floatplane.com/api/v3/content/like \
 ```http
 POST https://www.floatplane.com/api/v3/content/like HTTP/1.1
 Host: www.floatplane.com
+Content-Type: application/json
 Accept: application/json
 
 ```
 
 ```javascript
-
+const inputBody = '{
+  "contentType": "blogPost",
+  "id": "string"
+}';
 const headers = {
+  'Content-Type':'application/json',
   'Accept':'application/json'
 };
 
 fetch('https://www.floatplane.com/api/v3/content/like',
 {
   method: 'POST',
-
+  body: inputBody,
   headers: headers
 })
 .then(function(res) {
@@ -88562,6 +88571,7 @@ require 'rest-client'
 require 'json'
 
 headers = {
+  'Content-Type' => 'application/json',
   'Accept' => 'application/json'
 }
 
@@ -88576,6 +88586,7 @@ p JSON.parse(result)
 ```python
 import requests
 headers = {
+  'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
@@ -88591,6 +88602,7 @@ print(r.json())
 require 'vendor/autoload.php';
 
 $headers = array(
+    'Content-Type' => 'application/json',
     'Accept' => 'application/json',
 );
 
@@ -88644,6 +88656,7 @@ import (
 func main() {
 
     headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
         "Accept": []string{"application/json"},
     }
 
@@ -88662,14 +88675,31 @@ func main() {
 
 *Like Content*
 
-TODO
+Toggles the like status on a piece of content. If disliked before, it will turn into a like. If liked before, the like will be removed.
+
+> Body parameter
+
+```json
+{
+  "contentType": "blogPost",
+  "id": "string"
+}
+```
+
+<h3 id="likecontent-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[ContentLikeV3Request](#schemacontentlikev3request)|true|none|
 
 > Example responses
 
 > 200 Response
 
 ```json
-{}
+[
+  "like"
+]
 ```
 
 > 400 Response
@@ -88771,14 +88801,12 @@ TODO
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentLikeV3Response](#schemacontentlikev3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="likecontent-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -88794,6 +88822,7 @@ CookieAuth
 ```shell
 # You can also use wget
 curl -X POST https://www.floatplane.com/api/v3/content/dislike \
+  -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
@@ -88801,20 +88830,25 @@ curl -X POST https://www.floatplane.com/api/v3/content/dislike \
 ```http
 POST https://www.floatplane.com/api/v3/content/dislike HTTP/1.1
 Host: www.floatplane.com
+Content-Type: application/json
 Accept: application/json
 
 ```
 
 ```javascript
-
+const inputBody = '{
+  "contentType": "blogPost",
+  "id": "string"
+}';
 const headers = {
+  'Content-Type':'application/json',
   'Accept':'application/json'
 };
 
 fetch('https://www.floatplane.com/api/v3/content/dislike',
 {
   method: 'POST',
-
+  body: inputBody,
   headers: headers
 })
 .then(function(res) {
@@ -88830,6 +88864,7 @@ require 'rest-client'
 require 'json'
 
 headers = {
+  'Content-Type' => 'application/json',
   'Accept' => 'application/json'
 }
 
@@ -88844,6 +88879,7 @@ p JSON.parse(result)
 ```python
 import requests
 headers = {
+  'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
@@ -88859,6 +88895,7 @@ print(r.json())
 require 'vendor/autoload.php';
 
 $headers = array(
+    'Content-Type' => 'application/json',
     'Accept' => 'application/json',
 );
 
@@ -88912,6 +88949,7 @@ import (
 func main() {
 
     headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
         "Accept": []string{"application/json"},
     }
 
@@ -88930,14 +88968,31 @@ func main() {
 
 *Dislike Content*
 
-TODO
+Toggles the dislike status on a piece of content. If liked before, it will turn into a dislike. If disliked before, the dislike will be removed.
+
+> Body parameter
+
+```json
+{
+  "contentType": "blogPost",
+  "id": "string"
+}
+```
+
+<h3 id="dislikecontent-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[ContentLikeV3Request](#schemacontentlikev3request)|true|none|
 
 > Example responses
 
 > 200 Response
 
 ```json
-{}
+[
+  "dislike"
+]
 ```
 
 > 400 Response
@@ -89039,14 +89094,12 @@ TODO
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentLikeV3Response](#schemacontentlikev3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="dislikecontent-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -96047,6 +96100,52 @@ CookieAuth
 |displayName|string|false|none|none|
 |creators|[any]|false|none|none|
 |scheduledDeletionDate|string|false|none|none|
+
+<h2 id="tocS_ContentLikeV3Request">ContentLikeV3Request</h2>
+<!-- backwards compatibility -->
+<a id="schemacontentlikev3request"></a>
+<a id="schema_ContentLikeV3Request"></a>
+<a id="tocScontentlikev3request"></a>
+<a id="tocscontentlikev3request"></a>
+
+```json
+{
+  "contentType": "blogPost",
+  "id": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|contentType|string|true|none|none|
+|id|string|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|contentType|blogPost|
+
+<h2 id="tocS_ContentLikeV3Response">ContentLikeV3Response</h2>
+<!-- backwards compatibility -->
+<a id="schemacontentlikev3response"></a>
+<a id="schema_ContentLikeV3Response"></a>
+<a id="tocScontentlikev3response"></a>
+<a id="tocscontentlikev3response"></a>
+
+```json
+[
+  "like"
+]
+
+```
+
+### Properties
+
+*None*
 
 <h2 id="tocS_GetCaptchaInfoResponse">GetCaptchaInfoResponse</h2>
 <!-- backwards compatibility -->

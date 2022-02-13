@@ -34,7 +34,18 @@
       <span class="param-name">guid</span>
       <span class="param-type">String</span>
       
-      <p class="param-description">The GUID of the attachment for a post, retrievable from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; object.</p>
+      <p class="param-description">The GUID of the attachment for a post, retrievable from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; object. Required when &#x60;type&#x60; is &#x60;vod&#x60;, &#x60;aod&#x60;, or &#x60;download&#x60;. Note: either this or &#x60;creator&#x60; must be supplied.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">creator</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">The GUID of the creator for a livestream, retrievable from &#x60;CreatorModelV2.id&#x60;. Required when &#x60;type&#x60; is &#x60;live&#x60;. Note: either this or &#x60;guid&#x60; must be supplied.</p>
 	  </li>
   </ul>
 </div>

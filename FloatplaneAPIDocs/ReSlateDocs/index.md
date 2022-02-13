@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.6.2
+title: Floatplane API v3.8.0
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.6.2</h1>
+<h1 id="floatplane-api">Floatplane API v3.8.0</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -1320,13 +1320,13 @@ Content Delivery mechanisms for Floatplane media.
 
 ```shell
 # You can also use wget
-curl -X GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string \
+curl -X GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string HTTP/1.1
+GET https://www.floatplane.com/api/v2/cdn/delivery?type=vod HTTP/1.1
 Host: www.floatplane.com
 Accept: application/json
 
@@ -1338,7 +1338,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string',
+fetch('https://www.floatplane.com/api/v2/cdn/delivery?type=vod',
 {
   method: 'GET',
 
@@ -1362,8 +1362,7 @@ headers = {
 
 result = RestClient.get 'https://www.floatplane.com/api/v2/cdn/delivery',
   params: {
-  'type' => 'string',
-'guid' => 'string'
+  'type' => 'string'
 }, headers: headers
 
 p JSON.parse(result)
@@ -1377,7 +1376,7 @@ headers = {
 }
 
 r = requests.get('https://www.floatplane.com/api/v2/cdn/delivery', params={
-  'type': 'vod',  'guid': 'string'
+  'type': 'vod'
 }, headers = headers)
 
 print(r.json())
@@ -1416,7 +1415,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("https://www.floatplane.com/api/v2/cdn/delivery?type=vod&guid=string");
+URL obj = new URL("https://www.floatplane.com/api/v2/cdn/delivery?type=vod");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -1468,7 +1467,8 @@ Given an video/audio attachment identifier, retrieves the information necessary 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |type|query|string|true|Used to determine which kind of retrieval method is requested for the video.|
-|guid|query|string|true|The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.|
+|guid|query|string|false|The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.|
+|creator|query|string|false|The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.|
 
 #### Detailed descriptions
 
@@ -9248,8 +9248,8 @@ Status Code **200**
 |»» interactionCounts|object|true|none|none|
 |»»» like|integer|false|none|none|
 |»»» dislike|integer|false|none|none|
-|»» userInteraction|string|false|none|none|
-|» userInteraction|string|false|none|none|
+|»» userInteraction|[string]|false|none|none|
+|» userInteraction|[string]|false|none|none|
 
 #### Links
 
@@ -9614,7 +9614,7 @@ Status Code **200**
 |» interactionCounts|object|true|none|none|
 |»» like|integer|false|none|none|
 |»» dislike|integer|false|none|none|
-|» userInteraction|string|false|none|none|
+|» userInteraction|[string]|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -10380,7 +10380,9 @@ Retrieve a paginated list of blog posts from a creator. Or search for blog posts
     "title": "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
     "text": "<p>chat on Twitch</p>",
     "type": "blogPost",
-    "tags": [],
+    "tags": [
+      "test"
+    ],
     "attachmentOrder": [
       "TViGzkuIic"
     ],
@@ -10850,7 +10852,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
-|» tags|[object]|true|none|none|
+|» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
@@ -11111,7 +11113,7 @@ Retrieve paginated blog posts from multiple creators for the home page.
 |---|---|---|---|---|
 |ids|query|array[string]|true|The GUID(s) of the creator(s) to retrieve posts from.|
 |limit|query|integer|true|The maximum number of posts to retrieve.|
-|fetchAfter|query|array[object]|false|For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.|
+|fetchAfter|query|array[object]|false|For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.|
 
 > Example responses
 
@@ -11763,7 +11765,9 @@ Retrieve more details on a specific blog post object for viewing.
   "title": "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
   "text": "<p>chat on Twitch</p>",
   "type": "blogPost",
-  "tags": [],
+  "tags": [
+    "test"
+  ],
   "attachmentOrder": [
     "TViGzkuIic"
   ],
@@ -12141,7 +12145,9 @@ Retrieve a list of blog posts that are related to the post being viewed.
     "title": "Livestream VOD – October 8, 2021 @ 20:26 – I Have MORE to Say About Steam Deck - WAN Show October 8, 2021",
     "text": "<p>Honey automatically applies the best coupon codes to save you money at </p><p>different online checkouts, try it now at <a href=\"https://www.joinhoney.com/linus\">https://www.joinhoney.com/linus</a></p><p><br /></p><p>Buy a Seasonic Ultra Titanium PSU</p><p>On Amazon: <a href=\"https://geni.us/q4lnefC\">https://geni.us/q4lnefC</a></p><p>On NewEgg: <a href=\"https://lmg.gg/8KV3S\">https://lmg.gg/8KV3S</a></p><p><br /></p><p>Visit <a href=\"https://www.squarespace.com/WAN\">https://www.squarespace.com/WAN</a> and use offer code WAN for 10% off</p><p><br /></p><p>Podcast Download: TBD</p><p><br /></p><p>Check out our other Podcasts:</p><p>Carpool Critics Movie Podcast: <a href=\"https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA\">https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA</a></p><p><br /></p><p>Timestamps TBD</p>",
     "type": "blogPost",
-    "tags": [],
+    "tags": [
+      "test"
+    ],
     "attachmentOrder": [
       "psqoN3CgMH",
       "KijsTQP8Rr"
@@ -12778,7 +12784,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
-|» tags|[object]|true|none|none|
+|» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
@@ -13785,7 +13791,7 @@ Toggles the like status on a piece of content. If disliked before, it will turn 
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentLikeV3Response](#schemacontentlikev3response)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[UserInteractionModel](#schemauserinteractionmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
@@ -14078,7 +14084,7 @@ Toggles the dislike status on a piece of content. If liked before, it will turn 
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentLikeV3Response](#schemacontentlikev3response)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[UserInteractionModel](#schemauserinteractionmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
@@ -14476,7 +14482,8 @@ CookieAuth
         "property2": {
           "token": "string"
         }
-      }
+      },
+      "token": "string"
     }
   }
 }
@@ -14501,6 +14508,7 @@ CookieAuth
 |»» qualityLevelParams|object|false|none|none|
 |»»» **additionalProperties**|object|false|none|none|
 |»»»» token|string|true|none|none|
+|»» token|string|false|none|none|
 
 <h2 id="tocS_PaymentInvoiceListV2Response">PaymentInvoiceListV2Response</h2>
 <!-- backwards compatibility -->
@@ -14920,7 +14928,7 @@ CookieAuth
       "text": "string",
       "type": "blogPost",
       "tags": [
-        {}
+        "string"
       ],
       "attachmentOrder": [
         "string"
@@ -15110,10 +15118,31 @@ CookieAuth
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |blogPosts|[[BlogPostModelV3](#schemablogpostmodelv3)]|true|none|none|
-|lastElements|[object]|true|none|Information about paging: what the last ID retrieve is and if more posts can be retrieved afterward for subsequent requests.|
-|» creatorId|string|true|none|none|
-|» blogPostId|string|true|none|none|
-|» moreFetchable|boolean|true|none|none|
+|lastElements|[[ContentCreatorListLastItems](#schemacontentcreatorlistlastitems)]|true|none|Information about paging: what the last ID retrieve is and if more posts can be retrieved afterward for subsequent requests.|
+
+<h2 id="tocS_ContentCreatorListLastItems">ContentCreatorListLastItems</h2>
+<!-- backwards compatibility -->
+<a id="schemacontentcreatorlistlastitems"></a>
+<a id="schema_ContentCreatorListLastItems"></a>
+<a id="tocScontentcreatorlistlastitems"></a>
+<a id="tocscontentcreatorlistlastitems"></a>
+
+```json
+{
+  "creatorId": "string",
+  "blogPostId": "string",
+  "moreFetchable": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|creatorId|string|true|none|none|
+|blogPostId|string|true|none|none|
+|moreFetchable|boolean|true|none|none|
 
 <h2 id="tocS_ContentPostV3Response">ContentPostV3Response</h2>
 <!-- backwards compatibility -->
@@ -15130,7 +15159,7 @@ CookieAuth
   "text": "string",
   "type": "blogPost",
   "tags": [
-    {}
+    "string"
   ],
   "attachmentOrder": [
     "string"
@@ -15263,7 +15292,7 @@ CookieAuth
   },
   "isAccessible": true,
   "userInteraction": [
-    null
+    "like"
   ],
   "videoAttachments": [
     {
@@ -15344,7 +15373,7 @@ CookieAuth
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
-|tags|[object]|true|none|none|
+|tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |releaseDate|string(date-time)|true|none|none|
@@ -15356,7 +15385,7 @@ CookieAuth
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|none|
-|userInteraction|[any]|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
 |audioAttachments|[any]|true|none|none|
 |pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|true|none|none|
@@ -15421,7 +15450,7 @@ CookieAuth
     ]
   },
   "userInteraction": [
-    null
+    "like"
   ],
   "levels": [
     {
@@ -15457,7 +15486,7 @@ CookieAuth
 |isAccessible|boolean|true|none|none|
 |blogPosts|[string]|true|none|none|
 |timelineSprite|[ImageModel](#schemaimagemodel)|true|none|none|
-|userInteraction|[any]|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |levels|[object]|true|none|none|
 |» name|string|true|none|none|
 |» width|integer|true|none|none|
@@ -15486,7 +15515,7 @@ CookieAuth
   "creator": "string",
   "primaryBlogPost": "string",
   "userInteraction": [
-    null
+    "like"
   ],
   "thumbnail": {
     "width": 0,
@@ -15536,7 +15565,7 @@ CookieAuth
 |isProcessing|boolean|true|none|none|
 |creator|string|true|none|none|
 |primaryBlogPost|string|true|none|none|
-|userInteraction|[any]|true|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|none|
 |imageFiles|[[ImageModel](#schemaimagemodel)]|true|none|none|
@@ -15722,24 +15751,6 @@ CookieAuth
 |Property|Value|
 |---|---|
 |contentType|blogPost|
-
-<h2 id="tocS_ContentLikeV3Response">ContentLikeV3Response</h2>
-<!-- backwards compatibility -->
-<a id="schemacontentlikev3response"></a>
-<a id="schema_ContentLikeV3Response"></a>
-<a id="tocScontentlikev3response"></a>
-<a id="tocscontentlikev3response"></a>
-
-```json
-[
-  "like"
-]
-
-```
-
-### Properties
-
-*None*
 
 <h2 id="tocS_GetCaptchaInfoResponse">GetCaptchaInfoResponse</h2>
 <!-- backwards compatibility -->
@@ -16183,7 +16194,7 @@ CookieAuth
   "text": "string",
   "type": "blogPost",
   "tags": [
-    {}
+    "string"
   ],
   "attachmentOrder": [
     "string"
@@ -16368,7 +16379,7 @@ CookieAuth
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
-|tags|[object]|true|none|none|
+|tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |releaseDate|string(date-time)|true|none|none|
@@ -17017,10 +17028,14 @@ Represents some basic information of a user (id, username, and profile image).
         "like": 0,
         "dislike": 0
       },
-      "userInteraction": "string"
+      "userInteraction": [
+        "like"
+      ]
     }
   ],
-  "userInteraction": "string"
+  "userInteraction": [
+    "like"
+  ]
 }
 
 ```
@@ -17046,7 +17061,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» dislike|integer|false|none|none|
 |totalReplies|integer|true|none|none|
 |replies|[[CommentReplyModel](#schemacommentreplymodel)]|true|none|none|
-|userInteraction|string|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 
 <h2 id="tocS_CommentReplyModel">CommentReplyModel</h2>
 <!-- backwards compatibility -->
@@ -17089,7 +17104,9 @@ Represents some basic information of a user (id, username, and profile image).
     "like": 0,
     "dislike": 0
   },
-  "userInteraction": "string"
+  "userInteraction": [
+    "like"
+  ]
 }
 
 ```
@@ -17113,7 +17130,7 @@ Represents some basic information of a user (id, username, and profile image).
 |interactionCounts|object|true|none|none|
 |» like|integer|false|none|none|
 |» dislike|integer|false|none|none|
-|userInteraction|string|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 
 <h2 id="tocS_UserNotificationModel">UserNotificationModel</h2>
 <!-- backwards compatibility -->
@@ -17378,4 +17395,22 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|
 |status|public|
 |status|public|
+
+<h2 id="tocS_UserInteractionModel">UserInteractionModel</h2>
+<!-- backwards compatibility -->
+<a id="schemauserinteractionmodel"></a>
+<a id="schema_UserInteractionModel"></a>
+<a id="tocSuserinteractionmodel"></a>
+<a id="tocsuserinteractionmodel"></a>
+
+```json
+[
+  "like"
+]
+
+```
+
+### Properties
+
+*None*
 

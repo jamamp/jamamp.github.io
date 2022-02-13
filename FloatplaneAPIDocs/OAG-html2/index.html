@@ -899,8 +899,7 @@ ul.nav-tabs {
     "tags" : {
       "type" : "array",
       "items" : {
-        "type" : "object",
-        "description" : "TODO - Probably just a string type, but we've yet to see any tags in production."
+        "type" : "string"
       }
     },
     "attachmentOrder" : {
@@ -1083,6 +1082,9 @@ ul.nav-tabs {
       "additionalProperties" : {
         "$ref" : "#/components/schemas/CdnDeliveryV2Response_resource_data_qualityLevelParams"
       }
+    },
+    "token" : {
+      "type" : "string"
     }
   }
 };
@@ -1213,7 +1215,7 @@ ul.nav-tabs {
       }
     },
     "userInteraction" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UserInteractionModel"
     }
   }
 };
@@ -1274,7 +1276,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/CommentModel_interactionCounts"
     },
     "userInteraction" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/UserInteractionModel"
     }
   }
 };
@@ -1406,6 +1408,21 @@ ul.nav-tabs {
     }
   }
 };
+    defs["ContentCreatorListLastItems"] = {
+  "required" : [ "blogPostId", "creatorId", "moreFetchable" ],
+  "type" : "object",
+  "properties" : {
+    "creatorId" : {
+      "type" : "string"
+    },
+    "blogPostId" : {
+      "type" : "string"
+    },
+    "moreFetchable" : {
+      "type" : "boolean"
+    }
+  }
+};
     defs["ContentCreatorListV3Response"] = {
   "required" : [ "blogPosts", "lastElements" ],
   "type" : "object",
@@ -1420,23 +1437,8 @@ ul.nav-tabs {
       "type" : "array",
       "description" : "Information about paging: what the last ID retrieve is and if more posts can be retrieved afterward for subsequent requests.",
       "items" : {
-        "$ref" : "#/components/schemas/ContentCreatorListV3Response_lastElements"
+        "$ref" : "#/components/schemas/ContentCreatorListLastItems"
       }
-    }
-  }
-};
-    defs["ContentCreatorListV3Response_lastElements"] = {
-  "required" : [ "blogPostId", "creatorId", "moreFetchable" ],
-  "type" : "object",
-  "properties" : {
-    "creatorId" : {
-      "type" : "string"
-    },
-    "blogPostId" : {
-      "type" : "string"
-    },
-    "moreFetchable" : {
-      "type" : "boolean"
     }
   }
 };
@@ -1454,7 +1456,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPictureV3Response"] = {
-  "required" : [ "creator", "description", "dislikes", "guid", "id", "imageFiles", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type", "userInteraction" ],
+  "required" : [ "creator", "description", "dislikes", "guid", "id", "imageFiles", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1491,8 +1493,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "userInteraction" : {
-      "type" : "array",
-      "items" : { }
+      "$ref" : "#/components/schemas/UserInteractionModel"
     },
     "thumbnail" : {
       "$ref" : "#/components/schemas/ImageModel"
@@ -1532,8 +1533,7 @@ ul.nav-tabs {
     "tags" : {
       "type" : "array",
       "items" : {
-        "type" : "object",
-        "description" : "TODO - Probably just a string type, but we've yet to see any tags in production."
+        "type" : "string"
       }
     },
     "attachmentOrder" : {
@@ -1574,8 +1574,7 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "userInteraction" : {
-      "type" : "array",
-      "items" : { }
+      "$ref" : "#/components/schemas/UserInteractionModel"
     },
     "videoAttachments" : {
       "type" : "array",
@@ -1660,8 +1659,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "userInteraction" : {
-      "type" : "array",
-      "items" : { }
+      "$ref" : "#/components/schemas/UserInteractionModel"
     },
     "levels" : {
       "type" : "array",
@@ -1955,20 +1953,6 @@ ul.nav-tabs {
     },
     "faqSection" : {
       "type" : "string"
-    }
-  }
-};
-    defs["fetchAfter"] = {
-  "type" : "object",
-  "properties" : {
-    "creatorId" : {
-      "type" : "string"
-    },
-    "blogPostId" : {
-      "type" : "string"
-    },
-    "moreFetchable" : {
-      "type" : "boolean"
     }
   }
 };
@@ -3075,7 +3059,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 3.6.2</div>
+              <div class="app-desc">Version: 3.8.0</div>
             <hr>
             <div id="app-description" class="app-desc">
                 <p>Homepage: <a href="https://jman012.github.io/FloatplaneAPIDocs">https://jman012.github.io/FloatplaneAPIDocs</a></p>
@@ -6332,7 +6316,7 @@ pub fn main() {
                             <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 \
  -H "Accept: application/json"\
- "https://www.floatplane.com/api/v2/cdn/delivery?type=&guid="</code></pre>
+ "https://www.floatplane.com/api/v2/cdn/delivery?type=&guid=&creator="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-CDNV2-getDeliveryInfo-0-java">
                             <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
@@ -6361,10 +6345,11 @@ public class CDNV2ApiExample {
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
-        String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.
+        String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
+        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
         
         try {
-            CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid);
+            CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid, creator);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CDNV2Api#getDeliveryInfo");
@@ -6387,10 +6372,11 @@ public class CDNV2ApiExample {
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
-        String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.
+        String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
+        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
         
         try {
-            CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid);
+            CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid, creator);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CDNV2Api#getDeliveryInfo");
@@ -6420,11 +6406,13 @@ String *type = type_example; // Used to determine which kind of retrieval method
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
-String *guid = guid_example; // The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. (default to null)
+String *guid = guid_example; // The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional) (default to null)
+String *creator = creator_example; // The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional) (default to null)
 
 // Get Delivery Info
 [apiInstance getDeliveryInfoWith:type
     guid:guid
+    creator:creator
               completionHandler: ^(CdnDeliveryV2Response output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -6454,7 +6442,10 @@ var type = type_example; // {String} Used to determine which kind of retrieval m
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
-var guid = guid_example; // {String} The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.
+var opts = {
+  'guid': guid_example, // {String} The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
+  'creator': creator_example // {String} The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+};
 
 var callback = function(error, data, response) {
   if (error) {
@@ -6463,7 +6454,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.getDeliveryInfo(type, guid, callback);
+api.getDeliveryInfo(type, opts, callback);
 </code></pre>
                             </div>
 
@@ -6496,11 +6487,12 @@ namespace Example
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
-            var guid = guid_example;  // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. (default to null)
+            var guid = guid_example;  // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional)  (default to null)
+            var creator = creator_example;  // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional)  (default to null)
 
             try {
                 // Get Delivery Info
-                CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid);
+                CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid, creator);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling CDNV2Api.getDeliveryInfo: " + e.Message );
@@ -6528,10 +6520,11 @@ $type = type_example; // String | Used to determine which kind of retrieval meth
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
-$guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.
+$guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
+$creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
 
 try {
-    $result = $api_instance->getDeliveryInfo($type, $guid);
+    $result = $api_instance->getDeliveryInfo($type, $guid, $creator);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CDNV2Api->getDeliveryInfo: ', $e->getMessage(), PHP_EOL;
@@ -6557,10 +6550,11 @@ my $type = type_example; # String | Used to determine which kind of retrieval me
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
-my $guid = guid_example; # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object.
+my $guid = guid_example; # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
+my $creator = creator_example; # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
 
 eval { 
-    my $result = $api_instance->getDeliveryInfo(type => $type, guid => $guid);
+    my $result = $api_instance->getDeliveryInfo(type => $type, guid => $guid, creator => $creator);
     print Dumper($result);
 };
 if ($@) {
@@ -6588,11 +6582,12 @@ type = type_example # String | Used to determine which kind of retrieval method 
 - AOD = stream Audio On Demand
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
-guid = guid_example # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. (default to null)
+guid = guid_example # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional) (default to null)
+creator = creator_example # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional) (default to null)
 
 try: 
     # Get Delivery Info
-    api_response = api_instance.get_delivery_info(type, guid)
+    api_response = api_instance.get_delivery_info(type, guid=guid, creator=creator)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling CDNV2Api->getDeliveryInfo: %s\n" % e)</code></pre>
@@ -6604,9 +6599,10 @@ except ApiException as e:
 pub fn main() {
     let type = type_example; // String
     let guid = guid_example; // String
+    let creator = creator_example; // String
 
     let mut context = CDNV2Api::Context::default();
-    let result = client.getDeliveryInfo(type, guid, &context).wait();
+    let result = client.getDeliveryInfo(type, guid, creator, &context).wait();
 
     println!("{:?}", result);
 }
@@ -6659,7 +6655,7 @@ Used to determine which kind of retrieval method is requested for the video.
 </td>
 </tr>
 
-                                <tr><td style="width:150px;">guid*</td>
+                                <tr><td style="width:150px;">guid</td>
 <td>
 
 
@@ -6671,12 +6667,29 @@ Used to determine which kind of retrieval method is requested for the video.
                 </span>
 
                     <div class="inner description marked">
-The GUID of the attachment for a post, retrievable from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; object.
+The GUID of the attachment for a post, retrievable from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; object. Required when &#x60;type&#x60; is &#x60;vod&#x60;, &#x60;aod&#x60;, or &#x60;download&#x60;. Note: either this or &#x60;creator&#x60; must be supplied.
                     </div>
             </div>
-                <div class="inner required">
-                    Required
-                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">creator</td>
+<td>
+
+
+    <div id="d2e199_getDeliveryInfo_creator">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+The GUID of the creator for a livestream, retrievable from &#x60;CreatorModelV2.id&#x60;. Required when &#x60;type&#x60; is &#x60;live&#x60;. Note: either this or &#x60;guid&#x60; must be supplied.
+                    </div>
+            </div>
         </div>
     </div>
 </td>
@@ -12517,7 +12530,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/ContentLikeV3Response"
+        "$ref" : "#/components/schemas/UserInteractionModel"
       },
       "example" : [ "dislike" ]
     }
@@ -13294,7 +13307,7 @@ The ID of the post to be retrieved.
         "title" : "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
         "text" : "<p>chat on Twitch</p>",
         "type" : "blogPost",
-        "tags" : [ ],
+        "tags" : [ "test" ],
         "attachmentOrder" : [ "TViGzkuIic" ],
         "metadata" : {
           "hasVideo" : true,
@@ -14284,7 +14297,7 @@ An array of tags to search against, possibly in addition to &#x60;search&#x60;.
         "title" : "Livestream VOD – October 9, 2021 @ 07:18 – First Linux Stream",
         "text" : "<p>chat on Twitch</p>",
         "type" : "blogPost",
-        "tags" : [ ],
+        "tags" : [ "test" ],
         "attachmentOrder" : [ "TViGzkuIic" ],
         "metadata" : {
           "hasVideo" : true,
@@ -15078,7 +15091,7 @@ public class ContentV3ApiExample {
         ContentV3Api apiInstance = new ContentV3Api();
         array[String] ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
         Integer limit = 56; // Integer | The maximum number of posts to retrieve.
-        array[fetchAfter] fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
+        array[ContentCreatorListLastItems] fetchAfter = ; // array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.
         
         try {
             ContentCreatorListV3Response result = apiInstance.getMultiCreatorBlogPosts(ids, limit, fetchAfter);
@@ -15100,7 +15113,7 @@ public class ContentV3ApiExample {
         ContentV3Api apiInstance = new ContentV3Api();
         array[String] ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
         Integer limit = 56; // Integer | The maximum number of posts to retrieve.
-        array[fetchAfter] fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
+        array[ContentCreatorListLastItems] fetchAfter = ; // array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.
         
         try {
             ContentCreatorListV3Response result = apiInstance.getMultiCreatorBlogPosts(ids, limit, fetchAfter);
@@ -15129,7 +15142,7 @@ public class ContentV3ApiExample {
 ContentV3Api *apiInstance = [[ContentV3Api alloc] init];
 array[String] *ids = ; // The GUID(s) of the creator(s) to retrieve posts from. (default to null)
 Integer *limit = 56; // The maximum number of posts to retrieve. (default to null)
-array[fetchAfter] *fetchAfter = ; // For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional) (default to null)
+array[ContentCreatorListLastItems] *fetchAfter = ; // For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`. (optional) (default to null)
 
 // Get Multi Creator Blog Posts
 [apiInstance getMultiCreatorBlogPostsWith:ids
@@ -15161,7 +15174,7 @@ var api = new FloatplaneApi.ContentV3Api()
 var ids = ; // {array[String]} The GUID(s) of the creator(s) to retrieve posts from.
 var limit = 56; // {Integer} The maximum number of posts to retrieve.
 var opts = {
-  'fetchAfter':  // {array[fetchAfter]} For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
+  'fetchAfter':  // {array[ContentCreatorListLastItems]} For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.
 };
 
 var callback = function(error, data, response) {
@@ -15200,7 +15213,7 @@ namespace Example
             var apiInstance = new ContentV3Api();
             var ids = new array[String](); // array[String] | The GUID(s) of the creator(s) to retrieve posts from. (default to null)
             var limit = 56;  // Integer | The maximum number of posts to retrieve. (default to null)
-            var fetchAfter = new array[fetchAfter](); // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional)  (default to null)
+            var fetchAfter = new array[ContentCreatorListLastItems](); // array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`. (optional)  (default to null)
 
             try {
                 // Get Multi Creator Blog Posts
@@ -15228,7 +15241,7 @@ OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.s
 $api_instance = new OpenAPITools\Client\Api\ContentV3Api();
 $ids = ; // array[String] | The GUID(s) of the creator(s) to retrieve posts from.
 $limit = 56; // Integer | The maximum number of posts to retrieve.
-$fetchAfter = ; // array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
+$fetchAfter = ; // array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.
 
 try {
     $result = $api_instance->getMultiCreatorBlogPosts($ids, $limit, $fetchAfter);
@@ -15253,7 +15266,7 @@ $WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
 my $api_instance = WWW::OPenAPIClient::ContentV3Api->new();
 my $ids = []; # array[String] | The GUID(s) of the creator(s) to retrieve posts from.
 my $limit = 56; # Integer | The maximum number of posts to retrieve.
-my $fetchAfter = []; # array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown.
+my $fetchAfter = []; # array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`.
 
 eval { 
     my $result = $api_instance->getMultiCreatorBlogPosts(ids => $ids, limit => $limit, fetchAfter => $fetchAfter);
@@ -15280,7 +15293,7 @@ openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
 api_instance = openapi_client.ContentV3Api()
 ids =  # array[String] | The GUID(s) of the creator(s) to retrieve posts from. (default to null)
 limit = 56 # Integer | The maximum number of posts to retrieve. (default to null)
-fetchAfter =  # array[fetchAfter] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The purpose of `moreFetchable` in the request is unknown. (optional) (default to null)
+fetchAfter =  # array[ContentCreatorListLastItems] | For pagination, this is used to determine which posts to skip. There should be one `fetchAfter` object for each creator in `ids`. The `moreFetchable` in the request, and all of the data, comes from the `ContentCreatorListV3Response`. (optional) (default to null)
 
 try: 
     # Get Multi Creator Blog Posts
@@ -15296,7 +15309,7 @@ except ApiException as e:
 pub fn main() {
     let ids = ; // array[String]
     let limit = 56; // Integer
-    let fetchAfter = ; // array[fetchAfter]
+    let fetchAfter = ; // array[ContentCreatorListLastItems]
 
     let mut context = ContentV3Api::Context::default();
     let result = client.getMultiCreatorBlogPosts(ids, limit, fetchAfter, &context).wait();
@@ -15378,11 +15391,11 @@ The maximum number of posts to retrieve.
         <div class="json-schema-view">
             <div class="primitive">
                 <span class="type">
-                    array[fetchAfter]
+                    array[ContentCreatorListLastItems]
                 </span>
 
                     <div class="inner description marked">
-For pagination, this is used to determine which posts to skip. There should be one &#x60;fetchAfter&#x60; object for each creator in &#x60;ids&#x60;. The purpose of &#x60;moreFetchable&#x60; in the request is unknown.
+For pagination, this is used to determine which posts to skip. There should be one &#x60;fetchAfter&#x60; object for each creator in &#x60;ids&#x60;. The &#x60;moreFetchable&#x60; in the request, and all of the data, comes from the &#x60;ContentCreatorListV3Response&#x60;.
                     </div>
             </div>
         </div>
@@ -17327,7 +17340,7 @@ The ID of the originating post.
         "title" : "Livestream VOD – October 8, 2021 @ 20:26 – I Have MORE to Say About Steam Deck - WAN Show October 8, 2021",
         "text" : "<p>Honey automatically applies the best coupon codes to save you money at </p><p>different online checkouts, try it now at <a href=\"https://www.joinhoney.com/linus\">https://www.joinhoney.com/linus</a></p><p><br /></p><p>Buy a Seasonic Ultra Titanium PSU</p><p>On Amazon: <a href=\"https://geni.us/q4lnefC\">https://geni.us/q4lnefC</a></p><p>On NewEgg: <a href=\"https://lmg.gg/8KV3S\">https://lmg.gg/8KV3S</a></p><p><br /></p><p>Visit <a href=\"https://www.squarespace.com/WAN\">https://www.squarespace.com/WAN</a> and use offer code WAN for 10% off</p><p><br /></p><p>Podcast Download: TBD</p><p><br /></p><p>Check out our other Podcasts:</p><p>Carpool Critics Movie Podcast: <a href=\"https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA\">https://www.youtube.com/channel/UCt-oJR5teQIjOAxCmIQvcgA</a></p><p><br /></p><p>Timestamps TBD</p>",
         "type" : "blogPost",
-        "tags" : [ ],
+        "tags" : [ "test" ],
         "attachmentOrder" : [ "psqoN3CgMH", "KijsTQP8Rr" ],
         "metadata" : {
           "hasVideo" : true,
@@ -19385,7 +19398,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/ContentLikeV3Response"
+        "$ref" : "#/components/schemas/UserInteractionModel"
       },
       "example" : [ "like" ]
     }

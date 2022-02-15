@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.8.0
+title: Floatplane API v3.8.1
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.8.0</h1>
+<h1 id="floatplane-api">Floatplane API v3.8.1</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -84570,6 +84570,8 @@ func main() {
 
 Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
 
+Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
+
 <h3 id="getcreatorblogposts-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
@@ -85319,6 +85321,8 @@ func main() {
 
 Retrieve paginated blog posts from multiple creators for the home page.
 
+Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f94c0bdd241b70349eb72b&limit=20&fetchAfter[0][creatorId]=59f94c0bdd241b70349eb72b&fetchAfter[0][blogPostId]=B4WsyLnybS&fetchAfter[0][moreFetchable]=true
+
 <h3 id="getmulticreatorblogposts-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
@@ -85804,6 +85808,301 @@ Retrieve paginated blog posts from multiple creators for the home page.
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## getContentTags
+
+<a id="opIdgetContentTags"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET https://www.floatplane.com/api/v3/content/tags?creatorIds=string \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET https://www.floatplane.com/api/v3/content/tags?creatorIds=string HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/content/tags?creatorIds=string',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get 'https://www.floatplane.com/api/v3/content/tags',
+  params: {
+  'creatorIds' => 'array[string]'
+}, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('https://www.floatplane.com/api/v3/content/tags', params={
+  'creatorIds': [
+  "string"
+]
+}, headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/tags', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/content/tags?creatorIds=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/tags", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v3/content/tags`
+
+*Get Content Tags*
+
+Retrieve all tags and the number of times the tags have been used for the specified creator(s).
+
+<h3 id="getcontenttags-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|creatorIds|query|array[string]|true|The creator(s) to search by.|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "battery": 1,
+  "server": 1,
+  "Airpods": 1,
+  "storage": 1,
+  "tjm": 1,
+  "Apple": 1,
+  "swap": 1,
+  "memory": 1,
+  "ltt": 1
+}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="getcontenttags-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Creator tag information|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getcontenttags-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» **additionalProperties**|integer|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:

@@ -846,6 +846,75 @@ ul.nav-tabs {
   <script>
     // Script section to load models into a JS Var
     var defs = {}
+    defs["AudioAttachmentModel"] = {
+  "required" : [ "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "title", "type", "waveform" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "guid" : {
+      "type" : "string"
+    },
+    "title" : {
+      "type" : "string"
+    },
+    "type" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
+    },
+    "duration" : {
+      "type" : "integer"
+    },
+    "waveform" : {
+      "$ref" : "#/components/schemas/AudioAttachmentModel_waveform"
+    },
+    "creator" : {
+      "type" : "string"
+    },
+    "likes" : {
+      "type" : "integer"
+    },
+    "dislikes" : {
+      "type" : "integer"
+    },
+    "score" : {
+      "type" : "integer"
+    },
+    "isProcessing" : {
+      "type" : "boolean"
+    },
+    "primaryBlogPost" : {
+      "type" : "string"
+    },
+    "isAccessible" : {
+      "type" : "boolean"
+    }
+  }
+};
+    defs["AudioAttachmentModel_waveform"] = {
+  "required" : [ "data", "dataSetLength", "highestValue", "lowestValue" ],
+  "type" : "object",
+  "properties" : {
+    "dataSetLength" : {
+      "type" : "integer"
+    },
+    "highestValue" : {
+      "type" : "integer"
+    },
+    "lowestValue" : {
+      "type" : "integer"
+    },
+    "data" : {
+      "type" : "array",
+      "items" : {
+        "type" : "integer"
+      }
+    }
+  }
+};
     defs["AuthLoginV2Request"] = {
   "required" : [ "password", "username" ],
   "type" : "object",
@@ -1584,7 +1653,9 @@ ul.nav-tabs {
     },
     "audioAttachments" : {
       "type" : "array",
-      "items" : { }
+      "items" : {
+        "$ref" : "#/components/schemas/AudioAttachmentModel"
+      }
     },
     "pictureAttachments" : {
       "type" : "array",
@@ -3062,7 +3133,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 3.8.1</div>
+              <div class="app-desc">Version: 3.8.6</div>
             <hr>
             <div id="app-description" class="app-desc">
                 <p>Homepage: <a href="https://jman012.github.io/FloatplaneAPIDocs">https://jman012.github.io/FloatplaneAPIDocs</a></p>
@@ -13394,7 +13465,27 @@ The ID of the post to be retrieved.
           },
           "isAccessible" : true
         } ],
-        "audioAttachments" : [ ],
+        "audioAttachments" : [ {
+          "id" : "iGssjNGPSD",
+          "guid" : "iGssjNGPSD",
+          "title" : "Robocop FP.mp3",
+          "type" : "audio",
+          "description" : "",
+          "duration" : 4165,
+          "waveform" : {
+            "dataSetLength" : 3,
+            "highestValue" : 71,
+            "lowestValue" : 50,
+            "data" : [ 71, 50, 69 ]
+          },
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "likes" : 0,
+          "dislikes" : 0,
+          "score" : 0,
+          "isProcessing" : false,
+          "primaryBlogPost" : "jVU2y9PlnG",
+          "isAccessible" : true
+        } ],
         "pictureAttachments" : [ ],
         "galleryAttachments" : [ ]
       }

@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.8.1
+title: Floatplane API v3.8.6
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.8.1</h1>
+<h1 id="floatplane-api">Floatplane API v3.8.6</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -12159,7 +12159,33 @@ Retrieve more details on a specific blog post object for viewing.
       "isAccessible": true
     }
   ],
-  "audioAttachments": [],
+  "audioAttachments": [
+    {
+      "id": "iGssjNGPSD",
+      "guid": "iGssjNGPSD",
+      "title": "Robocop FP.mp3",
+      "type": "audio",
+      "description": "",
+      "duration": 4165,
+      "waveform": {
+        "dataSetLength": 3,
+        "highestValue": 71,
+        "lowestValue": 50,
+        "data": [
+          71,
+          50,
+          69
+        ]
+      },
+      "creator": "59f94c0bdd241b70349eb72b",
+      "likes": 0,
+      "dislikes": 0,
+      "score": 0,
+      "isProcessing": false,
+      "primaryBlogPost": "jVU2y9PlnG",
+      "isAccessible": true
+    }
+  ],
   "pictureAttachments": [],
   "galleryAttachments": []
 }
@@ -15625,7 +15651,29 @@ CookieAuth
     }
   ],
   "audioAttachments": [
-    null
+    {
+      "id": "string",
+      "guid": "string",
+      "title": "string",
+      "type": "string",
+      "description": "string",
+      "duration": 0,
+      "waveform": {
+        "dataSetLength": 0,
+        "highestValue": 0,
+        "lowestValue": 0,
+        "data": [
+          0
+        ]
+      },
+      "creator": "string",
+      "likes": 0,
+      "dislikes": 0,
+      "score": 0,
+      "isProcessing": true,
+      "primaryBlogPost": "string",
+      "isAccessible": true
+    }
   ],
   "pictureAttachments": [
     {
@@ -15686,7 +15734,7 @@ CookieAuth
 |isAccessible|boolean|true|none|none|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
-|audioAttachments|[any]|true|none|none|
+|audioAttachments|[[AudioAttachmentModel](#schemaaudioattachmentmodel)]|true|none|none|
 |pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|true|none|none|
 |galleryAttachments|[any]|true|none|none|
 
@@ -16928,6 +16976,63 @@ CookieAuth
 |creator|string|true|none|none|
 |primaryBlogPost|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|isAccessible|boolean|true|none|none|
+
+<h2 id="tocS_AudioAttachmentModel">AudioAttachmentModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaaudioattachmentmodel"></a>
+<a id="schema_AudioAttachmentModel"></a>
+<a id="tocSaudioattachmentmodel"></a>
+<a id="tocsaudioattachmentmodel"></a>
+
+```json
+{
+  "id": "string",
+  "guid": "string",
+  "title": "string",
+  "type": "string",
+  "description": "string",
+  "duration": 0,
+  "waveform": {
+    "dataSetLength": 0,
+    "highestValue": 0,
+    "lowestValue": 0,
+    "data": [
+      0
+    ]
+  },
+  "creator": "string",
+  "likes": 0,
+  "dislikes": 0,
+  "score": 0,
+  "isProcessing": true,
+  "primaryBlogPost": "string",
+  "isAccessible": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|none|
+|guid|string|true|none|none|
+|title|string|true|none|none|
+|type|string|true|none|none|
+|description|string|true|none|none|
+|duration|integer|true|none|none|
+|waveform|object|true|none|none|
+|» dataSetLength|integer|true|none|none|
+|» highestValue|integer|true|none|none|
+|» lowestValue|integer|true|none|none|
+|» data|[integer]|true|none|none|
+|creator|string|true|none|none|
+|likes|integer|true|none|none|
+|dislikes|integer|true|none|none|
+|score|integer|true|none|none|
+|isProcessing|boolean|true|none|none|
+|primaryBlogPost|string|true|none|none|
 |isAccessible|boolean|true|none|none|
 
 <h2 id="tocS_ImageModel">ImageModel</h2>

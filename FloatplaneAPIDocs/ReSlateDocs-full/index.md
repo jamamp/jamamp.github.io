@@ -1,5 +1,5 @@
 ---
-title: Floatplane API v3.8.6
+title: Floatplane REST API v3.8.9
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,13 +19,13 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-api">Floatplane API v3.8.6</h1>
+<h1 id="floatplane-rest-api">Floatplane REST API v3.8.9</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
 Homepage: [https://jman012.github.io/FloatplaneAPIDocs](https://jman012.github.io/FloatplaneAPIDocs)
 
-This document describes the API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
+This document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
 
 While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have "TODO" as the description, and are automatically removed before document generation. If you are viewing the "Trimmed" version of this document, they have been removed for brevity.
 
@@ -92,6 +92,7 @@ Base URLs:
 
 * <a href="https://www.floatplane.com">https://www.floatplane.com</a>
 
+Web: <a href="https://github.com/Jman012/FloatplaneAPI/">James Linnell</a> 
 License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MIT</a>
 
 # Authentication
@@ -101,7 +102,7 @@ License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MI
 
 When dealing with cookies in native applications (not via a website inside of a browser), please keep in mind that some languages/libraries may keep cookies across requests by default, and some may not. For instance, in Swift the `URLSession.shared` object with default configuration will automatically track and persist cookies across requests.
 
-<h1 id="floatplane-api-activationv2">ActivationV2</h1>
+<h1 id="floatplane-rest-api-activationv2">ActivationV2</h1>
 
 Activate new user accounts and confirming activation via email.
 
@@ -641,7 +642,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_creatoragreementv2">ACP_CreatorAgreementV2</h1>
+<h1 id="floatplane-rest-api-acp_creatoragreementv2">ACP_CreatorAgreementV2</h1>
 
 List and edit Creator<->Floatplane agreements.
 
@@ -1449,7 +1450,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_creatorv2">ACP_CreatorV2</h1>
+<h1 id="floatplane-rest-api-acp_creatorv2">ACP_CreatorV2</h1>
 
 Creator management for creating and editing creators.
 
@@ -4669,7 +4670,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_creatorv3">ACP_CreatorV3</h1>
+<h1 id="floatplane-rest-api-acp_creatorv3">ACP_CreatorV3</h1>
 
 Creator management for inviting creators.
 
@@ -5209,7 +5210,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_dashboardv2">ACP_DashboardV2</h1>
+<h1 id="floatplane-rest-api-acp_dashboardv2">ACP_DashboardV2</h1>
 
 Dashboard for viewing, starting, and stopping jobs.
 
@@ -6017,7 +6018,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_faqv2">ACP_FAQV2</h1>
+<h1 id="floatplane-rest-api-acp_faqv2">ACP_FAQV2</h1>
 
 Manage and edit FAQ entries. See https://www.floatplane.com/support
 
@@ -8433,7 +8434,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_featurev2">ACP_FeatureV2</h1>
+<h1 id="floatplane-rest-api-acp_featurev2">ACP_FeatureV2</h1>
 
 Manage and edit features.
 
@@ -10045,7 +10046,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-administrationv2">AdministrationV2</h1>
+<h1 id="floatplane-rest-api-administrationv2">AdministrationV2</h1>
 
 Manage and edit moderators and global moderators. This entire section is deprecated.
 
@@ -11395,7 +11396,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_moderatorv2">ACP_ModeratorV2</h1>
+<h1 id="floatplane-rest-api-acp_moderatorv2">ACP_ModeratorV2</h1>
 
 Manage and edit moderators and global moderators.
 
@@ -13275,7 +13276,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_userv2">ACP_UserV2</h1>
+<h1 id="floatplane-rest-api-acp_userv2">ACP_UserV2</h1>
 
 Manage and edit users globally by administrators.
 
@@ -17835,7 +17836,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_userv3">ACP_UserV3</h1>
+<h1 id="floatplane-rest-api-acp_userv3">ACP_UserV3</h1>
 
 Manage and edit users globally by administrators.
 
@@ -18643,7 +18644,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-authv2">AuthV2</h1>
+<h1 id="floatplane-rest-api-authv2">AuthV2</h1>
 
 Sign up, login, 2FA, and logout. Additionally, login spoofing for administrators.
 
@@ -20364,7 +20365,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-authv3">AuthV3</h1>
+<h1 id="floatplane-rest-api-authv3">AuthV3</h1>
 
 Captchas information.
 
@@ -20654,7 +20655,7 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-braintreev2">BrainTreeV2</h1>
+<h1 id="floatplane-rest-api-braintreev2">BrainTreeV2</h1>
 
 BrainTree payment integration
 
@@ -20926,7 +20927,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cdnv2">CDNV2</h1>
+<h1 id="floatplane-rest-api-cdnv2">CDNV2</h1>
 
 Content Delivery mechanisms for Floatplane media.
 
@@ -21277,7 +21278,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-connectedaccountsv2">ConnectedAccountsV2</h1>
+<h1 id="floatplane-rest-api-connectedaccountsv2">ConnectedAccountsV2</h1>
 
 3rd party account management, such as Discord or LTT Forums.
 
@@ -22945,7 +22946,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatoradministrationv2">CreatorAdministrationV2</h1>
+<h1 id="floatplane-rest-api-creatoradministrationv2">CreatorAdministrationV2</h1>
 
 Creator-specific moderator management.
 
@@ -23217,7 +23218,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorv2">CreatorV2</h1>
+<h1 id="floatplane-rest-api-creatorv2">CreatorV2</h1>
 
 Get and discover creators on the platform. Creator invitation and profile management.
 
@@ -26748,7 +26749,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorv3">CreatorV3</h1>
+<h1 id="floatplane-rest-api-creatorv3">CreatorV3</h1>
 
 Get and discover creators on the platform. Creator invitation and profile management.
 
@@ -29424,7 +29425,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatoragreementv2">CreatorAgreementV2</h1>
+<h1 id="floatplane-rest-api-creatoragreementv2">CreatorAgreementV2</h1>
 
 Get and agree to Creator<->Floatplane agreements.
 
@@ -29964,7 +29965,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorplanfeaturelevelsv2">CreatorPlanFeatureLevelsV2</h1>
+<h1 id="floatplane-rest-api-creatorplanfeaturelevelsv2">CreatorPlanFeatureLevelsV2</h1>
 
 Manage features for creator subscription plans.
 
@@ -30772,7 +30773,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorsubscriptionplanv2">CreatorSubscriptionPlanV2</h1>
+<h1 id="floatplane-rest-api-creatorsubscriptionplanv2">CreatorSubscriptionPlanV2</h1>
 
 Manage creator subscription plans.
 
@@ -31954,7 +31955,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatorsubscriptionplanv3">CreatorSubscriptionPlanV3</h1>
+<h1 id="floatplane-rest-api-creatorsubscriptionplanv3">CreatorSubscriptionPlanV3</h1>
 
 Manage creator subscription plans.
 
@@ -32226,7 +32227,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-discordbotv2">DiscordBotV2</h1>
+<h1 id="floatplane-rest-api-discordbotv2">DiscordBotV2</h1>
 
 Manage Discord bots.
 
@@ -34374,7 +34375,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-edgesv2">EdgesV2</h1>
+<h1 id="floatplane-rest-api-edgesv2">EdgesV2</h1>
 
 Get edge server information for media playback.
 
@@ -34913,7 +34914,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-faqv2">FAQV2</h1>
+<h1 id="floatplane-rest-api-faqv2">FAQV2</h1>
 
 Get FAQs.
 
@@ -35259,7 +35260,7 @@ Status Code **200**
 This operation does not require authentication
 </aside>
 
-<h1 id="floatplane-api-iframev2">IframeV2</h1>
+<h1 id="floatplane-rest-api-iframev2">IframeV2</h1>
 
 Get video iframe data.
 
@@ -35537,7 +35538,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-imageoptimizationsv2">ImageOptimizationsV2</h1>
+<h1 id="floatplane-rest-api-imageoptimizationsv2">ImageOptimizationsV2</h1>
 
 Manage image media optimizations.
 
@@ -35809,7 +35810,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-imageoptimizationsv3">ImageOptimizationsV3</h1>
+<h1 id="floatplane-rest-api-imageoptimizationsv3">ImageOptimizationsV3</h1>
 
 Manage image media optimizations.
 
@@ -36081,7 +36082,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-livestreamv2">LivestreamV2</h1>
+<h1 id="floatplane-rest-api-livestreamv2">LivestreamV2</h1>
 
 Livestream chat and management.
 
@@ -36889,7 +36890,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-moderationv2">ModerationV2</h1>
+<h1 id="floatplane-rest-api-moderationv2">ModerationV2</h1>
 
 Moderation actions, for users and comments.
 
@@ -39305,7 +39306,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-moderationv3">ModerationV3</h1>
+<h1 id="floatplane-rest-api-moderationv3">ModerationV3</h1>
 
 Moderation actions, for users and comments.
 
@@ -41721,7 +41722,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-passwordresetv2">PasswordResetV2</h1>
+<h1 id="floatplane-rest-api-passwordresetv2">PasswordResetV2</h1>
 
 Password management.
 
@@ -42529,7 +42530,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-paymentsv2">PaymentsV2</h1>
+<h1 id="floatplane-rest-api-paymentsv2">PaymentsV2</h1>
 
 User payment method/address/invoice management.
 
@@ -46673,7 +46674,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-socketv2">SocketV2</h1>
+<h1 id="floatplane-rest-api-socketv2">SocketV2</h1>
 
 Socket subscriptions and connections.
 
@@ -47219,7 +47220,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-socketv3">SocketV3</h1>
+<h1 id="floatplane-rest-api-socketv3">SocketV3</h1>
 
 Socket subscriptions and connections.
 
@@ -47759,7 +47760,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-stripev2">StripeV2</h1>
+<h1 id="floatplane-rest-api-stripev2">StripeV2</h1>
 
 Stripe metadata.
 
@@ -48031,7 +48032,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-subscriptionsv2">SubscriptionsV2</h1>
+<h1 id="floatplane-rest-api-subscriptionsv2">SubscriptionsV2</h1>
 
 Get user subscriptions.
 
@@ -48571,7 +48572,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-subscriptionsv3">SubscriptionsV3</h1>
+<h1 id="floatplane-rest-api-subscriptionsv3">SubscriptionsV3</h1>
 
 Get user subscriptions.
 
@@ -49180,7 +49181,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-supportv2">SupportV2</h1>
+<h1 id="floatplane-rest-api-supportv2">SupportV2</h1>
 
 User support ticket management
 
@@ -49720,7 +49721,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-syncv2">SyncV2</h1>
+<h1 id="floatplane-rest-api-syncv2">SyncV2</h1>
 
 Sync connections.
 
@@ -50260,7 +50261,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-transcodingv2">TranscodingV2</h1>
+<h1 id="floatplane-rest-api-transcodingv2">TranscodingV2</h1>
 
 Creator transcoding progress, notifications, and subscriptions.
 
@@ -51068,7 +51069,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-transcodingv3">TranscodingV3</h1>
+<h1 id="floatplane-rest-api-transcodingv3">TranscodingV3</h1>
 
 Creator transcoding progress, notifications, and subscriptions.
 
@@ -51876,7 +51877,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-userv2">UserV2</h1>
+<h1 id="floatplane-rest-api-userv2">UserV2</h1>
 
 User discovery and profile management.
 
@@ -58126,7 +58127,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-userv3">UserV3</h1>
+<h1 id="floatplane-rest-api-userv3">UserV3</h1>
 
 User discovery and profile management.
 
@@ -60717,7 +60718,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videocommentsv2">VideoCommentsV2</h1>
+<h1 id="floatplane-rest-api-videocommentsv2">VideoCommentsV2</h1>
 
 Video comment viewing and posting.
 
@@ -61525,7 +61526,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videocommentinteractionsv2">VideoCommentInteractionsV2</h1>
+<h1 id="floatplane-rest-api-videocommentinteractionsv2">VideoCommentInteractionsV2</h1>
 
 Video comment interaction management.
 
@@ -62065,7 +62066,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-mediav2">MediaV2</h1>
+<h1 id="floatplane-rest-api-mediav2">MediaV2</h1>
 
 Video media management.
 
@@ -63677,7 +63678,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videov2">VideoV2</h1>
+<h1 id="floatplane-rest-api-videov2">VideoV2</h1>
 
 Video Dash key management.
 
@@ -64485,7 +64486,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-playlistv2">PlaylistV2</h1>
+<h1 id="floatplane-rest-api-playlistv2">PlaylistV2</h1>
 
 Get playlists.
 
@@ -64757,7 +64758,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-videouploadv2">VideoUploadV2</h1>
+<h1 id="floatplane-rest-api-videouploadv2">VideoUploadV2</h1>
 
 Video uploading and management.
 
@@ -66369,7 +66370,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webhookv2">WebhookV2</h1>
+<h1 id="floatplane-rest-api-webhookv2">WebhookV2</h1>
 
 Webhook management.
 
@@ -66647,7 +66648,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webhookv3">WebhookV3</h1>
+<h1 id="floatplane-rest-api-webhookv3">WebhookV3</h1>
 
 Webhook management.
 
@@ -67187,7 +67188,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webnotificationv2">WebNotificationV2</h1>
+<h1 id="floatplane-rest-api-webnotificationv2">WebNotificationV2</h1>
 
 Web push notification information and subscriptions.
 
@@ -68263,7 +68264,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-webnotificationv3">WebNotificationV3</h1>
+<h1 id="floatplane-rest-api-webnotificationv3">WebNotificationV3</h1>
 
 Web push notification information and subscriptions.
 
@@ -69071,7 +69072,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-acp_transcodingv3">ACP_TranscodingV3</h1>
+<h1 id="floatplane-rest-api-acp_transcodingv3">ACP_TranscodingV3</h1>
 
 Creator content uploading, status, and management.
 
@@ -73363,7 +73364,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_blogpostv3">CMS_BlogPostV3</h1>
+<h1 id="floatplane-rest-api-cms_blogpostv3">CMS_BlogPostV3</h1>
 
 CMS blog post editing and posting.
 
@@ -74975,7 +74976,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_contentv3">CMS_ContentV3</h1>
+<h1 id="floatplane-rest-api-cms_contentv3">CMS_ContentV3</h1>
 
 CMS content editing and posting.
 
@@ -77927,7 +77928,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_creatorwarehousev3">CMS_CreatorWarehouseV3</h1>
+<h1 id="floatplane-rest-api-cms_creatorwarehousev3">CMS_CreatorWarehouseV3</h1>
 
 CMS Creator Warehouse management.
 
@@ -81683,7 +81684,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_livestreamv3">CMS_LivestreamV3</h1>
+<h1 id="floatplane-rest-api-cms_livestreamv3">CMS_LivestreamV3</h1>
 
 CMS Livestream information.
 
@@ -81955,7 +81956,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-cms_creatorsubscriptionplanv3">CMS_CreatorSubscriptionPlanV3</h1>
+<h1 id="floatplane-rest-api-cms_creatorsubscriptionplanv3">CMS_CreatorSubscriptionPlanV3</h1>
 
 CMS creator subscription plan and subscriber information.
 
@@ -82763,7 +82764,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-commentv3">CommentV3</h1>
+<h1 id="floatplane-rest-api-commentv3">CommentV3</h1>
 
 Comment retrieval, posting, and interacting.
 
@@ -84415,7 +84416,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-contentv3">ContentV3</h1>
+<h1 id="floatplane-rest-api-contentv3">ContentV3</h1>
 
 Content retrieval and interacting.
 
@@ -89705,7 +89706,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-contentuploadv3">ContentUploadV3</h1>
+<h1 id="floatplane-rest-api-contentuploadv3">ContentUploadV3</h1>
 
 Content uploading.
 
@@ -91585,7 +91586,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-loyaltyrewardsv3">LoyaltyRewardsV3</h1>
+<h1 id="floatplane-rest-api-loyaltyrewardsv3">LoyaltyRewardsV3</h1>
 
 Loyalty rewards information and claiming.
 
@@ -92125,7 +92126,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-vpnv3">VpnV3</h1>
+<h1 id="floatplane-rest-api-vpnv3">VpnV3</h1>
 
 Experimental VPN configuration.
 
@@ -93469,7 +93470,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-creatoradministration">CreatorAdministration</h1>
+<h1 id="floatplane-rest-api-creatoradministration">CreatorAdministration</h1>
 
 ## addCreatorModeratorByPath
 
@@ -94829,7 +94830,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-api-thumbnailupdateunsubscribev3">thumbnailUpdateUnsubscribeV3</h1>
+<h1 id="floatplane-rest-api-thumbnailupdateunsubscribev3">thumbnailUpdateUnsubscribeV3</h1>
 
 ## thumbnailUpdateUnsubscribe
 

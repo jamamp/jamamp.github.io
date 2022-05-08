@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Floatplane API</title>
+  <title>Floatplane REST API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="UTF-8" />
@@ -3126,18 +3126,18 @@ ul.nav-tabs {
       <div id="content">
         <div id="project">
           <div class="pull-left">
-            <h1>Floatplane API</h1>
+            <h1>Floatplane REST API</h1>
           </div>
           <div class="clearfix"></div>
         </div>
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 3.8.6</div>
+              <div class="app-desc">Version: 3.8.9</div>
             <hr>
             <div id="app-description" class="app-desc">
                 <p>Homepage: <a href="https://jman012.github.io/FloatplaneAPIDocs">https://jman012.github.io/FloatplaneAPIDocs</a></p>
-<p>This document describes the API layer of <a href="https://www.floatplane.com">https://www.floatplane.com</a>, a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.</p>
+<p>This document describes the REST API layer of <a href="https://www.floatplane.com">https://www.floatplane.com</a>, a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.</p>
 <p>While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have &quot;TODO&quot; as the description, and are automatically removed before document generation. If you are viewing the &quot;Trimmed&quot; version of this document, they have been removed for brevity.</p>
 <h2>API Object Organization</h2>
 <ul>
@@ -3357,8 +3357,8 @@ CheckFor2faLoginRequest *checkFor2faLoginRequest = {"token":"123456"}; //
                             </div>
 
                             <div class="tab-pane" id="examples-AuthV2-checkFor2faLogin-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -3367,7 +3367,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.AuthV2Api()
+var api = new FloatplaneRestApi.AuthV2Api()
 var checkFor2faLoginRequest = {"token":"123456"}; // {CheckFor2faLoginRequest} 
 
 var callback = function(error, data, response) {
@@ -4179,10 +4179,10 @@ AuthLoginV2Request *authLoginV2Request = {"username":"my_username","password":"m
                             </div>
 
                             <div class="tab-pane" id="examples-AuthV2-login-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
 
 // Create an instance of the API class
-var api = new FloatplaneApi.AuthV2Api()
+var api = new FloatplaneRestApi.AuthV2Api()
 var authLoginV2Request = {"username":"my_username","password":"my_password","captchaToken":"..."}; // {AuthLoginV2Request} 
 
 var callback = function(error, data, response) {
@@ -4992,8 +4992,8 @@ AuthV2Api *apiInstance = [[AuthV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-AuthV2-logout-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -5002,7 +5002,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.AuthV2Api()
+var api = new FloatplaneRestApi.AuthV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -5739,10 +5739,10 @@ AuthV3Api *apiInstance = [[AuthV3Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-AuthV3-getCaptchaInfo-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
 
 // Create an instance of the API class
-var api = new FloatplaneApi.AuthV3Api()
+var api = new FloatplaneRestApi.AuthV3Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -6499,8 +6499,8 @@ String *creator = creator_example; // The GUID of the creator for a livestream, 
                             </div>
 
                             <div class="tab-pane" id="examples-CDNV2-getDeliveryInfo-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -6509,7 +6509,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CDNV2Api()
+var api = new FloatplaneRestApi.CDNV2Api()
 var type = type_example; // {String} Used to determine which kind of retrieval method is requested for the video.
 
 - VOD = stream a Video On Demand
@@ -7403,8 +7403,8 @@ CommentLikeV3PostRequest *commentLikeV3PostRequest = {"comment":"6161935e24f4344
                             </div>
 
                             <div class="tab-pane" id="examples-CommentV3-dislikeComment-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -7413,7 +7413,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CommentV3Api()
+var api = new FloatplaneRestApi.CommentV3Api()
 var commentLikeV3PostRequest = {"comment":"6161935e24f43441325bb255","blogPost":"j7KjCaKrtV"}; // {CommentLikeV3PostRequest} 
 
 var callback = function(error, data, response) {
@@ -8204,8 +8204,8 @@ String *rid = rid_example; // The identifer of the last reply in the reply chain
                             </div>
 
                             <div class="tab-pane" id="examples-CommentV3-getCommentReplies-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -8214,7 +8214,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CommentV3Api()
+var api = new FloatplaneRestApi.CommentV3Api()
 var comment = comment_example; // {String} The identifer of the comment from which to retrieve replies.
 var blogPost = blogPost_example; // {String} The identifer of the blog post the `comment` belongs to.
 var limit = 56; // {Integer} How many replies to retrieve.
@@ -9102,8 +9102,8 @@ String *fetchAfter = fetchAfter_example; // When loading more comments on a blog
                             </div>
 
                             <div class="tab-pane" id="examples-CommentV3-getComments-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -9112,7 +9112,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CommentV3Api()
+var api = new FloatplaneRestApi.CommentV3Api()
 var blogPost = blogPost_example; // {String} Which blog post to retrieve comments for.
 var limit = 56; // {Integer} The maximum number of comments to return. This should be set to 20 by default.
 var opts = {
@@ -9985,8 +9985,8 @@ CommentLikeV3PostRequest *commentLikeV3PostRequest = {"comment":"6161935e24f4344
                             </div>
 
                             <div class="tab-pane" id="examples-CommentV3-likeComment-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -9995,7 +9995,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CommentV3Api()
+var api = new FloatplaneRestApi.CommentV3Api()
 var commentLikeV3PostRequest = {"comment":"6161935e24f43441325bb255","blogPost":"j7KjCaKrtV"}; // {CommentLikeV3PostRequest} 
 
 var callback = function(error, data, response) {
@@ -10775,8 +10775,8 @@ CommentV3PostRequest *commentV3PostRequest = {"blogPost":"j7KjCaKrtV","text":"Th
                             </div>
 
                             <div class="tab-pane" id="examples-CommentV3-postComment-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -10785,7 +10785,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CommentV3Api()
+var api = new FloatplaneRestApi.CommentV3Api()
 var commentV3PostRequest = {"blogPost":"j7KjCaKrtV","text":"This is the text of the comment being posted"}; // {CommentV3PostRequest} 
 
 var callback = function(error, data, response) {
@@ -11598,8 +11598,8 @@ ConnectedAccountsV2Api *apiInstance = [[ConnectedAccountsV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-ConnectedAccountsV2-listConnections-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -11608,7 +11608,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ConnectedAccountsV2Api()
+var api = new FloatplaneRestApi.ConnectedAccountsV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -12360,8 +12360,8 @@ ContentLikeV3Request *contentLikeV3Request = {"contentType":"blogPost","id":"T2g
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-dislikeContent-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -12370,7 +12370,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var contentLikeV3Request = {"contentType":"blogPost","id":"T2gWkpaerq"}; // {ContentLikeV3Request} 
 
 var callback = function(error, data, response) {
@@ -13149,8 +13149,8 @@ String *id = id_example; // The ID of the post to be retrieved. (default to null
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getBlogPost-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -13159,7 +13159,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The ID of the post to be retrieved.
 
 var callback = function(error, data, response) {
@@ -14031,8 +14031,8 @@ array[String] *creatorIds = ; // The creator(s) to search by. (default to null)
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getContentTags-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -14041,7 +14041,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var creatorIds = ; // {array[String]} The creator(s) to search by.
 
 var callback = function(error, data, response) {
@@ -14831,8 +14831,8 @@ array[String] *tags = ; // An array of tags to search against, possibly in addit
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getCreatorBlogPosts-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -14841,7 +14841,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The GUID of the creator to retrieve posts from.
 var limit = 56; // {Integer} The maximum number of posts to return.
 var opts = {
@@ -16040,8 +16040,8 @@ array[ContentCreatorListLastItems] *fetchAfter = ; // For pagination, this is us
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getMultiCreatorBlogPosts-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -16050,7 +16050,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var ids = ; // {array[String]} The GUID(s) of the creator(s) to retrieve posts from.
 var limit = 56; // {Integer} The maximum number of posts to retrieve.
 var opts = {
@@ -17190,8 +17190,8 @@ String *id = id_example; // The ID of the picture attachment object, from the `B
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getPictureContent-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -17200,7 +17200,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The ID of the picture attachment object, from the `BlogPostModelV3`.
 
 var callback = function(error, data, response) {
@@ -17985,8 +17985,8 @@ String *id = id_example; // The ID of the originating post. (default to null)
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getRelatedBlogPosts-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -17995,7 +17995,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The ID of the originating post.
 
 var callback = function(error, data, response) {
@@ -19216,8 +19216,8 @@ String *id = id_example; // The ID of the video attachment object, from the `Blo
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-getVideoContent-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -19226,7 +19226,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The ID of the video attachment object, from the `BlogPostModelV3`.
 
 var callback = function(error, data, response) {
@@ -20034,8 +20034,8 @@ ContentLikeV3Request *contentLikeV3Request = {"contentType":"blogPost","id":"T2g
                             </div>
 
                             <div class="tab-pane" id="examples-ContentV3-likeContent-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -20044,7 +20044,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.ContentV3Api()
+var api = new FloatplaneRestApi.ContentV3Api()
 var contentLikeV3Request = {"contentType":"blogPost","id":"T2gWkpaerq"}; // {ContentLikeV3Request} 
 
 var callback = function(error, data, response) {
@@ -20826,8 +20826,8 @@ String *creatorId = creatorId_example; // The GUID for the creator being search.
                             </div>
 
                             <div class="tab-pane" id="examples-CreatorSubscriptionPlanV2-getCreatorSubInfoPublic-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -20836,7 +20836,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CreatorSubscriptionPlanV2Api()
+var api = new FloatplaneRestApi.CreatorSubscriptionPlanV2Api()
 var creatorId = creatorId_example; // {String} The GUID for the creator being search.
 
 var callback = function(error, data, response) {
@@ -21682,8 +21682,8 @@ array[String] *creatorURL = ; // The string identifer(s) of the creator(s) to be
                             </div>
 
                             <div class="tab-pane" id="examples-CreatorV2-getCreatorInfoByName-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -21692,7 +21692,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CreatorV2Api()
+var api = new FloatplaneRestApi.CreatorV2Api()
 var creatorURL = ; // {array[String]} The string identifer(s) of the creator(s) to be retrieved.
 
 var callback = function(error, data, response) {
@@ -22545,8 +22545,8 @@ array[String] *creatorGUID = ; // The GUID identifer(s) of the creator(s) to be 
                             </div>
 
                             <div class="tab-pane" id="examples-CreatorV2-getInfo-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -22555,7 +22555,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CreatorV2Api()
+var api = new FloatplaneRestApi.CreatorV2Api()
 var creatorGUID = ; // {array[String]} The GUID identifer(s) of the creator(s) to be retrieved.
 
 var callback = function(error, data, response) {
@@ -23391,8 +23391,8 @@ String *id = id_example; // The GUID of the creator being searched. (default to 
                             </div>
 
                             <div class="tab-pane" id="examples-CreatorV3-getCreator-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -23401,7 +23401,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CreatorV3Api()
+var api = new FloatplaneRestApi.CreatorV3Api()
 var id = id_example; // {String} The GUID of the creator being searched.
 
 var callback = function(error, data, response) {
@@ -24266,8 +24266,8 @@ String *search = search_example; // Optional search string for finding particula
                             </div>
 
                             <div class="tab-pane" id="examples-CreatorV3-getCreators-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -24276,7 +24276,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.CreatorV3Api()
+var api = new FloatplaneRestApi.CreatorV3Api()
 var search = search_example; // {String} Optional search string for finding particular creators on the platform.
 
 var callback = function(error, data, response) {
@@ -25315,10 +25315,10 @@ FAQV2Api *apiInstance = [[FAQV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-FAQV2-getFaqSections-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
 
 // Create an instance of the API class
-var api = new FloatplaneApi.FAQV2Api()
+var api = new FloatplaneRestApi.FAQV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -26062,8 +26062,8 @@ LoyaltyRewardsV3Api *apiInstance = [[LoyaltyRewardsV3Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-LoyaltyRewardsV3-listCreatorLoyaltyReward-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -26072,7 +26072,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.LoyaltyRewardsV3Api()
+var api = new FloatplaneRestApi.LoyaltyRewardsV3Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -26797,8 +26797,8 @@ PaymentsV2Api *apiInstance = [[PaymentsV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-PaymentsV2-listAddresses-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -26807,7 +26807,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.PaymentsV2Api()
+var api = new FloatplaneRestApi.PaymentsV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -27538,8 +27538,8 @@ PaymentsV2Api *apiInstance = [[PaymentsV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-PaymentsV2-listInvoices-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -27548,7 +27548,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.PaymentsV2Api()
+var api = new FloatplaneRestApi.PaymentsV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -28316,8 +28316,8 @@ PaymentsV2Api *apiInstance = [[PaymentsV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-PaymentsV2-listPaymentMethods-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -28326,7 +28326,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.PaymentsV2Api()
+var api = new FloatplaneRestApi.PaymentsV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -29062,8 +29062,8 @@ SubscriptionsV3Api *apiInstance = [[SubscriptionsV3Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-SubscriptionsV3-listUserSubscriptionsV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -29072,7 +29072,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.SubscriptionsV3Api()
+var api = new FloatplaneRestApi.SubscriptionsV3Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -29834,8 +29834,8 @@ UserV2Api *apiInstance = [[UserV2Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-UserV2-getSecurity-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -29844,7 +29844,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV2Api()
+var api = new FloatplaneRestApi.UserV2Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -30569,8 +30569,8 @@ array[String] *id = ; // The GUID identifer(s) of the user(s) to be retrieved. (
                             </div>
 
                             <div class="tab-pane" id="examples-UserV2-getUserInfo-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -30579,7 +30579,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV2Api()
+var api = new FloatplaneRestApi.UserV2Api()
 var id = ; // {array[String]} The GUID identifer(s) of the user(s) to be retrieved.
 
 var callback = function(error, data, response) {
@@ -31360,8 +31360,8 @@ array[String] *username = ; // The username(s) of the user(s) to be retrieved. (
                             </div>
 
                             <div class="tab-pane" id="examples-UserV2-getUserInfoByName-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -31370,7 +31370,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV2Api()
+var api = new FloatplaneRestApi.UserV2Api()
 var username = ; // {array[String]} The username(s) of the user(s) to be retrieved.
 
 var callback = function(error, data, response) {
@@ -32153,8 +32153,8 @@ String *creator = creator_example; // The GUID of the creator being queried. (de
                             </div>
 
                             <div class="tab-pane" id="examples-UserV2-userCreatorBanStatus-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -32163,7 +32163,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV2Api()
+var api = new FloatplaneRestApi.UserV2Api()
 var creator = creator_example; // {String} The GUID of the creator being queried.
 
 var callback = function(error, data, response) {
@@ -32925,8 +32925,8 @@ String *id = id_example; // The GUID of the user being queried. (default to null
                             </div>
 
                             <div class="tab-pane" id="examples-UserV3-getActivityFeedV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -32935,7 +32935,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV3Api()
+var api = new FloatplaneRestApi.UserV3Api()
 var id = id_example; // {String} The GUID of the user being queried.
 
 var callback = function(error, data, response) {
@@ -33704,8 +33704,8 @@ String *id = id_example; // The GUID of the user being searched. (default to nul
                             </div>
 
                             <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -33714,7 +33714,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV3Api()
+var api = new FloatplaneRestApi.UserV3Api()
 var id = id_example; // {String} The GUID of the user being searched.
 
 var callback = function(error, data, response) {
@@ -34479,8 +34479,8 @@ UserV3Api *apiInstance = [[UserV3Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-UserV3-getSelf-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -34489,7 +34489,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV3Api()
+var api = new FloatplaneRestApi.UserV3Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -35229,8 +35229,8 @@ UserV3Api *apiInstance = [[UserV3Api alloc] init];
                             </div>
 
                             <div class="tab-pane" id="examples-UserV3-getUserNotificationSettingsV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -35239,7 +35239,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV3Api()
+var api = new FloatplaneRestApi.UserV3Api()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -35996,8 +35996,8 @@ UserNotificationUpdateV3PostRequest *userNotificationUpdateV3PostRequest = {"cre
                             </div>
 
                             <div class="tab-pane" id="examples-UserV3-updateUserNotificationSettingsV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneApi = require('floatplane_api');
-var defaultClient = FloatplaneApi.ApiClient.instance;
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
 
 // Configure API key authorization: CookieAuth
 var CookieAuth = defaultClient.authentications['CookieAuth'];
@@ -36006,7 +36006,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 //CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
 
 // Create an instance of the API class
-var api = new FloatplaneApi.UserV3Api()
+var api = new FloatplaneRestApi.UserV3Api()
 var userNotificationUpdateV3PostRequest = {"creator":"59f94c0bdd241b70349eb72b","property":"contentFirebase","newValue":false}; // {UserNotificationUpdateV3PostRequest} 
 
 var callback = function(error, data, response) {
@@ -36669,7 +36669,7 @@ $(document).ready(function() {
           <div id="footer">
             <div id="api-_footer">
               <p>Suggestions, contact, support and error reporting;
-                  <div class="app-desc">Information URL: <a href="https://openapi-generator.tech">https://openapi-generator.tech</a></div>
+                  <div class="app-desc">Information URL: <a href="https://github.com/Jman012/FloatplaneAPI/">https://github.com/Jman012/FloatplaneAPI/</a></div>
                   <div class="app-desc">Contact Info: <a href="team@openapitools.org">team@openapitools.org</a></div>
               </p>
                 <div class="license-info">MIT</div>

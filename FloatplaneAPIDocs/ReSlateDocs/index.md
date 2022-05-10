@@ -2352,12 +2352,12 @@ Status Code **200**
 |» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
-|»» path|string|true|none|none|
+|»» path|string(uri)|true|none|none|
 |»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»» id|string|true|none|none|
@@ -2375,16 +2375,16 @@ Status Code **200**
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»» instagram|string|false|none|none|
-|»» twitter|string|false|none|none|
-|»» website|string|false|none|none|
-|»» facebook|string|false|none|none|
-|»» youtube|string|false|none|none|
+|»» instagram|string(uri)|false|none|none|
+|»» twitter|string(uri)|false|none|none|
+|»» website|string(uri)|false|none|none|
+|»» facebook|string(uri)|false|none|none|
+|»» youtube|string(uri)|false|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
 |»» id|string|true|none|none|
 |»» guildName|string|true|none|none|
 |»» guildIcon|string|true|none|none|
-|»» inviteLink|string|true|none|none|
+|»» inviteLink|string(uri)|true|none|none|
 |»» inviteMode|string|true|none|none|
 
 <aside class="warning">
@@ -2787,12 +2787,12 @@ Status Code **200**
 |» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
-|»» path|string|true|none|none|
+|»» path|string(uri)|true|none|none|
 |»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»» id|string|true|none|none|
@@ -2810,16 +2810,16 @@ Status Code **200**
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»» instagram|string|false|none|none|
-|»» twitter|string|false|none|none|
-|»» website|string|false|none|none|
-|»» facebook|string|false|none|none|
-|»» youtube|string|false|none|none|
+|»» instagram|string(uri)|false|none|none|
+|»» twitter|string(uri)|false|none|none|
+|»» website|string(uri)|false|none|none|
+|»» facebook|string(uri)|false|none|none|
+|»» youtube|string(uri)|false|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
 |»» id|string|true|none|none|
 |»» guildName|string|true|none|none|
 |»» guildIcon|string|true|none|none|
-|»» inviteLink|string|true|none|none|
+|»» inviteLink|string(uri)|true|none|none|
 |»» inviteMode|string|true|none|none|
 
 <aside class="warning">
@@ -3842,12 +3842,12 @@ Status Code **200**
 |» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
-|»» path|string|true|none|none|
+|»» path|string(uri)|true|none|none|
 |»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»» id|string|true|none|none|
@@ -3875,7 +3875,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string|true|none|none|
+|»»» inviteLink|string(uri)|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -3884,11 +3884,11 @@ Status Code **200**
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
-|»» instagram|string|false|none|none|
-|»» twitter|string|false|none|none|
-|»» website|string|false|none|none|
-|»» facebook|string|false|none|none|
-|»» youtube|string|false|none|none|
+|»» instagram|string(uri)|false|none|none|
+|»» twitter|string(uri)|false|none|none|
+|»» website|string(uri)|false|none|none|
+|»» facebook|string(uri)|false|none|none|
+|»» youtube|string(uri)|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -5849,7 +5849,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string|true|none|none|
+|»»» inviteLink|string(uri)|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -8210,12 +8210,12 @@ Status Code **200**
 |»» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
-|»»»» path|string|true|none|none|
+|»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»» id|string|true|none|none|
@@ -8233,16 +8233,16 @@ Status Code **200**
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
 |»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»»» instagram|string|false|none|none|
-|»»» twitter|string|false|none|none|
-|»»» website|string|false|none|none|
-|»»» facebook|string|false|none|none|
-|»»» youtube|string|false|none|none|
+|»»» instagram|string(uri)|false|none|none|
+|»»» twitter|string(uri)|false|none|none|
+|»»» website|string(uri)|false|none|none|
+|»»» facebook|string(uri)|false|none|none|
+|»»» youtube|string(uri)|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string|true|none|none|
+|»»» inviteLink|string(uri)|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |» userNotificationSetting|object|true|none|none|
 |»» createdAt|string(date-time)|true|none|none|
@@ -9214,12 +9214,12 @@ Status Code **200**
 |»» profileImage|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
-|»»»» path|string|true|none|none|
+|»»»» path|string(uri)|true|none|none|
 |» contentReference|string|true|none|none|
 |» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
@@ -9597,12 +9597,12 @@ Status Code **200**
 |»» profileImage|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
-|»»»» path|string|true|none|none|
+|»»»» path|string(uri)|true|none|none|
 |» contentReference|string|true|none|none|
 |» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
@@ -10888,12 +10888,12 @@ Status Code **200**
 |»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
-|»»»» path|string|true|none|none|
+|»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»» id|string|true|none|none|
@@ -10921,7 +10921,7 @@ Status Code **200**
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string|true|none|none|
+|»»»» inviteLink|string(uri)|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -13143,12 +13143,12 @@ Status Code **200**
 |»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
-|»»» path|string|true|none|none|
+|»»» path|string(uri)|true|none|none|
 |»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
-|»»»» path|string|true|none|none|
+|»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»» id|string|true|none|none|
@@ -13176,7 +13176,7 @@ Status Code **200**
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string|true|none|none|
+|»»»» inviteLink|string(uri)|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -14735,13 +14735,13 @@ CookieAuth
     "profileImage": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -14787,7 +14787,7 @@ CookieAuth
 
 ```json
 {
-  "cdn": "string",
+  "cdn": "http://example.com",
   "strategy": "string",
   "resource": {
     "uri": "string",
@@ -14820,7 +14820,7 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|cdn|string|true|none|The domain of the CDN server to use.|
+|cdn|string(uri)|true|none|The domain of the CDN server to use.|
 |strategy|string|true|none|none|
 |resource|object|true|none|none|
 |» uri|string|false|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
@@ -14880,13 +14880,13 @@ CookieAuth
               "icon": {
                 "width": 0,
                 "height": 0,
-                "path": "string",
+                "path": "http://example.com",
                 "size": 0,
                 "childImages": [
                   {
                     "width": 0,
                     "height": 0,
-                    "path": "string"
+                    "path": "http://example.com"
                   }
                 ]
               }
@@ -14975,7 +14975,7 @@ CookieAuth
           "id": "string",
           "guildName": "string",
           "guildIcon": "string",
-          "inviteLink": "string",
+          "inviteLink": "http://example.com",
           "inviteMode": "string"
         }
       ],
@@ -15036,13 +15036,13 @@ CookieAuth
         "profileImage": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -15079,13 +15079,13 @@ CookieAuth
         "profileImage": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         },
@@ -15167,13 +15167,13 @@ CookieAuth
     "profileImage": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -15293,26 +15293,26 @@ CookieAuth
         "cover": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         },
         "icon": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         },
@@ -15323,13 +15323,13 @@ CookieAuth
           "thumbnail": {
             "width": 0,
             "height": 0,
-            "path": "string",
+            "path": "http://example.com",
             "size": 0,
             "childImages": [
               {
                 "width": 0,
                 "height": 0,
-                "path": "string"
+                "path": "http://example.com"
               }
             ]
           },
@@ -15341,13 +15341,13 @@ CookieAuth
             "thumbnail": {
               "width": 0,
               "height": 0,
-              "path": "string",
+              "path": "http://example.com",
               "size": 0,
               "childImages": [
                 {
                   "width": 0,
                   "height": 0,
-                  "path": "string"
+                  "path": "http://example.com"
                 }
               ]
             }
@@ -15370,7 +15370,7 @@ CookieAuth
                 "id": "string",
                 "guildName": "string",
                 "guildIcon": "string",
-                "inviteLink": "string",
+                "inviteLink": "http://example.com",
                 "inviteMode": "string"
               }
             ],
@@ -15388,13 +15388,13 @@ CookieAuth
         "card": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -15403,13 +15403,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -15467,7 +15467,7 @@ CookieAuth
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |creatorId|string|true|none|none|
-|blogPostId|string|false|none|This may be `null` if no blog posts for this creator appeared yet on this page of blog posts.|
+|blogPostId|string|false|none|This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value.|
 |moreFetchable|boolean|true|none|none|
 
 <h2 id="tocS_ContentPostV3Response">ContentPostV3Response</h2>
@@ -15519,26 +15519,26 @@ CookieAuth
     "cover": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
     "icon": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
@@ -15549,13 +15549,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -15567,13 +15567,13 @@ CookieAuth
         "thumbnail": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -15586,18 +15586,18 @@ CookieAuth
     "subscriberCountDisplay": "string",
     "incomeDisplay": true,
     "socialLinks": {
-      "instagram": "string",
-      "twitter": "string",
-      "website": "string",
-      "facebook": "string",
-      "youtube": "string"
+      "instagram": "http://example.com",
+      "twitter": "http://example.com",
+      "website": "http://example.com",
+      "facebook": "http://example.com",
+      "youtube": "http://example.com"
     },
     "discordServers": [
       {
         "id": "string",
         "guildName": "string",
         "guildIcon": "string",
-        "inviteLink": "string",
+        "inviteLink": "http://example.com",
         "inviteMode": "string"
       }
     ]
@@ -15606,13 +15606,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -15638,13 +15638,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -15692,13 +15692,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -15770,13 +15770,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -15787,13 +15787,13 @@ CookieAuth
   "timelineSprite": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -15868,13 +15868,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -15883,13 +15883,13 @@ CookieAuth
     {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -15965,7 +15965,7 @@ CookieAuth
 ```json
 {
   "property1": {
-    "url": "string",
+    "url": "http://example.com",
     "type": {
       "name": "string",
       "displayName": "string",
@@ -15973,7 +15973,7 @@ CookieAuth
     }
   },
   "property2": {
-    "url": "string",
+    "url": "http://example.com",
     "type": {
       "name": "string",
       "displayName": "string",
@@ -15989,7 +15989,7 @@ CookieAuth
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |**additionalProperties**|object|false|none|none|
-|» url|string|false|none|The URL the user has configured for this link.|
+|» url|string(uri)|false|none|The URL the user has configured for this link.|
 |» type|object|false|none|none|
 |»» name|string|false|none|The code name of this link type.|
 |»» displayName|string|false|none|The display-friendly name of this link type.|
@@ -16040,13 +16040,13 @@ CookieAuth
   "profileImage": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -16275,26 +16275,26 @@ CookieAuth
   "cover": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
   "icon": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -16305,13 +16305,13 @@ CookieAuth
     "thumbnail": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
@@ -16323,13 +16323,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       }
@@ -16342,18 +16342,18 @@ CookieAuth
   "subscriberCountDisplay": "string",
   "incomeDisplay": true,
   "socialLinks": {
-    "instagram": "string",
-    "twitter": "string",
-    "website": "string",
-    "facebook": "string",
-    "youtube": "string"
+    "instagram": "http://example.com",
+    "twitter": "http://example.com",
+    "website": "http://example.com",
+    "facebook": "http://example.com",
+    "youtube": "http://example.com"
   },
   "discordServers": [
     {
       "id": "string",
       "guildName": "string",
       "guildIcon": "string",
-      "inviteLink": "string",
+      "inviteLink": "http://example.com",
       "inviteMode": "string"
     }
   ]
@@ -16403,26 +16403,26 @@ CookieAuth
   "cover": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
   "icon": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -16433,13 +16433,13 @@ CookieAuth
     "thumbnail": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
@@ -16451,13 +16451,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       }
@@ -16480,7 +16480,7 @@ CookieAuth
           "id": "string",
           "guildName": "string",
           "guildIcon": "string",
-          "inviteLink": "string",
+          "inviteLink": "http://example.com",
           "inviteMode": "string"
         }
       ],
@@ -16496,11 +16496,11 @@ CookieAuth
   "subscriberCountDisplay": "string",
   "incomeDisplay": true,
   "socialLinks": {
-    "instagram": "string",
-    "twitter": "string",
-    "website": "string",
-    "facebook": "string",
-    "youtube": "string"
+    "instagram": "http://example.com",
+    "twitter": "http://example.com",
+    "website": "http://example.com",
+    "facebook": "http://example.com",
+    "youtube": "http://example.com"
   }
 }
 
@@ -16581,26 +16581,26 @@ CookieAuth
     "cover": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
     "icon": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
@@ -16611,13 +16611,13 @@ CookieAuth
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -16629,13 +16629,13 @@ CookieAuth
         "thumbnail": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -16658,7 +16658,7 @@ CookieAuth
             "id": "string",
             "guildName": "string",
             "guildIcon": "string",
-            "inviteLink": "string",
+            "inviteLink": "http://example.com",
             "inviteMode": "string"
           }
         ],
@@ -16676,13 +16676,13 @@ CookieAuth
     "card": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -16691,13 +16691,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -16792,7 +16792,7 @@ CookieAuth
       "id": "string",
       "guildName": "string",
       "guildIcon": "string",
-      "inviteLink": "string",
+      "inviteLink": "http://example.com",
       "inviteMode": "string"
     }
   ],
@@ -16888,13 +16888,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -16946,13 +16946,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -17047,13 +17047,13 @@ CookieAuth
 {
   "width": 0,
   "height": 0,
-  "path": "string",
+  "path": "http://example.com",
   "size": 0,
   "childImages": [
     {
       "width": 0,
       "height": 0,
-      "path": "string"
+      "path": "http://example.com"
     }
   ]
 }
@@ -17066,7 +17066,7 @@ CookieAuth
 |---|---|---|---|---|
 |width|integer|true|none|none|
 |height|integer|true|none|none|
-|path|string|true|none|none|
+|path|string(uri)|true|none|none|
 |size|integer|false|none|none|
 |childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 
@@ -17081,7 +17081,7 @@ CookieAuth
 {
   "width": 0,
   "height": 0,
-  "path": "string"
+  "path": "http://example.com"
 }
 
 ```
@@ -17092,7 +17092,7 @@ CookieAuth
 |---|---|---|---|---|
 |width|integer|true|none|none|
 |height|integer|true|none|none|
-|path|string|true|none|none|
+|path|string(uri)|true|none|none|
 
 <h2 id="tocS_LiveStreamModel">LiveStreamModel</h2>
 <!-- backwards compatibility -->
@@ -17109,13 +17109,13 @@ CookieAuth
   "thumbnail": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -17127,13 +17127,13 @@ CookieAuth
     "thumbnail": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -17166,11 +17166,11 @@ CookieAuth
 
 ```json
 {
-  "instagram": "string",
-  "twitter": "string",
-  "website": "string",
-  "facebook": "string",
-  "youtube": "string"
+  "instagram": "http://example.com",
+  "twitter": "http://example.com",
+  "website": "http://example.com",
+  "facebook": "http://example.com",
+  "youtube": "http://example.com"
 }
 
 ```
@@ -17179,11 +17179,11 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|instagram|string|false|none|none|
-|twitter|string|false|none|none|
-|website|string|false|none|none|
-|facebook|string|false|none|none|
-|youtube|string|false|none|none|
+|instagram|string(uri)|false|none|none|
+|twitter|string(uri)|false|none|none|
+|website|string(uri)|false|none|none|
+|facebook|string(uri)|false|none|none|
+|youtube|string(uri)|false|none|none|
 
 <h2 id="tocS_DiscordServerModel">DiscordServerModel</h2>
 <!-- backwards compatibility -->
@@ -17197,7 +17197,7 @@ CookieAuth
   "id": "string",
   "guildName": "string",
   "guildIcon": "string",
-  "inviteLink": "string",
+  "inviteLink": "http://example.com",
   "inviteMode": "string"
 }
 
@@ -17210,7 +17210,7 @@ CookieAuth
 |id|string|true|none|none|
 |guildName|string|true|none|none|
 |guildIcon|string|true|none|none|
-|inviteLink|string|true|none|none|
+|inviteLink|string(uri)|true|none|none|
 |inviteMode|string|true|none|none|
 
 <h2 id="tocS_DiscordRoleModel">DiscordRoleModel</h2>
@@ -17249,13 +17249,13 @@ CookieAuth
   "profileImage": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   }
@@ -17287,13 +17287,13 @@ Represents some basic information of a user (id, username, and profile image).
   "profileImage": {
     "width": 0,
     "height": 0,
-    "path": "string",
+    "path": "http://example.com",
     "size": 0,
     "childImages": [
       {
         "width": 0,
         "height": 0,
-        "path": "string"
+        "path": "http://example.com"
       }
     ]
   },
@@ -17374,13 +17374,13 @@ Represents some basic information of a user (id, username, and profile image).
     "profileImage": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -17409,13 +17409,13 @@ Represents some basic information of a user (id, username, and profile image).
         "profileImage": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -17485,13 +17485,13 @@ Represents some basic information of a user (id, username, and profile image).
     "profileImage": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     }
@@ -17557,26 +17557,26 @@ Represents some basic information of a user (id, username, and profile image).
     "cover": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
     "icon": {
       "width": 0,
       "height": 0,
-      "path": "string",
+      "path": "http://example.com",
       "size": 0,
       "childImages": [
         {
           "width": 0,
           "height": 0,
-          "path": "string"
+          "path": "http://example.com"
         }
       ]
     },
@@ -17587,13 +17587,13 @@ Represents some basic information of a user (id, username, and profile image).
       "thumbnail": {
         "width": 0,
         "height": 0,
-        "path": "string",
+        "path": "http://example.com",
         "size": 0,
         "childImages": [
           {
             "width": 0,
             "height": 0,
-            "path": "string"
+            "path": "http://example.com"
           }
         ]
       },
@@ -17605,13 +17605,13 @@ Represents some basic information of a user (id, username, and profile image).
         "thumbnail": {
           "width": 0,
           "height": 0,
-          "path": "string",
+          "path": "http://example.com",
           "size": 0,
           "childImages": [
             {
               "width": 0,
               "height": 0,
-              "path": "string"
+              "path": "http://example.com"
             }
           ]
         }
@@ -17624,18 +17624,18 @@ Represents some basic information of a user (id, username, and profile image).
     "subscriberCountDisplay": "string",
     "incomeDisplay": true,
     "socialLinks": {
-      "instagram": "string",
-      "twitter": "string",
-      "website": "string",
-      "facebook": "string",
-      "youtube": "string"
+      "instagram": "http://example.com",
+      "twitter": "http://example.com",
+      "website": "http://example.com",
+      "facebook": "http://example.com",
+      "youtube": "http://example.com"
     },
     "discordServers": [
       {
         "id": "string",
         "guildName": "string",
         "guildIcon": "string",
-        "inviteLink": "string",
+        "inviteLink": "http://example.com",
         "inviteMode": "string"
       }
     ]
@@ -17699,7 +17699,7 @@ Represents some basic information of a user (id, username, and profile image).
         "id": "string",
         "guildName": "string",
         "guildIcon": "string",
-        "inviteLink": "string",
+        "inviteLink": "http://example.com",
         "inviteMode": "string"
       }
     ],

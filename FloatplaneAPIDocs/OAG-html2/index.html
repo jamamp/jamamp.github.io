@@ -1478,14 +1478,15 @@ ul.nav-tabs {
   }
 };
     defs["ContentCreatorListLastItems"] = {
-  "required" : [ "blogPostId", "creatorId", "moreFetchable" ],
+  "required" : [ "creatorId", "moreFetchable" ],
   "type" : "object",
   "properties" : {
     "creatorId" : {
       "type" : "string"
     },
     "blogPostId" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "This may be `null` if no blog posts for this creator appeared yet on this page of blog posts."
     },
     "moreFetchable" : {
       "type" : "boolean"
@@ -2142,7 +2143,6 @@ ul.nav-tabs {
   }
 };
     defs["LiveStreamModel_offline"] = {
-  "required" : [ "description", "thumbnail", "title" ],
   "type" : "object",
   "properties" : {
     "title" : {
@@ -2428,7 +2428,7 @@ ul.nav-tabs {
   }
 };
     defs["PlanInfoV2Response_plans"] = {
-  "required" : [ "allowGrandfatheredAccess", "createdAt", "creator", "currency", "description", "discordRoles", "discordServers", "enabled", "enabledGlobal", "featured", "id", "interval", "logo", "paymentID", "price", "title", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
+  "required" : [ "createdAt", "creator", "currency", "description", "discordRoles", "discordServers", "enabled", "enabledGlobal", "featured", "id", "interval", "logo", "paymentID", "price", "title", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
   "type" : "object",
   "properties" : {
     "discordRoles" : {
@@ -2565,7 +2565,7 @@ ul.nav-tabs {
   }
 };
     defs["SubscriptionPlanModel"] = {
-  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
+  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2868,7 +2868,7 @@ ul.nav-tabs {
   }
 };
     defs["UserSubscriptionModel_plan"] = {
-  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
+  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {

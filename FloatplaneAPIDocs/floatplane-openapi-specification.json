@@ -682,7 +682,6 @@
 								"paymentID",
 								"currency",
 								"trialPeriod",
-								"allowGrandfatheredAccess",
 								"logo",
 								"creator",
 								"discordServers",
@@ -900,7 +899,8 @@
 						"type": "string"
 					},
 					"blogPostId": {
-						"type": "string"
+						"type": "string",
+						"description": "This may be `null` if no blog posts for this creator appeared yet on this page of blog posts."
 					},
 					"moreFetchable": {
 						"type": "boolean"
@@ -908,7 +908,6 @@
 				},
 				"required": [
 					"creatorId",
-					"blogPostId",
 					"moreFetchable"
 				]
 			},
@@ -1973,7 +1972,6 @@
 					"currency",
 					"interval",
 					"featured",
-					"allowGrandfatheredAccess",
 					"discordServers",
 					"discordRoles"
 				]
@@ -2321,12 +2319,7 @@
 							"thumbnail": {
 								"$ref": "#/components/schemas/ImageModel"
 							}
-						},
-						"required": [
-							"title",
-							"description",
-							"thumbnail"
-						]
+						}
 					}
 				},
 				"required": [
@@ -2789,7 +2782,6 @@
 							"currency",
 							"interval",
 							"featured",
-							"allowGrandfatheredAccess",
 							"discordServers",
 							"discordRoles"
 						]

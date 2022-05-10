@@ -23609,9 +23609,9 @@ Status Code **200**
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» title|string|false|none|none|
+|»»» description|string|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» subscriptionPlans|[object]|false|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
@@ -24044,9 +24044,9 @@ Status Code **200**
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» title|string|false|none|none|
+|»»» description|string|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» subscriptionPlans|[object]|false|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
@@ -27779,9 +27779,9 @@ Status Code **200**
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» title|string|false|none|none|
+|»»» description|string|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
@@ -27792,7 +27792,7 @@ Status Code **200**
 |»» logo|string|false|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean|true|none|none|
+|»» allowGrandfatheredAccess|boolean|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
@@ -48882,7 +48882,7 @@ Status Code **200**
 |»» logo|string|false|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean|true|none|none|
+|»» allowGrandfatheredAccess|boolean|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
@@ -60391,9 +60391,9 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string|false|none|none|
+|»»»» description|string|false|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» subscriptionPlans|[object]|false|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
@@ -85115,9 +85115,9 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string|false|none|none|
+|»»»» description|string|false|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
@@ -85128,7 +85128,7 @@ Status Code **200**
 |»»» logo|string|false|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean|true|none|none|
+|»»» allowGrandfatheredAccess|boolean|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
@@ -87370,9 +87370,9 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string|false|none|none|
+|»»»» description|string|false|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
@@ -87383,7 +87383,7 @@ Status Code **200**
 |»»» logo|string|false|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean|true|none|none|
+|»»» allowGrandfatheredAccess|boolean|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
@@ -95415,7 +95415,7 @@ CookieAuth
 |» paymentID|integer|true|none|none|
 |» currency|string|true|none|none|
 |» trialPeriod|number|true|none|none|
-|» allowGrandfatheredAccess|boolean|true|none|none|
+|» allowGrandfatheredAccess|boolean|false|none|none|
 |» logo|string|true|none|none|
 |» creator|string|true|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
@@ -95873,7 +95873,7 @@ CookieAuth
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |creatorId|string|true|none|none|
-|blogPostId|string|true|none|none|
+|blogPostId|string|false|none|This may be `null` if no blog posts for this creator appeared yet on this page of blog posts.|
 |moreFetchable|boolean|true|none|none|
 
 <h2 id="tocS_ContentPostV3Response">ContentPostV3Response</h2>
@@ -97225,7 +97225,7 @@ CookieAuth
 |logo|string|false|none|none|
 |interval|string|true|none|none|
 |featured|boolean|true|none|none|
-|allowGrandfatheredAccess|boolean|true|none|none|
+|allowGrandfatheredAccess|boolean|false|none|none|
 |discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 
@@ -97559,9 +97559,9 @@ CookieAuth
 |owner|string|true|none|none|
 |streamPath|string|true|none|none|
 |offline|object|true|none|none|
-|» title|string|true|none|none|
-|» description|string|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» title|string|false|none|none|
+|» description|string|false|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 
 <h2 id="tocS_SocialLinksModel">SocialLinksModel</h2>
 <!-- backwards compatibility -->
@@ -98140,7 +98140,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» logo|string|false|none|none|
 |» interval|string|true|none|none|
 |» featured|boolean|true|none|none|
-|» allowGrandfatheredAccess|boolean|true|none|none|
+|» allowGrandfatheredAccess|boolean|false|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |creator|string|true|none|none|

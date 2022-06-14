@@ -27786,7 +27786,7 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» price|string|true|none|none|
+|»» price|string|false|none|none|
 |»» priceYearly|string|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string|false|none|none|
@@ -48876,7 +48876,7 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» price|string|true|none|none|
+|»» price|string|false|none|none|
 |»» priceYearly|string|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string|false|none|none|
@@ -85122,7 +85122,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» price|string|true|none|none|
+|»»» price|string|false|none|none|
 |»»» priceYearly|string|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string|false|none|none|
@@ -85144,11 +85144,11 @@ Status Code **200**
 |»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|» isAccessible|boolean|true|none|none|
-|» videoAttachments|[string]|true|none|none|
-|» audioAttachments|[string]|true|none|none|
-|» pictureAttachments|[string]|true|none|none|
-|» galleryAttachments|[string]|true|none|none|
+|» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|» videoAttachments|[string]|false|none|none|
+|» audioAttachments|[string]|false|none|none|
+|» pictureAttachments|[string]|false|none|none|
+|» galleryAttachments|[string]|false|none|none|
 
 #### Enumerated Values
 
@@ -87377,7 +87377,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» price|string|true|none|none|
+|»»» price|string|false|none|none|
 |»»» priceYearly|string|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string|false|none|none|
@@ -87399,11 +87399,11 @@ Status Code **200**
 |»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|» isAccessible|boolean|true|none|none|
-|» videoAttachments|[string]|true|none|none|
-|» audioAttachments|[string]|true|none|none|
-|» pictureAttachments|[string]|true|none|none|
-|» galleryAttachments|[string]|true|none|none|
+|» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|» videoAttachments|[string]|false|none|none|
+|» audioAttachments|[string]|false|none|none|
+|» pictureAttachments|[string]|false|none|none|
+|» galleryAttachments|[string]|false|none|none|
 
 #### Enumerated Values
 
@@ -96138,12 +96138,12 @@ CookieAuth
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
-|videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|true|none|none|
-|audioAttachments|[[AudioAttachmentModel](#schemaaudioattachmentmodel)]|true|none|none|
-|pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|true|none|none|
-|galleryAttachments|[any]|true|none|none|
+|videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|none|
+|audioAttachments|[[AudioAttachmentModel](#schemaaudioattachmentmodel)]|false|none|none|
+|pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|false|none|none|
+|galleryAttachments|[any]|false|none|none|
 
 #### Enumerated Values
 
@@ -96237,7 +96237,7 @@ CookieAuth
 |isProcessing|boolean|true|none|none|
 |primaryBlogPost|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |blogPosts|[string]|true|none|none|
 |timelineSprite|[ImageModel](#schemaimagemodel)|true|none|none|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
@@ -96321,7 +96321,7 @@ CookieAuth
 |primaryBlogPost|string|true|none|none|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |imageFiles|[[ImageModel](#schemaimagemodel)]|true|none|none|
 
 <h2 id="tocS_UserActivityV3Response">UserActivityV3Response</h2>
@@ -97162,11 +97162,11 @@ CookieAuth
 |» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
-|videoAttachments|[string]|true|none|none|
-|audioAttachments|[string]|true|none|none|
-|pictureAttachments|[string]|true|none|none|
-|galleryAttachments|[string]|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|videoAttachments|[string]|false|none|none|
+|audioAttachments|[string]|false|none|none|
+|pictureAttachments|[string]|false|none|none|
+|galleryAttachments|[string]|false|none|none|
 
 #### Enumerated Values
 
@@ -97219,7 +97219,7 @@ CookieAuth
 |id|string|true|none|none|
 |title|string|true|none|none|
 |description|string|true|none|none|
-|price|string|true|none|none|
+|price|string|false|none|none|
 |priceYearly|string|false|none|none|
 |currency|string|true|none|none|
 |logo|string|false|none|none|
@@ -97327,7 +97327,7 @@ CookieAuth
 |isProcessing|boolean|true|none|none|
 |primaryBlogPost|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 <h2 id="tocS_PictureAttachmentModel">PictureAttachmentModel</h2>
 <!-- backwards compatibility -->
@@ -97383,7 +97383,7 @@ CookieAuth
 |creator|string|true|none|none|
 |primaryBlogPost|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 <h2 id="tocS_AudioAttachmentModel">AudioAttachmentModel</h2>
 <!-- backwards compatibility -->
@@ -97440,7 +97440,7 @@ CookieAuth
 |score|integer|true|none|none|
 |isProcessing|boolean|true|none|none|
 |primaryBlogPost|string|true|none|none|
-|isAccessible|boolean|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 <h2 id="tocS_ImageModel">ImageModel</h2>
 <!-- backwards compatibility -->
@@ -98134,7 +98134,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» id|string|true|none|none|
 |» title|string|true|none|none|
 |» description|string|true|none|none|
-|» price|string|true|none|none|
+|» price|string|false|none|none|
 |» priceYearly|string|false|none|none|
 |» currency|string|true|none|none|
 |» logo|string|false|none|none|

@@ -46,7 +46,7 @@
 	},
 	"channels": {
 		"/": {
-			"description": "Floatplane only uses the default Socket.IO namespace of `/` (root).",
+			"description": "Socket.IO and Sails groups messages and events into different namespaces, with `/` being the default namespace. Multiple kinds of messages can be sent in a single namespace, with Socket.IO having its own mechanisms to differentiate message types. Floatplane only uses the root Socket.IO namespace (`/`).",
 			"publish": {
 				"message": {
 					"oneOf": [
@@ -69,10 +69,13 @@
 				"ws": {
 					"method": "GET",
 					"headers": {
-						"description": "The `sails.sid` cookie must be sent upon connecting to the socket for authentication with the server.",
+						"description": "The `sails.sid` cookie must be sent upon connecting to the socket for authentication with the server. This is the authentication cookie from the Floatplane website used to identify the user.",
 						"type": "object",
 						"properties": {
-							"Cookies": "string"
+							"Cookies": {
+								"type": "string",
+								"description": "Should contain a value for `sails.sid`."
+							}
 						}
 					}
 				}
@@ -83,8 +86,10 @@
 		"messages": {
 			"SailsPost": {
 				"name": "post",
+				"title": "Sails HTTP POST",
 				"summary": "HTTP POST via Sails socket connection",
 				"description": "This one asynchronous Sails/Socket.IO event may contain different Floatplane events in the payload, and contain different Floatplane events in the response/acknowledgement (depending on the request).",
+				"contentType": "application/json",
 				"payload": {
 					"oneOf": [
 						{
@@ -94,6 +99,8 @@
 				},
 				"examples": [
 					{
+						"name": "SailsConnect",
+						"summary": "Connecting to Floatplane sync events via a Sails HTTP POST.",
 						"payload": {
 							"method": "post",
 							"headers": {},
@@ -112,14 +119,14 @@
 					},
 					"examples": [
 						{
-							"args": {
-								"payload": {
-									"body": {
-										"message": "User sync setup."
-									},
-									"headers": {},
-									"statusCode": 200
-								}
+							"name": "SailsConnected",
+							"summary": "Successful response from a `SailsConnect` message.",
+							"payload": {
+								"body": {
+									"message": "User sync setup."
+								},
+								"headers": {},
+								"statusCode": 200
 							}
 						}
 					]
@@ -127,8 +134,10 @@
 			},
 			"SyncEvent": {
 				"name": "syncEvent",
+				"title": "Floatplane Sync Event",
 				"summary": "A sync event arrives from the Floatplane server after registrating with the connect event (`/api/v3/socket/connect`).",
 				"description": "The sync event is another wrapper over Socket.IO, where the actual event type is embedded within the Socket.IO event payload. Most kinds of sync events are notifications of new blog posts on Floatplane from a subscribed creator.",
+				"contentType": "application/json",
 				"payload": {
 					"oneOf": [
 						{
@@ -144,6 +153,8 @@
 				},
 				"examples": [
 					{
+						"name": "CreatorNotification Sync Event: Content Post Release",
+						"summary": "Floatplane sent a sync event for a content post release via the `creatorNotification` event.",
 						"payload": {
 							"event": "creatorNotification",
 							"data": {
@@ -178,6 +189,32 @@
 						}
 					},
 					{
+						"name": "CreatorNotification Sync Event: Content Livestream Start",
+						"summary": "Floatplane sent a sync event for a content livestream start via the `creatorNotification` event.",
+						"payload": {
+							"event": "creatorNotification",
+							"data": {
+								"id": "CONTENT_LIVESTREAM_START:91ecb0f8-541b-4c5b-b35f-05552df7f805",
+								"eventType": "CONTENT_LIVESTREAM_START",
+								"title": "LinusTechTips started a livestream",
+								"message": "We're Finally Free - WAN Show May 13, 2022",
+								"creator": "59f94c0bdd241b70349eb72b",
+								"icon": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+								"thumbnail": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/481046370800602_1651880382456.jpeg",
+								"target": {
+									"url": "/channel/linustechtips/live/",
+									"matchScheme": "contains",
+									"match": "linustechtips",
+									"foregroundDiscardOnMatch": true,
+									"matchPortion": "path"
+								},
+								"foregroundVisible": "yes"
+							}
+						}
+					},
+					{
+						"name": "PostRelease Sync Event: Content Post Release",
+						"summary": "Floatplane sent a sync event for a content post release via the `postRelease` event.",
 						"payload": {
 							"event": "postRelease",
 							"data": {
@@ -212,57 +249,59 @@
 						}
 					},
 					{
+						"name": "CreatorMenuUpdate Sync Event",
+						"summary": "Floatplane sent a sync event for a creator menu update.",
 						"payload": {
-		"event": "creatorMenuUpdate",
-		"data": {
-			"id": "yQDi4v3EMc",
-			"guid": "yQDi4v3EMc",
-			"title": "Reacting to OLD Computer Magazines!",
-			"text": "<p>Join us on a trip down memory lane where Linus looks at some of the greatest and latest PC tech circa 2004. These old issues of Maximum PC are filled with tons of hilarious takes, forgotten products, and beloved childhood favourites!</p>",
-			"type": "blogPost",
-			"tags": [],
-			"attachmentOrder": [
-				"lb7QsgcEtc"
-			],
-			"metadata": {
-				"hasVideo": true,
-				"videoCount": 1,
-				"videoDuration": 1096,
-				"hasAudio": false,
-				"audioCount": 0,
-				"audioDuration": 0,
-				"hasPicture": false,
-				"pictureCount": 0,
-				"hasGallery": false,
-				"galleryCount": 0,
-				"isFeatured": false
-			},
-			"releaseDate": "2022-05-02T19:44:00.043Z",
-			"likes": 0,
-			"dislikes": 0,
-			"score": 0,
-			"comments": 0,
-			"creator": "59f94c0bdd241b70349eb72b",
-			"wasReleasedSilently": false,
-			"thumbnail": {
-				"width": 1920,
-				"height": 1080,
-				"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946.jpeg",
-				"childImages": [
-					{
-						"width": 400,
-						"height": 225,
-						"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946_400x225.jpeg"
-					},
-					{
-						"width": 1200,
-						"height": 675,
-						"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946_1200x675.jpeg"
-					}
-				]
-			}
-		}
-	}
+							"event": "creatorMenuUpdate",
+							"data": {
+								"id": "yQDi4v3EMc",
+								"guid": "yQDi4v3EMc",
+								"title": "Reacting to OLD Computer Magazines!",
+								"text": "<p>Join us on a trip down memory lane where Linus looks at some of the greatest and latest PC tech circa 2004. These old issues of Maximum PC are filled with tons of hilarious takes, forgotten products, and beloved childhood favourites!</p>",
+								"type": "blogPost",
+								"tags": [],
+								"attachmentOrder": [
+									"lb7QsgcEtc"
+								],
+								"metadata": {
+									"hasVideo": true,
+									"videoCount": 1,
+									"videoDuration": 1096,
+									"hasAudio": false,
+									"audioCount": 0,
+									"audioDuration": 0,
+									"hasPicture": false,
+									"pictureCount": 0,
+									"hasGallery": false,
+									"galleryCount": 0,
+									"isFeatured": false
+								},
+								"releaseDate": "2022-05-02T19:44:00.043Z",
+								"likes": 0,
+								"dislikes": 0,
+								"score": 0,
+								"comments": 0,
+								"creator": "59f94c0bdd241b70349eb72b",
+								"wasReleasedSilently": false,
+								"thumbnail": {
+									"width": 1920,
+									"height": 1080,
+									"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946.jpeg",
+									"childImages": [
+										{
+											"width": 400,
+											"height": 225,
+											"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946_400x225.jpeg"
+										},
+										{
+											"width": 1200,
+											"height": 675,
+											"path": "https://pbs.floatplane.com/blogPost_thumbnails/yQDi4v3EMc/682332670704114_1651513307946_1200x675.jpeg"
+										}
+									]
+								}
+							}
+						}
 					}
 				]
 			}
@@ -270,7 +309,8 @@
 		"schemas": {
 			"SailsHeaders": {
 				"type": "object",
-				"description": "Headers by Sails are not being used by Floatplane. Not much is known of this structure at this time."
+				"description": "Headers by Sails are not being used by Floatplane. Not much is known of this structure at this time.",
+				"additionalProperties": true
 			},
 			"SailsStatusCode": {
 				"type": "integer",
@@ -291,13 +331,15 @@
 					},
 					"data": {
 						"type": "object",
-						"description": "No payload necessary."
+						"description": "No payload necessary.",
+						"additionalProperties": false
 					},
 					"url": {
 						"const": "/api/v3/socket/connect",
 						"description": "The required endpoint for this event."
 					}
-				}
+				},
+				"additionalProperties": false
 			},
 			"SailsConnected": {
 				"type": "object",
@@ -322,7 +364,6 @@
 			"CreatorNotification": {
 				"type": "object",
 				"description": "This event is sent usually for new post notifications, where `eventType` is `CONTENT_POST_RELEASE`, along with information on which creator released a new post, and information on the post itself.",
-				"additionalProperties": false,
 				"properties": {
 					"event": {
 						"const": "creatorNotification"
@@ -335,7 +376,6 @@
 			"PostRelease": {
 				"type": "object",
 				"description": "This event is sent usually for new post notifications, where `eventType` is `CONTENT_POST_RELEASE`, along with information on which creator released a new post, and information on the post itself. This sync event type seems to be deprecated, as the Floatplane website uses the above `creatorNotification` instead of this `postRelease`. For `CONTENT_POST_RELEASE`, these two have the same schema.",
-				"additionalProperties": false,
 				"properties": {
 					"event": {
 						"const": "postRelease"
@@ -347,7 +387,7 @@
 			},
 			"NotificationData": {
 				"type": "object",
-				"additionalProperties": false,
+				"description": "Contains data necessary to both show the notifiction in a user interface as well as technical details on what is being notified. Currently, this is used for notifying about new posts being released and the beginning of livestreams. Not all fields are present for all kinds of event types (for instance, livestream notifications do not have `video` or `content` objects, among others.",
 				"properties": {
 					"id": {
 						"type": "string",
@@ -356,9 +396,10 @@
 					"eventType": {
 						"type": "string",
 						"enum": [
-							"CONTENT_POST_RELEASE"
+							"CONTENT_POST_RELEASE",
+							"CONTENT_LIVESTREAM_START"
 						],
-						"description": "This is usually just the `CONTENT_POST_RELEASE` enumeration. Other enumerations are unknown at this time."
+						"description": "The `CONTENT_POST_RELEASE` enumeration indicates a new post has been released. The `CONTENT_LIVESTREAM_START` enumeration indicates that a livestream has been started by the creator. Other enumerations are unknown at this time."
 					},
 					"title": {
 						"type": "string",
@@ -387,7 +428,6 @@
 					"target": {
 						"type": "object",
 						"description": "If the `target.matchPortion` of the browser's current href matches the `target.match` variable via the `target.matchScheme`, and if `target.foregroundDiscardOnMatch`, then do not show this notification because the user has already seen it.",
-						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",
@@ -418,14 +458,24 @@
 									"url"
 								]
 							}
-						}
+						},
+						"required": [
+							"url",
+							"matchScheme",
+							"match",
+							"foregroundDiscardOnMatch",
+							"matchPortion"
+						]
 					},
 					"foregroundVisible": {
-						"type": "string"
+						"type": "string",
+						"enum": [
+							"yes",
+							"no"
+						]
 					},
 					"video": {
 						"type": "object",
-						"additionalProperties": false,
 						"properties": {
 							"creator": {
 								"type": "string"
@@ -433,11 +483,14 @@
 							"guid": {
 								"type": "string"
 							}
-						}
+						},
+						"required": [
+							"creator",
+							"guid"
+						]
 					},
 					"post": {
 						"type": "object",
-						"additionalProperties": false,
 						"properties": {
 							"creator": {
 								"type": "string"
@@ -456,19 +509,22 @@
 							}
 						}
 					}
-				}
+				},
+				"required": [
+					"id",
+					"eventType",
+					"creator"
+				]
 			},
 			"CreatorMenuUpdate": {
 				"type": "object",
 				"description": "Does not appear to be used in Floatplane code. This model is similar to ContentPostV3Response in the REST API, but without attachment details. Its purpose is to help dynamically insert a single post into the list of posts on the screen, instead of making the client re-pull the 20 latest posts.",
-				"additionalProperties": false,
 				"properties": {
 					"event": {
 						"const": "creatorMenuUpdate"
 					},
 					"data": {
 						"type": "object",
-						"additionalProperties": false,
 						"properties": {
 							"id": {
 								"type": "string"
@@ -497,7 +553,6 @@
 							},
 							"metadata": {
 								"type": "object",
-								"additionalProperties": false,
 								"properties": {
 									"hasVideo": {
 										"type": "boolean"

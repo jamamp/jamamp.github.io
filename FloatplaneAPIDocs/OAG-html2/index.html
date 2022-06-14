@@ -890,7 +890,8 @@ ul.nav-tabs {
       "type" : "string"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     }
   }
 };
@@ -945,7 +946,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
-  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1006,7 +1007,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     },
     "videoAttachments" : {
       "type" : "array",
@@ -1571,7 +1573,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     },
     "imageFiles" : {
       "type" : "array",
@@ -1582,7 +1585,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPostV3Response"] = {
-  "required" : [ "attachmentOrder", "audioAttachments", "comments", "creator", "dislikes", "galleryAttachments", "guid", "id", "isAccessible", "likes", "metadata", "pictureAttachments", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "videoAttachments", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1643,7 +1646,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     },
     "userInteraction" : {
       "$ref" : "#/components/schemas/UserInteractionModel"
@@ -1721,7 +1725,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     },
     "blogPosts" : {
       "type" : "array",
@@ -2407,7 +2412,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     }
   }
 };
@@ -2574,7 +2580,7 @@ ul.nav-tabs {
   }
 };
     defs["SubscriptionPlanModel"] = {
-  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
+  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2877,7 +2883,7 @@ ul.nav-tabs {
   }
 };
     defs["UserSubscriptionModel_plan"] = {
-  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "price", "title" ],
+  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2972,7 +2978,8 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "isAccessible" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "description" : "If false, the post should be marked as locked and not viewable by the user."
     }
   }
 };

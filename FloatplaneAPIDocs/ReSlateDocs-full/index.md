@@ -85143,7 +85143,7 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |» videoAttachments|[string]|false|none|none|
 |» audioAttachments|[string]|false|none|none|
@@ -87398,7 +87398,7 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |» videoAttachments|[string]|false|none|none|
 |» audioAttachments|[string]|false|none|none|
@@ -96137,7 +96137,7 @@ CookieAuth
 |comments|integer|true|none|none|
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|none|
@@ -97161,7 +97161,7 @@ CookieAuth
 |» incomeDisplay|boolean|true|none|none|
 |» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |videoAttachments|[string]|false|none|none|
 |audioAttachments|[string]|false|none|none|

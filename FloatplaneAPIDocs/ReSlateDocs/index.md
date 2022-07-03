@@ -10929,7 +10929,7 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)|false|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
@@ -13184,7 +13184,7 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)|false|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
@@ -16753,7 +16753,7 @@ CookieAuth
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
-|» card|[ImageModel](#schemaimagemodel)|true|none|none|
+|» card|[ImageModel](#schemaimagemodel)|false|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|

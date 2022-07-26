@@ -103,7 +103,7 @@
   <h2><a name="getCreatorBlogPosts"></a>getCreatorBlogPosts</h2>
   <hr>
   <p></p>
-  <p>Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0bdd241b70349eb72b&amp;search&#x3D;illegal&amp;tags[0]&#x3D;battery</p>
+  <p>Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0bdd241b70349eb72b&amp;fromDate&#x3D;2021-07-24T07:00:00.001Z&amp;toDate&#x3D;2022-07-27T06:59:59.099Z&amp;hasVideo&#x3D;true&amp;hasAudio&#x3D;true&amp;hasPicture&#x3D;false&amp;hasText&#x3D;false&amp;fromDuration&#x3D;1020&amp;toDuration&#x3D;9900&amp;sort&#x3D;DESC&amp;search&#x3D;thor&amp;tags[0]&#x3D;tjm</p>
   <h3 class="section">URL</h3>
   <code>https://www.floatplane.com/api/v3/content/creator</code>
   <h3 class="section">HTTP Method</h3>
@@ -166,6 +166,105 @@
       <span class="param-type">List(String)</span>
       
       <p class="param-description">An array of tags to search against, possibly in addition to &#x60;search&#x60;.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">hasVideo</span>
+      <span class="param-type">Boolean</span>
+      
+      <p class="param-description">If true, include blog posts with video attachments.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">hasAudio</span>
+      <span class="param-type">Boolean</span>
+      
+      <p class="param-description">If true, include blog posts with audio attachments.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">hasPicture</span>
+      <span class="param-type">Boolean</span>
+      
+      <p class="param-description">If true, include blog posts with picture attachments.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">hasText</span>
+      <span class="param-type">Boolean</span>
+      
+      <p class="param-description">If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.  This filter and &#x60;hasVideo&#x60;, &#x60;hasAudio&#x60;, and &#x60;hasPicture&#x60; should be mutually exclusive. That is, if &#x60;hasText&#x60; is true then the other three should all be false. Conversely, if any of the other three are true, then &#x60;hasText&#x60; should be false. Otherwise, the filter would produce no results.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">sort</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">&#x60;DESC&#x60; &#x3D; Newest First. &#x60;ASC&#x60; &#x3D; Oldest First.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">fromDuration</span>
+      <span class="param-type">Integer</span>
+      
+      <p class="param-description">Include video posts where the duration of the video is at minimum &#x60;fromDuration&#x60; seconds long. Usually in multiples of 60 seconds. Implies &#x60;hasVideo&#x3D;true&#x60;.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">toDuration</span>
+      <span class="param-type">Integer</span>
+      
+      <p class="param-description">Include video posts where the duration of the video is at maximum &#x60;toDuration&#x60; seconds long. Usually in multiples of 60 seconds. Implies &#x60;hasVideo&#x3D;true&#x60;.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">fromDate</span>
+      <span class="param-type">Date</span>
+      
+      <p class="param-description">Include posts where the publication date is on or after this filter date.</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">toDate</span>
+      <span class="param-type">Date</span>
+      
+      <p class="param-description">Include posts where the publication date is on or before this filter date.</p>
 	  </li>
   </ul>
   <h2><a name="getGalleryContent"></a>getGalleryContent</h2>

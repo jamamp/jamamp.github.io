@@ -16505,7 +16505,7 @@
 			"get": {
 				"operationId": "getCreatorBlogPosts",
 				"summary": "Get Creator Blog Posts",
-				"description": "Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.\n\nExample query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery",
+				"description": "Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.\n\nExample query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&fromDate=2021-07-24T07:00:00.001Z&toDate=2022-07-27T06:59:59.099Z&hasVideo=true&hasAudio=true&hasPicture=false&hasText=false&fromDuration=1020&toDuration=9900&sort=DESC&search=thor&tags[0]=tjm",
 				"tags": [
 					"ContentV3"
 				],
@@ -16527,7 +16527,7 @@
 							"minimum": 1,
 							"maximum": 20
 						},
-						"required": true,
+						"required": false,
 						"description": "The maximum number of posts to return."
 					},
 					{
@@ -16560,6 +16560,95 @@
 						},
 						"required": false,
 						"description": "An array of tags to search against, possibly in addition to `search`."
+					},
+					{
+						"in": "query",
+						"name": "hasVideo",
+						"schema": {
+							"type": "boolean"
+						},
+						"required": false,
+						"description": "If true, include blog posts with video attachments."
+					},
+					{
+						"in": "query",
+						"name": "hasAudio",
+						"schema": {
+							"type": "boolean"
+						},
+						"required": false,
+						"description": "If true, include blog posts with audio attachments."
+					},
+					{
+						"in": "query",
+						"name": "hasPicture",
+						"schema": {
+							"type": "boolean"
+						},
+						"required": false,
+						"description": "If true, include blog posts with picture attachments."
+					},
+					{
+						"in": "query",
+						"name": "hasText",
+						"schema": {
+							"type": "boolean"
+						},
+						"required": false,
+						"description": "If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.\n\nThis filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results."
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"ASC",
+								"DESC"
+							]
+						},
+						"required": false,
+						"description": "`DESC` = Newest First. `ASC` = Oldest First."
+					},
+					{
+						"in": "query",
+						"name": "fromDuration",
+						"schema": {
+							"type": "integer"
+						},
+						"required": false,
+						"description": "Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`."
+					},
+					{
+						"in": "query",
+						"name": "toDuration",
+						"schema": {
+							"type": "integer"
+						},
+						"required": false,
+						"description": "Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`."
+					},
+					{
+						"in": "query",
+						"name": "fromDate",
+						"schema": {
+							"type": "string",
+							"format": "date-time"
+						},
+						"required": false,
+						"description": "Include posts where the publication date is on or after this filter date.",
+						"example": "2022-07-24T07:00:00.001Z"
+					},
+					{
+						"in": "query",
+						"name": "toDate",
+						"schema": {
+							"type": "string",
+							"format": "date-time"
+						},
+						"required": false,
+						"description": "Include posts where the publication date is on or before this filter date.",
+						"example": "2022-07-24T07:00:00.001Z"
 					}
 				],
 				"responses": {

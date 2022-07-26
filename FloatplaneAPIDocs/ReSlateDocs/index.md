@@ -10756,13 +10756,13 @@ Content retrieval and interacting.
 
 ```shell
 # You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/content/creator?id=string&limit=1 \
+curl -X GET https://www.floatplane.com/api/v3/content/creator?id=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET https://www.floatplane.com/api/v3/content/creator?id=string&limit=1 HTTP/1.1
+GET https://www.floatplane.com/api/v3/content/creator?id=string HTTP/1.1
 Host: www.floatplane.com
 Accept: application/json
 
@@ -10774,7 +10774,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://www.floatplane.com/api/v3/content/creator?id=string&limit=1',
+fetch('https://www.floatplane.com/api/v3/content/creator?id=string',
 {
   method: 'GET',
 
@@ -10798,8 +10798,7 @@ headers = {
 
 result = RestClient.get 'https://www.floatplane.com/api/v3/content/creator',
   params: {
-  'id' => 'string',
-'limit' => 'integer'
+  'id' => 'string'
 }, headers: headers
 
 p JSON.parse(result)
@@ -10813,7 +10812,7 @@ headers = {
 }
 
 r = requests.get('https://www.floatplane.com/api/v3/content/creator', params={
-  'id': 'string',  'limit': '1'
+  'id': 'string'
 }, headers = headers)
 
 print(r.json())
@@ -10852,7 +10851,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("https://www.floatplane.com/api/v3/content/creator?id=string&limit=1");
+URL obj = new URL("https://www.floatplane.com/api/v3/content/creator?id=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -10899,17 +10898,39 @@ func main() {
 
 Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
 
-Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
+Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&fromDate=2021-07-24T07:00:00.001Z&toDate=2022-07-27T06:59:59.099Z&hasVideo=true&hasAudio=true&hasPicture=false&hasText=false&fromDuration=1020&toDuration=9900&sort=DESC&search=thor&tags[0]=tjm
 
 <h3 id="getcreatorblogposts-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |id|query|string|true|The GUID of the creator to retrieve posts from.|
-|limit|query|integer|true|The maximum number of posts to return.|
+|limit|query|integer|false|The maximum number of posts to return.|
 |fetchAfter|query|integer|false|The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.|
 |search|query|string|false|Search filter to look for specific posts.|
 |tags|query|array[string]|false|An array of tags to search against, possibly in addition to `search`.|
+|hasVideo|query|boolean|false|If true, include blog posts with video attachments.|
+|hasAudio|query|boolean|false|If true, include blog posts with audio attachments.|
+|hasPicture|query|boolean|false|If true, include blog posts with picture attachments.|
+|hasText|query|boolean|false|If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.|
+|sort|query|string|false|`DESC` = Newest First. `ASC` = Oldest First.|
+|fromDuration|query|integer|false|Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.|
+|toDuration|query|integer|false|Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.|
+|fromDate|query|string(date-time)|false|Include posts where the publication date is on or after this filter date.|
+|toDate|query|string(date-time)|false|Include posts where the publication date is on or before this filter date.|
+
+#### Detailed descriptions
+
+**hasText**: If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|sort|ASC|
+|sort|DESC|
 
 > Example responses
 

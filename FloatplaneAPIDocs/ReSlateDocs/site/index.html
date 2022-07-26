@@ -7318,18 +7318,18 @@ CookieAuth
 <blockquote>
 <p>Code samples</p>
 </blockquote>
-<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X GET https://www.floatplane.com/api/v3/content/creator?id<span class="token operator">=</span>string<span class="token operator">&amp;</span><span class="token assign-left variable">limit</span><span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: application/json'</span><br></code></pre>
-<pre class="language-http"><code class="language-http"><span class="token request-line"><span class="token method property">GET</span> <span class="token request-target url">https://www.floatplane.com/api/v3/content/creator?id=string&amp;limit=1</span> <span class="token http-version property">HTTP/1.1</span></span><br><span class="token header"><span class="token header-name keyword">Host</span><span class="token punctuation">:</span> <span class="token header-value">www.floatplane.com</span></span><br><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br></code></pre>
-<pre class="language-javascript"><code class="language-javascript"><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-property property">'Accept'</span><span class="token operator">:</span><span class="token string">'application/json'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/creator?id=string&amp;limit=1'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'GET'</span><span class="token punctuation">,</span><br><br>  <span class="token literal-property property">headers</span><span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
-<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'rest-client'</span></span><br><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'json'</span></span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'Accept'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> RestClient<span class="token punctuation">.</span>get <span class="token string-literal"><span class="token string">'https://www.floatplane.com/api/v3/content/creator'</span></span><span class="token punctuation">,</span><br>  <span class="token symbol">params</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'id'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'string'</span></span><span class="token punctuation">,</span><br><span class="token string-literal"><span class="token string">'limit'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'integer'</span></span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">headers</span><span class="token operator">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
-<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/creator'</span><span class="token punctuation">,</span> params<span class="token operator">=</span><span class="token punctuation">{</span><br>  <span class="token string">'id'</span><span class="token punctuation">:</span> <span class="token string">'string'</span><span class="token punctuation">,</span>  <span class="token string">'limit'</span><span class="token punctuation">:</span> <span class="token string">'1'</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
+<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X GET https://www.floatplane.com/api/v3/content/creator?id<span class="token operator">=</span>string <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: application/json'</span><br></code></pre>
+<pre class="language-http"><code class="language-http"><span class="token request-line"><span class="token method property">GET</span> <span class="token request-target url">https://www.floatplane.com/api/v3/content/creator?id=string</span> <span class="token http-version property">HTTP/1.1</span></span><br><span class="token header"><span class="token header-name keyword">Host</span><span class="token punctuation">:</span> <span class="token header-value">www.floatplane.com</span></span><br><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-property property">'Accept'</span><span class="token operator">:</span><span class="token string">'application/json'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/creator?id=string'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'GET'</span><span class="token punctuation">,</span><br><br>  <span class="token literal-property property">headers</span><span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'rest-client'</span></span><br><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'json'</span></span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'Accept'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> RestClient<span class="token punctuation">.</span>get <span class="token string-literal"><span class="token string">'https://www.floatplane.com/api/v3/content/creator'</span></span><span class="token punctuation">,</span><br>  <span class="token symbol">params</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'id'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'string'</span></span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">headers</span><span class="token operator">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/creator'</span><span class="token punctuation">,</span> params<span class="token operator">=</span><span class="token punctuation">{</span><br>  <span class="token string">'id'</span><span class="token punctuation">:</span> <span class="token string">'string'</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><br><br><span class="token keyword">require</span> <span class="token string single-quoted-string">'vendor/autoload.php'</span><span class="token punctuation">;</span><br><br><span class="token variable">$headers</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>    <span class="token string single-quoted-string">'Accept'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token variable">$client</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Define array of request body.</span><br><span class="token variable">$request_body</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token variable">$client</span><span class="token operator">-></span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GET'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'https://www.floatplane.com/api/v3/content/creator'</span><span class="token punctuation">,</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>        <span class="token string single-quoted-string">'headers'</span> <span class="token operator">=></span> <span class="token variable">$headers</span><span class="token punctuation">,</span><br>        <span class="token string single-quoted-string">'json'</span> <span class="token operator">=></span> <span class="token variable">$request_body</span><span class="token punctuation">,</span><br>       <span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Exception<span class="token punctuation">\</span>BadResponseException</span> <span class="token variable">$e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handle exception or api errors.</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$e</span><span class="token operator">-></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br><br> <span class="token comment">// ...</span><br></code></pre>
-<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">"https://www.floatplane.com/api/v3/content/creator?id=string&amp;limit=1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">"https://www.floatplane.com/api/v3/content/creator?id=string"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
 <pre class="language-go"><code class="language-go"><span class="token keyword">package</span> main<br><br><span class="token keyword">import</span> <span class="token punctuation">(</span><br>       <span class="token string">"bytes"</span><br>       <span class="token string">"net/http"</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>    headers <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><br>        <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><br><br>    data <span class="token operator">:=</span> bytes<span class="token punctuation">.</span><span class="token function">NewBuffer</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span>jsonReq<span class="token punctuation">}</span><span class="token punctuation">)</span><br>    req<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">NewRequest</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"https://www.floatplane.com/api/v3/content/creator"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><br>    req<span class="token punctuation">.</span>Header <span class="token operator">=</span> headers<br><br>    client <span class="token operator">:=</span> <span class="token operator">&amp;</span>http<span class="token punctuation">.</span>Client<span class="token punctuation">{</span><span class="token punctuation">}</span><br>    resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><br>    <span class="token comment">// ...</span><br><span class="token punctuation">}</span><br></code></pre>
 <p><code>GET /api/v3/content/creator</code></p>
 <p><em>Get Creator Blog Posts</em></p>
 <p>Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.</p>
-<p>Example query: <a href="https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&amp;search=illegal&amp;tags%5B0%5D=battery">https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&amp;search=illegal&amp;tags[0]=battery</a></p>
+<p>Example query: <a href="https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&amp;fromDate=2021-07-24T07:00:00.001Z&amp;toDate=2022-07-27T06:59:59.099Z&amp;hasVideo=true&amp;hasAudio=true&amp;hasPicture=false&amp;hasText=false&amp;fromDuration=1020&amp;toDuration=9900&amp;sort=DESC&amp;search=thor&amp;tags%5B0%5D=tjm">https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&amp;fromDate=2021-07-24T07:00:00.001Z&amp;toDate=2022-07-27T06:59:59.099Z&amp;hasVideo=true&amp;hasAudio=true&amp;hasPicture=false&amp;hasText=false&amp;fromDuration=1020&amp;toDuration=9900&amp;sort=DESC&amp;search=thor&amp;tags[0]=tjm</a></p>
 <h3 id="getcreatorblogposts-parameters">Parameters</h3>
 <table>
 <thead>
@@ -7353,7 +7353,7 @@ CookieAuth
 <td>limit</td>
 <td>query</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>The maximum number of posts to return.</td>
 </tr>
 <tr>
@@ -7376,6 +7376,91 @@ CookieAuth
 <td>array[string]</td>
 <td>false</td>
 <td>An array of tags to search against, possibly in addition to <code>search</code>.</td>
+</tr>
+<tr>
+<td>hasVideo</td>
+<td>query</td>
+<td>boolean</td>
+<td>false</td>
+<td>If true, include blog posts with video attachments.</td>
+</tr>
+<tr>
+<td>hasAudio</td>
+<td>query</td>
+<td>boolean</td>
+<td>false</td>
+<td>If true, include blog posts with audio attachments.</td>
+</tr>
+<tr>
+<td>hasPicture</td>
+<td>query</td>
+<td>boolean</td>
+<td>false</td>
+<td>If true, include blog posts with picture attachments.</td>
+</tr>
+<tr>
+<td>hasText</td>
+<td>query</td>
+<td>boolean</td>
+<td>false</td>
+<td>If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>query</td>
+<td>string</td>
+<td>false</td>
+<td><code>DESC</code> = Newest First. <code>ASC</code> = Oldest First.</td>
+</tr>
+<tr>
+<td>fromDuration</td>
+<td>query</td>
+<td>integer</td>
+<td>false</td>
+<td>Include video posts where the duration of the video is at minimum <code>fromDuration</code> seconds long. Usually in multiples of 60 seconds. Implies <code>hasVideo=true</code>.</td>
+</tr>
+<tr>
+<td>toDuration</td>
+<td>query</td>
+<td>integer</td>
+<td>false</td>
+<td>Include video posts where the duration of the video is at maximum <code>toDuration</code> seconds long. Usually in multiples of 60 seconds. Implies <code>hasVideo=true</code>.</td>
+</tr>
+<tr>
+<td>fromDate</td>
+<td>query</td>
+<td>string(date-time)</td>
+<td>false</td>
+<td>Include posts where the publication date is on or after this filter date.</td>
+</tr>
+<tr>
+<td>toDate</td>
+<td>query</td>
+<td>string(date-time)</td>
+<td>false</td>
+<td>Include posts where the publication date is on or before this filter date.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="detailed-descriptions-1">Detailed descriptions</h4>
+<p><strong>hasText</strong>: If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.</p>
+<p>This filter and <code>hasVideo</code>, <code>hasAudio</code>, and <code>hasPicture</code> should be mutually exclusive. That is, if <code>hasText</code> is true then the other three should all be false. Conversely, if any of the other three are true, then <code>hasText</code> should be false. Otherwise, the filter would produce no results.</p>
+<h4 id="enumerated-values-2">Enumerated Values</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sort</td>
+<td>ASC</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>DESC</td>
 </tr>
 </tbody>
 </table>
@@ -8086,7 +8171,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-2">Enumerated Values</h4>
+<h4 id="enumerated-values-3">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -9253,7 +9338,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-3">Enumerated Values</h4>
+<h4 id="enumerated-values-4">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -11541,7 +11626,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-4">Enumerated Values</h4>
+<h4 id="enumerated-values-5">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -12053,7 +12138,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-5">Enumerated Values</h4>
+<h4 id="enumerated-values-6">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -12177,7 +12262,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-6">Enumerated Values</h4>
+<h4 id="enumerated-values-7">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -13088,7 +13173,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-7">Enumerated Values</h4>
+<h4 id="enumerated-values-8">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -14896,7 +14981,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-8">Enumerated Values</h4>
+<h4 id="enumerated-values-9">Enumerated Values</h4>
 <table>
 <thead>
 <tr>

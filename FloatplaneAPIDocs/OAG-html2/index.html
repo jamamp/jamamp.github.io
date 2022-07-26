@@ -14752,7 +14752,7 @@ The creator(s) to search by.
                         <p></p>
                         <p class="marked">Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
 
-Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0bdd241b70349eb72b&amp;search&#x3D;illegal&amp;tags[0]&#x3D;battery</p>
+Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0bdd241b70349eb72b&amp;fromDate&#x3D;2021-07-24T07:00:00.001Z&amp;toDate&#x3D;2022-07-27T06:59:59.099Z&amp;hasVideo&#x3D;true&amp;hasAudio&#x3D;true&amp;hasPicture&#x3D;false&amp;hasText&#x3D;false&amp;fromDuration&#x3D;1020&amp;toDuration&#x3D;9900&amp;sort&#x3D;DESC&amp;search&#x3D;thor&amp;tags[0]&#x3D;tjm</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/content/creator</span></code></pre>
@@ -14779,7 +14779,7 @@ Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0
                             <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 \
  -H "Accept: application/json"\
- "https://www.floatplane.com/api/v3/content/creator?id=&limit=&fetchAfter=&search=&tags="</code></pre>
+ "https://www.floatplane.com/api/v3/content/creator?id=&limit=&fetchAfter=&search=&tags=&hasVideo=&hasAudio=&hasPicture=&hasText=&sort=&fromDuration=&toDuration=&fromDate=&toDate="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-ContentV3-getCreatorBlogPosts-0-java">
                             <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
@@ -14807,9 +14807,20 @@ public class ContentV3ApiExample {
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
         array[String] tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
+        Boolean hasVideo = true; // Boolean | If true, include blog posts with video attachments.
+        Boolean hasAudio = true; // Boolean | If true, include blog posts with audio attachments.
+        Boolean hasPicture = true; // Boolean | If true, include blog posts with picture attachments.
+        Boolean hasText = true; // Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+        String sort = sort_example; // String | `DESC` = Newest First. `ASC` = Oldest First.
+        Integer fromDuration = 56; // Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+        Integer toDuration = 56; // Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+        Date fromDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or after this filter date.
+        Date toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
         
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -14831,9 +14842,20 @@ public class ContentV3ApiExample {
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
         array[String] tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
+        Boolean hasVideo = true; // Boolean | If true, include blog posts with video attachments.
+        Boolean hasAudio = true; // Boolean | If true, include blog posts with audio attachments.
+        Boolean hasPicture = true; // Boolean | If true, include blog posts with picture attachments.
+        Boolean hasText = true; // Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+        String sort = sort_example; // String | `DESC` = Newest First. `ASC` = Oldest First.
+        Integer fromDuration = 56; // Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+        Integer toDuration = 56; // Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+        Date fromDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or after this filter date.
+        Date toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
         
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -14858,10 +14880,21 @@ public class ContentV3ApiExample {
 // Create an instance of the API class
 ContentV3Api *apiInstance = [[ContentV3Api alloc] init];
 String *id = id_example; // The GUID of the creator to retrieve posts from. (default to null)
-Integer *limit = 56; // The maximum number of posts to return. (default to null)
+Integer *limit = 56; // The maximum number of posts to return. (optional) (default to null)
 Integer *fetchAfter = 56; // The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 String *search = search_example; // Search filter to look for specific posts. (optional) (default to null)
 array[String] *tags = ; // An array of tags to search against, possibly in addition to `search`. (optional) (default to null)
+Boolean *hasVideo = true; // If true, include blog posts with video attachments. (optional) (default to null)
+Boolean *hasAudio = true; // If true, include blog posts with audio attachments. (optional) (default to null)
+Boolean *hasPicture = true; // If true, include blog posts with picture attachments. (optional) (default to null)
+Boolean *hasText = true; // If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results. (optional) (default to null)
+String *sort = sort_example; // `DESC` = Newest First. `ASC` = Oldest First. (optional) (default to null)
+Integer *fromDuration = 56; // Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional) (default to null)
+Integer *toDuration = 56; // Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional) (default to null)
+Date *fromDate = 2022-07-24T07:00:00.001Z; // Include posts where the publication date is on or after this filter date. (optional) (default to null)
+Date *toDate = 2022-07-24T07:00:00.001Z; // Include posts where the publication date is on or before this filter date. (optional) (default to null)
 
 // Get Creator Blog Posts
 [apiInstance getCreatorBlogPostsWith:id
@@ -14869,6 +14902,15 @@ array[String] *tags = ; // An array of tags to search against, possibly in addit
     fetchAfter:fetchAfter
     search:search
     tags:tags
+    hasVideo:hasVideo
+    hasAudio:hasAudio
+    hasPicture:hasPicture
+    hasText:hasText
+    sort:sort
+    fromDuration:fromDuration
+    toDuration:toDuration
+    fromDate:fromDate
+    toDate:toDate
               completionHandler: ^(array[BlogPostModelV3] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -14893,11 +14935,22 @@ CookieAuth.apiKey = "YOUR API KEY";
 // Create an instance of the API class
 var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The GUID of the creator to retrieve posts from.
-var limit = 56; // {Integer} The maximum number of posts to return.
 var opts = {
+  'limit': 56, // {Integer} The maximum number of posts to return.
   'fetchAfter': 56, // {Integer} The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
   'search': search_example, // {String} Search filter to look for specific posts.
-  'tags':  // {array[String]} An array of tags to search against, possibly in addition to `search`.
+  'tags': , // {array[String]} An array of tags to search against, possibly in addition to `search`.
+  'hasVideo': true, // {Boolean} If true, include blog posts with video attachments.
+  'hasAudio': true, // {Boolean} If true, include blog posts with audio attachments.
+  'hasPicture': true, // {Boolean} If true, include blog posts with picture attachments.
+  'hasText': true, // {Boolean} If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+  'sort': sort_example, // {String} `DESC` = Newest First. `ASC` = Oldest First.
+  'fromDuration': 56, // {Integer} Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+  'toDuration': 56, // {Integer} Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+  'fromDate': 2022-07-24T07:00:00.001Z, // {Date} Include posts where the publication date is on or after this filter date.
+  'toDate': 2022-07-24T07:00:00.001Z // {Date} Include posts where the publication date is on or before this filter date.
 };
 
 var callback = function(error, data, response) {
@@ -14907,7 +14960,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.getCreatorBlogPosts(id, limit, opts, callback);
+api.getCreatorBlogPosts(id, opts, callback);
 </code></pre>
                             </div>
 
@@ -14935,14 +14988,25 @@ namespace Example
             // Create an instance of the API class
             var apiInstance = new ContentV3Api();
             var id = id_example;  // String | The GUID of the creator to retrieve posts from. (default to null)
-            var limit = 56;  // Integer | The maximum number of posts to return. (default to null)
+            var limit = 56;  // Integer | The maximum number of posts to return. (optional)  (default to null)
             var fetchAfter = 56;  // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional)  (default to null)
             var search = search_example;  // String | Search filter to look for specific posts. (optional)  (default to null)
             var tags = new array[String](); // array[String] | An array of tags to search against, possibly in addition to `search`. (optional)  (default to null)
+            var hasVideo = true;  // Boolean | If true, include blog posts with video attachments. (optional)  (default to null)
+            var hasAudio = true;  // Boolean | If true, include blog posts with audio attachments. (optional)  (default to null)
+            var hasPicture = true;  // Boolean | If true, include blog posts with picture attachments. (optional)  (default to null)
+            var hasText = true;  // Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results. (optional)  (default to null)
+            var sort = sort_example;  // String | `DESC` = Newest First. `ASC` = Oldest First. (optional)  (default to null)
+            var fromDuration = 56;  // Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)  (default to null)
+            var toDuration = 56;  // Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)  (default to null)
+            var fromDate = 2022-07-24T07:00:00.001Z;  // Date | Include posts where the publication date is on or after this filter date. (optional)  (default to null)
+            var toDate = 2022-07-24T07:00:00.001Z;  // Date | Include posts where the publication date is on or before this filter date. (optional)  (default to null)
 
             try {
                 // Get Creator Blog Posts
-                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags);
+                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ContentV3Api.getCreatorBlogPosts: " + e.Message );
@@ -14969,9 +15033,20 @@ $limit = 56; // Integer | The maximum number of posts to return.
 $fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 $search = search_example; // String | Search filter to look for specific posts.
 $tags = ; // array[String] | An array of tags to search against, possibly in addition to `search`.
+$hasVideo = true; // Boolean | If true, include blog posts with video attachments.
+$hasAudio = true; // Boolean | If true, include blog posts with audio attachments.
+$hasPicture = true; // Boolean | If true, include blog posts with picture attachments.
+$hasText = true; // Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+$sort = sort_example; // String | `DESC` = Newest First. `ASC` = Oldest First.
+$fromDuration = 56; // Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+$toDuration = 56; // Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+$fromDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or after this filter date.
+$toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
 
 try {
-    $result = $api_instance->getCreatorBlogPosts($id, $limit, $fetchAfter, $search, $tags);
+    $result = $api_instance->getCreatorBlogPosts($id, $limit, $fetchAfter, $search, $tags, $hasVideo, $hasAudio, $hasPicture, $hasText, $sort, $fromDuration, $toDuration, $fromDate, $toDate);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ContentV3Api->getCreatorBlogPosts: ', $e->getMessage(), PHP_EOL;
@@ -14996,9 +15071,20 @@ my $limit = 56; # Integer | The maximum number of posts to return.
 my $fetchAfter = 56; # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 my $search = search_example; # String | Search filter to look for specific posts.
 my $tags = []; # array[String] | An array of tags to search against, possibly in addition to `search`.
+my $hasVideo = true; # Boolean | If true, include blog posts with video attachments.
+my $hasAudio = true; # Boolean | If true, include blog posts with audio attachments.
+my $hasPicture = true; # Boolean | If true, include blog posts with picture attachments.
+my $hasText = true; # Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results.
+my $sort = sort_example; # String | `DESC` = Newest First. `ASC` = Oldest First.
+my $fromDuration = 56; # Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+my $toDuration = 56; # Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`.
+my $fromDate = 2022-07-24T07:00:00.001Z; # Date | Include posts where the publication date is on or after this filter date.
+my $toDate = 2022-07-24T07:00:00.001Z; # Date | Include posts where the publication date is on or before this filter date.
 
 eval { 
-    my $result = $api_instance->getCreatorBlogPosts(id => $id, limit => $limit, fetchAfter => $fetchAfter, search => $search, tags => $tags);
+    my $result = $api_instance->getCreatorBlogPosts(id => $id, limit => $limit, fetchAfter => $fetchAfter, search => $search, tags => $tags, hasVideo => $hasVideo, hasAudio => $hasAudio, hasPicture => $hasPicture, hasText => $hasText, sort => $sort, fromDuration => $fromDuration, toDuration => $toDuration, fromDate => $fromDate, toDate => $toDate);
     print Dumper($result);
 };
 if ($@) {
@@ -15021,14 +15107,25 @@ openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
 # Create an instance of the API class
 api_instance = openapi_client.ContentV3Api()
 id = id_example # String | The GUID of the creator to retrieve posts from. (default to null)
-limit = 56 # Integer | The maximum number of posts to return. (default to null)
+limit = 56 # Integer | The maximum number of posts to return. (optional) (default to null)
 fetchAfter = 56 # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 search = search_example # String | Search filter to look for specific posts. (optional) (default to null)
 tags =  # array[String] | An array of tags to search against, possibly in addition to `search`. (optional) (default to null)
+hasVideo = true # Boolean | If true, include blog posts with video attachments. (optional) (default to null)
+hasAudio = true # Boolean | If true, include blog posts with audio attachments. (optional) (default to null)
+hasPicture = true # Boolean | If true, include blog posts with picture attachments. (optional) (default to null)
+hasText = true # Boolean | If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results. (optional) (default to null)
+sort = sort_example # String | `DESC` = Newest First. `ASC` = Oldest First. (optional) (default to null)
+fromDuration = 56 # Integer | Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional) (default to null)
+toDuration = 56 # Integer | Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional) (default to null)
+fromDate = 2022-07-24T07:00:00.001Z # Date | Include posts where the publication date is on or after this filter date. (optional) (default to null)
+toDate = 2022-07-24T07:00:00.001Z # Date | Include posts where the publication date is on or before this filter date. (optional) (default to null)
 
 try: 
     # Get Creator Blog Posts
-    api_response = api_instance.get_creator_blog_posts(id, limit, fetchAfter=fetchAfter, search=search, tags=tags)
+    api_response = api_instance.get_creator_blog_posts(id, limit=limit, fetchAfter=fetchAfter, search=search, tags=tags, hasVideo=hasVideo, hasAudio=hasAudio, hasPicture=hasPicture, hasText=hasText, sort=sort, fromDuration=fromDuration, toDuration=toDuration, fromDate=fromDate, toDate=toDate)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ContentV3Api->getCreatorBlogPosts: %s\n" % e)</code></pre>
@@ -15043,9 +15140,18 @@ pub fn main() {
     let fetchAfter = 56; // Integer
     let search = search_example; // String
     let tags = ; // array[String]
+    let hasVideo = true; // Boolean
+    let hasAudio = true; // Boolean
+    let hasPicture = true; // Boolean
+    let hasText = true; // Boolean
+    let sort = sort_example; // String
+    let fromDuration = 56; // Integer
+    let toDuration = 56; // Integer
+    let fromDate = 2022-07-24T07:00:00.001Z; // Date
+    let toDate = 2022-07-24T07:00:00.001Z; // Date
 
     let mut context = ContentV3Api::Context::default();
-    let result = client.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, &context).wait();
+    let result = client.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate, &context).wait();
 
     println!("{:?}", result);
 }
@@ -15093,7 +15199,7 @@ The GUID of the creator to retrieve posts from.
 </td>
 </tr>
 
-                                <tr><td style="width:150px;">limit*</td>
+                                <tr><td style="width:150px;">limit</td>
 <td>
 
 
@@ -15108,9 +15214,6 @@ The GUID of the creator to retrieve posts from.
 The maximum number of posts to return.
                     </div>
             </div>
-                <div class="inner required">
-                    Required
-                </div>
         </div>
     </div>
 </td>
@@ -15169,6 +15272,194 @@ Search filter to look for specific posts.
 
                     <div class="inner description marked">
 An array of tags to search against, possibly in addition to &#x60;search&#x60;.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">hasVideo</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_hasVideo">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Boolean
+                </span>
+
+                    <div class="inner description marked">
+If true, include blog posts with video attachments.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">hasAudio</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_hasAudio">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Boolean
+                </span>
+
+                    <div class="inner description marked">
+If true, include blog posts with audio attachments.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">hasPicture</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_hasPicture">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Boolean
+                </span>
+
+                    <div class="inner description marked">
+If true, include blog posts with picture attachments.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">hasText</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_hasText">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Boolean
+                </span>
+
+                    <div class="inner description marked">
+If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.
+
+This filter and &#x60;hasVideo&#x60;, &#x60;hasAudio&#x60;, and &#x60;hasPicture&#x60; should be mutually exclusive. That is, if &#x60;hasText&#x60; is true then the other three should all be false. Conversely, if any of the other three are true, then &#x60;hasText&#x60; should be false. Otherwise, the filter would produce no results.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">sort</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_sort">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+&#x60;DESC&#x60; &#x3D; Newest First. &#x60;ASC&#x60; &#x3D; Oldest First.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">fromDuration</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_fromDuration">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Integer
+                </span>
+
+                    <div class="inner description marked">
+Include video posts where the duration of the video is at minimum &#x60;fromDuration&#x60; seconds long. Usually in multiples of 60 seconds. Implies &#x60;hasVideo&#x3D;true&#x60;.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">toDuration</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_toDuration">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Integer
+                </span>
+
+                    <div class="inner description marked">
+Include video posts where the duration of the video is at maximum &#x60;toDuration&#x60; seconds long. Usually in multiples of 60 seconds. Implies &#x60;hasVideo&#x3D;true&#x60;.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">fromDate</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_fromDate">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Date
+                </span>
+                    <span class="format">
+                        (date-time)
+                    </span>
+
+                    <div class="inner description marked">
+Include posts where the publication date is on or after this filter date.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">toDate</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_toDate">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Date
+                </span>
+                    <span class="format">
+                        (date-time)
+                    </span>
+
+                    <div class="inner description marked">
+Include posts where the publication date is on or before this filter date.
                     </div>
             </div>
         </div>

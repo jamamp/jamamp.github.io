@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Floatplane REST API v3.9.1</title>
+    <title>Floatplane REST API v3.9.9</title>
 
     <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" media="screen" rel="stylesheet">
     <link href="slate/css/print.css" media="print" rel="stylesheet">
@@ -107,7 +107,7 @@
 	  	<ul class="toc-list-h1">
         
           <li>
-            <a href="#floatplane-rest-api" class="toc-h1 toc-link" data-title="Floatplane REST API v3.9.1">Floatplane REST API v3.9.1</a>
+            <a href="#floatplane-rest-api" class="toc-h1 toc-link" data-title="Floatplane REST API v3.9.9">Floatplane REST API v3.9.9</a>
             
               <ul class="toc-list-h2">
                 
@@ -251,6 +251,20 @@
                 
                   <li>
                     <a href="#getcreatorsubinfopublic" class="toc-h2 toc-link" data-title="">getCreatorSubInfoPublic</a>
+                    
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#floatplane-rest-api-edgesv2" class="toc-h1 toc-link" data-title="EdgesV2">EdgesV2</a>
+            
+              <ul class="toc-list-h2">
+                
+                  <li>
+                    <a href="#getedges" class="toc-h2 toc-link" data-title="">getEdges</a>
                     
                   </li>
                 
@@ -782,6 +796,16 @@
                     
                   </li>
                 
+                  <li>
+                    <a href="#tocS_EdgesModel" class="toc-h2 toc-link" data-title="">EdgesModel</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#tocS_EdgeModel" class="toc-h2 toc-link" data-title="">EdgeModel</a>
+                    
+                  </li>
+                
               </ul>
             
           </li>
@@ -798,7 +822,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <!-- Generator: Widdershins v4.0.1 -->
-<h1 id="floatplane-rest-api">Floatplane REST API v3.9.1</h1>
+<h1 id="floatplane-rest-api">Floatplane REST API v3.9.9</h1>
 <blockquote>
 <p>Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.</p>
 </blockquote>
@@ -3458,6 +3482,103 @@ CookieAuth
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
+</aside>
+<h1 id="floatplane-rest-api-edgesv2">EdgesV2</h1>
+<p>Get edge server information for media playback.</p>
+<h2 id="getedges">getEdges</h2>
+<p><a id="opIdgetEdges"></a></p>
+<blockquote>
+<p>Code samples</p>
+</blockquote>
+<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X GET https://www.floatplane.com/api/v2/edges <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: application/json'</span><br></code></pre>
+<pre class="language-http"><code class="language-http"><span class="token request-line"><span class="token method property">GET</span> <span class="token request-target url">https://www.floatplane.com/api/v2/edges</span> <span class="token http-version property">HTTP/1.1</span></span><br><span class="token header"><span class="token header-name keyword">Host</span><span class="token punctuation">:</span> <span class="token header-value">www.floatplane.com</span></span><br><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-property property">'Accept'</span><span class="token operator">:</span><span class="token string">'application/json'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v2/edges'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'GET'</span><span class="token punctuation">,</span><br><br>  <span class="token literal-property property">headers</span><span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'rest-client'</span></span><br><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'json'</span></span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'Accept'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> RestClient<span class="token punctuation">.</span>get <span class="token string-literal"><span class="token string">'https://www.floatplane.com/api/v2/edges'</span></span><span class="token punctuation">,</span><br>  <span class="token symbol">params</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">headers</span><span class="token operator">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v2/edges'</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><br><br><span class="token keyword">require</span> <span class="token string single-quoted-string">'vendor/autoload.php'</span><span class="token punctuation">;</span><br><br><span class="token variable">$headers</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>    <span class="token string single-quoted-string">'Accept'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token variable">$client</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Define array of request body.</span><br><span class="token variable">$request_body</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token variable">$client</span><span class="token operator">-></span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GET'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'https://www.floatplane.com/api/v2/edges'</span><span class="token punctuation">,</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>        <span class="token string single-quoted-string">'headers'</span> <span class="token operator">=></span> <span class="token variable">$headers</span><span class="token punctuation">,</span><br>        <span class="token string single-quoted-string">'json'</span> <span class="token operator">=></span> <span class="token variable">$request_body</span><span class="token punctuation">,</span><br>       <span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Exception<span class="token punctuation">\</span>BadResponseException</span> <span class="token variable">$e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handle exception or api errors.</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$e</span><span class="token operator">-></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br><br> <span class="token comment">// ...</span><br></code></pre>
+<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">"https://www.floatplane.com/api/v2/edges"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-go"><code class="language-go"><span class="token keyword">package</span> main<br><br><span class="token keyword">import</span> <span class="token punctuation">(</span><br>       <span class="token string">"bytes"</span><br>       <span class="token string">"net/http"</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>    headers <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><br>        <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><br><br>    data <span class="token operator">:=</span> bytes<span class="token punctuation">.</span><span class="token function">NewBuffer</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span>jsonReq<span class="token punctuation">}</span><span class="token punctuation">)</span><br>    req<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">NewRequest</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"https://www.floatplane.com/api/v2/edges"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><br>    req<span class="token punctuation">.</span>Header <span class="token operator">=</span> headers<br><br>    client <span class="token operator">:=</span> <span class="token operator">&amp;</span>http<span class="token punctuation">.</span>Client<span class="token punctuation">{</span><span class="token punctuation">}</span><br>    resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><br>    <span class="token comment">// ...</span><br><span class="token punctuation">}</span><br></code></pre>
+<p><code>GET /api/v2/edges</code></p>
+<p><em>Get Edges</em></p>
+<p>Retrieve a list of edge servers from which to stream or download videos. This is deprecated, and using the CDN endpoint is recommended as a replacement.</p>
+<blockquote>
+<p>Example responses</p>
+</blockquote>
+<blockquote>
+<p>200 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"edges"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge01-na.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">8090</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">1000000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"CA"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"QC"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">45.3168</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">-73.8659</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge02-na.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">8090</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">500000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"CA"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"QC"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">45.3168</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">-73.8659</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge01-eu.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">8090</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">1000000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"FR"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"A"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">48.5873</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">7.79821</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge01-au.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">8090</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">250000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"AU"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"NSW"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">-33.8401</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">151.209</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge1-na-south.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">1000000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"US"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"FL"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">25.8124</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">-80.2401</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge1-na-sv.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">1000000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"US"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"CA"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">37.3387</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">-121.8914</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"edge03-na.floatplane.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">3000000000</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"CA"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"QC"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">45.3168</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">-73.8659</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"client"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>400 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>401 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notLoggedInError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>403 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"missingAchievementError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"requiresAllOfAchievement"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"6157853e479315db795f7296"</span><span class="token punctuation">,</span><br>            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FloatVPN Alpha"</span><span class="token punctuation">,</span><br>            <span class="token property">"startDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"endDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token null keyword">null</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>404 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notFoundError"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>default Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="getedges-responses">Responses</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.3.1">OK</a></td>
+<td>OK</td>
+<td><a href="#schemaedgesmodel">EdgesModel</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.1">Bad Request</a></td>
+<td>Bad Request - The request has errors and the server did not process it.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td><a href="https://tools.ietf.org/html/rfc7235#section-3.1">Unauthorized</a></td>
+<td>Unauthenticated - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.3">Forbidden</a></td>
+<td>Forbidden - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
+<td>Not Found - The resource was not found.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>default</td>
+<td>Default</td>
+<td>Unexpected response code</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<aside class="success">
+This operation does not require authentication
 </aside>
 <h1 id="floatplane-rest-api-faqv2">FAQV2</h1>
 <p>Get FAQs.</p>
@@ -15009,6 +15130,209 @@ CookieAuth
 <pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><br>  <span class="token string">"like"</span><br><span class="token punctuation">]</span><br></code></pre>
 <h3 id="properties-48">Properties</h3>
 <p><em>None</em></p>
+<h2 id="tocS_EdgesModel">EdgesModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaedgesmodel"></a>
+<a id="schema_EdgesModel"></a>
+<a id="tocSedgesmodel"></a>
+<a id="tocsedgesmodel"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"edges"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">0</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"client"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"ip"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"country_code"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"country_name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"region_code"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"region_name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"city"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"zip_code"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"time_zone"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"metro_code"</span><span class="token operator">:</span> <span class="token number">0</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-49">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>edges</td>
+<td>[<a href="#schemaedgemodel">EdgeModel</a>]</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>client</td>
+<td>object</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» ip</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» country_code</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» country_name</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» region_code</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» region_name</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» city</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» zip_code</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» time_zone</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» latitude</td>
+<td>number</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» longitude</td>
+<td>number</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» metro_code</td>
+<td>number</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_EdgeModel">EdgeModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaedgemodel"></a>
+<a id="schema_EdgeModel"></a>
+<a id="tocSedgemodel"></a>
+<a id="tocsedgemodel"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">0</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-50">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hostname</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>queryPort</td>
+<td>integer</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>bandwidth</td>
+<td>integer</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>allowDownload</td>
+<td>boolean</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>allowStreaming</td>
+<td>boolean</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>datacenter</td>
+<td>object</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» countryCode</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» regionCode</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» latitude</td>
+<td>number</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» longitude</td>
+<td>number</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="dark-box">

@@ -1,5 +1,5 @@
 ---
-title: Floatplane REST API v3.9.1
+title: Floatplane REST API v3.9.9
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-rest-api">Floatplane REST API v3.9.1</h1>
+<h1 id="floatplane-rest-api">Floatplane REST API v3.9.9</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -34524,14 +34524,109 @@ func main() {
 
 *Get Edges*
 
-TODO
+Retrieve a list of edge servers from which to stream or download videos. This is deprecated, and using the CDN endpoint is recommended as a replacement.
 
 > Example responses
 
 > 200 Response
 
 ```json
-{}
+{
+  "edges": [
+    {
+      "hostname": "edge01-na.floatplane.com",
+      "queryPort": 8090,
+      "bandwidth": 1000000000,
+      "allowDownload": true,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "CA",
+        "regionCode": "QC",
+        "latitude": 45.3168,
+        "longitude": -73.8659
+      }
+    },
+    {
+      "hostname": "edge02-na.floatplane.com",
+      "queryPort": 8090,
+      "bandwidth": 500000000,
+      "allowDownload": true,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "CA",
+        "regionCode": "QC",
+        "latitude": 45.3168,
+        "longitude": -73.8659
+      }
+    },
+    {
+      "hostname": "edge01-eu.floatplane.com",
+      "queryPort": 8090,
+      "bandwidth": 1000000000,
+      "allowDownload": false,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "FR",
+        "regionCode": "A",
+        "latitude": 48.5873,
+        "longitude": 7.79821
+      }
+    },
+    {
+      "hostname": "edge01-au.floatplane.com",
+      "queryPort": 8090,
+      "bandwidth": 250000000,
+      "allowDownload": false,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "AU",
+        "regionCode": "NSW",
+        "latitude": -33.8401,
+        "longitude": 151.209
+      }
+    },
+    {
+      "hostname": "edge1-na-south.floatplane.com",
+      "queryPort": 0,
+      "bandwidth": 1000000000,
+      "allowDownload": false,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "US",
+        "regionCode": "FL",
+        "latitude": 25.8124,
+        "longitude": -80.2401
+      }
+    },
+    {
+      "hostname": "edge1-na-sv.floatplane.com",
+      "queryPort": 0,
+      "bandwidth": 1000000000,
+      "allowDownload": false,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "US",
+        "regionCode": "CA",
+        "latitude": 37.3387,
+        "longitude": -121.8914
+      }
+    },
+    {
+      "hostname": "edge03-na.floatplane.com",
+      "queryPort": 0,
+      "bandwidth": 3000000000,
+      "allowDownload": false,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "CA",
+        "regionCode": "QC",
+        "latitude": 45.3168,
+        "longitude": -73.8659
+      }
+    }
+  ],
+  "client": {}
+}
 ```
 
 > 400 Response
@@ -34633,14 +34728,12 @@ TODO
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[EdgesModel](#schemaedgesmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="getedges-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -100797,4 +100890,102 @@ Represents some basic information of a user (id, username, and profile image).
 ### Properties
 
 *None*
+
+<h2 id="tocS_EdgesModel">EdgesModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaedgesmodel"></a>
+<a id="schema_EdgesModel"></a>
+<a id="tocSedgesmodel"></a>
+<a id="tocsedgesmodel"></a>
+
+```json
+{
+  "edges": [
+    {
+      "hostname": "string",
+      "queryPort": 0,
+      "bandwidth": 0,
+      "allowDownload": true,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "string",
+        "regionCode": "string",
+        "latitude": 0,
+        "longitude": 0
+      }
+    }
+  ],
+  "client": {
+    "ip": "string",
+    "country_code": "string",
+    "country_name": "string",
+    "region_code": "string",
+    "region_name": "string",
+    "city": "string",
+    "zip_code": "string",
+    "time_zone": "string",
+    "latitude": 0,
+    "longitude": 0,
+    "metro_code": 0
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|edges|[[EdgeModel](#schemaedgemodel)]|false|none|none|
+|client|object|false|none|none|
+|» ip|string|false|none|none|
+|» country_code|string|false|none|none|
+|» country_name|string|false|none|none|
+|» region_code|string|false|none|none|
+|» region_name|string|false|none|none|
+|» city|string|false|none|none|
+|» zip_code|string|false|none|none|
+|» time_zone|string|false|none|none|
+|» latitude|number|false|none|none|
+|» longitude|number|false|none|none|
+|» metro_code|number|false|none|none|
+
+<h2 id="tocS_EdgeModel">EdgeModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaedgemodel"></a>
+<a id="schema_EdgeModel"></a>
+<a id="tocSedgemodel"></a>
+<a id="tocsedgemodel"></a>
+
+```json
+{
+  "hostname": "string",
+  "queryPort": 0,
+  "bandwidth": 0,
+  "allowDownload": true,
+  "allowStreaming": true,
+  "datacenter": {
+    "countryCode": "string",
+    "regionCode": "string",
+    "latitude": 0,
+    "longitude": 0
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|hostname|string|false|none|none|
+|queryPort|integer|false|none|none|
+|bandwidth|integer|false|none|none|
+|allowDownload|boolean|false|none|none|
+|allowStreaming|boolean|false|none|none|
+|datacenter|object|false|none|none|
+|» countryCode|string|false|none|none|
+|» regionCode|string|false|none|none|
+|» latitude|number|false|none|none|
+|» longitude|number|false|none|none|
 

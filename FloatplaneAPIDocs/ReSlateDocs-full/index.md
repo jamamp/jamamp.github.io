@@ -23595,7 +23595,6 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
-|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -24030,7 +24029,6 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
-|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -27765,7 +27763,6 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
-|»» size|integer|false|none|none|
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -60470,7 +60467,6 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -83520,7 +83516,6 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -83903,7 +83898,6 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -85215,7 +85209,6 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -87470,7 +87463,6 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» size|integer|false|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
@@ -97808,7 +97800,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -97953,7 +97944,6 @@ CookieAuth
                 "width": 0,
                 "height": 0,
                 "path": "http://example.com",
-                "size": 0,
                 "childImages": [
                   {
                     "width": 0,
@@ -98109,7 +98099,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98152,7 +98141,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98240,7 +98228,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -98366,7 +98353,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98379,7 +98365,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98396,7 +98381,6 @@ CookieAuth
             "width": 0,
             "height": 0,
             "path": "http://example.com",
-            "size": 0,
             "childImages": [
               {
                 "width": 0,
@@ -98414,7 +98398,6 @@ CookieAuth
               "width": 0,
               "height": 0,
               "path": "http://example.com",
-              "size": 0,
               "childImages": [
                 {
                   "width": 0,
@@ -98461,7 +98444,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98476,7 +98458,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -98592,7 +98573,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -98605,7 +98585,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -98622,7 +98601,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -98640,7 +98618,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -98679,7 +98656,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -98711,7 +98687,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -98765,7 +98740,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -98843,7 +98817,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -98860,7 +98833,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -98941,7 +98913,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -98953,17 +98924,10 @@ CookieAuth
   "isAccessible": true,
   "imageFiles": [
     {
+      "path": "http://example.com",
       "width": 0,
       "height": 0,
-      "path": "http://example.com",
-      "size": 0,
-      "childImages": [
-        {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com"
-        }
-      ]
+      "size": 0
     }
   ]
 }
@@ -98988,7 +98952,7 @@ CookieAuth
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-|imageFiles|[[ImageModel](#schemaimagemodel)]|true|none|none|
+|imageFiles|[[ImageFileModel](#schemaimagefilemodel)]|true|none|none|
 
 <h2 id="tocS_UserActivityV3Response">UserActivityV3Response</h2>
 <!-- backwards compatibility -->
@@ -99113,7 +99077,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99348,7 +99311,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99361,7 +99323,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99378,7 +99339,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -99396,7 +99356,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -99476,7 +99435,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99489,7 +99447,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99506,7 +99463,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -99524,7 +99480,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -99654,7 +99609,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -99667,7 +99621,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -99684,7 +99637,6 @@ CookieAuth
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -99702,7 +99654,6 @@ CookieAuth
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -99749,7 +99700,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -99764,7 +99714,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -99961,7 +99910,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -100019,7 +99967,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -100120,7 +100067,6 @@ CookieAuth
   "width": 0,
   "height": 0,
   "path": "http://example.com",
-  "size": 0,
   "childImages": [
     {
       "width": 0,
@@ -100139,7 +100085,6 @@ CookieAuth
 |width|integer|true|none|none|
 |height|integer|true|none|none|
 |path|string(uri)|true|none|none|
-|size|integer|false|none|none|
 |childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
 
 <h2 id="tocS_ChildImageModel">ChildImageModel</h2>
@@ -100166,6 +100111,32 @@ CookieAuth
 |height|integer|true|none|none|
 |path|string(uri)|true|none|none|
 
+<h2 id="tocS_ImageFileModel">ImageFileModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaimagefilemodel"></a>
+<a id="schema_ImageFileModel"></a>
+<a id="tocSimagefilemodel"></a>
+<a id="tocsimagefilemodel"></a>
+
+```json
+{
+  "path": "http://example.com",
+  "width": 0,
+  "height": 0,
+  "size": 0
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|path|string(uri)|true|none|none|
+|width|integer|true|none|none|
+|height|integer|true|none|none|
+|size|integer|true|none|none|
+
 <h2 id="tocS_LiveStreamModel">LiveStreamModel</h2>
 <!-- backwards compatibility -->
 <a id="schemalivestreammodel"></a>
@@ -100182,7 +100153,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -100200,7 +100170,6 @@ CookieAuth
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -100322,7 +100291,6 @@ CookieAuth
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -100360,7 +100328,6 @@ Represents some basic information of a user (id, username, and profile image).
     "width": 0,
     "height": 0,
     "path": "http://example.com",
-    "size": 0,
     "childImages": [
       {
         "width": 0,
@@ -100447,7 +100414,6 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -100482,7 +100448,6 @@ Represents some basic information of a user (id, username, and profile image).
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,
@@ -100558,7 +100523,6 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -100630,7 +100594,6 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -100643,7 +100606,6 @@ Represents some basic information of a user (id, username, and profile image).
       "width": 0,
       "height": 0,
       "path": "http://example.com",
-      "size": 0,
       "childImages": [
         {
           "width": 0,
@@ -100660,7 +100622,6 @@ Represents some basic information of a user (id, username, and profile image).
         "width": 0,
         "height": 0,
         "path": "http://example.com",
-        "size": 0,
         "childImages": [
           {
             "width": 0,
@@ -100678,7 +100639,6 @@ Represents some basic information of a user (id, username, and profile image).
           "width": 0,
           "height": 0,
           "path": "http://example.com",
-          "size": 0,
           "childImages": [
             {
               "width": 0,

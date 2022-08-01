@@ -23615,18 +23615,6 @@ Status Code **200**
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
-|» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»» instagram|string(uri)|false|none|none|
-|»» twitter|string(uri)|false|none|none|
-|»» website|string(uri)|false|none|none|
-|»» facebook|string(uri)|false|none|none|
-|»» youtube|string(uri)|false|none|none|
-|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
-|»» id|string|true|none|none|
-|»» guildName|string|true|none|none|
-|»» guildIcon|string|true|none|none|
-|»» inviteLink|string(uri)|true|none|none|
-|»» inviteMode|string|true|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -24017,50 +24005,58 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[[CreatorModelV2](#schemacreatormodelv2)]|false|none|none|
-|» id|string|true|none|none|
-|» owner|string|true|none|none|
-|» title|string|true|none|none|
-|» urlname|string|true|none|none|
-|» description|string|true|none|none|
-|» about|string|true|none|none|
-|» category|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|false|none|none|
-|»» width|integer|true|none|none|
-|»» height|integer|true|none|none|
-|»» path|string(uri)|true|none|none|
-|»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|*anonymous*|[allOf]|false|none|none|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CreatorModelV2](#schemacreatormodelv2)|false|none|none|
+|»» id|string|true|none|none|
+|»» owner|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|none|
+|»» description|string|true|none|none|
+|»» about|string|true|none|none|
+|»» category|string|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
-|»» id|string|true|none|none|
-|»» title|string|true|none|none|
-|»» description|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|»» owner|string|true|none|none|
-|»» streamPath|string|true|none|none|
-|»» offline|object|true|none|none|
-|»»» title|string|false|none|none|
-|»»» description|string|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|»»» id|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
 |»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|» subscriptionPlans|[object]|false|none|none|
-|» discoverable|boolean|true|none|none|
-|» subscriberCountDisplay|string|true|none|none|
-|» incomeDisplay|boolean|true|none|none|
-|» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»» instagram|string(uri)|false|none|none|
-|»» twitter|string(uri)|false|none|none|
-|»» website|string(uri)|false|none|none|
-|»» facebook|string(uri)|false|none|none|
-|»» youtube|string(uri)|false|none|none|
-|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
-|»» id|string|true|none|none|
-|»» guildName|string|true|none|none|
-|»» guildIcon|string|true|none|none|
-|»» inviteLink|string(uri)|true|none|none|
-|»» inviteMode|string|true|none|none|
+|»»» owner|string|true|none|none|
+|»»» streamPath|string|true|none|none|
+|»»» offline|object|true|none|none|
+|»»»» title|string|false|none|none|
+|»»»» description|string|false|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» subscriptionPlans|[object]|false|none|none|
+|»» discoverable|boolean|true|none|none|
+|»» subscriberCountDisplay|string|true|none|none|
+|»» incomeDisplay|boolean|true|none|none|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
+|»»» **additionalProperties**|string(uri)|false|none|none|
+|»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»» id|string|true|none|none|
+|»»» guildName|string|true|none|none|
+|»»» guildIcon|string|true|none|none|
+|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteMode|string|true|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -27803,11 +27799,7 @@ Status Code **200**
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
-|»» instagram|string(uri)|false|none|none|
-|»» twitter|string(uri)|false|none|none|
-|»» website|string(uri)|false|none|none|
-|»» facebook|string(uri)|false|none|none|
-|»» youtube|string(uri)|false|none|none|
+|»» **additionalProperties**|string(uri)|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -60487,18 +60479,6 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
-|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»»» instagram|string(uri)|false|none|none|
-|»»» twitter|string(uri)|false|none|none|
-|»»» website|string(uri)|false|none|none|
-|»»» facebook|string(uri)|false|none|none|
-|»»» youtube|string(uri)|false|none|none|
-|»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
-|»»» id|string|true|none|none|
-|»»» guildName|string|true|none|none|
-|»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
-|»»» inviteMode|string|true|none|none|
 |» userNotificationSetting|object|true|none|none|
 |»» createdAt|string(date-time)|true|none|none|
 |»» updatedAt|string(date-time)|true|none|none|
@@ -98635,11 +98615,8 @@ CookieAuth
     "subscriberCountDisplay": "string",
     "incomeDisplay": true,
     "socialLinks": {
-      "instagram": "http://example.com",
-      "twitter": "http://example.com",
-      "website": "http://example.com",
-      "facebook": "http://example.com",
-      "youtube": "http://example.com"
+      "property1": "http://example.com",
+      "property2": "http://example.com"
     },
     "discordServers": [
       {
@@ -98775,7 +98752,7 @@ CookieAuth
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
 |comments|integer|true|none|none|
-|creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
+|creator|[CreatorModelV2Extended](#schemacreatormodelv2extended)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
@@ -99371,23 +99348,7 @@ CookieAuth
   ],
   "discoverable": true,
   "subscriberCountDisplay": "string",
-  "incomeDisplay": true,
-  "socialLinks": {
-    "instagram": "http://example.com",
-    "twitter": "http://example.com",
-    "website": "http://example.com",
-    "facebook": "http://example.com",
-    "youtube": "http://example.com"
-  },
-  "discordServers": [
-    {
-      "id": "string",
-      "guildName": "string",
-      "guildIcon": "string",
-      "inviteLink": "http://example.com",
-      "inviteMode": "string"
-    }
-  ]
+  "incomeDisplay": true
 }
 
 ```
@@ -99410,8 +99371,120 @@ CookieAuth
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
-|socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|none|
+
+<h2 id="tocS_CreatorModelV2Extended">CreatorModelV2Extended</h2>
+<!-- backwards compatibility -->
+<a id="schemacreatormodelv2extended"></a>
+<a id="schema_CreatorModelV2Extended"></a>
+<a id="tocScreatormodelv2extended"></a>
+<a id="tocscreatormodelv2extended"></a>
+
+```json
+{
+  "id": "string",
+  "owner": "string",
+  "title": "string",
+  "urlname": "string",
+  "description": "string",
+  "about": "string",
+  "category": "string",
+  "cover": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
+  "icon": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
+  "liveStream": {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "thumbnail": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "owner": "string",
+    "streamPath": "string",
+    "offline": {
+      "title": "string",
+      "description": "string",
+      "thumbnail": {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "http://example.com"
+          }
+        ]
+      }
+    }
+  },
+  "subscriptionPlans": [
+    {}
+  ],
+  "discoverable": true,
+  "subscriberCountDisplay": "string",
+  "incomeDisplay": true,
+  "socialLinks": {
+    "property1": "http://example.com",
+    "property2": "http://example.com"
+  },
+  "discordServers": [
+    {
+      "id": "string",
+      "guildName": "string",
+      "guildIcon": "string",
+      "inviteLink": "http://example.com",
+      "inviteMode": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[CreatorModelV2](#schemacreatormodelv2)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|object|false|none|none|
+|» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
+|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 
 <h2 id="tocS_CreatorModelV3">CreatorModelV3</h2>
 <!-- backwards compatibility -->
@@ -99523,11 +99596,8 @@ CookieAuth
   "subscriberCountDisplay": "string",
   "incomeDisplay": true,
   "socialLinks": {
-    "instagram": "http://example.com",
-    "twitter": "http://example.com",
-    "website": "http://example.com",
-    "facebook": "http://example.com",
-    "youtube": "http://example.com"
+    "property1": "http://example.com",
+    "property2": "http://example.com"
   }
 }
 
@@ -100207,11 +100277,8 @@ CookieAuth
 
 ```json
 {
-  "instagram": "http://example.com",
-  "twitter": "http://example.com",
-  "website": "http://example.com",
-  "facebook": "http://example.com",
-  "youtube": "http://example.com"
+  "property1": "http://example.com",
+  "property2": "http://example.com"
 }
 
 ```
@@ -100220,11 +100287,7 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|instagram|string(uri)|false|none|none|
-|twitter|string(uri)|false|none|none|
-|website|string(uri)|false|none|none|
-|facebook|string(uri)|false|none|none|
-|youtube|string(uri)|false|none|none|
+|**additionalProperties**|string(uri)|false|none|none|
 
 <h2 id="tocS_DiscordServerModel">DiscordServerModel</h2>
 <!-- backwards compatibility -->
@@ -100654,23 +100717,7 @@ Represents some basic information of a user (id, username, and profile image).
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",
-    "incomeDisplay": true,
-    "socialLinks": {
-      "instagram": "http://example.com",
-      "twitter": "http://example.com",
-      "website": "http://example.com",
-      "facebook": "http://example.com",
-      "youtube": "http://example.com"
-    },
-    "discordServers": [
-      {
-        "id": "string",
-        "guildName": "string",
-        "guildIcon": "string",
-        "inviteLink": "http://example.com",
-        "inviteMode": "string"
-      }
-    ]
+    "incomeDisplay": true
   },
   "userNotificationSetting": {
     "createdAt": "2019-08-24T14:15:22Z",
@@ -100875,19 +100922,7 @@ Represents some basic information of a user (id, username, and profile image).
       }
     }
   ],
-  "client": {
-    "ip": "string",
-    "country_code": "string",
-    "country_name": "string",
-    "region_code": "string",
-    "region_name": "string",
-    "city": "string",
-    "zip_code": "string",
-    "time_zone": "string",
-    "latitude": 0,
-    "longitude": 0,
-    "metro_code": 0
-  }
+  "client": {}
 }
 
 ```
@@ -100898,17 +100933,6 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|---|---|---|
 |edges|[[EdgeModel](#schemaedgemodel)]|false|none|none|
 |client|object|false|none|none|
-|» ip|string|false|none|none|
-|» country_code|string|false|none|none|
-|» country_name|string|false|none|none|
-|» region_code|string|false|none|none|
-|» region_name|string|false|none|none|
-|» city|string|false|none|none|
-|» zip_code|string|false|none|none|
-|» time_zone|string|false|none|none|
-|» latitude|number|false|none|none|
-|» longitude|number|false|none|none|
-|» metro_code|number|false|none|none|
 
 <h2 id="tocS_EdgeModel">EdgeModel</h2>
 <!-- backwards compatibility -->
@@ -100940,7 +100964,7 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|---|---|---|
 |hostname|string|false|none|none|
 |queryPort|integer|false|none|none|
-|bandwidth|integer|false|none|none|
+|bandwidth|integer(int64)|false|none|none|
 |allowDownload|boolean|false|none|none|
 |allowStreaming|boolean|false|none|none|
 |datacenter|object|false|none|none|

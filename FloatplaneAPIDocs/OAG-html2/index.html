@@ -1637,7 +1637,7 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "creator" : {
-      "$ref" : "#/components/schemas/CreatorModelV2"
+      "$ref" : "#/components/schemas/CreatorModelV2Extended"
     },
     "wasReleasedSilently" : {
       "type" : "boolean"
@@ -1817,7 +1817,20 @@ ul.nav-tabs {
     },
     "incomeDisplay" : {
       "type" : "boolean"
-    },
+    }
+  }
+};
+    defs["CreatorModelV2Extended"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/CreatorModelV2"
+  }, {
+    "$ref" : "#/components/schemas/CreatorModelV2Extended_allOf"
+  } ]
+};
+    defs["CreatorModelV2Extended_allOf"] = {
+  "required" : [ "discordServers", "socialLinks" ],
+  "type" : "object",
+  "properties" : {
     "socialLinks" : {
       "$ref" : "#/components/schemas/SocialLinksModel"
     },
@@ -1936,7 +1949,8 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "bandwidth" : {
-      "type" : "integer"
+      "type" : "integer",
+      "format" : "int64"
     },
     "allowDownload" : {
       "type" : "boolean"
@@ -1976,45 +1990,8 @@ ul.nav-tabs {
       }
     },
     "client" : {
-      "$ref" : "#/components/schemas/EdgesModel_client"
-    }
-  }
-};
-    defs["EdgesModel_client"] = {
-  "type" : "object",
-  "properties" : {
-    "ip" : {
-      "type" : "string"
-    },
-    "country_code" : {
-      "type" : "string"
-    },
-    "country_name" : {
-      "type" : "string"
-    },
-    "region_code" : {
-      "type" : "string"
-    },
-    "region_name" : {
-      "type" : "string"
-    },
-    "city" : {
-      "type" : "string"
-    },
-    "zip_code" : {
-      "type" : "string"
-    },
-    "time_zone" : {
-      "type" : "string"
-    },
-    "latitude" : {
-      "type" : "number"
-    },
-    "longitude" : {
-      "type" : "number"
-    },
-    "metro_code" : {
-      "type" : "number"
+      "type" : "object",
+      "additionalProperties" : true
     }
   }
 };
@@ -2659,31 +2636,6 @@ ul.nav-tabs {
     },
     "isFeatured" : {
       "type" : "boolean"
-    }
-  }
-};
-    defs["SocialLinksModel"] = {
-  "type" : "object",
-  "properties" : {
-    "instagram" : {
-      "type" : "string",
-      "format" : "uri"
-    },
-    "twitter" : {
-      "type" : "string",
-      "format" : "uri"
-    },
-    "website" : {
-      "type" : "string",
-      "format" : "uri"
-    },
-    "facebook" : {
-      "type" : "string",
-      "format" : "uri"
-    },
-    "youtube" : {
-      "type" : "string",
-      "format" : "uri"
     }
   }
 };
@@ -22659,7 +22611,7 @@ public class CreatorV2ApiExample {
         array[String] creatorURL = ; // array[String] | The string identifer(s) of the creator(s) to be retrieved.
 
         try {
-            array[CreatorModelV2] result = apiInstance.getCreatorInfoByName(creatorURL);
+            array[CreatorModelV2Extended] result = apiInstance.getCreatorInfoByName(creatorURL);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CreatorV2Api#getCreatorInfoByName");
@@ -22679,7 +22631,7 @@ public class CreatorV2ApiExample {
         array[String] creatorURL = ; // array[String] | The string identifer(s) of the creator(s) to be retrieved.
 
         try {
-            array[CreatorModelV2] result = apiInstance.getCreatorInfoByName(creatorURL);
+            array[CreatorModelV2Extended] result = apiInstance.getCreatorInfoByName(creatorURL);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CreatorV2Api#getCreatorInfoByName");
@@ -22707,7 +22659,7 @@ array[String] *creatorURL = ; // The string identifer(s) of the creator(s) to be
 
 // Get Info By Name
 [apiInstance getCreatorInfoByNameWith:creatorURL
-              completionHandler: ^(array[CreatorModelV2] output, NSError* error) {
+              completionHandler: ^(array[CreatorModelV2Extended] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -22770,7 +22722,7 @@ namespace Example
 
             try {
                 // Get Info By Name
-                array[CreatorModelV2] result = apiInstance.getCreatorInfoByName(creatorURL);
+                array[CreatorModelV2Extended] result = apiInstance.getCreatorInfoByName(creatorURL);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling CreatorV2Api.getCreatorInfoByName: " + e.Message );
@@ -22945,7 +22897,7 @@ The string identifer(s) of the creator(s) to be retrieved.
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/CreatorModelV2"
+          "$ref" : "#/components/schemas/CreatorModelV2Extended"
         }
       },
       "example" : [ {

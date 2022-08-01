@@ -1334,7 +1334,8 @@ ul.nav-tabs {
     },
     "editDate" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "likes" : {
       "type" : "integer"
@@ -2048,7 +2049,8 @@ ul.nav-tabs {
     },
     "updatedAt" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "id" : {
       "type" : "string"
@@ -2078,7 +2080,8 @@ ul.nav-tabs {
     },
     "updatedAt" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "id" : {
       "type" : "string"
@@ -2317,7 +2320,8 @@ ul.nav-tabs {
     },
     "dateDue" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "periodStart" : {
       "type" : "string",
@@ -2329,7 +2333,8 @@ ul.nav-tabs {
     },
     "nextPaymentAttempt" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "paid" : {
       "type" : "boolean"
@@ -2361,11 +2366,13 @@ ul.nav-tabs {
     },
     "periodStart" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "periodEnd" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "value" : {
       "type" : "number"
@@ -2539,7 +2546,8 @@ ul.nav-tabs {
     },
     "updatedAt" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "id" : {
       "type" : "string"
@@ -2747,9 +2755,16 @@ ul.nav-tabs {
       "type" : "string"
     },
     "user" : {
-      "$ref" : "#/components/schemas/UserModel"
+      "$ref" : "#/components/schemas/UserInfoV2Response_users_inner_user"
     }
   }
+};
+    defs["UserInfoV2Response_users_inner_user"] = {
+  "oneOf" : [ {
+    "$ref" : "#/components/schemas/UserModel"
+  }, {
+    "$ref" : "#/components/schemas/UserSelfModel"
+  } ]
 };
     defs["UserLinksV3Response_value"] = {
   "type" : "object",
@@ -2843,7 +2858,8 @@ ul.nav-tabs {
     },
     "updatedAt" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "id" : {
       "type" : "string"
@@ -2953,7 +2969,8 @@ ul.nav-tabs {
     },
     "endDate" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "paymentID" : {
       "type" : "integer"

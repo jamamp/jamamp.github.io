@@ -4945,7 +4945,7 @@ Status Code **200**
 |*anonymous*|[[FaqSectionModel](#schemafaqsectionmodel)]|false|none|none|
 |» faqs|[object]|true|none|none|
 |»» createdAt|string(date-time)|true|none|none|
-|»» updatedAt|string(date-time)|true|none|none|
+|»» updatedAt|string(date-time)¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» question|string|true|none|none|
 |»» answer|string|true|none|This field may contain HTML that should be rendered.|
@@ -4954,7 +4954,7 @@ Status Code **200**
 |»» order|number|true|none|none|
 |»» faqSection|string|true|none|none|
 |» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)¦null|true|none|none|
 |» id|string|true|none|none|
 |» name|string|true|none|none|
 |» description|string|true|none|none|
@@ -6723,7 +6723,7 @@ Status Code **200**
 |---|---|---|---|---|
 |*anonymous*|[[UserSubscriptionModel](#schemausersubscriptionmodel)]|false|none|none|
 |» startDate|string(date-time)|true|none|none|
-|» endDate|string(date-time)|true|none|none|
+|» endDate|string(date-time)¦null|true|none|none|
 |» paymentID|integer|true|none|none|
 |» interval|string|true|none|none|
 |» paymentCancelled|boolean|true|none|none|
@@ -9126,7 +9126,7 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |» userNotificationSetting|object|true|none|none|
 |»» createdAt|string(date-time)|true|none|none|
-|»» updatedAt|string(date-time)|true|none|none|
+|»» updatedAt|string(date-time)¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» contentEmail|boolean|true|none|none|
 |»» contentFirebase|boolean|true|none|none|
@@ -10121,7 +10121,7 @@ Status Code **200**
 |»» text|string|true|none|none|
 |»» replying|string|true|none|none|
 |»» postDate|string(date-time)|true|none|none|
-|»» editDate|string(date-time)|true|none|none|
+|»» editDate|string(date-time)¦null|true|none|none|
 |»» likes|integer|true|none|none|
 |»» dislikes|integer|true|none|none|
 |»» score|integer|true|none|none|
@@ -10486,7 +10486,7 @@ Status Code **200**
 |» text|string|true|none|none|
 |» replying|string|true|none|none|
 |» postDate|string(date-time)|true|none|none|
-|» editDate|string(date-time)|true|none|none|
+|» editDate|string(date-time)¦null|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -16917,18 +16917,18 @@ CookieAuth
 |» attemptCount|integer|true|none|none|
 |» currency|string|true|none|none|
 |» date|string(date-time)|true|none|none|
-|» dateDue|string(date-time)|false|none|none|
+|» dateDue|string(date-time)¦null|false|none|none|
 |» periodStart|string(date-time)|true|none|none|
 |» periodEnd|string(date-time)|true|none|none|
-|» nextPaymentAttempt|string(date-time)|true|none|none|
+|» nextPaymentAttempt|string(date-time)¦null|true|none|none|
 |» paid|boolean|true|none|none|
 |» forgiven|boolean|true|none|none|
 |» refunded|boolean|true|none|none|
 |» subscriptions|[object]|false|none|The subscriptions this invoice is in reference to.|
 |»» id|integer|true|none|none|
 |»» subscription|number|true|none|none|
-|»» periodStart|string(date-time)|true|none|none|
-|»» periodEnd|string(date-time)|true|none|none|
+|»» periodStart|string(date-time)¦null|true|none|none|
+|»» periodEnd|string(date-time)¦null|true|none|none|
 |»» value|number|true|none|none|
 |»» amountSubtotal|number|true|none|none|
 |»» amountTotal|number|true|none|none|
@@ -17004,7 +17004,7 @@ CookieAuth
 |plans|[object]|true|none|none|
 |» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|The available roles for the associated Discord servers that are available with this plan.|
 |» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)¦null|true|none|none|
 |» id|string|true|none|none|
 |» title|string|true|none|none|
 |» enabled|boolean|true|none|none|
@@ -17064,7 +17064,19 @@ CookieAuth
 |---|---|---|---|---|
 |users|[object]|true|none|none|
 |» id|string|true|none|none|
-|» user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
+|» user|any|true|none|none|
+
+oneOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[UserModel](#schemausermodel)|false|none|Represents some basic information of a user (id, username, and profile image).|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[UserSelfModel](#schemauserselfmodel)|false|none|none|
 
 <h2 id="tocS_UserNamedV2Response">UserNamedV2Response</h2>
 <!-- backwards compatibility -->
@@ -19591,7 +19603,7 @@ Represents some basic information of a user (id, username, and profile image).
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string(date-time)|true|none|none|
-|editDate|string(date-time)|true|none|none|
+|editDate|string(date-time)¦null|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -19704,7 +19716,7 @@ Represents some basic information of a user (id, username, and profile image).
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |userNotificationSetting|object|true|none|none|
 |» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)¦null|true|none|none|
 |» id|string|true|none|none|
 |» contentEmail|boolean|true|none|none|
 |» contentFirebase|boolean|true|none|none|
@@ -19763,7 +19775,7 @@ Represents some basic information of a user (id, username, and profile image).
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |startDate|string(date-time)|true|none|none|
-|endDate|string(date-time)|true|none|none|
+|endDate|string(date-time)¦null|true|none|none|
 |paymentID|integer|true|none|none|
 |interval|string|true|none|none|
 |paymentCancelled|boolean|true|none|none|
@@ -19821,7 +19833,7 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|---|---|---|
 |faqs|[object]|true|none|none|
 |» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)|true|none|none|
+|» updatedAt|string(date-time)¦null|true|none|none|
 |» id|string|true|none|none|
 |» question|string|true|none|none|
 |» answer|string|true|none|This field may contain HTML that should be rendered.|
@@ -19830,7 +19842,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» order|number|true|none|none|
 |» faqSection|string|true|none|none|
 |createdAt|string(date-time)|true|none|none|
-|updatedAt|string(date-time)|true|none|none|
+|updatedAt|string(date-time)¦null|true|none|none|
 |id|string|true|none|none|
 |name|string|true|none|none|
 |description|string|true|none|none|

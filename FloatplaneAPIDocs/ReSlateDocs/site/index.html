@@ -3601,7 +3601,7 @@ This operation does not require authentication
 </tr>
 <tr>
 <td>»» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -3664,7 +3664,7 @@ This operation does not require authentication
 </tr>
 <tr>
 <td>» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -4500,7 +4500,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» endDate</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -5843,7 +5843,7 @@ CookieAuth
 </tr>
 <tr>
 <td>»» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -6534,7 +6534,7 @@ CookieAuth
 </tr>
 <tr>
 <td>»» editDate</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -6914,7 +6914,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» editDate</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -10595,7 +10595,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» dateDue</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
@@ -10616,7 +10616,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» nextPaymentAttempt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -10665,14 +10665,14 @@ CookieAuth
 </tr>
 <tr>
 <td>»» periodStart</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
 <td>»» periodEnd</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -10819,7 +10819,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -10987,10 +10987,52 @@ CookieAuth
 </tr>
 <tr>
 <td>» user</td>
-<td><a href="#schemausermodel">UserModel</a></td>
+<td>any</td>
 <td>true</td>
 <td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>oneOf</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
+<td><a href="#schemausermodel">UserModel</a></td>
+<td>false</td>
+<td>none</td>
 <td>Represents some basic information of a user (id, username, and profile image).</td>
+</tr>
+</tbody>
+</table>
+<p>xor</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
+<td><a href="#schemauserselfmodel">UserSelfModel</a></td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
 </tr>
 </tbody>
 </table>
@@ -14497,7 +14539,7 @@ CookieAuth
 </tr>
 <tr>
 <td>editDate</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -14595,7 +14637,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -14672,7 +14714,7 @@ CookieAuth
 </tr>
 <tr>
 <td>endDate</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -14833,7 +14875,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -14896,7 +14938,7 @@ CookieAuth
 </tr>
 <tr>
 <td>updatedAt</td>
-<td>string(date-time)</td>
+<td>string(date-time)¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>

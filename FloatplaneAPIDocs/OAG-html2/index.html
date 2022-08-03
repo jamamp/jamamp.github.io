@@ -1638,7 +1638,7 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "creator" : {
-      "$ref" : "#/components/schemas/CreatorModelV2Extended"
+      "$ref" : "#/components/schemas/CreatorModelV2"
     },
     "wasReleasedSilently" : {
       "type" : "boolean"
@@ -1678,7 +1678,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentVideoV3Response"] = {
-  "required" : [ "blogPosts", "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "levels", "likes", "primaryBlogPost", "releaseDate", "score", "thumbnail", "timelineSprite", "title", "type" ],
+  "required" : [ "blogPosts", "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "levels", "likes", "primaryBlogPost", "score", "thumbnail", "timelineSprite", "title", "type" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1698,7 +1698,8 @@ ul.nav-tabs {
     },
     "releaseDate" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "duration" : {
       "type" : "number",
@@ -3058,7 +3059,8 @@ ul.nav-tabs {
     },
     "releaseDate" : {
       "type" : "string",
-      "format" : "date-time"
+      "format" : "date-time",
+      "nullable" : true
     },
     "duration" : {
       "type" : "number"

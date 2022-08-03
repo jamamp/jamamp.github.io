@@ -786,7 +786,7 @@
                         "type": "integer"
                     },
                     "creator": {
-                        "$ref": "#/components/schemas/CreatorModelV2Extended"
+                        "$ref": "#/components/schemas/CreatorModelV2"
                     },
                     "wasReleasedSilently": {
                         "type": "boolean"
@@ -863,7 +863,8 @@
                     },
                     "releaseDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "duration": {
                         "type": "number",
@@ -943,7 +944,6 @@
                     "title",
                     "type",
                     "description",
-                    "releaseDate",
                     "duration",
                     "creator",
                     "likes",
@@ -1877,7 +1877,8 @@
                     },
                     "releaseDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "duration": {
                         "type": "number"

@@ -17589,20 +17589,7 @@ xor
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",
-    "incomeDisplay": true,
-    "socialLinks": {
-      "property1": "http://example.com",
-      "property2": "http://example.com"
-    },
-    "discordServers": [
-      {
-        "id": "string",
-        "guildName": "string",
-        "guildIcon": "string",
-        "inviteLink": "http://example.com",
-        "inviteMode": "string"
-      }
-    ]
+    "incomeDisplay": true
   },
   "wasReleasedSilently": true,
   "thumbnail": {
@@ -17728,7 +17715,7 @@ xor
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
 |comments|integer|true|none|none|
-|creator|[CreatorModelV2Extended](#schemacreatormodelv2extended)|true|none|none|
+|creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
@@ -17819,7 +17806,7 @@ xor
 |title|string|true|none|none|
 |type|string|true|none|none|
 |description|string|true|none|none|
-|releaseDate|string(date-time)|true|none|none|
+|releaseDate|string(date-time)¦null|false|none|none|
 |duration|number|true|none|Unit: seconds.|
 |creator|string|true|none|none|
 |likes|integer|true|none|none|
@@ -18978,7 +18965,7 @@ and
 |title|string|true|none|none|
 |type|string|true|none|none|
 |description|string|true|none|none|
-|releaseDate|string(date-time)|false|none|none|
+|releaseDate|string(date-time)¦null|false|none|none|
 |duration|number|true|none|none|
 |creator|string|true|none|none|
 |likes|integer|true|none|none|

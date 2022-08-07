@@ -85149,93 +85149,105 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[[BlogPostModelV3](#schemablogpostmodelv3)]|false|none|none|
-|» id|string|true|none|none|
-|» guid|string|true|none|none|
-|» title|string|true|none|none|
-|» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
-|» type|string|true|none|none|
-|» tags|[string]|true|none|none|
-|» attachmentOrder|[string]|true|none|none|
-|» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
-|»» hasVideo|boolean|true|none|none|
-|»» videoCount|integer|true|none|none|
-|»» videoDuration|number|true|none|none|
-|»» hasAudio|boolean|true|none|none|
-|»» audioCount|integer|true|none|none|
-|»» audioDuration|number|true|none|none|
-|»» hasPicture|boolean|true|none|none|
-|»» pictureCount|integer|true|none|none|
-|»» hasGallery|boolean|true|none|none|
-|»» galleryCount|integer|true|none|none|
-|»» isFeatured|boolean|true|none|none|
-|» releaseDate|string(date-time)|true|none|none|
-|» likes|integer|true|none|none|
-|» dislikes|integer|true|none|none|
-|» score|integer|true|none|none|
-|» comments|integer|true|none|none|
-|» creator|object|true|none|none|
+|*anonymous*|[allOf]|false|none|none|
+
+*allOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[BlogPostModelV3Base](#schemablogpostmodelv3base)|false|none|none|
 |»» id|string|true|none|none|
-|»» owner|object|true|none|none|
-|»»» id|string|true|none|none|
-|»»» username|string|true|none|none|
+|»» guid|string|true|none|none|
 |»» title|string|true|none|none|
-|»» urlname|string|true|none|none|
-|»» description|string|true|none|none|
-|»» about|string|true|none|none|
-|»» category|object|true|none|none|
-|»»» title|string|false|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
+|»» type|string|true|none|none|
+|»» tags|[string]|true|none|none|
+|»» attachmentOrder|[string]|true|none|none|
+|»» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
+|»»» hasVideo|boolean|true|none|none|
+|»»» videoCount|integer|true|none|none|
+|»»» videoDuration|number|true|none|none|
+|»»» hasAudio|boolean|true|none|none|
+|»»» audioCount|integer|true|none|none|
+|»»» audioDuration|number|true|none|none|
+|»»» hasPicture|boolean|true|none|none|
+|»»» pictureCount|integer|true|none|none|
+|»»» hasGallery|boolean|true|none|none|
+|»»» galleryCount|integer|true|none|none|
+|»»» isFeatured|boolean|true|none|none|
+|»» releaseDate|string(date-time)|true|none|none|
+|»» likes|integer|true|none|none|
+|»» dislikes|integer|true|none|none|
+|»» score|integer|true|none|none|
+|»» comments|integer|true|none|none|
+|»» creator|object|true|none|none|
+|»»» id|string|true|none|none|
+|»»» owner|object|true|none|none|
+|»»»» id|string|true|none|none|
+|»»»» username|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» urlname|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» about|string|true|none|none|
+|»»» category|object|true|none|none|
+|»»»» title|string|false|none|none|
+|»»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
-|»»» id|string|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|»»» owner|string|true|none|none|
-|»»» streamPath|string|true|none|none|
-|»»» offline|object|true|none|none|
-|»»»» title|string|false|none|none|
-|»»»» description|string|false|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
-|»»» id|string|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» price|string|false|none|none|
-|»»» priceYearly|string|false|none|none|
-|»»» currency|string|true|none|none|
-|»»» logo|string|false|none|none|
-|»»» interval|string|true|none|none|
-|»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean|false|none|none|
-|»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
 |»»»» id|string|true|none|none|
-|»»»» guildName|string|true|none|none|
-|»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string(uri)|true|none|none|
-|»»»» inviteMode|string|true|none|none|
-|»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
-|»»»» server|string|true|none|none|
-|»»»» roleName|string|true|none|none|
-|»» discoverable|boolean|true|none|none|
-|»» subscriberCountDisplay|string|true|none|none|
-|»» incomeDisplay|boolean|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)|false|none|none|
-|» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-|» videoAttachments|[string]|false|none|none|
-|» audioAttachments|[string]|false|none|none|
-|» pictureAttachments|[string]|false|none|none|
-|» galleryAttachments|[string]|false|none|none|
+|»»»» title|string|true|none|none|
+|»»»» description|string|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»»» owner|string|true|none|none|
+|»»»» streamPath|string|true|none|none|
+|»»»» offline|object|true|none|none|
+|»»»»» title|string|false|none|none|
+|»»»»» description|string|false|none|none|
+|»»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|»»»» id|string|true|none|none|
+|»»»» title|string|true|none|none|
+|»»»» description|string|true|none|none|
+|»»»» price|string|false|none|none|
+|»»»» priceYearly|string|false|none|none|
+|»»»» currency|string|true|none|none|
+|»»»» logo|string|false|none|none|
+|»»»» interval|string|true|none|none|
+|»»»» featured|boolean|true|none|none|
+|»»»» allowGrandfatheredAccess|boolean|false|none|none|
+|»»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»»»» id|string|true|none|none|
+|»»»»» guildName|string|true|none|none|
+|»»»»» guildIcon|string|true|none|none|
+|»»»»» inviteLink|string(uri)|true|none|none|
+|»»»»» inviteMode|string|true|none|none|
+|»»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»»»» server|string|true|none|none|
+|»»»»» roleName|string|true|none|none|
+|»»» discoverable|boolean|true|none|none|
+|»»» subscriberCountDisplay|string|true|none|none|
+|»»» incomeDisplay|boolean|true|none|none|
+|»»» card|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» wasReleasedSilently|boolean|true|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+
+*and*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» videoAttachments|[string]|true|none|none|
+|»» audioAttachments|[string]|true|none|none|
+|»» pictureAttachments|[string]|true|none|none|
+|»» galleryAttachments|[string]|true|none|none|
 
 #### Enumerated Values
 
@@ -87403,7 +87415,7 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[[BlogPostModelV3](#schemablogpostmodelv3)]|false|none|none|
+|*anonymous*|[[BlogPostModelV3Base](#schemablogpostmodelv3base)]|false|none|none|
 |» id|string|true|none|none|
 |» guid|string|true|none|none|
 |» title|string|true|none|none|
@@ -87486,10 +87498,6 @@ Status Code **200**
 |» wasReleasedSilently|boolean|true|none|none|
 |» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-|» videoAttachments|[string]|false|none|none|
-|» audioAttachments|[string]|false|none|none|
-|» pictureAttachments|[string]|false|none|none|
-|» galleryAttachments|[string]|false|none|none|
 
 #### Enumerated Values
 
@@ -97821,17 +97829,47 @@ CookieAuth
 |---|---|---|---|---|
 |token|string|false|none|The two-factor authentication token that the user inputs to complete the login process.|
 
-<h2 id="tocS_CdnDeliveryV2Response">CdnDeliveryV2Response</h2>
+<h2 id="tocS_CdnDeliveryV2QualityLevelModel">CdnDeliveryV2QualityLevelModel</h2>
 <!-- backwards compatibility -->
-<a id="schemacdndeliveryv2response"></a>
-<a id="schema_CdnDeliveryV2Response"></a>
-<a id="tocScdndeliveryv2response"></a>
-<a id="tocscdndeliveryv2response"></a>
+<a id="schemacdndeliveryv2qualitylevelmodel"></a>
+<a id="schema_CdnDeliveryV2QualityLevelModel"></a>
+<a id="tocScdndeliveryv2qualitylevelmodel"></a>
+<a id="tocscdndeliveryv2qualitylevelmodel"></a>
+
+```json
+{
+  "name": "string",
+  "width": 0,
+  "height": 0,
+  "label": "string",
+  "order": 0
+}
+
+```
+
+Represents a quality of video to download/stream.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key.|
+|width|integer|true|none|The video quality's resolution's width in pixels.|
+|height|integer|true|none|The video quality resolution's height in pixels.|
+|label|string|true|none|The display-friendly version of `name`.|
+|order|integer|true|none|The display order to be shown to the user.|
+
+<h2 id="tocS_CdnDeliveryV2VodResponse">CdnDeliveryV2VodResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2vodresponse"></a>
+<a id="schema_CdnDeliveryV2VodResponse"></a>
+<a id="tocScdndeliveryv2vodresponse"></a>
+<a id="tocscdndeliveryv2vodresponse"></a>
 
 ```json
 {
   "cdn": "http://example.com",
-  "strategy": "string",
+  "strategy": "cdn",
   "resource": {
     "uri": "string",
     "data": {
@@ -97851,7 +97889,120 @@ CookieAuth
         "property2": {
           "token": "string"
         }
-      },
+      }
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|cdn|string(uri)|true|none|The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.|
+|strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
+|resource|object|true|none|none|
+|» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
+|» data|object|true|none|none|
+|»» qualityLevels|[[CdnDeliveryV2QualityLevelModel](#schemacdndeliveryv2qualitylevelmodel)]|true|none|[Represents a quality of video to download/stream.]|
+|»» qualityLevelParams|object|true|none|For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.|
+|»»» **additionalProperties**|object|false|none|none|
+|»»»» token|string|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|strategy|cdn|
+|strategy|client|
+
+<h2 id="tocS_CdnDeliveryV2DownloadResponse">CdnDeliveryV2DownloadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2downloadresponse"></a>
+<a id="schema_CdnDeliveryV2DownloadResponse"></a>
+<a id="tocScdndeliveryv2downloadresponse"></a>
+<a id="tocscdndeliveryv2downloadresponse"></a>
+
+```json
+{
+  "edges": [
+    {
+      "hostname": "string",
+      "queryPort": 0,
+      "bandwidth": 0,
+      "allowDownload": true,
+      "allowStreaming": true,
+      "datacenter": {
+        "countryCode": "string",
+        "regionCode": "string",
+        "latitude": 0,
+        "longitude": 0
+      }
+    }
+  ],
+  "client": {},
+  "strategy": "cdn",
+  "resource": {
+    "uri": "string",
+    "data": {
+      "qualityLevels": [
+        {
+          "name": "string",
+          "width": 0,
+          "height": 0,
+          "label": "string",
+          "order": 0
+        }
+      ],
+      "token": "string"
+    }
+  }
+}
+
+```
+
+### Properties
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[EdgesModel](#schemaedgesmodel)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|object|false|none|none|
+|» strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
+|» resource|object|true|none|none|
+|»» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
+|»» data|object|true|none|none|
+|»»» qualityLevels|[[CdnDeliveryV2QualityLevelModel](#schemacdndeliveryv2qualitylevelmodel)]|true|none|[Represents a quality of video to download/stream.]|
+|»»» token|string|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|strategy|cdn|
+|strategy|client|
+
+<h2 id="tocS_CdnDeliveryV2LivestreamResponse">CdnDeliveryV2LivestreamResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2livestreamresponse"></a>
+<a id="schema_CdnDeliveryV2LivestreamResponse"></a>
+<a id="tocScdndeliveryv2livestreamresponse"></a>
+<a id="tocscdndeliveryv2livestreamresponse"></a>
+
+```json
+{
+  "cdn": "http://example.com",
+  "strategy": "cdn",
+  "resource": {
+    "uri": "string",
+    "data": {
       "token": "string"
     }
   }
@@ -97863,21 +98014,76 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|cdn|string(uri)|true|none|The domain of the CDN server to use.|
-|strategy|string|true|none|none|
+|cdn|string(uri)|true|none|The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.|
+|strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
 |resource|object|true|none|none|
-|» uri|string|false|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
+|» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property.|
 |» data|object|true|none|none|
-|»» qualityLevels|[object]|false|none|none|
-|»»» name|string|true|none|Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key.|
-|»»» width|integer|true|none|The video quality's resolution's width in pixels.|
-|»»» height|integer|true|none|The video quality resolution's height in pixels.|
-|»»» label|string|true|none|The display-friendly version of `name`.|
-|»»» order|integer|true|none|The display order to be shown to the user.|
-|»» qualityLevelParams|object|false|none|none|
-|»»» **additionalProperties**|object|false|none|none|
-|»»»» token|string|true|none|none|
-|»» token|string|false|none|none|
+|»» token|string|true|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|strategy|cdn|
+|strategy|client|
+
+<h2 id="tocS_CdnDeliveryV2Response">CdnDeliveryV2Response</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2response"></a>
+<a id="schema_CdnDeliveryV2Response"></a>
+<a id="tocScdndeliveryv2response"></a>
+<a id="tocscdndeliveryv2response"></a>
+
+```json
+{
+  "cdn": "http://example.com",
+  "strategy": "cdn",
+  "resource": {
+    "uri": "string",
+    "data": {
+      "qualityLevels": [
+        {
+          "name": "string",
+          "width": 0,
+          "height": 0,
+          "label": "string",
+          "order": 0
+        }
+      ],
+      "qualityLevelParams": {
+        "property1": {
+          "token": "string"
+        },
+        "property2": {
+          "token": "string"
+        }
+      }
+    }
+  }
+}
+
+```
+
+### Properties
+
+oneOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[CdnDeliveryV2VodResponse](#schemacdndeliveryv2vodresponse)|false|none|none|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[CdnDeliveryV2DownloadResponse](#schemacdndeliveryv2downloadresponse)|false|none|none|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[CdnDeliveryV2LivestreamResponse](#schemacdndeliveryv2livestreamresponse)|false|none|none|
 
 <h2 id="tocS_PaymentInvoiceListV2Response">PaymentInvoiceListV2Response</h2>
 <!-- backwards compatibility -->
@@ -99623,6 +99829,225 @@ and
 |incomeDisplay|boolean|true|none|none|
 |socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
 
+<h2 id="tocS_BlogPostModelV3Base">BlogPostModelV3Base</h2>
+<!-- backwards compatibility -->
+<a id="schemablogpostmodelv3base"></a>
+<a id="schema_BlogPostModelV3Base"></a>
+<a id="tocSblogpostmodelv3base"></a>
+<a id="tocsblogpostmodelv3base"></a>
+
+```json
+{
+  "id": "string",
+  "guid": "string",
+  "title": "string",
+  "text": "string",
+  "type": "blogPost",
+  "tags": [
+    "string"
+  ],
+  "attachmentOrder": [
+    "string"
+  ],
+  "metadata": {
+    "hasVideo": true,
+    "videoCount": 0,
+    "videoDuration": 0,
+    "hasAudio": true,
+    "audioCount": 0,
+    "audioDuration": 0,
+    "hasPicture": true,
+    "pictureCount": 0,
+    "hasGallery": true,
+    "galleryCount": 0,
+    "isFeatured": true
+  },
+  "releaseDate": "2019-08-24T14:15:22Z",
+  "likes": 0,
+  "dislikes": 0,
+  "score": 0,
+  "comments": 0,
+  "creator": {
+    "id": "string",
+    "owner": {
+      "id": "string",
+      "username": "string"
+    },
+    "title": "string",
+    "urlname": "string",
+    "description": "string",
+    "about": "string",
+    "category": {
+      "title": "string"
+    },
+    "cover": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "icon": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "liveStream": {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "thumbnail": {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "http://example.com"
+          }
+        ]
+      },
+      "owner": "string",
+      "streamPath": "string",
+      "offline": {
+        "title": "string",
+        "description": "string",
+        "thumbnail": {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com",
+          "childImages": [
+            {
+              "width": 0,
+              "height": 0,
+              "path": "http://example.com"
+            }
+          ]
+        }
+      }
+    },
+    "subscriptionPlans": [
+      {
+        "id": "string",
+        "title": "string",
+        "description": "string",
+        "price": "string",
+        "priceYearly": "string",
+        "currency": "string",
+        "logo": "string",
+        "interval": "string",
+        "featured": true,
+        "allowGrandfatheredAccess": true,
+        "discordServers": [
+          {
+            "id": "string",
+            "guildName": "string",
+            "guildIcon": "string",
+            "inviteLink": "http://example.com",
+            "inviteMode": "string"
+          }
+        ],
+        "discordRoles": [
+          {
+            "server": "string",
+            "roleName": "string"
+          }
+        ]
+      }
+    ],
+    "discoverable": true,
+    "subscriberCountDisplay": "string",
+    "incomeDisplay": true,
+    "card": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    }
+  },
+  "wasReleasedSilently": true,
+  "thumbnail": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
+  "isAccessible": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|none|
+|guid|string|true|none|none|
+|title|string|true|none|none|
+|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
+|type|string|true|none|none|
+|tags|[string]|true|none|none|
+|attachmentOrder|[string]|true|none|none|
+|metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
+|releaseDate|string(date-time)|true|none|none|
+|likes|integer|true|none|none|
+|dislikes|integer|true|none|none|
+|score|integer|true|none|none|
+|comments|integer|true|none|none|
+|creator|object|true|none|none|
+|» id|string|true|none|none|
+|» owner|object|true|none|none|
+|»» id|string|true|none|none|
+|»» username|string|true|none|none|
+|» title|string|true|none|none|
+|» urlname|string|true|none|none|
+|» description|string|true|none|none|
+|» about|string|true|none|none|
+|» category|object|true|none|none|
+|»» title|string|false|none|none|
+|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|» discoverable|boolean|true|none|none|
+|» subscriberCountDisplay|string|true|none|none|
+|» incomeDisplay|boolean|true|none|none|
+|» card|[ImageModel](#schemaimagemodel)|false|none|none|
+|wasReleasedSilently|boolean|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|type|blogPost|
+
 <h2 id="tocS_BlogPostModelV3">BlogPostModelV3</h2>
 <!-- backwards compatibility -->
 <a id="schemablogpostmodelv3"></a>
@@ -99810,53 +100235,21 @@ and
 
 ### Properties
 
+allOf
+
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|id|string|true|none|none|
-|guid|string|true|none|none|
-|title|string|true|none|none|
-|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
-|type|string|true|none|none|
-|tags|[string]|true|none|none|
-|attachmentOrder|[string]|true|none|none|
-|metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
-|releaseDate|string(date-time)|true|none|none|
-|likes|integer|true|none|none|
-|dislikes|integer|true|none|none|
-|score|integer|true|none|none|
-|comments|integer|true|none|none|
-|creator|object|true|none|none|
-|» id|string|true|none|none|
-|» owner|object|true|none|none|
-|»» id|string|true|none|none|
-|»» username|string|true|none|none|
-|» title|string|true|none|none|
-|» urlname|string|true|none|none|
-|» description|string|true|none|none|
-|» about|string|true|none|none|
-|» category|object|true|none|none|
-|»» title|string|false|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
-|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
-|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
-|» discoverable|boolean|true|none|none|
-|» subscriberCountDisplay|string|true|none|none|
-|» incomeDisplay|boolean|true|none|none|
-|» card|[ImageModel](#schemaimagemodel)|false|none|none|
-|wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-|videoAttachments|[string]|false|none|none|
-|audioAttachments|[string]|false|none|none|
-|pictureAttachments|[string]|false|none|none|
-|galleryAttachments|[string]|false|none|none|
+|*anonymous*|[BlogPostModelV3Base](#schemablogpostmodelv3base)|false|none|none|
 
-#### Enumerated Values
+and
 
-|Property|Value|
-|---|---|
-|type|blogPost|
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|object|false|none|none|
+|» videoAttachments|[string]|true|none|none|
+|» audioAttachments|[string]|true|none|none|
+|» pictureAttachments|[string]|true|none|none|
+|» galleryAttachments|[string]|true|none|none|
 
 <h2 id="tocS_SubscriptionPlanModel">SubscriptionPlanModel</h2>
 <!-- backwards compatibility -->

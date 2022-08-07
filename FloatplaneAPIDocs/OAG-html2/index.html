@@ -946,6 +946,43 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/BlogPostModelV3Base"
+  }, {
+    "$ref" : "#/components/schemas/BlogPostModelV3_allOf"
+  } ]
+};
+    defs["BlogPostModelV3_allOf"] = {
+  "required" : [ "audioAttachments", "galleryAttachments", "pictureAttachments", "videoAttachments" ],
+  "type" : "object",
+  "properties" : {
+    "videoAttachments" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "audioAttachments" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "pictureAttachments" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "galleryAttachments" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
+    }
+  }
+};
+    defs["BlogPostModelV3Base"] = {
   "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
@@ -998,7 +1035,7 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "creator" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3_creator"
+      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator"
     },
     "wasReleasedSilently" : {
       "type" : "boolean"
@@ -1009,34 +1046,10 @@ ul.nav-tabs {
     "isAccessible" : {
       "type" : "boolean",
       "description" : "If false, the post should be marked as locked and not viewable by the user."
-    },
-    "videoAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "audioAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "pictureAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "galleryAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
     }
   }
 };
-    defs["BlogPostModelV3_creator"] = {
+    defs["BlogPostModelV3Base_creator"] = {
   "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
@@ -1044,7 +1057,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "owner" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3_creator_owner"
+      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator_owner"
     },
     "title" : {
       "type" : "string"
@@ -1059,7 +1072,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "category" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3_creator_category"
+      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator_category"
     },
     "cover" : {
       "$ref" : "#/components/schemas/ImageModel"
@@ -1090,7 +1103,7 @@ ul.nav-tabs {
     }
   }
 };
-    defs["BlogPostModelV3_creator_category"] = {
+    defs["BlogPostModelV3Base_creator_category"] = {
   "type" : "object",
   "properties" : {
     "title" : {
@@ -1098,7 +1111,7 @@ ul.nav-tabs {
     }
   }
 };
-    defs["BlogPostModelV3_creator_owner"] = {
+    defs["BlogPostModelV3Base_creator_owner"] = {
   "required" : [ "id", "username" ],
   "type" : "object",
   "properties" : {
@@ -1110,25 +1123,29 @@ ul.nav-tabs {
     }
   }
 };
-    defs["CdnDeliveryV2Response"] = {
-  "required" : [ "cdn", "resource", "strategy" ],
+    defs["CdnDeliveryV2DownloadResponse"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/EdgesModel"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse_allOf"
+  } ]
+};
+    defs["CdnDeliveryV2DownloadResponse_allOf"] = {
+  "required" : [ "resource", "strategy" ],
   "type" : "object",
   "properties" : {
-    "cdn" : {
-      "type" : "string",
-      "description" : "The domain of the CDN server to use.",
-      "format" : "uri"
-    },
     "strategy" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+      "enum" : [ "cdn", "client" ]
     },
     "resource" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2Response_resource"
+      "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse_allOf_resource"
     }
   }
 };
-    defs["CdnDeliveryV2Response_resource"] = {
-  "required" : [ "data", "url" ],
+    defs["CdnDeliveryV2DownloadResponse_allOf_resource"] = {
+  "required" : [ "data", "uri" ],
   "type" : "object",
   "properties" : {
     "uri" : {
@@ -1136,23 +1153,18 @@ ul.nav-tabs {
       "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
     },
     "data" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2Response_resource_data"
+      "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse_allOf_resource_data"
     }
   }
 };
-    defs["CdnDeliveryV2Response_resource_data"] = {
+    defs["CdnDeliveryV2DownloadResponse_allOf_resource_data"] = {
+  "required" : [ "qualityLevels", "token" ],
   "type" : "object",
   "properties" : {
     "qualityLevels" : {
       "type" : "array",
       "items" : {
-        "$ref" : "#/components/schemas/CdnDeliveryV2Response_resource_data_qualityLevels_inner"
-      }
-    },
-    "qualityLevelParams" : {
-      "type" : "object",
-      "additionalProperties" : {
-        "$ref" : "#/components/schemas/CdnDeliveryV2Response_resource_data_qualityLevelParams_value"
+        "$ref" : "#/components/schemas/CdnDeliveryV2QualityLevelModel"
       }
     },
     "token" : {
@@ -1160,16 +1172,39 @@ ul.nav-tabs {
     }
   }
 };
-    defs["CdnDeliveryV2Response_resource_data_qualityLevelParams_value"] = {
-  "required" : [ "token" ],
+    defs["CdnDeliveryV2LivestreamResponse"] = {
+  "required" : [ "cdn", "resource", "strategy" ],
   "type" : "object",
   "properties" : {
-    "token" : {
-      "type" : "string"
+    "cdn" : {
+      "type" : "string",
+      "description" : "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.",
+      "format" : "uri"
+    },
+    "strategy" : {
+      "type" : "string",
+      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+      "enum" : [ "cdn", "client" ]
+    },
+    "resource" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV2LivestreamResponse_resource"
     }
   }
 };
-    defs["CdnDeliveryV2Response_resource_data_qualityLevels_inner"] = {
+    defs["CdnDeliveryV2LivestreamResponse_resource"] = {
+  "required" : [ "data", "uri" ],
+  "type" : "object",
+  "properties" : {
+    "uri" : {
+      "type" : "string",
+      "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property."
+    },
+    "data" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"
+    }
+  }
+};
+    defs["CdnDeliveryV2QualityLevelModel"] = {
   "required" : [ "height", "label", "name", "order", "width" ],
   "type" : "object",
   "properties" : {
@@ -1194,7 +1229,76 @@ ul.nav-tabs {
       "description" : "The display order to be shown to the user."
     }
   },
-  "description" : "Represents a quality of video to download"
+  "description" : "Represents a quality of video to download/stream."
+};
+    defs["CdnDeliveryV2Response"] = {
+  "oneOf" : [ {
+    "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV2LivestreamResponse"
+  } ]
+};
+    defs["CdnDeliveryV2VodResponse"] = {
+  "required" : [ "cdn", "resource", "strategy" ],
+  "type" : "object",
+  "properties" : {
+    "cdn" : {
+      "type" : "string",
+      "description" : "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.",
+      "format" : "uri"
+    },
+    "strategy" : {
+      "type" : "string",
+      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+      "enum" : [ "cdn", "client" ]
+    },
+    "resource" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource"
+    }
+  }
+};
+    defs["CdnDeliveryV2VodResponse_resource"] = {
+  "required" : [ "data", "uri" ],
+  "type" : "object",
+  "properties" : {
+    "uri" : {
+      "type" : "string",
+      "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
+    },
+    "data" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data"
+    }
+  }
+};
+    defs["CdnDeliveryV2VodResponse_resource_data"] = {
+  "required" : [ "qualityLevelParams", "qualityLevels" ],
+  "type" : "object",
+  "properties" : {
+    "qualityLevels" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV2QualityLevelModel"
+      }
+    },
+    "qualityLevelParams" : {
+      "type" : "object",
+      "additionalProperties" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"
+      },
+      "description" : "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL."
+    }
+  }
+};
+    defs["CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"] = {
+  "required" : [ "token" ],
+  "type" : "object",
+  "properties" : {
+    "token" : {
+      "type" : "string"
+    }
+  }
 };
     defs["CheckFor2faLoginRequest"] = {
   "type" : "object",
@@ -18829,7 +18933,7 @@ public class ContentV3ApiExample {
         String id = id_example; // String | The ID of the originating post.
 
         try {
-            array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
+            array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getRelatedBlogPosts");
@@ -18849,7 +18953,7 @@ public class ContentV3ApiExample {
         String id = id_example; // String | The ID of the originating post.
 
         try {
-            array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
+            array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getRelatedBlogPosts");
@@ -18877,7 +18981,7 @@ String *id = id_example; // The ID of the originating post. (default to null)
 
 // Get Related Blog Posts
 [apiInstance getRelatedBlogPostsWith:id
-              completionHandler: ^(array[BlogPostModelV3] output, NSError* error) {
+              completionHandler: ^(array[BlogPostModelV3Base] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -18940,7 +19044,7 @@ namespace Example
 
             try {
                 // Get Related Blog Posts
-                array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
+                array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ContentV3Api.getRelatedBlogPosts: " + e.Message );
@@ -19115,7 +19219,7 @@ The ID of the originating post.
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/BlogPostModelV3"
+          "$ref" : "#/components/schemas/BlogPostModelV3Base"
         }
       },
       "example" : [ {

@@ -917,7 +917,7 @@ ul.nav-tabs {
   }
 };
     defs["AuthLoginV2Request"] = {
-  "required" : [ "password", "username" ],
+  "required" : [ "captchaToken", "password", "username" ],
   "type" : "object",
   "properties" : {
     "username" : {
@@ -928,7 +928,8 @@ ul.nav-tabs {
     },
     "captchaToken" : {
       "type" : "string",
-      "description" : "The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains \"CFNetwork\" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios."
+      "description" : "The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains \"CFNetwork\" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios.",
+      "nullable" : true
     }
   }
 };
@@ -983,7 +984,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3Base"] = {
-  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "title", "type", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1050,7 +1051,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3Base_creator"] = {
-  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "card", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1072,7 +1073,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "category" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator_category"
+      "$ref" : "#/components/schemas/CreatorModelV3_category"
     },
     "cover" : {
       "$ref" : "#/components/schemas/ImageModel"
@@ -1100,14 +1101,6 @@ ul.nav-tabs {
     },
     "card" : {
       "$ref" : "#/components/schemas/ImageModel"
-    }
-  }
-};
-    defs["BlogPostModelV3Base_creator_category"] = {
-  "type" : "object",
-  "properties" : {
-    "title" : {
-      "type" : "string"
     }
   }
 };
@@ -1301,6 +1294,7 @@ ul.nav-tabs {
   }
 };
     defs["CheckFor2faLoginRequest"] = {
+  "required" : [ "token" ],
   "type" : "object",
   "properties" : {
     "token" : {
@@ -1340,7 +1334,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentModel"] = {
-  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user" ],
+  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1380,7 +1374,7 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "interactionCounts" : {
-      "$ref" : "#/components/schemas/CommentModel_interactionCounts"
+      "$ref" : "#/components/schemas/CommentV3PostResponse_interactionCounts"
     },
     "totalReplies" : {
       "type" : "integer"
@@ -1396,19 +1390,8 @@ ul.nav-tabs {
     }
   }
 };
-    defs["CommentModel_interactionCounts"] = {
-  "type" : "object",
-  "properties" : {
-    "like" : {
-      "type" : "integer"
-    },
-    "dislike" : {
-      "type" : "integer"
-    }
-  }
-};
     defs["CommentReplyModel"] = {
-  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replying", "score", "text", "user" ],
+  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1451,7 +1434,7 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "interactionCounts" : {
-      "$ref" : "#/components/schemas/CommentModel_interactionCounts"
+      "$ref" : "#/components/schemas/CommentV3PostResponse_interactionCounts"
     },
     "userInteraction" : {
       "$ref" : "#/components/schemas/UserInteractionModel"
@@ -1579,6 +1562,7 @@ ul.nav-tabs {
   }
 };
     defs["ConnectedAccountModel_connectedAccount_data"] = {
+  "required" : [ "canJoinGuilds" ],
   "type" : "object",
   "properties" : {
     "canJoinGuilds" : {
@@ -1587,7 +1571,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentCreatorListLastItems"] = {
-  "required" : [ "creatorId", "moreFetchable" ],
+  "required" : [ "blogPostId", "creatorId", "moreFetchable" ],
   "type" : "object",
   "properties" : {
     "creatorId" : {
@@ -1595,7 +1579,8 @@ ul.nav-tabs {
     },
     "blogPostId" : {
       "type" : "string",
-      "description" : "This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value."
+      "description" : "This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value.",
+      "nullable" : true
     },
     "moreFetchable" : {
       "type" : "boolean"
@@ -1635,7 +1620,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPictureV3Response"] = {
-  "required" : [ "creator", "description", "dislikes", "guid", "id", "imageFiles", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type" ],
+  "required" : [ "creator", "description", "dislikes", "guid", "id", "imageFiles", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1690,7 +1675,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPostV3Response"] = {
-  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "title", "type", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "userInteraction", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1704,7 +1689,7 @@ ul.nav-tabs {
     },
     "text" : {
       "type" : "string",
-      "description" : "Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.."
+      "description" : "Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML."
     },
     "type" : {
       "type" : "string",
@@ -1759,30 +1744,34 @@ ul.nav-tabs {
     },
     "videoAttachments" : {
       "type" : "array",
+      "description" : "May be undefined when the post is locked.",
       "items" : {
         "$ref" : "#/components/schemas/VideoAttachmentModel"
       }
     },
     "audioAttachments" : {
       "type" : "array",
+      "description" : "May be undefined when the post is locked.",
       "items" : {
         "$ref" : "#/components/schemas/AudioAttachmentModel"
       }
     },
     "pictureAttachments" : {
       "type" : "array",
+      "description" : "May be undefined when the post is locked.",
       "items" : {
         "$ref" : "#/components/schemas/PictureAttachmentModel"
       }
     },
     "galleryAttachments" : {
       "type" : "array",
+      "description" : "May be undefined when the post is locked.",
       "items" : { }
     }
   }
 };
     defs["ContentVideoV3Response"] = {
-  "required" : [ "blogPosts", "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "levels", "likes", "primaryBlogPost", "score", "thumbnail", "timelineSprite", "title", "type" ],
+  "required" : [ "blogPosts", "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "levels", "likes", "primaryBlogPost", "releaseDate", "score", "thumbnail", "timelineSprite", "title", "type", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1876,7 +1865,7 @@ ul.nav-tabs {
   }
 };
     defs["CreatorModelV2"] = {
-  "required" : [ "about", "category", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "subscriberCountDisplay", "title", "urlname" ],
+  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1911,6 +1900,7 @@ ul.nav-tabs {
     },
     "subscriptionPlans" : {
       "type" : "array",
+      "nullable" : true,
       "items" : {
         "type" : "object"
       }
@@ -1949,7 +1939,7 @@ ul.nav-tabs {
   }
 };
     defs["CreatorModelV3"] = {
-  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1984,6 +1974,7 @@ ul.nav-tabs {
     },
     "subscriptionPlans" : {
       "type" : "array",
+      "nullable" : true,
       "items" : {
         "$ref" : "#/components/schemas/SubscriptionPlanModel"
       }
@@ -2046,6 +2037,7 @@ ul.nav-tabs {
   }
 };
     defs["EdgeModel"] = {
+  "required" : [ "allowDownload", "allowStreaming", "bandwidth", "datacenter", "hostname", "queryPort" ],
   "type" : "object",
   "properties" : {
     "hostname" : {
@@ -2070,6 +2062,7 @@ ul.nav-tabs {
   }
 };
     defs["EdgeModel_datacenter"] = {
+  "required" : [ "countryCode", "latitude", "longitude", "regionCode" ],
   "type" : "object",
   "properties" : {
     "countryCode" : {
@@ -2087,6 +2080,7 @@ ul.nav-tabs {
   }
 };
     defs["EdgesModel"] = {
+  "required" : [ "client", "edges" ],
   "type" : "object",
   "properties" : {
     "edges" : {
@@ -2115,7 +2109,8 @@ ul.nav-tabs {
       }
     },
     "message" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "May be undefined."
     }
   }
 };
@@ -2130,11 +2125,15 @@ ul.nav-tabs {
       "type" : "string"
     },
     "message" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "May be undefined.",
+      "nullable" : true
     },
     "data" : {
       "type" : "object",
-      "additionalProperties" : true
+      "additionalProperties" : true,
+      "description" : "May be undefined.",
+      "nullable" : true
     }
   }
 };
@@ -2296,7 +2295,7 @@ ul.nav-tabs {
   }
 };
     defs["ImageModel"] = {
-  "required" : [ "height", "path", "width" ],
+  "required" : [ "childImages", "height", "path", "width" ],
   "type" : "object",
   "properties" : {
     "width" : {
@@ -2311,6 +2310,7 @@ ul.nav-tabs {
     },
     "childImages" : {
       "type" : "array",
+      "nullable" : true,
       "items" : {
         "$ref" : "#/components/schemas/ChildImageModel"
       }
@@ -2318,7 +2318,7 @@ ul.nav-tabs {
   }
 };
     defs["LiveStreamModel"] = {
-  "required" : [ "description", "id", "offline", "owner", "streamPath", "title" ],
+  "required" : [ "description", "id", "offline", "owner", "streamPath", "thumbnail", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2345,6 +2345,7 @@ ul.nav-tabs {
   }
 };
     defs["LiveStreamModel_offline"] = {
+  "required" : [ "description", "thumbnail", "title" ],
   "type" : "object",
   "properties" : {
     "title" : {
@@ -2401,7 +2402,7 @@ ul.nav-tabs {
   }
 };
     defs["PaymentInvoiceListV2Response_invoices_inner"] = {
-  "required" : [ "amountDue", "amountTax", "attemptCount", "currency", "date", "forgiven", "id", "nextPaymentAttempt", "paid", "periodEnd", "periodStart", "refunded" ],
+  "required" : [ "amountDue", "amountTax", "attemptCount", "currency", "date", "dateDue", "forgiven", "id", "nextPaymentAttempt", "paid", "periodEnd", "periodStart", "refunded", "subscriptions" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2453,6 +2454,7 @@ ul.nav-tabs {
     "subscriptions" : {
       "type" : "array",
       "description" : "The subscriptions this invoice is in reference to.",
+      "nullable" : true,
       "items" : {
         "$ref" : "#/components/schemas/PaymentInvoiceListV2Response_invoices_inner_subscriptions_inner"
       }
@@ -2615,7 +2617,7 @@ ul.nav-tabs {
   }
 };
     defs["PlanInfoV2Response"] = {
-  "required" : [ "plans", "totalSuscriberCount" ],
+  "required" : [ "plans", "totalIncome", "totalSubscriberCount" ],
   "type" : "object",
   "properties" : {
     "totalSubscriberCount" : {
@@ -2624,7 +2626,8 @@ ul.nav-tabs {
     },
     "totalIncome" : {
       "type" : "string",
-      "description" : "The total amount of monthly income for this creator. This field tends to always be $0 for regular users."
+      "description" : "The total amount of monthly income for this creator. This field tends to always be $0 for regular users.",
+      "nullable" : true
     },
     "plans" : {
       "type" : "array",
@@ -2635,16 +2638,16 @@ ul.nav-tabs {
   }
 };
     defs["PlanInfoV2Response_plans_inner"] = {
-  "required" : [ "createdAt", "creator", "currency", "description", "discordRoles", "discordServers", "enabled", "enabledGlobal", "featured", "id", "interval", "logo", "paymentID", "price", "title", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/SubscriptionPlanModel"
+  }, {
+    "$ref" : "#/components/schemas/PlanInfoV2Response_plans_inner_allOf"
+  } ]
+};
+    defs["PlanInfoV2Response_plans_inner_allOf"] = {
+  "required" : [ "createdAt", "creator", "enabled", "enabledGlobal", "paymentID", "trialPeriod", "updatedAt", "userIsGrandfathered", "userIsSubscribed" ],
   "type" : "object",
   "properties" : {
-    "discordRoles" : {
-      "type" : "array",
-      "description" : "The available roles for the associated Discord servers that are available with this plan.",
-      "items" : {
-        "$ref" : "#/components/schemas/DiscordRoleModel"
-      }
-    },
     "createdAt" : {
       "type" : "string",
       "format" : "date-time"
@@ -2654,50 +2657,17 @@ ul.nav-tabs {
       "format" : "date-time",
       "nullable" : true
     },
-    "id" : {
-      "type" : "string"
-    },
-    "title" : {
-      "type" : "string"
-    },
     "enabled" : {
       "type" : "boolean"
-    },
-    "featured" : {
-      "type" : "boolean"
-    },
-    "description" : {
-      "type" : "string"
-    },
-    "price" : {
-      "type" : "string"
-    },
-    "priceYearly" : {
-      "type" : "string"
     },
     "paymentID" : {
       "type" : "integer"
     },
-    "currency" : {
-      "type" : "string"
-    },
     "trialPeriod" : {
       "type" : "number"
     },
-    "allowGrandfatheredAccess" : {
-      "type" : "boolean"
-    },
-    "logo" : {
-      "type" : "string"
-    },
     "creator" : {
       "type" : "string"
-    },
-    "discordServers" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/DiscordServerModel"
-      }
     },
     "userIsSubscribed" : {
       "type" : "boolean"
@@ -2707,9 +2677,6 @@ ul.nav-tabs {
     },
     "enabledGlobal" : {
       "type" : "boolean"
-    },
-    "interval" : {
-      "type" : "string"
     }
   }
 };
@@ -2753,7 +2720,7 @@ ul.nav-tabs {
   }
 };
     defs["SubscriptionPlanModel"] = {
-  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "title" ],
+  "required" : [ "allowGrandfatheredAccess", "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "logo", "price", "priceYearly", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2766,16 +2733,19 @@ ul.nav-tabs {
       "type" : "string"
     },
     "price" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "priceYearly" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "currency" : {
       "type" : "string"
     },
     "logo" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "interval" : {
       "type" : "string"
@@ -2784,7 +2754,8 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "allowGrandfatheredAccess" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "nullable" : true
     },
     "discordServers" : {
       "type" : "array",
@@ -2816,7 +2787,7 @@ ul.nav-tabs {
   }
 };
     defs["UserActivityV3Response_activity_inner"] = {
-  "required" : [ "comment", "creatorTitle", "creatorUrl", "postId", "posttitle", "time" ],
+  "required" : [ "comment", "creatorTitle", "creatorUrl", "postId", "postTitle", "time" ],
   "type" : "object",
   "properties" : {
     "time" : {
@@ -2872,6 +2843,7 @@ ul.nav-tabs {
   } ]
 };
     defs["UserLinksV3Response_value"] = {
+  "required" : [ "type", "url" ],
   "type" : "object",
   "properties" : {
     "url" : {
@@ -2885,6 +2857,7 @@ ul.nav-tabs {
   }
 };
     defs["UserLinksV3Response_value_type"] = {
+  "required" : [ "displayName", "hostName", "name" ],
   "type" : "object",
   "properties" : {
     "name" : {
@@ -2924,20 +2897,8 @@ ul.nav-tabs {
     "users" : {
       "type" : "array",
       "items" : {
-        "$ref" : "#/components/schemas/UserNamedV2Response_users_inner"
+        "$ref" : "#/components/schemas/UserInfoV2Response_users_inner"
       }
-    }
-  }
-};
-    defs["UserNamedV2Response_users_inner"] = {
-  "required" : [ "id", "user" ],
-  "type" : "object",
-  "properties" : {
-    "id" : {
-      "type" : "string"
-    },
-    "user" : {
-      "$ref" : "#/components/schemas/UserSelfModel"
     }
   }
 };
@@ -3016,7 +2977,7 @@ ul.nav-tabs {
   }
 };
     defs["UserSelfModel"] = {
-  "required" : [ "id", "profileImage", "username" ],
+  "required" : [ "displayName", "email", "id", "profileImage", "username" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -3037,7 +2998,7 @@ ul.nav-tabs {
   }
 };
     defs["UserSelfV3Response"] = {
-  "required" : [ "id", "profileImage", "username" ],
+  "required" : [ "creators", "displayName", "email", "id", "profileImage", "scheduledDeletionDate", "username" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -3060,7 +3021,9 @@ ul.nav-tabs {
       "items" : { }
     },
     "scheduledDeletionDate" : {
-      "type" : "string"
+      "type" : "string",
+      "format" : "date-time",
+      "nullable" : true
     }
   }
 };
@@ -3087,63 +3050,15 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "plan" : {
-      "$ref" : "#/components/schemas/UserSubscriptionModel_plan"
+      "$ref" : "#/components/schemas/SubscriptionPlanModel"
     },
     "creator" : {
       "type" : "string"
     }
   }
 };
-    defs["UserSubscriptionModel_plan"] = {
-  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "title" ],
-  "type" : "object",
-  "properties" : {
-    "id" : {
-      "type" : "string"
-    },
-    "title" : {
-      "type" : "string"
-    },
-    "description" : {
-      "type" : "string"
-    },
-    "price" : {
-      "type" : "string"
-    },
-    "priceYearly" : {
-      "type" : "string"
-    },
-    "currency" : {
-      "type" : "string"
-    },
-    "logo" : {
-      "type" : "string"
-    },
-    "interval" : {
-      "type" : "string"
-    },
-    "featured" : {
-      "type" : "boolean"
-    },
-    "allowGrandfatheredAccess" : {
-      "type" : "boolean"
-    },
-    "discordServers" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/DiscordServerModel"
-      }
-    },
-    "discordRoles" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/DiscordRoleModel"
-      }
-    }
-  }
-};
     defs["VideoAttachmentModel"] = {
-  "required" : [ "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "score", "thumbnail", "title", "type" ],
+  "required" : [ "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "likes", "primaryBlogPost", "releaseDate", "score", "thumbnail", "title", "type" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -3197,6 +3112,7 @@ ul.nav-tabs {
   }
 };
     defs["votePoll_request"] = {
+  "required" : [ "optionIndex", "pollId" ],
   "type" : "object",
   "properties" : {
     "pollId" : {

@@ -22937,7 +22937,7 @@ Status Code **200**
 |»» remoteUserId|string|true|none|none|
 |»» remoteUserName|string|true|none|none|
 |»» data|object|true|none|none|
-|»»» canJoinGuilds|boolean|false|none|none|
+|»»» canJoinGuilds|boolean|true|none|none|
 |» connected|boolean|true|none|If true, the user is connected and the `connectedAccount` will have data about the account.|
 |» isAccountProvider|boolean|true|none|none|
 
@@ -23591,27 +23591,27 @@ Status Code **200**
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|false|none|none|
+|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
-|»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|false|none|none|
-|»»» description|string|false|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|» subscriptionPlans|[object]|false|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» subscriptionPlans|[object]¦null|true|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
@@ -24019,27 +24019,27 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|false|none|none|
-|»»»» description|string|false|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|»» subscriptionPlans|[object]|false|none|none|
+|»»»» title|string|true|none|none|
+|»»»» description|string|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» subscriptionPlans|[object]¦null|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
@@ -27759,33 +27759,33 @@ Status Code **200**
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
-|»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|false|none|none|
-|»»» description|string|false|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» price|string|false|none|none|
-|»» priceYearly|string|false|none|none|
+|»» price|string¦null|true|none|none|
+|»» priceYearly|string¦null|true|none|none|
 |»» currency|string|true|none|none|
-|»» logo|string|false|none|none|
+|»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean|false|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
@@ -48954,17 +48954,17 @@ Status Code **200**
 |» paymentID|integer|true|none|none|
 |» interval|string|true|none|none|
 |» paymentCancelled|boolean|true|none|none|
-|» plan|object|true|none|none|
+|» plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» price|string|false|none|none|
-|»» priceYearly|string|false|none|none|
+|»» price|string¦null|true|none|none|
+|»» priceYearly|string¦null|true|none|none|
 |»» currency|string|true|none|none|
-|»» logo|string|false|none|none|
+|»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean|false|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
@@ -60455,27 +60455,27 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|false|none|none|
-|»»»» description|string|false|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
-|»» subscriptionPlans|[object]|false|none|none|
+|»»»» title|string|true|none|none|
+|»»»» description|string|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» subscriptionPlans|[object]¦null|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
@@ -83496,7 +83496,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
@@ -83510,8 +83510,8 @@ Status Code **200**
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
 |» interactionCounts|object|true|none|none|
-|»» like|integer|false|none|none|
-|»» dislike|integer|false|none|none|
+|»» like|integer|true|none|none|
+|»» dislike|integer|true|none|none|
 |» totalReplies|integer|true|none|none|
 |» replies|[[CommentReplyModel](#schemacommentreplymodel)]|true|none|none|
 |»» id|string|true|none|none|
@@ -83527,10 +83527,10 @@ Status Code **200**
 |»» dislikes|integer|true|none|none|
 |»» score|integer|true|none|none|
 |»» interactionCounts|object|true|none|none|
-|»»» like|integer|false|none|none|
-|»»» dislike|integer|false|none|none|
-|»» userInteraction|[string]|false|none|none|
-|» userInteraction|[string]|false|none|none|
+|»»» like|integer|true|none|none|
+|»»» dislike|integer|true|none|none|
+|»» userInteraction|[string]|true|none|none|
+|» userInteraction|[string]|true|none|none|
 
 #### Links
 
@@ -83878,7 +83878,7 @@ Status Code **200**
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
@@ -83892,9 +83892,9 @@ Status Code **200**
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
 |» interactionCounts|object|true|none|none|
-|»» like|integer|false|none|none|
-|»» dislike|integer|false|none|none|
-|» userInteraction|[string]|false|none|none|
+|»» like|integer|true|none|none|
+|»» dislike|integer|true|none|none|
+|» userInteraction|[string]|true|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -85190,38 +85190,38 @@ Status Code **200**
 |»»» description|string|true|none|none|
 |»»» about|string|true|none|none|
 |»»» category|object|true|none|none|
-|»»»» title|string|false|none|none|
+|»»»» title|string|true|none|none|
 |»»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»»» width|integer|true|none|none|
 |»»»»» height|integer|true|none|none|
 |»»»»» path|string(uri)|true|none|none|
 |»»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|»»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» title|string|true|none|none|
 |»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»»» owner|string|true|none|none|
 |»»»» streamPath|string|true|none|none|
 |»»»» offline|object|true|none|none|
-|»»»»» title|string|false|none|none|
-|»»»»» description|string|false|none|none|
-|»»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»»»» title|string|true|none|none|
+|»»»»» description|string|true|none|none|
+|»»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» title|string|true|none|none|
 |»»»» description|string|true|none|none|
-|»»»» price|string|false|none|none|
-|»»»» priceYearly|string|false|none|none|
+|»»»» price|string¦null|true|none|none|
+|»»»» priceYearly|string¦null|true|none|none|
 |»»»» currency|string|true|none|none|
-|»»»» logo|string|false|none|none|
+|»»»» logo|string¦null|true|none|none|
 |»»»» interval|string|true|none|none|
 |»»»» featured|boolean|true|none|none|
-|»»»» allowGrandfatheredAccess|boolean|false|none|none|
+|»»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
 |»»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»»» id|string|true|none|none|
 |»»»»» guildName|string|true|none|none|
@@ -85234,9 +85234,9 @@ Status Code **200**
 |»»» discoverable|boolean|true|none|none|
 |»»» subscriberCountDisplay|string|true|none|none|
 |»»» incomeDisplay|boolean|true|none|none|
-|»»» card|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» wasReleasedSilently|boolean|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 *and*
@@ -87450,38 +87450,38 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|object|true|none|none|
-|»»» title|string|false|none|none|
+|»»» title|string|true|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|false|none|none|
-|»»»» description|string|false|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|»»»» title|string|true|none|none|
+|»»»» description|string|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» price|string|false|none|none|
-|»»» priceYearly|string|false|none|none|
+|»»» price|string¦null|true|none|none|
+|»»» priceYearly|string¦null|true|none|none|
 |»»» currency|string|true|none|none|
-|»»» logo|string|false|none|none|
+|»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean|false|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
@@ -87494,9 +87494,9 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)|false|none|none|
+|»» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 #### Enumerated Values
@@ -93199,8 +93199,8 @@ Vote on an option of a poll. Voting a second time or attempting to change a choi
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|true|none|
-|» pollId|body|string|false|The id of the poll to vote on.|
-|» optionIndex|body|integer|false|The index of the options of the poll for which to vote. This should not be outside the bounds of the poll options.|
+|» pollId|body|string|true|The id of the poll to vote on.|
+|» optionIndex|body|integer|true|The index of the options of the poll for which to vote. This should not be outside the bounds of the poll options.|
 
 > Example responses
 
@@ -93498,10 +93498,10 @@ TODO
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|true|none|
-|» creatorId|body|string|false|none|
-|» skip|body|integer|false|none|
-|» limit|body|integer|false|none|
-|» activeOnly|body|boolean|false|none|
+|» creatorId|body|string|true|none|
+|» skip|body|integer|true|none|
+|» limit|body|integer|true|none|
+|» activeOnly|body|boolean|true|none|
 
 > Example responses
 
@@ -93807,11 +93807,11 @@ TODO
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|true|none|
-|» creatorId|body|string|false|none|
-|» type|body|string|false|none|
-|» title|body|string|false|none|
-|» options|body|[string]|false|none|
-|» duration|body|string|false|none|
+|» creatorId|body|string|true|none|
+|» type|body|string|true|none|
+|» title|body|string|true|none|
+|» options|body|[string]|true|none|
+|» duration|body|string|true|none|
 
 > Example responses
 
@@ -94103,7 +94103,7 @@ TODO
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|true|none|
-|» pollId|body|string|false|none|
+|» pollId|body|string|true|none|
 
 > Example responses
 
@@ -97770,7 +97770,7 @@ CookieAuth
 |---|---|---|---|---|
 |username|string|true|none|none|
 |password|string|true|none|none|
-|captchaToken|string|false|none|The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains "CFNetwork" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios.|
+|captchaToken|string¦null|true|none|The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains "CFNetwork" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios.|
 
 <h2 id="tocS_AuthLoginV2Response">AuthLoginV2Response</h2>
 <!-- backwards compatibility -->
@@ -97806,7 +97806,7 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|user|[UserModel](#schemausermodel)|false|none|Represents some basic information of a user (id, username, and profile image).|
+|user|[UserModel](#schemausermodel)|false|none|Identifying information about the new-logged-in user upon success. May be undefined when `needs2FA` is `true`.|
 |needs2FA|boolean|true|none|If true, the user has not yet been authenticated, and will need to submit the 2FA token to complete authentication.|
 
 <h2 id="tocS_CheckFor2faLoginRequest">CheckFor2faLoginRequest</h2>
@@ -97827,7 +97827,7 @@ CookieAuth
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|token|string|false|none|The two-factor authentication token that the user inputs to complete the login process.|
+|token|string|true|none|The two-factor authentication token that the user inputs to complete the login process.|
 
 <h2 id="tocS_CdnDeliveryV2QualityLevelModel">CdnDeliveryV2QualityLevelModel</h2>
 <!-- backwards compatibility -->
@@ -98159,14 +98159,14 @@ xor
 |» attemptCount|integer|true|none|none|
 |» currency|string|true|none|none|
 |» date|string(date-time)|true|none|none|
-|» dateDue|string(date-time)¦null|false|none|none|
+|» dateDue|string(date-time)¦null|true|none|none|
 |» periodStart|string(date-time)|true|none|none|
 |» periodEnd|string(date-time)|true|none|none|
 |» nextPaymentAttempt|string(date-time)¦null|true|none|none|
 |» paid|boolean|true|none|none|
 |» forgiven|boolean|true|none|none|
 |» refunded|boolean|true|none|none|
-|» subscriptions|[object]|false|none|The subscriptions this invoice is in reference to.|
+|» subscriptions|[object]¦null|true|none|The subscriptions this invoice is in reference to.|
 |»» id|integer|true|none|none|
 |»» subscription|number|true|none|none|
 |»» periodStart|string(date-time)¦null|true|none|none|
@@ -98197,27 +98197,16 @@ xor
   "totalIncome": "string",
   "plans": [
     {
-      "discordRoles": [
-        {
-          "server": "string",
-          "roleName": "string"
-        }
-      ],
-      "createdAt": "2019-08-24T14:15:22Z",
-      "updatedAt": "2019-08-24T14:15:22Z",
       "id": "string",
       "title": "string",
-      "enabled": true,
-      "featured": true,
       "description": "string",
       "price": "string",
       "priceYearly": "string",
-      "paymentID": 0,
       "currency": "string",
-      "trialPeriod": 0,
-      "allowGrandfatheredAccess": true,
       "logo": "string",
-      "creator": "string",
+      "interval": "string",
+      "featured": true,
+      "allowGrandfatheredAccess": true,
       "discordServers": [
         {
           "id": "string",
@@ -98227,10 +98216,21 @@ xor
           "inviteMode": "string"
         }
       ],
+      "discordRoles": [
+        {
+          "server": "string",
+          "roleName": "string"
+        }
+      ],
+      "createdAt": "2019-08-24T14:15:22Z",
+      "updatedAt": "2019-08-24T14:15:22Z",
+      "enabled": true,
+      "paymentID": 0,
+      "trialPeriod": 0,
+      "creator": "string",
       "userIsSubscribed": true,
       "userIsGrandfathered": true,
-      "enabledGlobal": true,
-      "interval": "string"
+      "enabledGlobal": true
     }
   ]
 }
@@ -98241,30 +98241,30 @@ xor
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|totalSubscriberCount|integer|false|none|The total number of subscribers for this creator.|
-|totalIncome|string|false|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
-|plans|[object]|true|none|none|
-|» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|The available roles for the associated Discord servers that are available with this plan.|
-|» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)¦null|true|none|none|
-|» id|string|true|none|none|
-|» title|string|true|none|none|
-|» enabled|boolean|true|none|none|
-|» featured|boolean|true|none|none|
-|» description|string|true|none|none|
-|» price|string|true|none|none|
-|» priceYearly|string|false|none|none|
-|» paymentID|integer|true|none|none|
-|» currency|string|true|none|none|
-|» trialPeriod|number|true|none|none|
-|» allowGrandfatheredAccess|boolean|false|none|none|
-|» logo|string|true|none|none|
-|» creator|string|true|none|none|
-|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
-|» userIsSubscribed|boolean|true|none|none|
-|» userIsGrandfathered|boolean|true|none|none|
-|» enabledGlobal|boolean|true|none|none|
-|» interval|string|true|none|none|
+|totalSubscriberCount|integer|true|none|The total number of subscribers for this creator.|
+|totalIncome|string¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
+|plans|[allOf]|true|none|none|
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» createdAt|string(date-time)|true|none|none|
+|»» updatedAt|string(date-time)¦null|true|none|none|
+|»» enabled|boolean|true|none|none|
+|»» paymentID|integer|true|none|none|
+|»» trialPeriod|number|true|none|none|
+|»» creator|string|true|none|none|
+|»» userIsSubscribed|boolean|true|none|none|
+|»» userIsGrandfathered|boolean|true|none|none|
+|»» enabledGlobal|boolean|true|none|none|
 
 <h2 id="tocS_UserInfoV2Response">UserInfoV2Response</h2>
 <!-- backwards compatibility -->
@@ -98346,9 +98346,7 @@ xor
               "path": "http://example.com"
             }
           ]
-        },
-        "email": "string",
-        "displayName": "string"
+        }
       }
     }
   ]
@@ -98362,7 +98360,19 @@ xor
 |---|---|---|---|---|
 |users|[object]|true|none|none|
 |» id|string|true|none|none|
-|» user|[UserSelfModel](#schemauserselfmodel)|true|none|none|
+|» user|any|true|none|none|
+
+oneOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[UserModel](#schemausermodel)|false|none|Represents some basic information of a user (id, username, and profile image).|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[UserSelfModel](#schemauserselfmodel)|false|none|none|
 
 <h2 id="tocS_UserSecurityV2Response">UserSecurityV2Response</h2>
 <!-- backwards compatibility -->
@@ -98718,7 +98728,7 @@ xor
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |creatorId|string|true|none|none|
-|blogPostId|string|false|none|This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value.|
+|blogPostId|string¦null|true|none|This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value.|
 |moreFetchable|boolean|true|none|none|
 
 <h2 id="tocS_ContentPostV3Response">ContentPostV3Response</h2>
@@ -98947,7 +98957,7 @@ xor
 |id|string|true|none|none|
 |guid|string|true|none|none|
 |title|string|true|none|none|
-|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
+|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.|
 |type|string|true|none|none|
 |tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
@@ -98959,13 +98969,13 @@ xor
 |comments|integer|true|none|none|
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
-|videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|none|
-|audioAttachments|[[AudioAttachmentModel](#schemaaudioattachmentmodel)]|false|none|none|
-|pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|false|none|none|
-|galleryAttachments|[any]|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
+|videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|May be undefined when the post is locked.|
+|audioAttachments|[[AudioAttachmentModel](#schemaaudioattachmentmodel)]|false|none|May be undefined when the post is locked.|
+|pictureAttachments|[[PictureAttachmentModel](#schemapictureattachmentmodel)]|false|none|May be undefined when the post is locked.|
+|galleryAttachments|[any]|false|none|May be undefined when the post is locked.|
 
 #### Enumerated Values
 
@@ -99048,7 +99058,7 @@ xor
 |title|string|true|none|none|
 |type|string|true|none|none|
 |description|string|true|none|none|
-|releaseDate|string(date-time)¦null|false|none|none|
+|releaseDate|string(date-time)¦null|true|none|none|
 |duration|number|true|none|Unit: seconds.|
 |creator|string|true|none|none|
 |likes|integer|true|none|none|
@@ -99060,7 +99070,7 @@ xor
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |blogPosts|[string]|true|none|none|
 |timelineSprite|[ImageModel](#schemaimagemodel)|true|none|none|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 |levels|[object]|true|none|none|
 |» name|string|true|none|none|
 |» width|integer|true|none|none|
@@ -99131,7 +99141,7 @@ xor
 |isProcessing|boolean|true|none|none|
 |creator|string|true|none|none|
 |primaryBlogPost|string|true|none|none|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |imageFiles|[[ImageFileModel](#schemaimagefilemodel)]|true|none|none|
@@ -99167,7 +99177,7 @@ xor
 |activity|[object]|true|none|none|
 |» time|string(date-time)|true|none|none|
 |» comment|string|true|none|none|
-|» postTitle|string|false|none|none|
+|» postTitle|string|true|none|none|
 |» postId|string|true|none|none|
 |» creatorTitle|string|true|none|none|
 |» creatorUrl|string|true|none|none|
@@ -99207,11 +99217,11 @@ xor
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |**additionalProperties**|object|false|none|none|
-|» url|string(uri)|false|none|The URL the user has configured for this link.|
-|» type|object|false|none|none|
-|»» name|string|false|none|The code name of this link type.|
-|»» displayName|string|false|none|The display-friendly name of this link type.|
-|»» hostName|string|false|none|The hostname that should be a part of the URL.|
+|» url|string(uri)|true|none|The URL the user has configured for this link.|
+|» type|object|true|none|none|
+|»» name|string|true|none|The code name of this link type.|
+|»» displayName|string|true|none|The display-friendly name of this link type.|
+|»» hostName|string|true|none|The hostname that should be a part of the URL.|
 
 <h2 id="tocS_UserNotificationUpdateV3PostRequest">UserNotificationUpdateV3PostRequest</h2>
 <!-- backwards compatibility -->
@@ -99272,7 +99282,7 @@ xor
   "creators": [
     null
   ],
-  "scheduledDeletionDate": "string"
+  "scheduledDeletionDate": "2019-08-24T14:15:22Z"
 }
 
 ```
@@ -99284,10 +99294,10 @@ xor
 |id|string|true|none|none|
 |username|string|true|none|none|
 |profileImage|[ImageModel](#schemaimagemodel)|true|none|none|
-|email|string|false|none|none|
-|displayName|string|false|none|none|
-|creators|[any]|false|none|none|
-|scheduledDeletionDate|string|false|none|none|
+|email|string|true|none|none|
+|displayName|string|true|none|none|
+|creators|[any]|true|none|none|
+|scheduledDeletionDate|string(date-time)¦null|true|none|none|
 
 <h2 id="tocS_ContentLikeV3Request">ContentLikeV3Request</h2>
 <!-- backwards compatibility -->
@@ -99398,9 +99408,9 @@ xor
 |errors|[object]|true|none|none|
 |» id|string|true|none|none|
 |» name|string|true|none|none|
-|» message|string|false|none|none|
-|» data|object|false|none|none|
-|message|string|false|none|none|
+|» message|string¦null|false|none|May be undefined.|
+|» data|object¦null|false|none|May be undefined.|
+|message|string|false|none|May be undefined.|
 
 <h2 id="tocS_PaymentAddressModel">PaymentAddressModel</h2>
 <!-- backwards compatibility -->
@@ -99569,10 +99579,10 @@ xor
 |description|string|true|none|none|
 |about|string|true|none|none|
 |category|string|true|none|none|
-|cover|[ImageModel](#schemaimagemodel)|false|none|none|
+|cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
-|subscriptionPlans|[object]|false|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|subscriptionPlans|[object]¦null|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
@@ -99822,8 +99832,8 @@ and
 |» title|string|true|none|none|
 |cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
-|subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
@@ -100029,17 +100039,17 @@ and
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|object|true|none|none|
-|»» title|string|false|none|none|
+|»» title|string|true|none|none|
 |» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|false|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
 |» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
-|» card|[ImageModel](#schemaimagemodel)|false|none|none|
+|» card|[ImageModel](#schemaimagemodel)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 
 #### Enumerated Values
@@ -100296,13 +100306,13 @@ and
 |id|string|true|none|none|
 |title|string|true|none|none|
 |description|string|true|none|none|
-|price|string|false|none|none|
-|priceYearly|string|false|none|none|
+|price|string¦null|true|none|none|
+|priceYearly|string¦null|true|none|none|
 |currency|string|true|none|none|
-|logo|string|false|none|none|
+|logo|string¦null|true|none|none|
 |interval|string|true|none|none|
 |featured|boolean|true|none|none|
-|allowGrandfatheredAccess|boolean|false|none|none|
+|allowGrandfatheredAccess|boolean¦null|true|none|none|
 |discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 
@@ -100394,7 +100404,7 @@ and
 |title|string|true|none|none|
 |type|string|true|none|none|
 |description|string|true|none|none|
-|releaseDate|string(date-time)¦null|false|none|none|
+|releaseDate|string(date-time)¦null|true|none|none|
 |duration|number|true|none|none|
 |creator|string|true|none|none|
 |likes|integer|true|none|none|
@@ -100547,7 +100557,7 @@ and
 |width|integer|true|none|none|
 |height|integer|true|none|none|
 |path|string(uri)|true|none|none|
-|childImages|[[ChildImageModel](#schemachildimagemodel)]|false|none|none|
+|childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 
 <h2 id="tocS_ChildImageModel">ChildImageModel</h2>
 <!-- backwards compatibility -->
@@ -100652,13 +100662,13 @@ and
 |id|string|true|none|none|
 |title|string|true|none|none|
 |description|string|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 |owner|string|true|none|none|
 |streamPath|string|true|none|none|
 |offline|object|true|none|none|
-|» title|string|false|none|none|
-|» description|string|false|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|false|none|none|
+|» title|string|true|none|none|
+|» description|string|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
 
 <h2 id="tocS_SocialLinksModel">SocialLinksModel</h2>
 <!-- backwards compatibility -->
@@ -100804,8 +100814,8 @@ Represents some basic information of a user (id, username, and profile image).
 |id|string|true|none|none|
 |username|string|true|none|none|
 |profileImage|[ImageModel](#schemaimagemodel)|true|none|none|
-|email|string|false|none|none|
-|displayName|string|false|none|none|
+|email|string|true|none|none|
+|displayName|string|true|none|none|
 
 <h2 id="tocS_ConnectedAccountModel">ConnectedAccountModel</h2>
 <!-- backwards compatibility -->
@@ -100847,7 +100857,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» remoteUserId|string|true|none|none|
 |» remoteUserName|string|true|none|none|
 |» data|object|true|none|none|
-|»» canJoinGuilds|boolean|false|none|none|
+|»» canJoinGuilds|boolean|true|none|none|
 |connected|boolean|true|none|If true, the user is connected and the `connectedAccount` will have data about the account.|
 |isAccountProvider|boolean|true|none|none|
 
@@ -100954,11 +100964,11 @@ Represents some basic information of a user (id, username, and profile image).
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
 |interactionCounts|object|true|none|none|
-|» like|integer|false|none|none|
-|» dislike|integer|false|none|none|
+|» like|integer|true|none|none|
+|» dislike|integer|true|none|none|
 |totalReplies|integer|true|none|none|
 |replies|[[CommentReplyModel](#schemacommentreplymodel)]|true|none|none|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 
 <h2 id="tocS_CommentReplyModel">CommentReplyModel</h2>
 <!-- backwards compatibility -->
@@ -101024,9 +101034,9 @@ Represents some basic information of a user (id, username, and profile image).
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
 |interactionCounts|object|true|none|none|
-|» like|integer|false|none|none|
-|» dislike|integer|false|none|none|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|false|none|none|
+|» like|integer|true|none|none|
+|» dislike|integer|true|none|none|
+|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 
 <h2 id="tocS_UserNotificationModel">UserNotificationModel</h2>
 <!-- backwards compatibility -->
@@ -101195,19 +101205,7 @@ Represents some basic information of a user (id, username, and profile image).
 |paymentID|integer|true|none|none|
 |interval|string|true|none|none|
 |paymentCancelled|boolean|true|none|none|
-|plan|object|true|none|none|
-|» id|string|true|none|none|
-|» title|string|true|none|none|
-|» description|string|true|none|none|
-|» price|string|false|none|none|
-|» priceYearly|string|false|none|none|
-|» currency|string|true|none|none|
-|» logo|string|false|none|none|
-|» interval|string|true|none|none|
-|» featured|boolean|true|none|none|
-|» allowGrandfatheredAccess|boolean|false|none|none|
-|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
-|» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |creator|string|true|none|none|
 
 <h2 id="tocS_FaqSectionModel">FaqSectionModel</h2>
@@ -101323,8 +101321,8 @@ Represents some basic information of a user (id, username, and profile image).
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|edges|[[EdgeModel](#schemaedgemodel)]|false|none|none|
-|client|object|false|none|none|
+|edges|[[EdgeModel](#schemaedgemodel)]|true|none|none|
+|client|object|true|none|none|
 
 <h2 id="tocS_EdgeModel">EdgeModel</h2>
 <!-- backwards compatibility -->
@@ -101354,14 +101352,14 @@ Represents some basic information of a user (id, username, and profile image).
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|hostname|string|false|none|none|
-|queryPort|integer|false|none|none|
-|bandwidth|integer(int64)|false|none|none|
-|allowDownload|boolean|false|none|none|
-|allowStreaming|boolean|false|none|none|
-|datacenter|object|false|none|none|
-|» countryCode|string|false|none|none|
-|» regionCode|string|false|none|none|
-|» latitude|number|false|none|none|
-|» longitude|number|false|none|none|
+|hostname|string|true|none|none|
+|queryPort|integer|true|none|none|
+|bandwidth|integer(int64)|true|none|none|
+|allowDownload|boolean|true|none|none|
+|allowStreaming|boolean|true|none|none|
+|datacenter|object|true|none|none|
+|» countryCode|string|true|none|none|
+|» regionCode|string|true|none|none|
+|» latitude|number|true|none|none|
+|» longitude|number|true|none|none|
 

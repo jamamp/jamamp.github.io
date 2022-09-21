@@ -23591,7 +23591,7 @@ Status Code **200**
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
@@ -23600,11 +23600,19 @@ Status Code **200**
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
@@ -24019,7 +24027,7 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
@@ -24028,11 +24036,19 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
@@ -27755,7 +27771,7 @@ Status Code **200**
 |» about|string|true|none|none|
 |» category|object|true|none|none|
 |»» title|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
@@ -27764,11 +27780,19 @@ Status Code **200**
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
@@ -60455,7 +60479,7 @@ Status Code **200**
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
@@ -60464,11 +60488,19 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
@@ -83529,8 +83561,8 @@ Status Code **200**
 |»» interactionCounts|object|true|none|none|
 |»»» like|integer|true|none|none|
 |»»» dislike|integer|true|none|none|
-|»» userInteraction|[string]|true|none|none|
-|» userInteraction|[string]|true|none|none|
+|»» userInteraction|[string]¦null|true|none|none|
+|» userInteraction|[string]¦null|true|none|none|
 
 #### Links
 
@@ -83894,7 +83926,7 @@ Status Code **200**
 |» interactionCounts|object|true|none|none|
 |»» like|integer|true|none|none|
 |»» dislike|integer|true|none|none|
-|» userInteraction|[string]|true|none|none|
+|» userInteraction|[string]¦null|true|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -85149,105 +85181,105 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[allOf]|false|none|none|
-
-*allOf*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|» *anonymous*|[BlogPostModelV3Base](#schemablogpostmodelv3base)|false|none|none|
+|*anonymous*|[[BlogPostModelV3](#schemablogpostmodelv3)]|false|none|none|
+|» id|string|true|none|none|
+|» guid|string|true|none|none|
+|» title|string|true|none|none|
+|» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
+|» type|string|true|none|none|
+|» tags|[string]|true|none|none|
+|» attachmentOrder|[string]|true|none|none|
+|» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
+|»» hasVideo|boolean|true|none|none|
+|»» videoCount|integer|true|none|none|
+|»» videoDuration|number|true|none|none|
+|»» hasAudio|boolean|true|none|none|
+|»» audioCount|integer|true|none|none|
+|»» audioDuration|number|true|none|none|
+|»» hasPicture|boolean|true|none|none|
+|»» pictureCount|integer|true|none|none|
+|»» hasGallery|boolean|true|none|none|
+|»» galleryCount|integer|true|none|none|
+|»» isFeatured|boolean|true|none|none|
+|» releaseDate|string(date-time)|true|none|none|
+|» likes|integer|true|none|none|
+|» dislikes|integer|true|none|none|
+|» score|integer|true|none|none|
+|» comments|integer|true|none|none|
+|» creator|object|true|none|none|
 |»» id|string|true|none|none|
-|»» guid|string|true|none|none|
-|»» title|string|true|none|none|
-|»» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
-|»» type|string|true|none|none|
-|»» tags|[string]|true|none|none|
-|»» attachmentOrder|[string]|true|none|none|
-|»» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
-|»»» hasVideo|boolean|true|none|none|
-|»»» videoCount|integer|true|none|none|
-|»»» videoDuration|number|true|none|none|
-|»»» hasAudio|boolean|true|none|none|
-|»»» audioCount|integer|true|none|none|
-|»»» audioDuration|number|true|none|none|
-|»»» hasPicture|boolean|true|none|none|
-|»»» pictureCount|integer|true|none|none|
-|»»» hasGallery|boolean|true|none|none|
-|»»» galleryCount|integer|true|none|none|
-|»»» isFeatured|boolean|true|none|none|
-|»» releaseDate|string(date-time)|true|none|none|
-|»» likes|integer|true|none|none|
-|»» dislikes|integer|true|none|none|
-|»» score|integer|true|none|none|
-|»» comments|integer|true|none|none|
-|»» creator|object|true|none|none|
+|»» owner|object|true|none|none|
 |»»» id|string|true|none|none|
-|»»» owner|object|true|none|none|
-|»»»» id|string|true|none|none|
-|»»»» username|string|true|none|none|
+|»»» username|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|none|
+|»» description|string|true|none|none|
+|»» about|string|true|none|none|
+|»» category|object|true|none|none|
 |»»» title|string|true|none|none|
-|»»» urlname|string|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
+|»»» id|string|true|none|none|
+|»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» about|string|true|none|none|
-|»»» category|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»»»»» width|integer|true|none|none|
-|»»»»» height|integer|true|none|none|
-|»»»»» path|string(uri)|true|none|none|
-|»»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
-|»»»» id|string|true|none|none|
+|»»» owner|string|true|none|none|
+|»»» streamPath|string|true|none|none|
+|»»» offline|object|true|none|none|
 |»»»» title|string|true|none|none|
 |»»»» description|string|true|none|none|
 |»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»»» owner|string|true|none|none|
-|»»»» streamPath|string|true|none|none|
-|»»»» offline|object|true|none|none|
-|»»»»» title|string|true|none|none|
-|»»»»» description|string|true|none|none|
-|»»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|»»» id|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» price|string¦null|true|none|none|
+|»»» priceYearly|string¦null|true|none|none|
+|»»» currency|string|true|none|none|
+|»»» logo|string¦null|true|none|none|
+|»»» interval|string|true|none|none|
+|»»» featured|boolean|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» price|string¦null|true|none|none|
-|»»»» priceYearly|string¦null|true|none|none|
-|»»»» currency|string|true|none|none|
-|»»»» logo|string¦null|true|none|none|
-|»»»» interval|string|true|none|none|
-|»»»» featured|boolean|true|none|none|
-|»»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
-|»»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
-|»»»»» id|string|true|none|none|
-|»»»»» guildName|string|true|none|none|
-|»»»»» guildIcon|string|true|none|none|
-|»»»»» inviteLink|string(uri)|true|none|none|
-|»»»»» inviteMode|string|true|none|none|
-|»»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
-|»»»»» server|string|true|none|none|
-|»»»»» roleName|string|true|none|none|
-|»»» discoverable|boolean|true|none|none|
-|»»» subscriberCountDisplay|string|true|none|none|
-|»»» incomeDisplay|boolean|true|none|none|
-|»»» card|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» wasReleasedSilently|boolean|true|none|none|
-|»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-
-*and*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|» *anonymous*|object|false|none|none|
-|»» videoAttachments|[string]|true|none|none|
-|»» audioAttachments|[string]|true|none|none|
-|»» pictureAttachments|[string]|true|none|none|
-|»» galleryAttachments|[string]|true|none|none|
+|»»»» guildName|string|true|none|none|
+|»»»» guildIcon|string|true|none|none|
+|»»»» inviteLink|string(uri)|true|none|none|
+|»»»» inviteMode|string|true|none|none|
+|»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»»» server|string|true|none|none|
+|»»»» roleName|string|true|none|none|
+|»» discoverable|boolean|true|none|none|
+|»» subscriberCountDisplay|string|true|none|none|
+|»» incomeDisplay|boolean|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» wasReleasedSilently|boolean|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|» videoAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» audioAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» pictureAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» galleryAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
 
 #### Enumerated Values
 
@@ -87415,7 +87447,7 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[[BlogPostModelV3Base](#schemablogpostmodelv3base)]|false|none|none|
+|*anonymous*|[[BlogPostModelV3](#schemablogpostmodelv3)]|false|none|none|
 |» id|string|true|none|none|
 |» guid|string|true|none|none|
 |» title|string|true|none|none|
@@ -87460,11 +87492,15 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
@@ -87494,10 +87530,22 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|» videoAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» audioAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» pictureAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|» galleryAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
 
 #### Enumerated Values
 
@@ -98969,7 +99017,7 @@ xor
 |comments|integer|true|none|none|
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|May be undefined when the post is locked.|
@@ -99579,9 +99627,9 @@ xor
 |description|string|true|none|none|
 |about|string|true|none|none|
 |category|string|true|none|none|
-|cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |subscriptionPlans|[object]¦null|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
@@ -99830,233 +99878,14 @@ and
 |about|string|true|none|none|
 |category|object|true|none|none|
 |» title|string|true|none|none|
-|cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
 |socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
-
-<h2 id="tocS_BlogPostModelV3Base">BlogPostModelV3Base</h2>
-<!-- backwards compatibility -->
-<a id="schemablogpostmodelv3base"></a>
-<a id="schema_BlogPostModelV3Base"></a>
-<a id="tocSblogpostmodelv3base"></a>
-<a id="tocsblogpostmodelv3base"></a>
-
-```json
-{
-  "id": "string",
-  "guid": "string",
-  "title": "string",
-  "text": "string",
-  "type": "blogPost",
-  "tags": [
-    "string"
-  ],
-  "attachmentOrder": [
-    "string"
-  ],
-  "metadata": {
-    "hasVideo": true,
-    "videoCount": 0,
-    "videoDuration": 0,
-    "hasAudio": true,
-    "audioCount": 0,
-    "audioDuration": 0,
-    "hasPicture": true,
-    "pictureCount": 0,
-    "hasGallery": true,
-    "galleryCount": 0,
-    "isFeatured": true
-  },
-  "releaseDate": "2019-08-24T14:15:22Z",
-  "likes": 0,
-  "dislikes": 0,
-  "score": 0,
-  "comments": 0,
-  "creator": {
-    "id": "string",
-    "owner": {
-      "id": "string",
-      "username": "string"
-    },
-    "title": "string",
-    "urlname": "string",
-    "description": "string",
-    "about": "string",
-    "category": {
-      "title": "string"
-    },
-    "cover": {
-      "width": 0,
-      "height": 0,
-      "path": "http://example.com",
-      "childImages": [
-        {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com"
-        }
-      ]
-    },
-    "icon": {
-      "width": 0,
-      "height": 0,
-      "path": "http://example.com",
-      "childImages": [
-        {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com"
-        }
-      ]
-    },
-    "liveStream": {
-      "id": "string",
-      "title": "string",
-      "description": "string",
-      "thumbnail": {
-        "width": 0,
-        "height": 0,
-        "path": "http://example.com",
-        "childImages": [
-          {
-            "width": 0,
-            "height": 0,
-            "path": "http://example.com"
-          }
-        ]
-      },
-      "owner": "string",
-      "streamPath": "string",
-      "offline": {
-        "title": "string",
-        "description": "string",
-        "thumbnail": {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com",
-          "childImages": [
-            {
-              "width": 0,
-              "height": 0,
-              "path": "http://example.com"
-            }
-          ]
-        }
-      }
-    },
-    "subscriptionPlans": [
-      {
-        "id": "string",
-        "title": "string",
-        "description": "string",
-        "price": "string",
-        "priceYearly": "string",
-        "currency": "string",
-        "logo": "string",
-        "interval": "string",
-        "featured": true,
-        "allowGrandfatheredAccess": true,
-        "discordServers": [
-          {
-            "id": "string",
-            "guildName": "string",
-            "guildIcon": "string",
-            "inviteLink": "http://example.com",
-            "inviteMode": "string"
-          }
-        ],
-        "discordRoles": [
-          {
-            "server": "string",
-            "roleName": "string"
-          }
-        ]
-      }
-    ],
-    "discoverable": true,
-    "subscriberCountDisplay": "string",
-    "incomeDisplay": true,
-    "card": {
-      "width": 0,
-      "height": 0,
-      "path": "http://example.com",
-      "childImages": [
-        {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com"
-        }
-      ]
-    }
-  },
-  "wasReleasedSilently": true,
-  "thumbnail": {
-    "width": 0,
-    "height": 0,
-    "path": "http://example.com",
-    "childImages": [
-      {
-        "width": 0,
-        "height": 0,
-        "path": "http://example.com"
-      }
-    ]
-  },
-  "isAccessible": true
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|id|string|true|none|none|
-|guid|string|true|none|none|
-|title|string|true|none|none|
-|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
-|type|string|true|none|none|
-|tags|[string]|true|none|none|
-|attachmentOrder|[string]|true|none|none|
-|metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
-|releaseDate|string(date-time)|true|none|none|
-|likes|integer|true|none|none|
-|dislikes|integer|true|none|none|
-|score|integer|true|none|none|
-|comments|integer|true|none|none|
-|creator|object|true|none|none|
-|» id|string|true|none|none|
-|» owner|object|true|none|none|
-|»» id|string|true|none|none|
-|»» username|string|true|none|none|
-|» title|string|true|none|none|
-|» urlname|string|true|none|none|
-|» description|string|true|none|none|
-|» about|string|true|none|none|
-|» category|object|true|none|none|
-|»» title|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
-|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|» liveStream|[LiveStreamModel](#schemalivestreammodel)|true|none|none|
-|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
-|» discoverable|boolean|true|none|none|
-|» subscriberCountDisplay|string|true|none|none|
-|» incomeDisplay|boolean|true|none|none|
-|» card|[ImageModel](#schemaimagemodel)|true|none|none|
-|wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
-|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|type|blogPost|
 
 <h2 id="tocS_BlogPostModelV3">BlogPostModelV3</h2>
 <!-- backwards compatibility -->
@@ -100245,21 +100074,53 @@ and
 
 ### Properties
 
-allOf
-
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[BlogPostModelV3Base](#schemablogpostmodelv3base)|false|none|none|
+|id|string|true|none|none|
+|guid|string|true|none|none|
+|title|string|true|none|none|
+|text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
+|type|string|true|none|none|
+|tags|[string]|true|none|none|
+|attachmentOrder|[string]|true|none|none|
+|metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
+|releaseDate|string(date-time)|true|none|none|
+|likes|integer|true|none|none|
+|dislikes|integer|true|none|none|
+|score|integer|true|none|none|
+|comments|integer|true|none|none|
+|creator|object|true|none|none|
+|» id|string|true|none|none|
+|» owner|object|true|none|none|
+|»» id|string|true|none|none|
+|»» username|string|true|none|none|
+|» title|string|true|none|none|
+|» urlname|string|true|none|none|
+|» description|string|true|none|none|
+|» about|string|true|none|none|
+|» category|object|true|none|none|
+|»» title|string|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
+|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
+|» discoverable|boolean|true|none|none|
+|» subscriberCountDisplay|string|true|none|none|
+|» incomeDisplay|boolean|true|none|none|
+|» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|wasReleasedSilently|boolean|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
+|videoAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|audioAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|pictureAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
+|galleryAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
 
-and
+#### Enumerated Values
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|object|false|none|none|
-|» videoAttachments|[string]|true|none|none|
-|» audioAttachments|[string]|true|none|none|
-|» pictureAttachments|[string]|true|none|none|
-|» galleryAttachments|[string]|true|none|none|
+|Property|Value|
+|---|---|
+|type|blogPost|
 
 <h2 id="tocS_SubscriptionPlanModel">SubscriptionPlanModel</h2>
 <!-- backwards compatibility -->
@@ -100662,7 +100523,7 @@ and
 |id|string|true|none|none|
 |title|string|true|none|none|
 |description|string|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |owner|string|true|none|none|
 |streamPath|string|true|none|none|
 |offline|object|true|none|none|

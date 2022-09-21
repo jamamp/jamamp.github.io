@@ -891,7 +891,11 @@
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "isAccessible": {
@@ -899,8 +903,7 @@
                         "description": "If false, the post should be marked as locked and not viewable by the user."
                     },
                     "userInteraction": {
-                        "$ref": "#/components/schemas/UserInteractionModel",
-                        "nullable": true
+                        "$ref": "#/components/schemas/UserInteractionModel"
                     },
                     "videoAttachments": {
                         "type": "array",
@@ -1012,8 +1015,7 @@
                         "$ref": "#/components/schemas/ImageModel"
                     },
                     "userInteraction": {
-                        "$ref": "#/components/schemas/UserInteractionModel",
-                        "nullable": true
+                        "$ref": "#/components/schemas/UserInteractionModel"
                     },
                     "levels": {
                         "type": "array",
@@ -1105,8 +1107,7 @@
                         "type": "string"
                     },
                     "userInteraction": {
-                        "$ref": "#/components/schemas/UserInteractionModel",
-                        "nullable": true
+                        "$ref": "#/components/schemas/UserInteractionModel"
                     },
                     "thumbnail": {
                         "$ref": "#/components/schemas/ImageModel"
@@ -1549,14 +1550,22 @@
                         "type": "string"
                     },
                     "cover": {
-                        "$ref": "#/components/schemas/ImageModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "icon": {
                         "$ref": "#/components/schemas/ImageModel"
                     },
                     "liveStream": {
-                        "$ref": "#/components/schemas/LiveStreamModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LiveStreamModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "subscriptionPlans": {
@@ -1651,14 +1660,22 @@
                         ]
                     },
                     "cover": {
-                        "$ref": "#/components/schemas/ImageModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "icon": {
                         "$ref": "#/components/schemas/ImageModel"
                     },
                     "liveStream": {
-                        "$ref": "#/components/schemas/LiveStreamModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LiveStreamModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "subscriptionPlans": {
@@ -1699,7 +1716,7 @@
                     "socialLinks"
                 ]
             },
-            "BlogPostModelV3Base": {
+            "BlogPostModelV3": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1803,7 +1820,11 @@
                                 "$ref": "#/components/schemas/ImageModel"
                             },
                             "liveStream": {
-                                "$ref": "#/components/schemas/LiveStreamModel",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LiveStreamModel"
+                                    }
+                                ],
                                 "nullable": true
                             },
                             "subscriptionPlans": {
@@ -1822,7 +1843,11 @@
                                 "type": "boolean"
                             },
                             "card": {
-                                "$ref": "#/components/schemas/ImageModel",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ImageModel"
+                                    }
+                                ],
                                 "nullable": true
                             }
                         },
@@ -1848,12 +1873,44 @@
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "isAccessible": {
                         "type": "boolean",
                         "description": "If false, the post should be marked as locked and not viewable by the user."
+                    },
+                    "videoAttachments": {
+                        "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "audioAttachments": {
+                        "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "pictureAttachments": {
+                        "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "galleryAttachments": {
+                        "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 },
                 "required": [
@@ -1874,48 +1931,6 @@
                     "wasReleasedSilently",
                     "thumbnail",
                     "isAccessible"
-                ]
-            },
-            "BlogPostModelV3": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/BlogPostModelV3Base"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "videoAttachments": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "audioAttachments": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "pictureAttachments": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "galleryAttachments": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "required": [
-                            "videoAttachments",
-                            "audioAttachments",
-                            "pictureAttachments",
-                            "galleryAttachments"
-                        ]
-                    }
                 ]
             },
             "SubscriptionPlanModel": {
@@ -2336,7 +2351,11 @@
                         "type": "string"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
                         "nullable": true
                     },
                     "owner": {
@@ -2603,8 +2622,7 @@
                         }
                     },
                     "userInteraction": {
-                        "$ref": "#/components/schemas/UserInteractionModel",
-                        "nullable": true
+                        "$ref": "#/components/schemas/UserInteractionModel"
                     }
                 },
                 "required": [
@@ -2684,8 +2702,7 @@
                         ]
                     },
                     "userInteraction": {
-                        "$ref": "#/components/schemas/UserInteractionModel",
-                        "nullable": true
+                        "$ref": "#/components/schemas/UserInteractionModel"
                     }
                 },
                 "required": [
@@ -2894,6 +2911,7 @@
             },
             "UserInteractionModel": {
                 "type": "array",
+                "nullable": true,
                 "items": {
                     "type": "string",
                     "enum": [
@@ -7485,7 +7503,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/BlogPostModelV3Base"
+                                        "$ref": "#/components/schemas/BlogPostModelV3"
                                     }
                                 },
                                 "example": [

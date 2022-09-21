@@ -947,43 +947,6 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
-  "allOf" : [ {
-    "$ref" : "#/components/schemas/BlogPostModelV3Base"
-  }, {
-    "$ref" : "#/components/schemas/BlogPostModelV3_allOf"
-  } ]
-};
-    defs["BlogPostModelV3_allOf"] = {
-  "required" : [ "audioAttachments", "galleryAttachments", "pictureAttachments", "videoAttachments" ],
-  "type" : "object",
-  "properties" : {
-    "videoAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "audioAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "pictureAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    },
-    "galleryAttachments" : {
-      "type" : "array",
-      "items" : {
-        "type" : "string"
-      }
-    }
-  }
-};
-    defs["BlogPostModelV3Base"] = {
   "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
@@ -1036,21 +999,49 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "creator" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator"
+      "$ref" : "#/components/schemas/BlogPostModelV3_creator"
     },
     "wasReleasedSilently" : {
       "type" : "boolean"
     },
     "thumbnail" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "isAccessible" : {
       "type" : "boolean",
       "description" : "If false, the post should be marked as locked and not viewable by the user."
+    },
+    "videoAttachments" : {
+      "type" : "array",
+      "description" : "May be undefined, usually when `isAccessible` is `false`.",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "audioAttachments" : {
+      "type" : "array",
+      "description" : "May be undefined, usually when `isAccessible` is `false`.",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "pictureAttachments" : {
+      "type" : "array",
+      "description" : "May be undefined, usually when `isAccessible` is `false`.",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "galleryAttachments" : {
+      "type" : "array",
+      "description" : "May be undefined, usually when `isAccessible` is `false`.",
+      "items" : {
+        "type" : "string"
+      }
     }
   }
 };
-    defs["BlogPostModelV3Base_creator"] = {
+    defs["BlogPostModelV3_creator"] = {
   "required" : [ "about", "card", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
@@ -1058,7 +1049,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "owner" : {
-      "$ref" : "#/components/schemas/BlogPostModelV3Base_creator_owner"
+      "$ref" : "#/components/schemas/BlogPostModelV3_creator_owner"
     },
     "title" : {
       "type" : "string"
@@ -1082,7 +1073,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "liveStream" : {
-      "$ref" : "#/components/schemas/LiveStreamModel"
+      "$ref" : "#/components/schemas/CreatorModelV2_liveStream"
     },
     "subscriptionPlans" : {
       "type" : "array",
@@ -1100,11 +1091,11 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "card" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     }
   }
 };
-    defs["BlogPostModelV3Base_creator_owner"] = {
+    defs["BlogPostModelV3_creator_owner"] = {
   "required" : [ "id", "username" ],
   "type" : "object",
   "properties" : {
@@ -1733,7 +1724,7 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "thumbnail" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "isAccessible" : {
       "type" : "boolean",
@@ -1769,6 +1760,12 @@ ul.nav-tabs {
       "items" : { }
     }
   }
+};
+    defs["ContentPostV3Response_thumbnail"] = {
+  "nullable" : true,
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/ImageModel"
+  } ]
 };
     defs["ContentVideoV3Response"] = {
   "required" : [ "blogPosts", "creator", "description", "dislikes", "duration", "guid", "id", "isAccessible", "isProcessing", "levels", "likes", "primaryBlogPost", "releaseDate", "score", "thumbnail", "timelineSprite", "title", "type", "userInteraction" ],
@@ -1890,13 +1887,13 @@ ul.nav-tabs {
       "type" : "string"
     },
     "cover" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "icon" : {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "liveStream" : {
-      "$ref" : "#/components/schemas/LiveStreamModel"
+      "$ref" : "#/components/schemas/CreatorModelV2_liveStream"
     },
     "subscriptionPlans" : {
       "type" : "array",
@@ -1938,6 +1935,12 @@ ul.nav-tabs {
     }
   }
 };
+    defs["CreatorModelV2_liveStream"] = {
+  "nullable" : true,
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/LiveStreamModel"
+  } ]
+};
     defs["CreatorModelV3"] = {
   "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
@@ -1964,13 +1967,13 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/CreatorModelV3_category"
     },
     "cover" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "icon" : {
       "$ref" : "#/components/schemas/ImageModel"
     },
     "liveStream" : {
-      "$ref" : "#/components/schemas/LiveStreamModel"
+      "$ref" : "#/components/schemas/CreatorModelV2_liveStream"
     },
     "subscriptionPlans" : {
       "type" : "array",
@@ -2331,7 +2334,7 @@ ul.nav-tabs {
       "type" : "string"
     },
     "thumbnail" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "owner" : {
       "type" : "string"
@@ -18849,7 +18852,7 @@ public class ContentV3ApiExample {
         String id = id_example; // String | The ID of the originating post.
 
         try {
-            array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
+            array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getRelatedBlogPosts");
@@ -18869,7 +18872,7 @@ public class ContentV3ApiExample {
         String id = id_example; // String | The ID of the originating post.
 
         try {
-            array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
+            array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getRelatedBlogPosts");
@@ -18897,7 +18900,7 @@ String *id = id_example; // The ID of the originating post. (default to null)
 
 // Get Related Blog Posts
 [apiInstance getRelatedBlogPostsWith:id
-              completionHandler: ^(array[BlogPostModelV3Base] output, NSError* error) {
+              completionHandler: ^(array[BlogPostModelV3] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -18960,7 +18963,7 @@ namespace Example
 
             try {
                 // Get Related Blog Posts
-                array[BlogPostModelV3Base] result = apiInstance.getRelatedBlogPosts(id);
+                array[BlogPostModelV3] result = apiInstance.getRelatedBlogPosts(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ContentV3Api.getRelatedBlogPosts: " + e.Message );
@@ -19135,7 +19138,7 @@ The ID of the originating post.
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/BlogPostModelV3Base"
+          "$ref" : "#/components/schemas/BlogPostModelV3"
         }
       },
       "example" : [ {

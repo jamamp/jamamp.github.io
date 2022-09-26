@@ -16782,7 +16782,7 @@ CookieAuth
 |---|---|---|---|---|
 |username|string|true|none|none|
 |password|string|true|none|none|
-|captchaToken|string¦null|true|none|The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains "CFNetwork" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios.|
+|captchaToken|string|false|none|The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains "CFNetwork" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios. In this case, this should be undefined (no key), not null.|
 
 <h2 id="tocS_AuthLoginV2Response">AuthLoginV2Response</h2>
 <!-- backwards compatibility -->

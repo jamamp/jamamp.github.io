@@ -23616,9 +23616,13 @@ Status Code **200**
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» title|string¦null|true|none|none|
+|»»» description|string¦null|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» subscriptionPlans|[object]¦null|true|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
@@ -24052,9 +24056,13 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string¦null|true|none|none|
+|»»»» description|string¦null|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» subscriptionPlans|[object]¦null|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
@@ -27796,9 +27804,13 @@ Status Code **200**
 |»» owner|string|true|none|none|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
-|»»» title|string|true|none|none|
-|»»» description|string|true|none|none|
-|»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» title|string¦null|true|none|none|
+|»»» description|string¦null|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
@@ -60504,9 +60516,13 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string¦null|true|none|none|
+|»»»» description|string¦null|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» subscriptionPlans|[object]¦null|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
@@ -85238,9 +85254,13 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string¦null|true|none|none|
+|»»»» description|string¦null|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
@@ -87504,9 +87524,13 @@ Status Code **200**
 |»»» owner|string|true|none|none|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
-|»»»» title|string|true|none|none|
-|»»»» description|string|true|none|none|
-|»»»» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» title|string¦null|true|none|none|
+|»»»» description|string¦null|true|none|none|
+|»»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
@@ -100527,9 +100551,9 @@ and
 |owner|string|true|none|none|
 |streamPath|string|true|none|none|
 |offline|object|true|none|none|
-|» title|string|true|none|none|
-|» description|string|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)|true|none|none|
+|» title|string¦null|true|none|none|
+|» description|string¦null|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 
 <h2 id="tocS_SocialLinksModel">SocialLinksModel</h2>
 <!-- backwards compatibility -->

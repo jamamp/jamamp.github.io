@@ -2351,13 +2351,15 @@ ul.nav-tabs {
   "type" : "object",
   "properties" : {
     "title" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "description" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "thumbnail" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     }
   }
 };

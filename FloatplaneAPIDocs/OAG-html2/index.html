@@ -1123,72 +1123,12 @@ ul.nav-tabs {
       "enum" : [ "cdn", "client" ]
     },
     "resource" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse_allOf_resource"
-    }
-  }
-};
-    defs["CdnDeliveryV2DownloadResponse_allOf_resource"] = {
-  "required" : [ "data", "uri" ],
-  "type" : "object",
-  "properties" : {
-    "uri" : {
-      "type" : "string",
-      "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
-    },
-    "data" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse_allOf_resource_data"
-    }
-  }
-};
-    defs["CdnDeliveryV2DownloadResponse_allOf_resource_data"] = {
-  "required" : [ "qualityLevels", "token" ],
-  "type" : "object",
-  "properties" : {
-    "qualityLevels" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/components/schemas/CdnDeliveryV2QualityLevelModel"
-      }
-    },
-    "token" : {
-      "type" : "string"
-    }
-  }
-};
-    defs["CdnDeliveryV2LivestreamResponse"] = {
-  "required" : [ "cdn", "resource", "strategy" ],
-  "type" : "object",
-  "properties" : {
-    "cdn" : {
-      "type" : "string",
-      "description" : "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.",
-      "format" : "uri"
-    },
-    "strategy" : {
-      "type" : "string",
-      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
-      "enum" : [ "cdn", "client" ]
-    },
-    "resource" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2LivestreamResponse_resource"
-    }
-  }
-};
-    defs["CdnDeliveryV2LivestreamResponse_resource"] = {
-  "required" : [ "data", "uri" ],
-  "type" : "object",
-  "properties" : {
-    "uri" : {
-      "type" : "string",
-      "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property."
-    },
-    "data" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"
+      "$ref" : "#/components/schemas/CdnDeliveryV2ResourceModel"
     }
   }
 };
     defs["CdnDeliveryV2QualityLevelModel"] = {
-  "required" : [ "height", "label", "name", "order", "width" ],
+  "required" : [ "label", "name", "order" ],
   "type" : "object",
   "properties" : {
     "name" : {
@@ -1197,11 +1137,13 @@ ul.nav-tabs {
     },
     "width" : {
       "type" : "integer",
-      "description" : "The video quality's resolution's width in pixels."
+      "description" : "The video quality's resolution's width in pixels.",
+      "nullable" : true
     },
     "height" : {
       "type" : "integer",
-      "description" : "The video quality resolution's height in pixels."
+      "description" : "The video quality resolution's height in pixels.",
+      "nullable" : true
     },
     "label" : {
       "type" : "string",
@@ -1210,39 +1152,20 @@ ul.nav-tabs {
     "order" : {
       "type" : "integer",
       "description" : "The display order to be shown to the user."
+    },
+    "mimeType" : {
+      "type" : "string",
+      "nullable" : true
+    },
+    "codecs" : {
+      "type" : "string",
+      "nullable" : true
     }
   },
+  "additionalProperties" : true,
   "description" : "Represents a quality of video to download/stream."
 };
-    defs["CdnDeliveryV2Response"] = {
-  "oneOf" : [ {
-    "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse"
-  }, {
-    "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse"
-  }, {
-    "$ref" : "#/components/schemas/CdnDeliveryV2LivestreamResponse"
-  } ]
-};
-    defs["CdnDeliveryV2VodResponse"] = {
-  "required" : [ "cdn", "resource", "strategy" ],
-  "type" : "object",
-  "properties" : {
-    "cdn" : {
-      "type" : "string",
-      "description" : "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.",
-      "format" : "uri"
-    },
-    "strategy" : {
-      "type" : "string",
-      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
-      "enum" : [ "cdn", "client" ]
-    },
-    "resource" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource"
-    }
-  }
-};
-    defs["CdnDeliveryV2VodResponse_resource"] = {
+    defs["CdnDeliveryV2ResourceModel"] = {
   "required" : [ "data", "uri" ],
   "type" : "object",
   "properties" : {
@@ -1251,12 +1174,11 @@ ul.nav-tabs {
       "description" : "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
     },
     "data" : {
-      "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data"
+      "$ref" : "#/components/schemas/CdnDeliveryV2ResourceModel_data"
     }
   }
 };
-    defs["CdnDeliveryV2VodResponse_resource_data"] = {
-  "required" : [ "qualityLevelParams", "qualityLevels" ],
+    defs["CdnDeliveryV2ResourceModel_data"] = {
   "type" : "object",
   "properties" : {
     "qualityLevels" : {
@@ -1267,19 +1189,36 @@ ul.nav-tabs {
     },
     "qualityLevelParams" : {
       "type" : "object",
-      "additionalProperties" : {
-        "$ref" : "#/components/schemas/CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"
-      },
-      "description" : "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL."
+      "additionalProperties" : true,
+      "description" : "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.",
+      "nullable" : true
     }
-  }
+  },
+  "additionalProperties" : true
 };
-    defs["CdnDeliveryV2VodResponse_resource_data_qualityLevelParams_value"] = {
-  "required" : [ "token" ],
+    defs["CdnDeliveryV2Response"] = {
+  "oneOf" : [ {
+    "$ref" : "#/components/schemas/CdnDeliveryV2VodLivestreamResponse"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV2DownloadResponse"
+  } ]
+};
+    defs["CdnDeliveryV2VodLivestreamResponse"] = {
+  "required" : [ "cdn", "resource", "strategy" ],
   "type" : "object",
   "properties" : {
-    "token" : {
-      "type" : "string"
+    "cdn" : {
+      "type" : "string",
+      "description" : "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.",
+      "format" : "uri"
+    },
+    "strategy" : {
+      "type" : "string",
+      "description" : "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+      "enum" : [ "cdn", "client" ]
+    },
+    "resource" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV2ResourceModel"
     }
   }
 };
@@ -6716,7 +6655,7 @@ public class CDNV2ApiExample {
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
         String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
-        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.
 
         try {
             CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid, creator);
@@ -6743,7 +6682,7 @@ public class CDNV2ApiExample {
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
         String guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
-        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+        String creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.
 
         try {
             CdnDeliveryV2Response result = apiInstance.getDeliveryInfo(type, guid, creator);
@@ -6777,7 +6716,7 @@ String *type = type_example; // Used to determine which kind of retrieval method
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
 String *guid = guid_example; // The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional) (default to null)
-String *creator = creator_example; // The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional) (default to null)
+String *creator = creator_example; // The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned. (optional) (default to null)
 
 // Get Delivery Info
 [apiInstance getDeliveryInfoWith:type
@@ -6814,7 +6753,7 @@ var type = type_example; // {String} Used to determine which kind of retrieval m
 - Download = Download the content for the user to play later.
 var opts = {
   'guid': guid_example, // {String} The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
-  'creator': creator_example // {String} The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+  'creator': creator_example // {String} The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.
 };
 
 var callback = function(error, data, response) {
@@ -6858,7 +6797,7 @@ namespace Example
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
             var guid = guid_example;  // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional)  (default to null)
-            var creator = creator_example;  // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional)  (default to null)
+            var creator = creator_example;  // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned. (optional)  (default to null)
 
             try {
                 // Get Delivery Info
@@ -6891,7 +6830,7 @@ $type = type_example; // String | Used to determine which kind of retrieval meth
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
 $guid = guid_example; // String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
-$creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+$creator = creator_example; // String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.
 
 try {
     $result = $api_instance->getDeliveryInfo($type, $guid, $creator);
@@ -6921,7 +6860,7 @@ my $type = type_example; # String | Used to determine which kind of retrieval me
 - Live = Livestream the content
 - Download = Download the content for the user to play later.
 my $guid = guid_example; # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.
-my $creator = creator_example; # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.
+my $creator = creator_example; # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.
 
 eval {
     my $result = $api_instance->getDeliveryInfo(type => $type, guid => $guid, creator => $creator);
@@ -6953,7 +6892,7 @@ type = type_example # String | Used to determine which kind of retrieval method 
 - Live = Livestream the content
 - Download = Download the content for the user to play later. (default to null)
 guid = guid_example # String | The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional) (default to null)
-creator = creator_example # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional) (default to null)
+creator = creator_example # String | The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned. (optional) (default to null)
 
 try:
     # Get Delivery Info
@@ -7057,7 +6996,7 @@ The GUID of the attachment for a post, retrievable from the &#x60;videoAttachmen
                 </span>
 
                     <div class="inner description marked">
-The GUID of the creator for a livestream, retrievable from &#x60;CreatorModelV2.id&#x60;. Required when &#x60;type&#x60; is &#x60;live&#x60;. Note: either this or &#x60;guid&#x60; must be supplied.
+The GUID of the creator for a livestream, retrievable from &#x60;CreatorModelV2.id&#x60;. Required when &#x60;type&#x60; is &#x60;live&#x60;. Note: either this or &#x60;guid&#x60; must be supplied. Note: for &#x60;vod&#x60; and &#x60;download&#x60;, including this &#x60;creator&#x60; parameter *will* cause an error to be returned.
                     </div>
             </div>
         </div>

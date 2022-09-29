@@ -1469,7 +1469,7 @@ Given an video/audio attachment identifier, retrieves the information necessary 
 |---|---|---|---|---|
 |type|query|string|true|Used to determine which kind of retrieval method is requested for the video.|
 |guid|query|string|false|The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied.|
-|creator|query|string|false|The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied.|
+|creator|query|string|false|The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned.|
 
 #### Detailed descriptions
 
@@ -16878,7 +16878,9 @@ CookieAuth
   "width": 0,
   "height": 0,
   "label": "string",
-  "order": 0
+  "order": 0,
+  "mimeType": "string",
+  "codecs": "string"
 }
 
 ```
@@ -16890,17 +16892,56 @@ Represents a quality of video to download/stream.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |name|string|true|none|Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key.|
-|width|integer|true|none|The video quality's resolution's width in pixels.|
-|height|integer|true|none|The video quality resolution's height in pixels.|
+|width|integer¦null|false|none|The video quality's resolution's width in pixels.|
+|height|integer¦null|false|none|The video quality resolution's height in pixels.|
 |label|string|true|none|The display-friendly version of `name`.|
 |order|integer|true|none|The display order to be shown to the user.|
+|mimeType|string¦null|false|none|none|
+|codecs|string¦null|false|none|none|
 
-<h2 id="tocS_CdnDeliveryV2VodResponse">CdnDeliveryV2VodResponse</h2>
+<h2 id="tocS_CdnDeliveryV2ResourceModel">CdnDeliveryV2ResourceModel</h2>
 <!-- backwards compatibility -->
-<a id="schemacdndeliveryv2vodresponse"></a>
-<a id="schema_CdnDeliveryV2VodResponse"></a>
-<a id="tocScdndeliveryv2vodresponse"></a>
-<a id="tocscdndeliveryv2vodresponse"></a>
+<a id="schemacdndeliveryv2resourcemodel"></a>
+<a id="schema_CdnDeliveryV2ResourceModel"></a>
+<a id="tocScdndeliveryv2resourcemodel"></a>
+<a id="tocscdndeliveryv2resourcemodel"></a>
+
+```json
+{
+  "uri": "string",
+  "data": {
+    "qualityLevels": [
+      {
+        "name": "string",
+        "width": 0,
+        "height": 0,
+        "label": "string",
+        "order": 0,
+        "mimeType": "string",
+        "codecs": "string"
+      }
+    ],
+    "qualityLevelParams": {}
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
+|data|object|true|none|none|
+|» qualityLevels|[[CdnDeliveryV2QualityLevelModel](#schemacdndeliveryv2qualitylevelmodel)]|false|none|[Represents a quality of video to download/stream.]|
+|» qualityLevelParams|object¦null|false|none|For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.|
+
+<h2 id="tocS_CdnDeliveryV2VodLivestreamResponse">CdnDeliveryV2VodLivestreamResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2vodlivestreamresponse"></a>
+<a id="schema_CdnDeliveryV2VodLivestreamResponse"></a>
+<a id="tocScdndeliveryv2vodlivestreamresponse"></a>
+<a id="tocscdndeliveryv2vodlivestreamresponse"></a>
 
 ```json
 {
@@ -16915,17 +16956,12 @@ Represents a quality of video to download/stream.
           "width": 0,
           "height": 0,
           "label": "string",
-          "order": 0
+          "order": 0,
+          "mimeType": "string",
+          "codecs": "string"
         }
       ],
-      "qualityLevelParams": {
-        "property1": {
-          "token": "string"
-        },
-        "property2": {
-          "token": "string"
-        }
-      }
+      "qualityLevelParams": {}
     }
   }
 }
@@ -16938,13 +16974,7 @@ Represents a quality of video to download/stream.
 |---|---|---|---|---|
 |cdn|string(uri)|true|none|The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.|
 |strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
-|resource|object|true|none|none|
-|» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
-|» data|object|true|none|none|
-|»» qualityLevels|[[CdnDeliveryV2QualityLevelModel](#schemacdndeliveryv2qualitylevelmodel)]|true|none|[Represents a quality of video to download/stream.]|
-|»» qualityLevelParams|object|true|none|For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.|
-|»»» **additionalProperties**|object|false|none|none|
-|»»»» token|string|true|none|none|
+|resource|[CdnDeliveryV2ResourceModel](#schemacdndeliveryv2resourcemodel)|true|none|none|
 
 #### Enumerated Values
 
@@ -16988,10 +17018,12 @@ Represents a quality of video to download/stream.
           "width": 0,
           "height": 0,
           "label": "string",
-          "order": 0
+          "order": 0,
+          "mimeType": "string",
+          "codecs": "string"
         }
       ],
-      "token": "string"
+      "qualityLevelParams": {}
     }
   }
 }
@@ -17012,50 +17044,7 @@ and
 |---|---|---|---|---|
 |*anonymous*|object|false|none|none|
 |» strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
-|» resource|object|true|none|none|
-|»» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`.|
-|»» data|object|true|none|none|
-|»»» qualityLevels|[[CdnDeliveryV2QualityLevelModel](#schemacdndeliveryv2qualitylevelmodel)]|true|none|[Represents a quality of video to download/stream.]|
-|»»» token|string|true|none|none|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|strategy|cdn|
-|strategy|client|
-
-<h2 id="tocS_CdnDeliveryV2LivestreamResponse">CdnDeliveryV2LivestreamResponse</h2>
-<!-- backwards compatibility -->
-<a id="schemacdndeliveryv2livestreamresponse"></a>
-<a id="schema_CdnDeliveryV2LivestreamResponse"></a>
-<a id="tocScdndeliveryv2livestreamresponse"></a>
-<a id="tocscdndeliveryv2livestreamresponse"></a>
-
-```json
-{
-  "cdn": "http://example.com",
-  "strategy": "cdn",
-  "resource": {
-    "uri": "string",
-    "data": {
-      "token": "string"
-    }
-  }
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|cdn|string(uri)|true|none|The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL.|
-|strategy|string|true|none|Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.|
-|resource|object|true|none|none|
-|» uri|string|true|none|The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property.|
-|» data|object|true|none|none|
-|»» token|string|true|none|none|
+|» resource|[CdnDeliveryV2ResourceModel](#schemacdndeliveryv2resourcemodel)|true|none|none|
 
 #### Enumerated Values
 
@@ -17084,17 +17073,12 @@ and
           "width": 0,
           "height": 0,
           "label": "string",
-          "order": 0
+          "order": 0,
+          "mimeType": "string",
+          "codecs": "string"
         }
       ],
-      "qualityLevelParams": {
-        "property1": {
-          "token": "string"
-        },
-        "property2": {
-          "token": "string"
-        }
-      }
+      "qualityLevelParams": {}
     }
   }
 }
@@ -17107,19 +17091,13 @@ oneOf
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[CdnDeliveryV2VodResponse](#schemacdndeliveryv2vodresponse)|false|none|none|
+|*anonymous*|[CdnDeliveryV2VodLivestreamResponse](#schemacdndeliveryv2vodlivestreamresponse)|false|none|none|
 
 xor
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |*anonymous*|[CdnDeliveryV2DownloadResponse](#schemacdndeliveryv2downloadresponse)|false|none|none|
-
-xor
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|[CdnDeliveryV2LivestreamResponse](#schemacdndeliveryv2livestreamresponse)|false|none|none|
 
 <h2 id="tocS_PaymentInvoiceListV2Response">PaymentInvoiceListV2Response</h2>
 <!-- backwards compatibility -->

@@ -572,17 +572,17 @@
                   </li>
                 
                   <li>
-                    <a href="#tocS_CdnDeliveryV2VodResponse" class="toc-h2 toc-link" data-title="">CdnDeliveryV2VodResponse</a>
+                    <a href="#tocS_CdnDeliveryV2ResourceModel" class="toc-h2 toc-link" data-title="">CdnDeliveryV2ResourceModel</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#tocS_CdnDeliveryV2VodLivestreamResponse" class="toc-h2 toc-link" data-title="">CdnDeliveryV2VodLivestreamResponse</a>
                     
                   </li>
                 
                   <li>
                     <a href="#tocS_CdnDeliveryV2DownloadResponse" class="toc-h2 toc-link" data-title="">CdnDeliveryV2DownloadResponse</a>
-                    
-                  </li>
-                
-                  <li>
-                    <a href="#tocS_CdnDeliveryV2LivestreamResponse" class="toc-h2 toc-link" data-title="">CdnDeliveryV2LivestreamResponse</a>
                     
                   </li>
                 
@@ -1511,7 +1511,7 @@ This operation does not require authentication
 <td>query</td>
 <td>string</td>
 <td>false</td>
-<td>The GUID of the creator for a livestream, retrievable from <code>CreatorModelV2.id</code>. Required when <code>type</code> is <code>live</code>. Note: either this or <code>guid</code> must be supplied.</td>
+<td>The GUID of the creator for a livestream, retrievable from <code>CreatorModelV2.id</code>. Required when <code>type</code> is <code>live</code>. Note: either this or <code>guid</code> must be supplied. Note: for <code>vod</code> and <code>download</code>, including this <code>creator</code> parameter <em>will</em> cause an error to be returned.</td>
 </tr>
 </tbody>
 </table>
@@ -10985,7 +10985,7 @@ CookieAuth
 <a id="schema_CdnDeliveryV2QualityLevelModel"></a>
 <a id="tocScdndeliveryv2qualitylevelmodel"></a>
 <a id="tocscdndeliveryv2qualitylevelmodel"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"codecs"</span><span class="token operator">:</span> <span class="token string">"string"</span><br><span class="token punctuation">}</span><br></code></pre>
 <p>Represents a quality of video to download/stream.</p>
 <h3 id="properties-3">Properties</h3>
 <table>
@@ -11008,15 +11008,15 @@ CookieAuth
 </tr>
 <tr>
 <td>width</td>
-<td>integer</td>
-<td>true</td>
+<td>integer¦null</td>
+<td>false</td>
 <td>none</td>
 <td>The video quality’s resolution’s width in pixels.</td>
 </tr>
 <tr>
 <td>height</td>
-<td>integer</td>
-<td>true</td>
+<td>integer¦null</td>
+<td>false</td>
 <td>none</td>
 <td>The video quality resolution’s height in pixels.</td>
 </tr>
@@ -11034,16 +11034,79 @@ CookieAuth
 <td>none</td>
 <td>The display order to be shown to the user.</td>
 </tr>
+<tr>
+<td>mimeType</td>
+<td>string¦null</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>codecs</td>
+<td>string¦null</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
 </tbody>
 </table>
-<h2 id="tocS_CdnDeliveryV2VodResponse">CdnDeliveryV2VodResponse</h2>
+<h2 id="tocS_CdnDeliveryV2ResourceModel">CdnDeliveryV2ResourceModel</h2>
 <!-- backwards compatibility -->
-<a id="schemacdndeliveryv2vodresponse"></a>
-<a id="schema_CdnDeliveryV2VodResponse"></a>
-<a id="tocScdndeliveryv2vodresponse"></a>
-<a id="tocscdndeliveryv2vodresponse"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><span class="token punctuation">,</span><br>        <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<a id="schemacdndeliveryv2resourcemodel"></a>
+<a id="schema_CdnDeliveryV2ResourceModel"></a>
+<a id="tocScdndeliveryv2resourcemodel"></a>
+<a id="tocscdndeliveryv2resourcemodel"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"codecs"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-4">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uri</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>The path to attach to the <code>cdn</code> property above. Replace the items surrounded by curly braces (<code>{</code>, <code>}</code>) with the appropriate values from the <code>data</code> property, depending on chosen resolution. First, choose the <code>qualityLevel</code>, then use the given token from the <code>qualityLevelParam</code> for that <code>qualityLevel</code>’s <code>name</code>.</td>
+</tr>
+<tr>
+<td>data</td>
+<td>object</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>» qualityLevels</td>
+<td>[<a href="#schemacdndeliveryv2qualitylevelmodel">CdnDeliveryV2QualityLevelModel</a>]</td>
+<td>false</td>
+<td>none</td>
+<td>[Represents a quality of video to download/stream.]</td>
+</tr>
+<tr>
+<td>» qualityLevelParams</td>
+<td>object¦null</td>
+<td>false</td>
+<td>none</td>
+<td>For each <code>qualityLevel</code> above, there will be an entry in this map where the property name matches the <code>qulityLevel[].name</code> containing a token to apply to the URL.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_CdnDeliveryV2VodLivestreamResponse">CdnDeliveryV2VodLivestreamResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv2vodlivestreamresponse"></a>
+<a id="schema_CdnDeliveryV2VodLivestreamResponse"></a>
+<a id="tocScdndeliveryv2vodlivestreamresponse"></a>
+<a id="tocscdndeliveryv2vodlivestreamresponse"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"codecs"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-5">Properties</h3>
 <table>
 <thead>
 <tr>
@@ -11071,49 +11134,7 @@ CookieAuth
 </tr>
 <tr>
 <td>resource</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>» uri</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>The path to attach to the <code>cdn</code> property above. Replace the items surrounded by curly braces (<code>{</code>, <code>}</code>) with the appropriate values from the <code>data</code> property, depending on chosen resolution. First, choose the <code>qualityLevel</code>, then use the given token from the <code>qualityLevelParam</code> for that <code>qualityLevel</code>’s <code>name</code>.</td>
-</tr>
-<tr>
-<td>» data</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»» qualityLevels</td>
-<td>[<a href="#schemacdndeliveryv2qualitylevelmodel">CdnDeliveryV2QualityLevelModel</a>]</td>
-<td>true</td>
-<td>none</td>
-<td>[Represents a quality of video to download/stream.]</td>
-</tr>
-<tr>
-<td>»» qualityLevelParams</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>For each <code>qualityLevel</code> above, there will be an entry in this map where the property name matches the <code>qulityLevel[].name</code> containing a token to apply to the URL.</td>
-</tr>
-<tr>
-<td>»»» <strong>additionalProperties</strong></td>
-<td>object</td>
-<td>false</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»»» token</td>
-<td>string</td>
+<td><a href="#schemacdndeliveryv2resourcemodel">CdnDeliveryV2ResourceModel</a></td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -11145,8 +11166,8 @@ CookieAuth
 <a id="schema_CdnDeliveryV2DownloadResponse"></a>
 <a id="tocScdndeliveryv2downloadresponse"></a>
 <a id="tocscdndeliveryv2downloadresponse"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"edges"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">0</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"client"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
-<h3 id="properties-5">Properties</h3>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"edges"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"hostname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"queryPort"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"bandwidth"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"allowDownload"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowStreaming"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"datacenter"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"countryCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"regionCode"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"latitude"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"longitude"</span><span class="token operator">:</span> <span class="token number">0</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"client"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"codecs"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-6">Properties</h3>
 <p>allOf</p>
 <table>
 <thead>
@@ -11196,35 +11217,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» resource</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»» uri</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>The path to attach to the <code>cdn</code> property above. Replace the items surrounded by curly braces (<code>{</code>, <code>}</code>) with the appropriate values from the <code>data</code> property, depending on chosen resolution. First, choose the <code>qualityLevel</code>, then use the given token from the <code>qualityLevelParam</code> for that <code>qualityLevel</code>’s <code>name</code>.</td>
-</tr>
-<tr>
-<td>»» data</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» qualityLevels</td>
-<td>[<a href="#schemacdndeliveryv2qualitylevelmodel">CdnDeliveryV2QualityLevelModel</a>]</td>
-<td>true</td>
-<td>none</td>
-<td>[Represents a quality of video to download/stream.]</td>
-</tr>
-<tr>
-<td>»»» token</td>
-<td>string</td>
+<td><a href="#schemacdndeliveryv2resourcemodel">CdnDeliveryV2ResourceModel</a></td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -11250,95 +11243,13 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h2 id="tocS_CdnDeliveryV2LivestreamResponse">CdnDeliveryV2LivestreamResponse</h2>
-<!-- backwards compatibility -->
-<a id="schemacdndeliveryv2livestreamresponse"></a>
-<a id="schema_CdnDeliveryV2LivestreamResponse"></a>
-<a id="tocScdndeliveryv2livestreamresponse"></a>
-<a id="tocscdndeliveryv2livestreamresponse"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
-<h3 id="properties-6">Properties</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Restrictions</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cdn</td>
-<td>string(uri)</td>
-<td>true</td>
-<td>none</td>
-<td>The domain of the CDN server to use. Combine with data from the <code>resource</code> object to create a full URL.</td>
-</tr>
-<tr>
-<td>strategy</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>Which download/streaming strategy to use. If <code>cdn</code>, then a <code>cdn</code> property will be included with the response. Otherwise, if set to <code>client</code>, then a <code>client</code> property will be included with the response. The cdn or client property should be combined with the <code>resource</code> property to perform the download/stream.</td>
-</tr>
-<tr>
-<td>resource</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>» uri</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>The path to attach to the <code>cdn</code> property above. Replace the items surrounded by curly braces (<code>{</code>, <code>}</code>) with the appropriate values from the <code>data</code> property.</td>
-</tr>
-<tr>
-<td>» data</td>
-<td>object</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»» token</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-</tbody>
-</table>
-<h4 id="enumerated-values-7">Enumerated Values</h4>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>strategy</td>
-<td>cdn</td>
-</tr>
-<tr>
-<td>strategy</td>
-<td>client</td>
-</tr>
-</tbody>
-</table>
 <h2 id="tocS_CdnDeliveryV2Response">CdnDeliveryV2Response</h2>
 <!-- backwards compatibility -->
 <a id="schemacdndeliveryv2response"></a>
 <a id="schema_CdnDeliveryV2Response"></a>
 <a id="tocScdndeliveryv2response"></a>
 <a id="tocscdndeliveryv2response"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><span class="token punctuation">,</span><br>        <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>  <span class="token property">"strategy"</span><span class="token operator">:</span> <span class="token string">"cdn"</span><span class="token punctuation">,</span><br>  <span class="token property">"resource"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"uri"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"qualityLevels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"codecs"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"qualityLevelParams"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-7">Properties</h3>
 <p>oneOf</p>
 <table>
@@ -11354,7 +11265,7 @@ CookieAuth
 <tbody>
 <tr>
 <td><em>anonymous</em></td>
-<td><a href="#schemacdndeliveryv2vodresponse">CdnDeliveryV2VodResponse</a></td>
+<td><a href="#schemacdndeliveryv2vodlivestreamresponse">CdnDeliveryV2VodLivestreamResponse</a></td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
@@ -11376,27 +11287,6 @@ CookieAuth
 <tr>
 <td><em>anonymous</em></td>
 <td><a href="#schemacdndeliveryv2downloadresponse">CdnDeliveryV2DownloadResponse</a></td>
-<td>false</td>
-<td>none</td>
-<td>none</td>
-</tr>
-</tbody>
-</table>
-<p>xor</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Restrictions</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>anonymous</em></td>
-<td><a href="#schemacdndeliveryv2livestreamresponse">CdnDeliveryV2LivestreamResponse</a></td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
@@ -12439,7 +12329,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-8">Enumerated Values</h4>
+<h4 id="enumerated-values-7">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -12951,7 +12841,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-9">Enumerated Values</h4>
+<h4 id="enumerated-values-8">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -13075,7 +12965,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-10">Enumerated Values</h4>
+<h4 id="enumerated-values-9">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -14036,7 +13926,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-11">Enumerated Values</h4>
+<h4 id="enumerated-values-10">Enumerated Values</h4>
 <table>
 <thead>
 <tr>
@@ -15774,7 +15664,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h4 id="enumerated-values-12">Enumerated Values</h4>
+<h4 id="enumerated-values-11">Enumerated Values</h4>
 <table>
 <thead>
 <tr>

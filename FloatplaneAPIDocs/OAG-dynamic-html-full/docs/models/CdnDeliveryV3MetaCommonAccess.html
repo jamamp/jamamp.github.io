@@ -1,0 +1,19 @@
+
+<h2>CdnDeliveryV3MetaCommonAccess</h2>
+<ul class="parameter">
+  <li class="param-required-false">deniedReason : String
+    <br/>- &#x60;isMissingPermission&#x60;: Indicates that the requester is lacking a required plan or other form of permission entitling on to access the corresponding resource. - &#x60;isProcessing&#x60;: Indicates that the corresponding resource is processing. Clients may choose to periodically refetch an asset&#39;s info when it has reported this state. - &#x60;isBroken&#x60;: Indicates that the corresponding resource is defective in some manner which has rendered it currently inaccessible. It is possible that the asset will be repaired at some later point in time. Clients may choose to periodically refetch an asset&#39;s info when it has reported this state.
+      <dl class="param-enum">
+        <dt>Enum:
+            <dd>isMissingPermission</dd>
+            <dd>isProcessing</dd>
+            <dd>isBroken</dd>
+        </dt>
+      </dl>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">deniedMessage : String
+    <br/>Message describing in human-readable terms why access has been witheld for a resource.
+  </li>
+</ul>

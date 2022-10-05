@@ -1222,6 +1222,271 @@ ul.nav-tabs {
     }
   }
 };
+    defs["CdnDeliveryV3Group"] = {
+  "required" : [ "variants" ],
+  "type" : "object",
+  "properties" : {
+    "origins" : {
+      "minItems" : 1,
+      "type" : "array",
+      "description" : "If `origins` is present, it will consist of one or more elements.",
+      "items" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV3Origin"
+      }
+    },
+    "variants" : {
+      "minItems" : 0,
+      "type" : "array",
+      "description" : "`variants` may consist of zero or more elements.",
+      "items" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV3Variant"
+      }
+    }
+  },
+  "description" : "A group is a logical grouping/separation of variants. At this time, there are no examples of more than one group in a response."
+};
+    defs["CdnDeliveryV3ImagePresentationCharacteristics"] = {
+  "type" : "object",
+  "properties" : {
+    "width" : {
+      "type" : "integer",
+      "description" : "Count of horizontal pixels presented."
+    },
+    "height" : {
+      "type" : "integer",
+      "description" : "Count of vertical pixels presented."
+    },
+    "isHdr" : {
+      "type" : "boolean",
+      "description" : "Whether or not this data stream carries HDR content."
+    }
+  }
+};
+    defs["CdnDeliveryV3MediaBitrateInfo"] = {
+  "type" : "object",
+  "properties" : {
+    "bitrate" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3MediaBitrateInfo_bitrate"
+    }
+  }
+};
+    defs["CdnDeliveryV3MediaBitrateInfo_bitrate"] = {
+  "type" : "object",
+  "properties" : {
+    "maximum" : {
+      "type" : "number",
+      "description" : "Maximum bitrate observed for the data stream."
+    },
+    "average" : {
+      "type" : "number",
+      "description" : "Average bitrate observed for the data stream."
+    }
+  }
+};
+    defs["CdnDeliveryV3MediaIdentityCharacteristics"] = {
+  "type" : "object",
+  "properties" : {
+    "codec" : {
+      "type" : "string",
+      "description" : "RFC 6381 codec string indicating stream data chunk format."
+    },
+    "codecSimple" : {
+      "type" : "string",
+      "description" : "RFC 6381 codec string indicating stream format on the most basic level, without the addition of profile/level/etc. information."
+    },
+    "mimeType" : {
+      "type" : "string",
+      "description" : "MIME-type for individual stream data chunks (as opposed to a containing playlist)."
+    }
+  }
+};
+    defs["CdnDeliveryV3Meta"] = {
+  "type" : "object",
+  "properties" : {
+    "common" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_common"
+    },
+    "video" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_video"
+    },
+    "audio" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_audio"
+    },
+    "image" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_image"
+    },
+    "live" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_live"
+    }
+  },
+  "description" : "Metadata information for this variant. Note that most/all child and grandchild properties are not required on purpose."
+};
+    defs["CdnDeliveryV3Meta_audio"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/CdnDeliveryV3MediaIdentityCharacteristics"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3Meta_audio_allOf"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3MediaBitrateInfo"
+  } ]
+};
+    defs["CdnDeliveryV3Meta_audio_allOf"] = {
+  "type" : "object",
+  "properties" : {
+    "channelCount" : {
+      "type" : "integer",
+      "description" : "Count of channels carried by the audio stream."
+    },
+    "samplerate" : {
+      "type" : "integer",
+      "description" : "Count of samples recorded per second."
+    }
+  }
+};
+    defs["CdnDeliveryV3Meta_common"] = {
+  "type" : "object",
+  "properties" : {
+    "size" : {
+      "type" : "number",
+      "description" : "Size of the corresponding media file, measured in bytes."
+    },
+    "access" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta_common_access"
+    }
+  }
+};
+    defs["CdnDeliveryV3Meta_common_access"] = {
+  "type" : "object",
+  "properties" : {
+    "deniedReason" : {
+      "type" : "string",
+      "description" : "- `isMissingPermission`: Indicates that the requester is lacking a required plan or other form of permission entitling on to access the corresponding resource.\n- `isProcessing`: Indicates that the corresponding resource is processing. Clients may choose to periodically refetch an asset's info when it has reported this state.\n- `isBroken`: Indicates that the corresponding resource is defective in some manner which has rendered it currently inaccessible. It is possible that the asset will be repaired at some later point in time. Clients may choose to periodically refetch an asset's info when it has reported this state.",
+      "enum" : [ "isMissingPermission", "isProcessing", "isBroken" ]
+    },
+    "deniedMessage" : {
+      "type" : "string",
+      "description" : "Message describing in human-readable terms why access has been witheld for a resource."
+    }
+  }
+};
+    defs["CdnDeliveryV3Meta_image"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/CdnDeliveryV3MediaIdentityCharacteristics"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3ImagePresentationCharacteristics"
+  } ]
+};
+    defs["CdnDeliveryV3Meta_live"] = {
+  "type" : "object",
+  "properties" : {
+    "lowLatencyExtension" : {
+      "type" : "string",
+      "description" : "- `llhls`: 🍎-backed low-latency HLS extension.\n- `clhls`: Community-backed low-latency HLS extension.\n- `ivshls`: IVS custom low-latency HLS extension.\n- `lldash`: DASH-IF-backed low-Latency DASH extension.",
+      "enum" : [ "llhls", "clhls", "ivshls", "lldash" ]
+    }
+  }
+};
+    defs["CdnDeliveryV3Meta_video"] = {
+  "allOf" : [ {
+    "$ref" : "#/components/schemas/CdnDeliveryV3MediaIdentityCharacteristics"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3ImagePresentationCharacteristics"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3Meta_video_allOf"
+  }, {
+    "$ref" : "#/components/schemas/CdnDeliveryV3MediaBitrateInfo"
+  } ]
+};
+    defs["CdnDeliveryV3Meta_video_allOf"] = {
+  "type" : "object",
+  "properties" : {
+    "fps" : {
+      "type" : "number",
+      "description" : "Maximum count of frames presented per second for the video."
+    }
+  }
+};
+    defs["CdnDeliveryV3Origin"] = {
+  "required" : [ "url" ],
+  "type" : "object",
+  "properties" : {
+    "url" : {
+      "type" : "string",
+      "description" : "An absolute URL (possibly with trailing slash) which acts as the base of a delivery resource URI. This is always present.",
+      "format" : "uri"
+    },
+    "queryUrl" : {
+      "type" : "string",
+      "description" : "An absolute URL (possibly with trailing slash) which the client can use to query if the origin is active/working. This field may not be present. Perform an HTTP GET on this URL and expect an HTTP 200 in order to trust this origin.",
+      "format" : "uri"
+    },
+    "datacenter" : {
+      "$ref" : "#/components/schemas/EdgeDataCenter"
+    }
+  },
+  "description" : "An `origin`, if present, is a choice of base URL or server from which to load a `variant`'s content. If origin(s) exists in a group or variant, then one must be chosen in combination with the variant's `url`."
+};
+    defs["CdnDeliveryV3Response"] = {
+  "required" : [ "groups" ],
+  "type" : "object",
+  "properties" : {
+    "groups" : {
+      "minItems" : 0,
+      "type" : "array",
+      "description" : "`groups` may consist of zero or more elements.",
+      "items" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV3Group"
+      }
+    }
+  }
+};
+    defs["CdnDeliveryV3Variant"] = {
+  "required" : [ "label", "name", "url" ],
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "description" : "A programmatic name for this variant, for use with uniquely identifying this variant."
+    },
+    "label" : {
+      "type" : "string",
+      "description" : "A display-friendly label for this variant, for use in the UI."
+    },
+    "url" : {
+      "type" : "string",
+      "description" : "A relative *or* absolute URL containing resource information for this variant. Compared to the V2 API, this URL does not contain template information and will not need to be modified before use, other than optionally combining with an origin. This value may contain a trailing slash.\n\nIf this URL is absolute, it may be used as-is in order to load the media content. If this URL is relative, then it should be combined with an origin base URL. In order of preference: 1) use an origin from this variant object, 2) use an origin from this variant's group object, 3) use `https://floatplane.com`.\n\nDo not use an origin from a different group, or from a different variant, as this may result in errors. "
+    },
+    "origins" : {
+      "minItems" : 1,
+      "type" : "array",
+      "description" : "If `origins` is present, it will consist of one or more elements.",
+      "items" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV3Origin"
+      }
+    },
+    "order" : {
+      "type" : "integer",
+      "description" : "An optional field prescribing this variant's order in relation to other variants. No guarantees other than being greater than or less than the order of other variants within this group (e.g., order may not be consecutive).",
+      "format" : "int64"
+    },
+    "enabled" : {
+      "type" : "boolean",
+      "description" : "An optional field indicating if this variant is enabled. If this is not enabled, it may be visible to the user, but not selectable. If this field is not present, assume a default value of `false`, for safety."
+    },
+    "hidden" : {
+      "type" : "boolean",
+      "description" : "An optional field indicating if this variant should be hidden. If hidden, it should not be shown to the user nor considered in any code logic. If this field is not present, assume a default value of `false`. Only truthy values should hide a variant."
+    },
+    "meta" : {
+      "$ref" : "#/components/schemas/CdnDeliveryV3Meta"
+    },
+    "mimeType" : {
+      "type" : "string",
+      "description" : "An optional string describing the MIME Type of this media source."
+    }
+  },
+  "description" : "A `variant` represents one variant of a source of media. The most common differenitating factor between variants is video resolution, but there may be more variations based on `isHdr`, codecs, FPS, etc. It's possible that groups of variants may be divided into separate `groups` elements."
+};
     defs["CheckFor2faLoginRequest"] = {
   "required" : [ "token" ],
   "type" : "object",
@@ -1977,6 +2242,25 @@ ul.nav-tabs {
     }
   }
 };
+    defs["EdgeDataCenter"] = {
+  "required" : [ "countryCode", "latitude", "longitude", "regionCode" ],
+  "type" : "object",
+  "properties" : {
+    "countryCode" : {
+      "type" : "string"
+    },
+    "regionCode" : {
+      "type" : "string"
+    },
+    "latitude" : {
+      "type" : "number"
+    },
+    "longitude" : {
+      "type" : "number"
+    }
+  },
+  "description" : "Location information for a datacenter. Not required."
+};
     defs["EdgeModel"] = {
   "required" : [ "allowDownload", "allowStreaming", "bandwidth", "datacenter", "hostname", "queryPort" ],
   "type" : "object",
@@ -1998,25 +2282,7 @@ ul.nav-tabs {
       "type" : "boolean"
     },
     "datacenter" : {
-      "$ref" : "#/components/schemas/EdgeModel_datacenter"
-    }
-  }
-};
-    defs["EdgeModel_datacenter"] = {
-  "required" : [ "countryCode", "latitude", "longitude", "regionCode" ],
-  "type" : "object",
-  "properties" : {
-    "countryCode" : {
-      "type" : "string"
-    },
-    "regionCode" : {
-      "type" : "string"
-    },
-    "latitude" : {
-      "type" : "number"
-    },
-    "longitude" : {
-      "type" : "number"
+      "$ref" : "#/components/schemas/EdgeDataCenter"
     }
   }
 };
@@ -3103,6 +3369,10 @@ ul.nav-tabs {
                   <li class="nav-header" data-group="CDNV2"><a href="#api-CDNV2">API Methods - CDNV2</a></li>
                     <li data-group="CDNV2" data-name="getDeliveryInfo" class="">
                       <a href="#api-CDNV2-getDeliveryInfo">getDeliveryInfo</a>
+                    </li>
+                  <li class="nav-header" data-group="CDNV3"><a href="#api-CDNV3">API Methods - CDNV3</a></li>
+                    <li data-group="CDNV3" data-name="getDeliveryInfoV3" class="">
+                      <a href="#api-CDNV3-getDeliveryInfoV3">getDeliveryInfoV3</a>
                     </li>
                   <li class="nav-header" data-group="CommentV3"><a href="#api-CommentV3">API Methods - CommentV3</a></li>
                     <li data-group="CommentV3" data-name="dislikeComment" class="">
@@ -7531,6 +7801,1279 @@ The GUID of the creator for a livestream, retrievable from &#x60;CreatorModelV2.
                                     </script>
                                   </div>
                                   <input id='responses-CDNV2-getDeliveryInfo-default-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-CDNV3">
+                  <h1>CDNV3</h1>
+                    <div id="api-CDNV3-getDeliveryInfoV3">
+                      <article id="api-CDNV3-getDeliveryInfoV3-0" data-group="User" data-name="getDeliveryInfoV3" data-version="0">
+                        <div class="pull-left">
+                          <h1>getDeliveryInfoV3</h1>
+                          <p>Get Delivery Info</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Given an video/audio attachment or livestream identifier, retrieves the information necessary to play, download, or livestream the media at various quality levels.</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/delivery/info</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-CDNV3-getDeliveryInfoV3-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-java">Java</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-python">Python</a></li>
+                          <li class=""><a href="#examples-CDNV3-getDeliveryInfoV3-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-CDNV3-getDeliveryInfoV3-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ \
+ -H "Accept: application/json" \
+ "https://www.floatplane.com/api/v3/delivery/info?scenario=scenario_example&entityId=entityId_example&outputKind=outputKind_example"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.CDNV3Api;
+
+import java.io.File;
+import java.util.*;
+
+public class CDNV3ApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        
+        // Configure API key authorization: CookieAuth
+        ApiKeyAuth CookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("CookieAuth");
+        CookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //CookieAuth.setApiKeyPrefix("Token");
+
+        // Create an instance of the API class
+        CDNV3Api apiInstance = new CDNV3Api();
+        String scenario = scenario_example; // String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+        String entityId = entityId_example; // String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.
+        String outputKind = outputKind_example; // String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.
+
+        try {
+            CdnDeliveryV3Response result = apiInstance.getDeliveryInfoV3(scenario, entityId, outputKind);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CDNV3Api#getDeliveryInfoV3");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.CDNV3Api;
+
+public class CDNV3ApiExample {
+    public static void main(String[] args) {
+        CDNV3Api apiInstance = new CDNV3Api();
+        String scenario = scenario_example; // String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+        String entityId = entityId_example; // String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.
+        String outputKind = outputKind_example; // String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.
+
+        try {
+            CdnDeliveryV3Response result = apiInstance.getDeliveryInfoV3(scenario, entityId, outputKind);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CDNV3Api#getDeliveryInfoV3");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: CookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sails.sid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sails.sid"];
+
+
+// Create an instance of the API class
+CDNV3Api *apiInstance = [[CDNV3Api alloc] init];
+String *scenario = scenario_example; // Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content (default to null)
+String *entityId = entityId_example; // The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object. (default to null)
+String *outputKind = outputKind_example; // Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+. (optional) (default to null)
+
+// Get Delivery Info
+[apiInstance getDeliveryInfoV3With:scenario
+    entityId:entityId
+    outputKind:outputKind
+              completionHandler: ^(CdnDeliveryV3Response output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
+
+// Configure API key authorization: CookieAuth
+var CookieAuth = defaultClient.authentications['CookieAuth'];
+CookieAuth.apiKey = "YOUR API KEY";
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
+
+// Create an instance of the API class
+var api = new FloatplaneRestApi.CDNV3Api()
+var scenario = scenario_example; // {String} Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+var entityId = entityId_example; // {String} The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.
+var opts = {
+  'outputKind': outputKind_example // {String} Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.
+};
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getDeliveryInfoV3(scenario, entityId, opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getDeliveryInfoV3Example
+    {
+        public void main()
+        {
+            // Configure API key authorization: CookieAuth
+            Configuration.Default.ApiKey.Add("sails.sid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sails.sid", "Bearer");
+
+            // Create an instance of the API class
+            var apiInstance = new CDNV3Api();
+            var scenario = scenario_example;  // String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content (default to null)
+            var entityId = entityId_example;  // String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object. (default to null)
+            var outputKind = outputKind_example;  // String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+. (optional)  (default to null)
+
+            try {
+                // Get Delivery Info
+                CdnDeliveryV3Response result = apiInstance.getDeliveryInfoV3(scenario, entityId, outputKind);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling CDNV3Api.getDeliveryInfoV3: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: CookieAuth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.sid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sails.sid', 'Bearer');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\CDNV3Api();
+$scenario = scenario_example; // String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+$entityId = entityId_example; // String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.
+$outputKind = outputKind_example; // String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.
+
+try {
+    $result = $api_instance->getDeliveryInfoV3($scenario, $entityId, $outputKind);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CDNV3Api->getDeliveryInfoV3: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::CDNV3Api;
+
+# Configure API key authorization: CookieAuth
+$WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::OPenAPIClient::Configuration::api_key_prefix->{'sails.sid'} = "Bearer";
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::CDNV3Api->new();
+my $scenario = scenario_example; # String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+my $entityId = entityId_example; # String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.
+my $outputKind = outputKind_example; # String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.
+
+eval {
+    my $result = $api_instance->getDeliveryInfoV3(scenario => $scenario, entityId => $entityId, outputKind => $outputKind);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling CDNV3Api->getDeliveryInfoV3: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: CookieAuth
+openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# openapi_client.configuration.api_key_prefix['sails.sid'] = 'Bearer'
+
+# Create an instance of the API class
+api_instance = openapi_client.CDNV3Api()
+scenario = scenario_example # String | Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content (default to null)
+entityId = entityId_example # String | The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object. (default to null)
+outputKind = outputKind_example # String | Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+. (optional) (default to null)
+
+try:
+    # Get Delivery Info
+    api_response = api_instance.get_delivery_info_v3(scenario, entityId, outputKind=outputKind)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling CDNV3Api->getDeliveryInfoV3: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CDNV3-getDeliveryInfoV3-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate CDNV3Api;
+
+pub fn main() {
+    let scenario = scenario_example; // String
+    let entityId = entityId_example; // String
+    let outputKind = outputKind_example; // String
+
+    let mut context = CDNV3Api::Context::default();
+    let result = client.getDeliveryInfoV3(scenario, entityId, outputKind, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">scenario*</td>
+<td>
+
+
+    <div id="d2e199_getDeliveryInfoV3_scenario">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+Used to determine the scenario in which to consume the media.
+
+- &#x60;onDemand&#x60; &#x3D; stream a Video/Audio On Demand
+- &#x60;download&#x60; &#x3D; Download the content for the user to play later.
+- &#x60;live&#x60; &#x3D; Livestream the content
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">entityId*</td>
+<td>
+
+
+    <div id="d2e199_getDeliveryInfoV3_entityId">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+The attachment or livestream identifier for the requested media. For video and audio, this would be from the &#x60;videoAttachments&#x60; or &#x60;audioAttachments&#x60; objects. For livestreams, this is the &#x60;liveStream.id&#x60; from the creator object.
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">outputKind</td>
+<td>
+
+
+    <div id="d2e199_getDeliveryInfoV3_outputKind">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+Use &#x60;outputKind&#x60; to ensure the right vehicle is used for your client, e.g. &#x60;outputKind&#x3D;hls.fmp4&#x60; is optimal for tvOS 10+.
+                    </div>
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-200"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-200" class="marked"></p>
+                            <script>
+                              var responseCDNV3200_description = `OK - Information on how to stream or download the requested video from the CDN in various levels of quality.`;
+                              var responseCDNV3200_description_break = responseCDNV3200_description.indexOf('\n');
+                              if (responseCDNV3200_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-200").text("Status: 200 - " + responseCDNV3200_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-200").text("Status: 200 - " + responseCDNV3200_description.substring(0, responseCDNV3200_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-200").html(responseCDNV3200_description.substring(responseCDNV3200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-200-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-200-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-200" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "OK - Information on how to stream or download the requested video from the CDN in various levels of quality.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/CdnDeliveryV3Response"
+      },
+      "examples" : {
+        "onDemand" : {
+          "summary" : "Example for `onDemand`",
+          "description" : "https://www.floatplane.com/api/v3/delivery/info?entityId=Lug14XXgLx&scenario=onDemand \n\nNote that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.",
+          "value" : {
+            "groups" : [ {
+              "origins" : [ {
+                "url" : "https://cdn-vod-drm2.floatplane.com"
+              } ],
+              "variants" : [ {
+                "name" : "360-avc1",
+                "label" : "360p",
+                "url" : "/Videos/Lug14XXgLx/360.mp4/chunk.m3u8?token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "order" : 11016384,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64001e",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 255886
+                    },
+                    "width" : 640,
+                    "height" : 320,
+                    "isHdr" : false,
+                    "fps" : 29.97,
+                    "mimeType" : "video/MP2T"
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000,
+                    "mimeType" : "video/MP2T"
+                  }
+                }
+              }, {
+                "name" : "480-avc1",
+                "label" : "480p",
+                "url" : "/Videos/Lug14XXgLx/480.mp4/chunk.m3u8?token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "order" : 19339456,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64001f",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 395615
+                    },
+                    "width" : 848,
+                    "height" : 424,
+                    "isHdr" : false,
+                    "fps" : 29.97,
+                    "mimeType" : "video/MP2T"
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000,
+                    "mimeType" : "video/MP2T"
+                  }
+                }
+              }, {
+                "name" : "720-avc1",
+                "label" : "720p",
+                "url" : "/Videos/Lug14XXgLx/720.mp4/chunk.m3u8?token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "order" : 44112064,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.640020",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 736634
+                    },
+                    "width" : 1280,
+                    "height" : 640,
+                    "isHdr" : false,
+                    "fps" : 29.97,
+                    "mimeType" : "video/MP2T"
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000,
+                    "mimeType" : "video/MP2T"
+                  }
+                }
+              }, {
+                "name" : "1080-avc1",
+                "label" : "1080p",
+                "url" : "/Videos/Lug14XXgLx/1080.mp4/chunk.m3u8?token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "order" : 99293376,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64002a",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 1448573
+                    },
+                    "width" : 1920,
+                    "height" : 960,
+                    "isHdr" : false,
+                    "fps" : 29.97,
+                    "mimeType" : "video/MP2T"
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000,
+                    "mimeType" : "video/MP2T"
+                  }
+                }
+              }, {
+                "name" : "2160-avc1",
+                "label" : "4K",
+                "url" : "/Videos/Lug14XXgLx/2160.mp4/chunk.m3u8?token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "order" : 397351104,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.640034",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 5904212
+                    },
+                    "width" : 3840,
+                    "height" : 1920,
+                    "isHdr" : false,
+                    "fps" : 29.97,
+                    "mimeType" : "video/MP2T"
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000,
+                    "mimeType" : "video/MP2T"
+                  }
+                }
+              } ]
+            } ]
+          }
+        },
+        "download" : {
+          "summary" : "Example for `download`",
+          "description" : "https://www.floatplane.com/api/v3/delivery/info?entityId=Lug14XXgLx&scenario=download \n\nNote that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.",
+          "value" : {
+            "groups" : [ {
+              "origins" : [ {
+                "url" : "https://edge01-na.floatplane.com",
+                "queryUrl" : "https://edge01-na-query.floatplane.com",
+                "datacenter" : {
+                  "latitude" : 45.3168,
+                  "longitude" : -73.8659,
+                  "countryCode" : "CA",
+                  "regionCode" : "QC"
+                }
+              }, {
+                "url" : "https://edge02-na.floatplane.com",
+                "queryUrl" : "https://edge02-na-query.floatplane.com",
+                "datacenter" : {
+                  "latitude" : 45.3168,
+                  "longitude" : -73.8659,
+                  "countryCode" : "CA",
+                  "regionCode" : "QC"
+                }
+              } ],
+              "variants" : [ {
+                "name" : "360-avc1",
+                "label" : "360p",
+                "url" : "/Videos/Lug14XXgLx/360.mp4?token=<token>",
+                "mimeType" : "video/mp4",
+                "order" : 11016384,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64001e",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 255886
+                    },
+                    "width" : 640,
+                    "height" : 320,
+                    "isHdr" : false,
+                    "fps" : 29.97
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000
+                  }
+                }
+              }, {
+                "name" : "480-avc1",
+                "label" : "480p",
+                "url" : "/Videos/Lug14XXgLx/480.mp4?token=<token>",
+                "mimeType" : "video/mp4",
+                "order" : 19339456,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64001f",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 395615
+                    },
+                    "width" : 848,
+                    "height" : 424,
+                    "isHdr" : false,
+                    "fps" : 29.97
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000
+                  }
+                }
+              }, {
+                "name" : "720-avc1",
+                "label" : "720p",
+                "url" : "/Videos/Lug14XXgLx/720.mp4?token=<token>",
+                "mimeType" : "video/mp4",
+                "order" : 44112064,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.640020",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 736634
+                    },
+                    "width" : 1280,
+                    "height" : 640,
+                    "isHdr" : false,
+                    "fps" : 29.97
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000
+                  }
+                }
+              }, {
+                "name" : "1080-avc1",
+                "label" : "1080p",
+                "url" : "/Videos/Lug14XXgLx/1080.mp4?token=<token>",
+                "mimeType" : "video/mp4",
+                "order" : 99293376,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.64002a",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 1448573
+                    },
+                    "width" : 1920,
+                    "height" : 960,
+                    "isHdr" : false,
+                    "fps" : 29.97
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000
+                  }
+                }
+              }, {
+                "name" : "2160-avc1",
+                "label" : "4K",
+                "url" : "/Videos/Lug14XXgLx/2160.mp4?token=<token>",
+                "mimeType" : "video/mp4",
+                "order" : 397351104,
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "video" : {
+                    "codec" : "avc1.640034",
+                    "codecSimple" : "avc1",
+                    "bitrate" : {
+                      "average" : 5904212
+                    },
+                    "width" : 3840,
+                    "height" : 1920,
+                    "isHdr" : false,
+                    "fps" : 29.97
+                  },
+                  "audio" : {
+                    "codec" : "mp4a.40.2",
+                    "bitrate" : {
+                      "average" : 93340,
+                      "maximum" : 93340
+                    },
+                    "channelCount" : 2,
+                    "samplerate" : 48000
+                  }
+                }
+              } ]
+            } ]
+          }
+        },
+        "live" : {
+          "summary" : "Example for `live`",
+          "description" : "https://www.floatplane.com/api/v3/delivery/info?entityId=5c13f3c006f1be15e08e05c0&scenario=live \n\nNote that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.",
+          "value" : {
+            "groups" : [ {
+              "origins" : [ {
+                "url" : "https://de488bcb61af.us-east-1.playback.live-video.net"
+              } ],
+              "variants" : [ {
+                "name" : "live-abr",
+                "label" : "Auto",
+                "url" : "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8?allow_source=false&token=<token>",
+                "mimeType" : "application/x-mpegURL",
+                "hidden" : false,
+                "enabled" : true,
+                "meta" : {
+                  "live" : {
+                    "lowLatencyExtension" : "ivshls"
+                  }
+                }
+              } ]
+            } ]
+          }
+        }
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-200-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-400"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-400" class="marked"></p>
+                            <script>
+                              var responseCDNV3400_description = `Bad Request - The request has errors and the server did not process it.`;
+                              var responseCDNV3400_description_break = responseCDNV3400_description.indexOf('\n');
+                              if (responseCDNV3400_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-400").text("Status: 400 - " + responseCDNV3400_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-400").text("Status: 400 - " + responseCDNV3400_description.substring(0, responseCDNV3400_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-400").html(responseCDNV3400_description.substring(responseCDNV3400_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-400" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-400-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-400-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-400-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-400" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request - The request has errors and the server did not process it.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-400-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-401"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-401" class="marked"></p>
+                            <script>
+                              var responseCDNV3401_description = `Unauthenticated - The request was not authenticated to make the request.`;
+                              var responseCDNV3401_description_break = responseCDNV3401_description.indexOf('\n');
+                              if (responseCDNV3401_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-401").text("Status: 401 - " + responseCDNV3401_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-401").text("Status: 401 - " + responseCDNV3401_description.substring(0, responseCDNV3401_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-401").html(responseCDNV3401_description.substring(responseCDNV3401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-401-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-401-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-401" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthenticated - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "erng-ah8e-n0d3",
+        "errors" : [ {
+          "id" : "erng-ah8e-n0d3",
+          "name" : "notLoggedInError",
+          "message" : "You must be logged-in to access this resource."
+        } ],
+        "message" : "You must be logged-in to access this resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-401-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-403"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-403" class="marked"></p>
+                            <script>
+                              var responseCDNV3403_description = `Forbidden - The request was not authenticated to make the request.`;
+                              var responseCDNV3403_description_break = responseCDNV3403_description.indexOf('\n');
+                              if (responseCDNV3403_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-403").text("Status: 403 - " + responseCDNV3403_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-403").text("Status: 403 - " + responseCDNV3403_description.substring(0, responseCDNV3403_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-403").html(responseCDNV3403_description.substring(responseCDNV3403_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-403" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-403-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-403-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-403-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-403" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "missingAchievementError",
+          "message" : "You lack one or more of the required achievements needed to access the requested resource.",
+          "data" : {
+            "requiresAllOfAchievement" : [ {
+              "id" : "6157853e479315db795f7296",
+              "title" : "FloatVPN Alpha",
+              "startDate" : null,
+              "endDate" : null,
+              "icon" : null
+            } ]
+          }
+        } ],
+        "message" : "You lack one or more of the required achievements needed to access the requested resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-403-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-404"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-404" class="marked"></p>
+                            <script>
+                              var responseCDNV3404_description = `Not Found - The resource was not found.`;
+                              var responseCDNV3404_description_break = responseCDNV3404_description.indexOf('\n');
+                              if (responseCDNV3404_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-404").text("Status: 404 - " + responseCDNV3404_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-404").text("Status: 404 - " + responseCDNV3404_description.substring(0, responseCDNV3404_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-404").html(responseCDNV3404_description.substring(responseCDNV3404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-404-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-404-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-404" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found - The resource was not found.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "notFoundError"
+        } ]
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-404-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CDNV3-getDeliveryInfoV3-title-default"></h3>
+                            <p id="examples-CDNV3-getDeliveryInfoV3-description-default" class="marked"></p>
+                            <script>
+                              var responseCDNV3default_description = `Unexpected response code`;
+                              var responseCDNV3default_description_break = responseCDNV3default_description.indexOf('\n');
+                              if (responseCDNV3default_description_break == -1) {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-default").text("Status: default - " + responseCDNV3default_description);
+                              } else {
+                                $("#examples-CDNV3-getDeliveryInfoV3-title-default").text("Status: default - " + responseCDNV3default_description.substring(0, responseCDNV3default_description_break));
+                                $("#examples-CDNV3-getDeliveryInfoV3-description-default").html(responseCDNV3default_description.substring(responseCDNV3default_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CDNV3-getDeliveryInfoV3-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CDNV3-getDeliveryInfoV3-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CDNV3-getDeliveryInfoV3-default-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CDNV3-getDeliveryInfoV3-default-schema">
+                                  <div id="responses-CDNV3-getDeliveryInfoV3-schema-default" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unexpected response code",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CDNV3-getDeliveryInfoV3-default-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CDNV3-getDeliveryInfoV3-schema-default');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CDNV3-getDeliveryInfoV3-default-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
                         </article>

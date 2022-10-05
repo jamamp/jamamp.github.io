@@ -21278,6 +21278,713 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
+<h1 id="floatplane-rest-api-cdnv3">CDNV3</h1>
+
+Content Delivery mechanisms for Floatplane media.
+
+## getDeliveryInfoV3
+
+<a id="opIdgetDeliveryInfoV3"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET https://www.floatplane.com/api/v3/delivery/info?scenario=onDemand&entityId=string \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET https://www.floatplane.com/api/v3/delivery/info?scenario=onDemand&entityId=string HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/delivery/info?scenario=onDemand&entityId=string',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get 'https://www.floatplane.com/api/v3/delivery/info',
+  params: {
+  'scenario' => 'string',
+'entityId' => 'string'
+}, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('https://www.floatplane.com/api/v3/delivery/info', params={
+  'scenario': 'onDemand',  'entityId': 'string'
+}, headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/delivery/info', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/delivery/info?scenario=onDemand&entityId=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/delivery/info", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v3/delivery/info`
+
+*Get Delivery Info*
+
+Given an video/audio attachment or livestream identifier, retrieves the information necessary to play, download, or livestream the media at various quality levels.
+
+<h3 id="getdeliveryinfov3-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|scenario|query|string|true|Used to determine the scenario in which to consume the media.|
+|entityId|query|string|true|The attachment or livestream identifier for the requested media. For video and audio, this would be from the `videoAttachments` or `audioAttachments` objects. For livestreams, this is the `liveStream.id` from the creator object.|
+|outputKind|query|string|false|Use `outputKind` to ensure the right vehicle is used for your client, e.g. `outputKind=hls.fmp4` is optimal for tvOS 10+.|
+
+#### Detailed descriptions
+
+**scenario**: Used to determine the scenario in which to consume the media.
+
+- `onDemand` = stream a Video/Audio On Demand
+- `download` = Download the content for the user to play later.
+- `live` = Livestream the content
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|scenario|onDemand|
+|scenario|download|
+|scenario|live|
+|outputKind|hls.mpegts|
+|outputKind|hls.fmp4|
+|outputKind|dash.mpegts|
+|outputKind|dash.m4s|
+|outputKind|flat|
+
+> Example responses
+
+> https://www.floatplane.com/api/v3/delivery/info?entityId=Lug14XXgLx&scenario=onDemand 
+
+Note that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.
+
+```json
+{
+  "groups": [
+    {
+      "origins": [
+        {
+          "url": "https://cdn-vod-drm2.floatplane.com"
+        }
+      ],
+      "variants": [
+        {
+          "name": "360-avc1",
+          "label": "360p",
+          "url": "/Videos/Lug14XXgLx/360.mp4/chunk.m3u8?token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "order": 11016384,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64001e",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 255886
+              },
+              "width": 640,
+              "height": 320,
+              "isHdr": false,
+              "fps": 29.97,
+              "mimeType": "video/MP2T"
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000,
+              "mimeType": "video/MP2T"
+            }
+          }
+        },
+        {
+          "name": "480-avc1",
+          "label": "480p",
+          "url": "/Videos/Lug14XXgLx/480.mp4/chunk.m3u8?token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "order": 19339456,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64001f",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 395615
+              },
+              "width": 848,
+              "height": 424,
+              "isHdr": false,
+              "fps": 29.97,
+              "mimeType": "video/MP2T"
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000,
+              "mimeType": "video/MP2T"
+            }
+          }
+        },
+        {
+          "name": "720-avc1",
+          "label": "720p",
+          "url": "/Videos/Lug14XXgLx/720.mp4/chunk.m3u8?token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "order": 44112064,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.640020",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 736634
+              },
+              "width": 1280,
+              "height": 640,
+              "isHdr": false,
+              "fps": 29.97,
+              "mimeType": "video/MP2T"
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000,
+              "mimeType": "video/MP2T"
+            }
+          }
+        },
+        {
+          "name": "1080-avc1",
+          "label": "1080p",
+          "url": "/Videos/Lug14XXgLx/1080.mp4/chunk.m3u8?token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "order": 99293376,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64002a",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 1448573
+              },
+              "width": 1920,
+              "height": 960,
+              "isHdr": false,
+              "fps": 29.97,
+              "mimeType": "video/MP2T"
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000,
+              "mimeType": "video/MP2T"
+            }
+          }
+        },
+        {
+          "name": "2160-avc1",
+          "label": "4K",
+          "url": "/Videos/Lug14XXgLx/2160.mp4/chunk.m3u8?token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "order": 397351104,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.640034",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 5904212
+              },
+              "width": 3840,
+              "height": 1920,
+              "isHdr": false,
+              "fps": 29.97,
+              "mimeType": "video/MP2T"
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000,
+              "mimeType": "video/MP2T"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> https://www.floatplane.com/api/v3/delivery/info?entityId=Lug14XXgLx&scenario=download 
+
+Note that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.
+
+```json
+{
+  "groups": [
+    {
+      "origins": [
+        {
+          "url": "https://edge01-na.floatplane.com",
+          "queryUrl": "https://edge01-na-query.floatplane.com",
+          "datacenter": {
+            "latitude": 45.3168,
+            "longitude": -73.8659,
+            "countryCode": "CA",
+            "regionCode": "QC"
+          }
+        },
+        {
+          "url": "https://edge02-na.floatplane.com",
+          "queryUrl": "https://edge02-na-query.floatplane.com",
+          "datacenter": {
+            "latitude": 45.3168,
+            "longitude": -73.8659,
+            "countryCode": "CA",
+            "regionCode": "QC"
+          }
+        }
+      ],
+      "variants": [
+        {
+          "name": "360-avc1",
+          "label": "360p",
+          "url": "/Videos/Lug14XXgLx/360.mp4?token=<token>",
+          "mimeType": "video/mp4",
+          "order": 11016384,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64001e",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 255886
+              },
+              "width": 640,
+              "height": 320,
+              "isHdr": false,
+              "fps": 29.97
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000
+            }
+          }
+        },
+        {
+          "name": "480-avc1",
+          "label": "480p",
+          "url": "/Videos/Lug14XXgLx/480.mp4?token=<token>",
+          "mimeType": "video/mp4",
+          "order": 19339456,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64001f",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 395615
+              },
+              "width": 848,
+              "height": 424,
+              "isHdr": false,
+              "fps": 29.97
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000
+            }
+          }
+        },
+        {
+          "name": "720-avc1",
+          "label": "720p",
+          "url": "/Videos/Lug14XXgLx/720.mp4?token=<token>",
+          "mimeType": "video/mp4",
+          "order": 44112064,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.640020",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 736634
+              },
+              "width": 1280,
+              "height": 640,
+              "isHdr": false,
+              "fps": 29.97
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000
+            }
+          }
+        },
+        {
+          "name": "1080-avc1",
+          "label": "1080p",
+          "url": "/Videos/Lug14XXgLx/1080.mp4?token=<token>",
+          "mimeType": "video/mp4",
+          "order": 99293376,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.64002a",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 1448573
+              },
+              "width": 1920,
+              "height": 960,
+              "isHdr": false,
+              "fps": 29.97
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000
+            }
+          }
+        },
+        {
+          "name": "2160-avc1",
+          "label": "4K",
+          "url": "/Videos/Lug14XXgLx/2160.mp4?token=<token>",
+          "mimeType": "video/mp4",
+          "order": 397351104,
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "video": {
+              "codec": "avc1.640034",
+              "codecSimple": "avc1",
+              "bitrate": {
+                "average": 5904212
+              },
+              "width": 3840,
+              "height": 1920,
+              "isHdr": false,
+              "fps": 29.97
+            },
+            "audio": {
+              "codec": "mp4a.40.2",
+              "bitrate": {
+                "average": 93340,
+                "maximum": 93340
+              },
+              "channelCount": 2,
+              "samplerate": 48000
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> https://www.floatplane.com/api/v3/delivery/info?entityId=5c13f3c006f1be15e08e05c0&scenario=live 
+
+Note that tokens are JWT tokens, but have been replaced with `<token>` in the examples below.
+
+```json
+{
+  "groups": [
+    {
+      "origins": [
+        {
+          "url": "https://de488bcb61af.us-east-1.playback.live-video.net"
+        }
+      ],
+      "variants": [
+        {
+          "name": "live-abr",
+          "label": "Auto",
+          "url": "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8?allow_source=false&token=<token>",
+          "mimeType": "application/x-mpegURL",
+          "hidden": false,
+          "enabled": true,
+          "meta": {
+            "live": {
+              "lowLatencyExtension": "ivshls"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="getdeliveryinfov3-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Information on how to stream or download the requested video from the CDN in various levels of quality.|[CdnDeliveryV3Response](#schemacdndeliveryv3response)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
 <h1 id="floatplane-rest-api-connectedaccountsv2">ConnectedAccountsV2</h1>
 
 3rd party account management, such as Discord or LTT Forums.
@@ -98134,6 +98841,561 @@ xor
 |---|---|---|---|---|
 |*anonymous*|[CdnDeliveryV2DownloadResponse](#schemacdndeliveryv2downloadresponse)|false|none|none|
 
+<h2 id="tocS_CdnDeliveryV3Response">CdnDeliveryV3Response</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3response"></a>
+<a id="schema_CdnDeliveryV3Response"></a>
+<a id="tocScdndeliveryv3response"></a>
+<a id="tocscdndeliveryv3response"></a>
+
+```json
+{
+  "groups": [
+    {
+      "origins": [
+        {
+          "url": "http://example.com",
+          "queryUrl": "http://example.com",
+          "datacenter": {
+            "countryCode": "string",
+            "regionCode": "string",
+            "latitude": 0,
+            "longitude": 0
+          }
+        }
+      ],
+      "variants": [
+        {
+          "name": "string",
+          "label": "string",
+          "url": "string",
+          "origins": [
+            {
+              "url": "http://example.com",
+              "queryUrl": "http://example.com",
+              "datacenter": {
+                "countryCode": "string",
+                "regionCode": "string",
+                "latitude": 0,
+                "longitude": 0
+              }
+            }
+          ],
+          "order": 0,
+          "enabled": true,
+          "hidden": true,
+          "meta": {
+            "common": {
+              "size": 0,
+              "access": {
+                "deniedReason": "isMissingPermission",
+                "deniedMessage": "string"
+              }
+            },
+            "video": {
+              "codec": "string",
+              "codecSimple": "string",
+              "mimeType": "string",
+              "width": 0,
+              "height": 0,
+              "isHdr": true,
+              "fps": 0,
+              "bitrate": {
+                "maximum": 0,
+                "average": 0
+              }
+            },
+            "audio": {
+              "codec": "string",
+              "codecSimple": "string",
+              "mimeType": "string",
+              "channelCount": 0,
+              "samplerate": 0,
+              "bitrate": {
+                "maximum": 0,
+                "average": 0
+              }
+            },
+            "image": {
+              "codec": "string",
+              "codecSimple": "string",
+              "mimeType": "string",
+              "width": 0,
+              "height": 0,
+              "isHdr": true
+            },
+            "live": {
+              "lowLatencyExtension": "llhls"
+            }
+          },
+          "mimeType": "string"
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|groups|[[CdnDeliveryV3Group](#schemacdndeliveryv3group)]|true|none|`groups` may consist of zero or more elements.|
+
+<h2 id="tocS_CdnDeliveryV3Group">CdnDeliveryV3Group</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3group"></a>
+<a id="schema_CdnDeliveryV3Group"></a>
+<a id="tocScdndeliveryv3group"></a>
+<a id="tocscdndeliveryv3group"></a>
+
+```json
+{
+  "origins": [
+    {
+      "url": "http://example.com",
+      "queryUrl": "http://example.com",
+      "datacenter": {
+        "countryCode": "string",
+        "regionCode": "string",
+        "latitude": 0,
+        "longitude": 0
+      }
+    }
+  ],
+  "variants": [
+    {
+      "name": "string",
+      "label": "string",
+      "url": "string",
+      "origins": [
+        {
+          "url": "http://example.com",
+          "queryUrl": "http://example.com",
+          "datacenter": {
+            "countryCode": "string",
+            "regionCode": "string",
+            "latitude": 0,
+            "longitude": 0
+          }
+        }
+      ],
+      "order": 0,
+      "enabled": true,
+      "hidden": true,
+      "meta": {
+        "common": {
+          "size": 0,
+          "access": {
+            "deniedReason": "isMissingPermission",
+            "deniedMessage": "string"
+          }
+        },
+        "video": {
+          "codec": "string",
+          "codecSimple": "string",
+          "mimeType": "string",
+          "width": 0,
+          "height": 0,
+          "isHdr": true,
+          "fps": 0,
+          "bitrate": {
+            "maximum": 0,
+            "average": 0
+          }
+        },
+        "audio": {
+          "codec": "string",
+          "codecSimple": "string",
+          "mimeType": "string",
+          "channelCount": 0,
+          "samplerate": 0,
+          "bitrate": {
+            "maximum": 0,
+            "average": 0
+          }
+        },
+        "image": {
+          "codec": "string",
+          "codecSimple": "string",
+          "mimeType": "string",
+          "width": 0,
+          "height": 0,
+          "isHdr": true
+        },
+        "live": {
+          "lowLatencyExtension": "llhls"
+        }
+      },
+      "mimeType": "string"
+    }
+  ]
+}
+
+```
+
+A group is a logical grouping/separation of variants. At this time, there are no examples of more than one group in a response.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|origins|[[CdnDeliveryV3Origin](#schemacdndeliveryv3origin)]|false|none|If `origins` is present, it will consist of one or more elements.|
+|variants|[[CdnDeliveryV3Variant](#schemacdndeliveryv3variant)]|true|none|`variants` may consist of zero or more elements.|
+
+<h2 id="tocS_CdnDeliveryV3Origin">CdnDeliveryV3Origin</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3origin"></a>
+<a id="schema_CdnDeliveryV3Origin"></a>
+<a id="tocScdndeliveryv3origin"></a>
+<a id="tocscdndeliveryv3origin"></a>
+
+```json
+{
+  "url": "http://example.com",
+  "queryUrl": "http://example.com",
+  "datacenter": {
+    "countryCode": "string",
+    "regionCode": "string",
+    "latitude": 0,
+    "longitude": 0
+  }
+}
+
+```
+
+An `origin`, if present, is a choice of base URL or server from which to load a `variant`'s content. If origin(s) exists in a group or variant, then one must be chosen in combination with the variant's `url`.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|url|string(uri)|true|none|An absolute URL (possibly with trailing slash) which acts as the base of a delivery resource URI. This is always present.|
+|queryUrl|string(uri)|false|none|An absolute URL (possibly with trailing slash) which the client can use to query if the origin is active/working. This field may not be present. Perform an HTTP GET on this URL and expect an HTTP 200 in order to trust this origin.|
+|datacenter|[EdgeDataCenter](#schemaedgedatacenter)|false|none|Location information for a datacenter. Not required.|
+
+<h2 id="tocS_CdnDeliveryV3Variant">CdnDeliveryV3Variant</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3variant"></a>
+<a id="schema_CdnDeliveryV3Variant"></a>
+<a id="tocScdndeliveryv3variant"></a>
+<a id="tocscdndeliveryv3variant"></a>
+
+```json
+{
+  "name": "string",
+  "label": "string",
+  "url": "string",
+  "origins": [
+    {
+      "url": "http://example.com",
+      "queryUrl": "http://example.com",
+      "datacenter": {
+        "countryCode": "string",
+        "regionCode": "string",
+        "latitude": 0,
+        "longitude": 0
+      }
+    }
+  ],
+  "order": 0,
+  "enabled": true,
+  "hidden": true,
+  "meta": {
+    "common": {
+      "size": 0,
+      "access": {
+        "deniedReason": "isMissingPermission",
+        "deniedMessage": "string"
+      }
+    },
+    "video": {
+      "codec": "string",
+      "codecSimple": "string",
+      "mimeType": "string",
+      "width": 0,
+      "height": 0,
+      "isHdr": true,
+      "fps": 0,
+      "bitrate": {
+        "maximum": 0,
+        "average": 0
+      }
+    },
+    "audio": {
+      "codec": "string",
+      "codecSimple": "string",
+      "mimeType": "string",
+      "channelCount": 0,
+      "samplerate": 0,
+      "bitrate": {
+        "maximum": 0,
+        "average": 0
+      }
+    },
+    "image": {
+      "codec": "string",
+      "codecSimple": "string",
+      "mimeType": "string",
+      "width": 0,
+      "height": 0,
+      "isHdr": true
+    },
+    "live": {
+      "lowLatencyExtension": "llhls"
+    }
+  },
+  "mimeType": "string"
+}
+
+```
+
+A `variant` represents one variant of a source of media. The most common differenitating factor between variants is video resolution, but there may be more variations based on `isHdr`, codecs, FPS, etc. It's possible that groups of variants may be divided into separate `groups` elements.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|A programmatic name for this variant, for use with uniquely identifying this variant.|
+|label|string|true|none|A display-friendly label for this variant, for use in the UI.|
+|url|string|true|none|A relative *or* absolute URL containing resource information for this variant. Compared to the V2 API, this URL does not contain template information and will not need to be modified before use, other than optionally combining with an origin. This value may contain a trailing slash.<br><br>If this URL is absolute, it may be used as-is in order to load the media content. If this URL is relative, then it should be combined with an origin base URL. In order of preference: 1) use an origin from this variant object, 2) use an origin from this variant's group object, 3) use `https://floatplane.com`.<br><br>Do not use an origin from a different group, or from a different variant, as this may result in errors.|
+|origins|[[CdnDeliveryV3Origin](#schemacdndeliveryv3origin)]|false|none|If `origins` is present, it will consist of one or more elements.|
+|order|integer(int64)|false|none|An optional field prescribing this variant's order in relation to other variants. No guarantees other than being greater than or less than the order of other variants within this group (e.g., order may not be consecutive).|
+|enabled|boolean|false|none|An optional field indicating if this variant is enabled. If this is not enabled, it may be visible to the user, but not selectable. If this field is not present, assume a default value of `false`, for safety.|
+|hidden|boolean|false|none|An optional field indicating if this variant should be hidden. If hidden, it should not be shown to the user nor considered in any code logic. If this field is not present, assume a default value of `false`. Only truthy values should hide a variant.|
+|meta|[CdnDeliveryV3Meta](#schemacdndeliveryv3meta)|false|none|Metadata information for this variant. Note that most/all child and grandchild properties are not required on purpose.|
+|mimeType|string|false|none|An optional string describing the MIME Type of this media source.|
+
+<h2 id="tocS_CdnDeliveryV3Meta">CdnDeliveryV3Meta</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3meta"></a>
+<a id="schema_CdnDeliveryV3Meta"></a>
+<a id="tocScdndeliveryv3meta"></a>
+<a id="tocscdndeliveryv3meta"></a>
+
+```json
+{
+  "common": {
+    "size": 0,
+    "access": {
+      "deniedReason": "isMissingPermission",
+      "deniedMessage": "string"
+    }
+  },
+  "video": {
+    "codec": "string",
+    "codecSimple": "string",
+    "mimeType": "string",
+    "width": 0,
+    "height": 0,
+    "isHdr": true,
+    "fps": 0,
+    "bitrate": {
+      "maximum": 0,
+      "average": 0
+    }
+  },
+  "audio": {
+    "codec": "string",
+    "codecSimple": "string",
+    "mimeType": "string",
+    "channelCount": 0,
+    "samplerate": 0,
+    "bitrate": {
+      "maximum": 0,
+      "average": 0
+    }
+  },
+  "image": {
+    "codec": "string",
+    "codecSimple": "string",
+    "mimeType": "string",
+    "width": 0,
+    "height": 0,
+    "isHdr": true
+  },
+  "live": {
+    "lowLatencyExtension": "llhls"
+  }
+}
+
+```
+
+Metadata information for this variant. Note that most/all child and grandchild properties are not required on purpose.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|common|object|false|none|none|
+|» size|number|false|none|Size of the corresponding media file, measured in bytes.|
+|» access|object|false|none|none|
+|»» deniedReason|string|false|none|- `isMissingPermission`: Indicates that the requester is lacking a required plan or other form of permission entitling on to access the corresponding resource.<br>- `isProcessing`: Indicates that the corresponding resource is processing. Clients may choose to periodically refetch an asset's info when it has reported this state.<br>- `isBroken`: Indicates that the corresponding resource is defective in some manner which has rendered it currently inaccessible. It is possible that the asset will be repaired at some later point in time. Clients may choose to periodically refetch an asset's info when it has reported this state.|
+|»» deniedMessage|string|false|none|Message describing in human-readable terms why access has been witheld for a resource.|
+|video|any|false|none|none|
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3MediaIdentityCharacteristics](#schemacdndeliveryv3mediaidentitycharacteristics)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3ImagePresentationCharacteristics](#schemacdndeliveryv3imagepresentationcharacteristics)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» fps|number|false|none|Maximum count of frames presented per second for the video.|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3MediaBitrateInfo](#schemacdndeliveryv3mediabitrateinfo)|false|none|none|
+
+continued
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|audio|any|false|none|none|
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3MediaIdentityCharacteristics](#schemacdndeliveryv3mediaidentitycharacteristics)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» channelCount|integer|false|none|Count of channels carried by the audio stream.|
+|»» samplerate|integer|false|none|Count of samples recorded per second.|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3MediaBitrateInfo](#schemacdndeliveryv3mediabitrateinfo)|false|none|none|
+
+continued
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|image|any|false|none|none|
+
+allOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3MediaIdentityCharacteristics](#schemacdndeliveryv3mediaidentitycharacteristics)|false|none|none|
+
+and
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[CdnDeliveryV3ImagePresentationCharacteristics](#schemacdndeliveryv3imagepresentationcharacteristics)|false|none|none|
+
+continued
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|live|object|false|none|none|
+|» lowLatencyExtension|string|false|none|- `llhls`: 🍎-backed low-latency HLS extension.<br>- `clhls`: Community-backed low-latency HLS extension.<br>- `ivshls`: IVS custom low-latency HLS extension.<br>- `lldash`: DASH-IF-backed low-Latency DASH extension.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|deniedReason|isMissingPermission|
+|deniedReason|isProcessing|
+|deniedReason|isBroken|
+|lowLatencyExtension|llhls|
+|lowLatencyExtension|clhls|
+|lowLatencyExtension|ivshls|
+|lowLatencyExtension|lldash|
+
+<h2 id="tocS_CdnDeliveryV3MediaIdentityCharacteristics">CdnDeliveryV3MediaIdentityCharacteristics</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3mediaidentitycharacteristics"></a>
+<a id="schema_CdnDeliveryV3MediaIdentityCharacteristics"></a>
+<a id="tocScdndeliveryv3mediaidentitycharacteristics"></a>
+<a id="tocscdndeliveryv3mediaidentitycharacteristics"></a>
+
+```json
+{
+  "codec": "string",
+  "codecSimple": "string",
+  "mimeType": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|codec|string|false|none|RFC 6381 codec string indicating stream data chunk format.|
+|codecSimple|string|false|none|RFC 6381 codec string indicating stream format on the most basic level, without the addition of profile/level/etc. information.|
+|mimeType|string|false|none|MIME-type for individual stream data chunks (as opposed to a containing playlist).|
+
+<h2 id="tocS_CdnDeliveryV3ImagePresentationCharacteristics">CdnDeliveryV3ImagePresentationCharacteristics</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3imagepresentationcharacteristics"></a>
+<a id="schema_CdnDeliveryV3ImagePresentationCharacteristics"></a>
+<a id="tocScdndeliveryv3imagepresentationcharacteristics"></a>
+<a id="tocscdndeliveryv3imagepresentationcharacteristics"></a>
+
+```json
+{
+  "width": 0,
+  "height": 0,
+  "isHdr": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|width|integer|false|none|Count of horizontal pixels presented.|
+|height|integer|false|none|Count of vertical pixels presented.|
+|isHdr|boolean|false|none|Whether or not this data stream carries HDR content.|
+
+<h2 id="tocS_CdnDeliveryV3MediaBitrateInfo">CdnDeliveryV3MediaBitrateInfo</h2>
+<!-- backwards compatibility -->
+<a id="schemacdndeliveryv3mediabitrateinfo"></a>
+<a id="schema_CdnDeliveryV3MediaBitrateInfo"></a>
+<a id="tocScdndeliveryv3mediabitrateinfo"></a>
+<a id="tocscdndeliveryv3mediabitrateinfo"></a>
+
+```json
+{
+  "bitrate": {
+    "maximum": 0,
+    "average": 0
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|bitrate|object|false|none|none|
+|» maximum|number|false|none|Maximum bitrate observed for the data stream.|
+|» average|number|false|none|Average bitrate observed for the data stream.|
+
 <h2 id="tocS_PaymentInvoiceListV2Response">PaymentInvoiceListV2Response</h2>
 <!-- backwards compatibility -->
 <a id="schemapaymentinvoicelistv2response"></a>
@@ -101219,9 +102481,33 @@ Represents some basic information of a user (id, username, and profile image).
 |bandwidth|integer(int64)|true|none|none|
 |allowDownload|boolean|true|none|none|
 |allowStreaming|boolean|true|none|none|
-|datacenter|object|true|none|none|
-|» countryCode|string|true|none|none|
-|» regionCode|string|true|none|none|
-|» latitude|number|true|none|none|
-|» longitude|number|true|none|none|
+|datacenter|[EdgeDataCenter](#schemaedgedatacenter)|true|none|Location information for a datacenter. Not required.|
+
+<h2 id="tocS_EdgeDataCenter">EdgeDataCenter</h2>
+<!-- backwards compatibility -->
+<a id="schemaedgedatacenter"></a>
+<a id="schema_EdgeDataCenter"></a>
+<a id="tocSedgedatacenter"></a>
+<a id="tocsedgedatacenter"></a>
+
+```json
+{
+  "countryCode": "string",
+  "regionCode": "string",
+  "latitude": 0,
+  "longitude": 0
+}
+
+```
+
+Location information for a datacenter. Not required.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|countryCode|string|true|none|none|
+|regionCode|string|true|none|none|
+|latitude|number|true|none|none|
+|longitude|number|true|none|none|
 

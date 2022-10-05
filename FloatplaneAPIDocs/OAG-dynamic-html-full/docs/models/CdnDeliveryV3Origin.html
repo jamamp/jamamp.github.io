@@ -1,0 +1,17 @@
+
+<h2>CdnDeliveryV3Origin</h2>
+<ul class="parameter">
+  <li class="param-required-true">url : URI
+    <br/>An absolute URL (possibly with trailing slash) which acts as the base of a delivery resource URI. This is always present.
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">queryUrl : URI
+    <br/>An absolute URL (possibly with trailing slash) which the client can use to query if the origin is active/working. This field may not be present. Perform an HTTP GET on this URL and expect an HTTP 200 in order to trust this origin.
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">datacenter : EdgeDataCenter
+    <br/>
+  </li>
+</ul>

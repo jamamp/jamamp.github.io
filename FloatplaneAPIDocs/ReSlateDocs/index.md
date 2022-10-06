@@ -1,5 +1,5 @@
 ---
-title: Floatplane REST API v3.9.10
+title: Floatplane REST API v3.10.0-c
 language_tabs:
   - shell: Shell
   - http: HTTP
@@ -19,7 +19,7 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="floatplane-rest-api">Floatplane REST API v3.9.10</h1>
+<h1 id="floatplane-rest-api">Floatplane REST API v3.10.0-c</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -1660,7 +1660,7 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-<h1 id="floatplane-rest-api-cdnv3">CDNV3</h1>
+<h1 id="floatplane-rest-api-deliveryv3">DeliveryV3</h1>
 
 Content Delivery mechanisms for Floatplane media.
 

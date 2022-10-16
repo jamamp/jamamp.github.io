@@ -504,6 +504,16 @@
                     
                   </li>
                 
+                  <li>
+                    <a href="#updateprogress" class="toc-h2 toc-link" data-title="">updateProgress</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#getprogress" class="toc-h2 toc-link" data-title="">getProgress</a>
+                    
+                  </li>
+                
               </ul>
             
           </li>
@@ -892,6 +902,21 @@
                 
                   <li>
                     <a href="#tocS_EdgeDataCenter" class="toc-h2 toc-link" data-title="">EdgeDataCenter</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#tocS_UpdateProgressRequest" class="toc-h2 toc-link" data-title="">UpdateProgressRequest</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#tocS_GetProgressRequest" class="toc-h2 toc-link" data-title="">GetProgressRequest</a>
+                    
+                  </li>
+                
+                  <li>
+                    <a href="#tocS_GetProgressResponse" class="toc-h2 toc-link" data-title="">GetProgressResponse</a>
                     
                   </li>
                 
@@ -10553,6 +10578,250 @@ CookieAuth
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
 </aside>
+<h2 id="updateprogress">updateProgress</h2>
+<p><a id="opIdupdateProgress"></a></p>
+<blockquote>
+<p>Code samples</p>
+</blockquote>
+<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X POST https://www.floatplane.com/api/v3/content/progress <span class="token punctuation">\</span><br>  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: text/plain'</span><br></code></pre>
+<pre class="language-http"><code class="language-http"><span class="token request-line"><span class="token method property">POST</span> <span class="token request-target url">https://www.floatplane.com/api/v3/content/progress</span> <span class="token http-version property">HTTP/1.1</span></span><br><span class="token header"><span class="token header-name keyword">Host</span><span class="token punctuation">:</span> <span class="token header-value">www.floatplane.com</span></span><br><span class="token header"><span class="token header-name keyword">Content-Type</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">text/plain</span></span><br><span class="token application-json"></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> inputBody <span class="token operator">=</span> '<span class="token punctuation">{</span><br>  <span class="token string-property property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token string-property property">"contentType"</span><span class="token operator">:</span> <span class="token string">"video"</span><span class="token punctuation">,</span><br>  <span class="token string-property property">"progress"</span><span class="token operator">:</span> <span class="token number">0</span><br><span class="token punctuation">}</span>'<span class="token punctuation">;</span><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-property property">'Content-Type'</span><span class="token operator">:</span><span class="token string">'application/json'</span><span class="token punctuation">,</span><br>  <span class="token string-property property">'Accept'</span><span class="token operator">:</span><span class="token string">'text/plain'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/progress'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  <span class="token literal-property property">body</span><span class="token operator">:</span> inputBody<span class="token punctuation">,</span><br>  <span class="token literal-property property">headers</span><span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'rest-client'</span></span><br><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'json'</span></span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'Content-Type'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><span class="token punctuation">,</span><br>  <span class="token string-literal"><span class="token string">'Accept'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'text/plain'</span></span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> RestClient<span class="token punctuation">.</span>post <span class="token string-literal"><span class="token string">'https://www.floatplane.com/api/v3/content/progress'</span></span><span class="token punctuation">,</span><br>  <span class="token symbol">params</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">headers</span><span class="token operator">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'text/plain'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/progress'</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><br><br><span class="token keyword">require</span> <span class="token string single-quoted-string">'vendor/autoload.php'</span><span class="token punctuation">;</span><br><br><span class="token variable">$headers</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>    <span class="token string single-quoted-string">'Content-Type'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br>    <span class="token string single-quoted-string">'Accept'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'text/plain'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token variable">$client</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Define array of request body.</span><br><span class="token variable">$request_body</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token variable">$client</span><span class="token operator">-></span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'POST'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'https://www.floatplane.com/api/v3/content/progress'</span><span class="token punctuation">,</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>        <span class="token string single-quoted-string">'headers'</span> <span class="token operator">=></span> <span class="token variable">$headers</span><span class="token punctuation">,</span><br>        <span class="token string single-quoted-string">'json'</span> <span class="token operator">=></span> <span class="token variable">$request_body</span><span class="token punctuation">,</span><br>       <span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Exception<span class="token punctuation">\</span>BadResponseException</span> <span class="token variable">$e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handle exception or api errors.</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$e</span><span class="token operator">-></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br><br> <span class="token comment">// ...</span><br></code></pre>
+<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">"https://www.floatplane.com/api/v3/content/progress"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-go"><code class="language-go"><span class="token keyword">package</span> main<br><br><span class="token keyword">import</span> <span class="token punctuation">(</span><br>       <span class="token string">"bytes"</span><br>       <span class="token string">"net/http"</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>    headers <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><br>        <span class="token string">"Content-Type"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>        <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"text/plain"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><br><br>    data <span class="token operator">:=</span> bytes<span class="token punctuation">.</span><span class="token function">NewBuffer</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span>jsonReq<span class="token punctuation">}</span><span class="token punctuation">)</span><br>    req<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">NewRequest</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token string">"https://www.floatplane.com/api/v3/content/progress"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><br>    req<span class="token punctuation">.</span>Header <span class="token operator">=</span> headers<br><br>    client <span class="token operator">:=</span> <span class="token operator">&amp;</span>http<span class="token punctuation">.</span>Client<span class="token punctuation">{</span><span class="token punctuation">}</span><br>    resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><br>    <span class="token comment">// ...</span><br><span class="token punctuation">}</span><br></code></pre>
+<p><code>POST /api/v3/content/progress</code></p>
+<p><em>Update Progress</em></p>
+<p>Update the watch progress on a piece of media (usually video or audio), stored as the number of seconds in the media.</p>
+<blockquote>
+<p>Body parameter</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"contentType"</span><span class="token operator">:</span> <span class="token string">"video"</span><span class="token punctuation">,</span><br>  <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">0</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="updateprogress-parameters">Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>In</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>body</td>
+<td><a href="#schemaupdateprogressrequest">UpdateProgressRequest</a></td>
+<td>true</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Example responses</p>
+</blockquote>
+<blockquote>
+<p>200 Response</p>
+</blockquote>
+<pre><code>&quot;OK&quot;
+</code></pre>
+<blockquote>
+<p>400 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>401 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notLoggedInError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>403 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"missingAchievementError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"requiresAllOfAchievement"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"6157853e479315db795f7296"</span><span class="token punctuation">,</span><br>            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FloatVPN Alpha"</span><span class="token punctuation">,</span><br>            <span class="token property">"startDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"endDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token null keyword">null</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>404 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notFoundError"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>default Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="updateprogress-responses">Responses</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.3.1">OK</a></td>
+<td>OK</td>
+<td>string</td>
+</tr>
+<tr>
+<td>400</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.1">Bad Request</a></td>
+<td>Bad Request - The request has errors and the server did not process it.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td><a href="https://tools.ietf.org/html/rfc7235#section-3.1">Unauthorized</a></td>
+<td>Unauthenticated - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.3">Forbidden</a></td>
+<td>Forbidden - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
+<td>Not Found - The resource was not found.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>default</td>
+<td>Default</td>
+<td>Unexpected response code</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+<h2 id="getprogress">getProgress</h2>
+<p><a id="opIdgetProgress"></a></p>
+<blockquote>
+<p>Code samples</p>
+</blockquote>
+<pre class="language-shell"><code class="language-shell"><span class="token comment"># You can also use wget</span><br><span class="token function">curl</span> -X POST https://www.floatplane.com/api/v3/content/get/progress <span class="token punctuation">\</span><br>  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span><br>  -H <span class="token string">'Accept: application/json'</span><br></code></pre>
+<pre class="language-http"><code class="language-http"><span class="token request-line"><span class="token method property">POST</span> <span class="token request-target url">https://www.floatplane.com/api/v3/content/get/progress</span> <span class="token http-version property">HTTP/1.1</span></span><br><span class="token header"><span class="token header-name keyword">Host</span><span class="token punctuation">:</span> <span class="token header-value">www.floatplane.com</span></span><br><span class="token header"><span class="token header-name keyword">Content-Type</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">application/json</span></span><br><span class="token application-json"></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> inputBody <span class="token operator">=</span> '<span class="token punctuation">{</span><br>  <span class="token string-property property">"ids"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token string-property property">"contentType"</span><span class="token operator">:</span> <span class="token string">"blogPost"</span><br><span class="token punctuation">}</span>'<span class="token punctuation">;</span><br><span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-property property">'Content-Type'</span><span class="token operator">:</span><span class="token string">'application/json'</span><span class="token punctuation">,</span><br>  <span class="token string-property property">'Accept'</span><span class="token operator">:</span><span class="token string">'application/json'</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/get/progress'</span><span class="token punctuation">,</span><br><span class="token punctuation">{</span><br>  <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  <span class="token literal-property property">body</span><span class="token operator">:</span> inputBody<span class="token punctuation">,</span><br>  <span class="token literal-property property">headers</span><span class="token operator">:</span> headers<br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">body</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'rest-client'</span></span><br><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'json'</span></span><br><br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string-literal"><span class="token string">'Content-Type'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><span class="token punctuation">,</span><br>  <span class="token string-literal"><span class="token string">'Accept'</span></span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">'application/json'</span></span><br><span class="token punctuation">}</span><br><br>result <span class="token operator">=</span> RestClient<span class="token punctuation">.</span>post <span class="token string-literal"><span class="token string">'https://www.floatplane.com/api/v3/content/get/progress'</span></span><span class="token punctuation">,</span><br>  <span class="token symbol">params</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token symbol">headers</span><span class="token operator">:</span> headers<br><br>p <span class="token constant">JSON</span><span class="token punctuation">.</span>parse<span class="token punctuation">(</span>result<span class="token punctuation">)</span><br></code></pre>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> requests<br>headers <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span><br>  <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><br><span class="token punctuation">}</span><br><br>r <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">'https://www.floatplane.com/api/v3/content/get/progress'</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">)</span><br><br><span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><br><br><span class="token keyword">require</span> <span class="token string single-quoted-string">'vendor/autoload.php'</span><span class="token punctuation">;</span><br><br><span class="token variable">$headers</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>    <span class="token string single-quoted-string">'Content-Type'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br>    <span class="token string single-quoted-string">'Accept'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'application/json'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token variable">$client</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Define array of request body.</span><br><span class="token variable">$request_body</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token variable">$client</span><span class="token operator">-></span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'POST'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'https://www.floatplane.com/api/v3/content/get/progress'</span><span class="token punctuation">,</span> <span class="token keyword">array</span><span class="token punctuation">(</span><br>        <span class="token string single-quoted-string">'headers'</span> <span class="token operator">=></span> <span class="token variable">$headers</span><span class="token punctuation">,</span><br>        <span class="token string single-quoted-string">'json'</span> <span class="token operator">=></span> <span class="token variable">$request_body</span><span class="token punctuation">,</span><br>       <span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">getContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name class-name-fully-qualified"><span class="token punctuation">\</span>GuzzleHttp<span class="token punctuation">\</span>Exception<span class="token punctuation">\</span>BadResponseException</span> <span class="token variable">$e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handle exception or api errors.</span><br>    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$e</span><span class="token operator">-></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br> <span class="token punctuation">}</span><br><br> <span class="token comment">// ...</span><br></code></pre>
+<pre class="language-java"><code class="language-java"><span class="token class-name">URL</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">"https://www.floatplane.com/api/v3/content/get/progress"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">HttpURLConnection</span> con <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> obj<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>con<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">int</span> responseCode <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>con<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">String</span> inputLine<span class="token punctuation">;</span><br><span class="token class-name">StringBuffer</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br>in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<pre class="language-go"><code class="language-go"><span class="token keyword">package</span> main<br><br><span class="token keyword">import</span> <span class="token punctuation">(</span><br>       <span class="token string">"bytes"</span><br>       <span class="token string">"net/http"</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>    headers <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><br>        <span class="token string">"Content-Type"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>        <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"application/json"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><br><br>    data <span class="token operator">:=</span> bytes<span class="token punctuation">.</span><span class="token function">NewBuffer</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span>jsonReq<span class="token punctuation">}</span><span class="token punctuation">)</span><br>    req<span class="token punctuation">,</span> err <span class="token operator">:=</span> http<span class="token punctuation">.</span><span class="token function">NewRequest</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token string">"https://www.floatplane.com/api/v3/content/get/progress"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><br>    req<span class="token punctuation">.</span>Header <span class="token operator">=</span> headers<br><br>    client <span class="token operator">:=</span> <span class="token operator">&amp;</span>http<span class="token punctuation">.</span>Client<span class="token punctuation">{</span><span class="token punctuation">}</span><br>    resp<span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Do</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><br>    <span class="token comment">// ...</span><br><span class="token punctuation">}</span><br></code></pre>
+<p><code>POST /api/v3/content/get/progress</code></p>
+<p><em>Get Progress</em></p>
+<p>Batch retrieval of watch progress values for blog posts. This API is useful for showing progress of a list of blog posts shown on the screen to the user. When retrieving a list of blog posts, the media attachments only include the identifier; when retrieving full details of a blog post, the attachments include more information, but still fail to return the progress of the media. Only when pulling the full video/audio content does the progress get included in the response. Thus, the recommended approach is to pull paginated results of blog posts first, as usual, and then to call this endpoint to retrieve progress values for each blog post to show in some capacity, usually on the thumbnail as a progress bar on the bottom.</p>
+<p>Note that the progress values returned in this endpoint are different from the update progress endpoint and the values returned in video/audio attachments. While the latter are measured in seconds, this endpoint returns progress as a percentage of the media’s total duration. It is presumed that the progress returned is from the first attachment in the blog post’s <code>attachmentOrder</code> that is either a video or audio attachment. Because this returns progress as an integer percentage (0 to 100), it is not recommended to use this particular value for jumping to a timestamp in the media when resuming playback, as the rounded number may be off by plus/minus several seconds in actual playback. Use the actual attachment progress, measured in seconds, instead.</p>
+<blockquote>
+<p>Body parameter</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"ids"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"contentType"</span><span class="token operator">:</span> <span class="token string">"blogPost"</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="getprogress-parameters">Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>In</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>body</td>
+<td><a href="#schemagetprogressrequest">GetProgressRequest</a></td>
+<td>true</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Example responses</p>
+</blockquote>
+<blockquote>
+<p>200 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"3qZrz5ugsa"</span><span class="token punctuation">,</span><br>    <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">0</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"mhhrOfndeF"</span><span class="token punctuation">,</span><br>    <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">100</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">]</span></code></pre>
+<blockquote>
+<p>400 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>401 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"erng-ah8e-n0d3"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notLoggedInError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You must be logged-in to access this resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>403 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"missingAchievementError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"requiresAllOfAchievement"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"6157853e479315db795f7296"</span><span class="token punctuation">,</span><br>            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FloatVPN Alpha"</span><span class="token punctuation">,</span><br>            <span class="token property">"startDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"endDate"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span><br>            <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token null keyword">null</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You lack one or more of the required achievements needed to access the requested resource."</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>404 Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"f4ec-orux-hds2"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"notFoundError"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>default Response</p>
+</blockquote>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"awoz-3s5g-6amf"</span><span class="token punctuation">,</span><br>  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"9edc-zejt-n3hb"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"paramValidationError"</span><span class="token punctuation">,</span><br>      <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><span class="token punctuation">,</span><br>      <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"rule"</span><span class="token operator">:</span> <span class="token string">"object.base"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"\"captchaToken\" must be an object"</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="getprogress-responses">Responses</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.3.1">OK</a></td>
+<td>OK</td>
+<td><a href="#schemagetprogressresponse">GetProgressResponse</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.1">Bad Request</a></td>
+<td>Bad Request - The request has errors and the server did not process it.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td><a href="https://tools.ietf.org/html/rfc7235#section-3.1">Unauthorized</a></td>
+<td>Unauthenticated - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.3">Forbidden</a></td>
+<td>Forbidden - The request was not authenticated to make the request.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
+<td>Not Found - The resource was not found.</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>default</td>
+<td>Default</td>
+<td>Unexpected response code</td>
+<td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
 <h1 id="floatplane-rest-api-pollv3">PollV3</h1>
 <p>Poll voting and management.</p>
 <h2 id="joinliveroom">joinLiveRoom</h2>
@@ -13298,7 +13567,7 @@ CookieAuth
 <a id="schema_ContentVideoV3Response"></a>
 <a id="tocScontentvideov3response"></a>
 <a id="tocscontentvideov3response"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"blogPosts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"timelineSprite"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"userInteraction"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"like"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"levels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"blogPosts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"timelineSprite"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"userInteraction"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"like"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"levels"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-27">Properties</h3>
 <table>
 <thead>
@@ -13429,6 +13698,13 @@ CookieAuth
 <td>true</td>
 <td>none</td>
 <td>none</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>integer</td>
+<td>false</td>
+<td>none</td>
+<td>The watch progress of the video, in seconds. If no progress has yet been posted to the video, then this field may not appear.</td>
 </tr>
 <tr>
 <td>userInteraction</td>
@@ -16785,6 +17061,153 @@ CookieAuth
 <td>true</td>
 <td>none</td>
 <td>none</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_UpdateProgressRequest">UpdateProgressRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemaupdateprogressrequest"></a>
+<a id="schema_UpdateProgressRequest"></a>
+<a id="tocSupdateprogressrequest"></a>
+<a id="tocsupdateprogressrequest"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"contentType"</span><span class="token operator">:</span> <span class="token string">"video"</span><span class="token punctuation">,</span><br>  <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">0</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-66">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>The video or audio attachment identifier for the piece of media that is being updated. Note: this is <em>not</em> the blogPost identifier.</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>Which type of media the corresponding identifier is.</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>The progress through the media that has been consumed by the user, in seconds.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="enumerated-values-14">Enumerated Values</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>contentType</td>
+<td>video</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td>audio</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_GetProgressRequest">GetProgressRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemagetprogressrequest"></a>
+<a id="schema_GetProgressRequest"></a>
+<a id="tocSgetprogressrequest"></a>
+<a id="tocsgetprogressrequest"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"ids"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"contentType"</span><span class="token operator">:</span> <span class="token string">"blogPost"</span><br><span class="token punctuation">}</span><br></code></pre>
+<h3 id="properties-67">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ids</td>
+<td>[string]</td>
+<td>true</td>
+<td>none</td>
+<td>The identifiers of the blog posts from which progress should be retrieved.</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>The type of the corresponding identifiers. The only value currently is <code>blogPost</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="enumerated-values-15">Enumerated Values</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>contentType</td>
+<td>blogPost</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tocS_GetProgressResponse">GetProgressResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemagetprogressresponse"></a>
+<a id="schema_GetProgressResponse"></a>
+<a id="tocSgetprogressresponse"></a>
+<a id="tocsgetprogressresponse"></a>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"progress"</span><span class="token operator">:</span> <span class="token number">100</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">]</span><br></code></pre>
+<p>A list of objects containing progress values for the requested identifiers. If no progress has been posted to an identifier, it may either not appear in the resulting list, or appear with a progress of <code>0</code>.</p>
+<h3 id="properties-68">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>integer</td>
+<td>false</td>
+<td>none</td>
+<td>Percentage of the blog post’s media that has been consumed so far. Ranges from 0 to 100.</td>
 </tr>
 </tbody>
 </table>

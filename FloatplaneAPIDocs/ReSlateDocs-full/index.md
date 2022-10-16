@@ -90586,28 +90586,35 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/content/progress \
-  -H 'Accept: application/json'
+curl -X POST https://www.floatplane.com/api/v3/content/progress \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: text/plain'
 
 ```
 
 ```http
-GET https://www.floatplane.com/api/v3/content/progress HTTP/1.1
+POST https://www.floatplane.com/api/v3/content/progress HTTP/1.1
 Host: www.floatplane.com
-Accept: application/json
+Content-Type: application/json
+Accept: text/plain
 
 ```
 
 ```javascript
-
+const inputBody = '{
+  "id": "string",
+  "contentType": "video",
+  "progress": 0
+}';
 const headers = {
-  'Accept':'application/json'
+  'Content-Type':'application/json',
+  'Accept':'text/plain'
 };
 
 fetch('https://www.floatplane.com/api/v3/content/progress',
 {
-  method: 'GET',
-
+  method: 'POST',
+  body: inputBody,
   headers: headers
 })
 .then(function(res) {
@@ -90623,10 +90630,11 @@ require 'rest-client'
 require 'json'
 
 headers = {
-  'Accept' => 'application/json'
+  'Content-Type' => 'application/json',
+  'Accept' => 'text/plain'
 }
 
-result = RestClient.get 'https://www.floatplane.com/api/v3/content/progress',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/progress',
   params: {
   }, headers: headers
 
@@ -90637,10 +90645,11 @@ p JSON.parse(result)
 ```python
 import requests
 headers = {
-  'Accept': 'application/json'
+  'Content-Type': 'application/json',
+  'Accept': 'text/plain'
 }
 
-r = requests.get('https://www.floatplane.com/api/v3/content/progress', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/progress', headers = headers)
 
 print(r.json())
 
@@ -90652,7 +90661,8 @@ print(r.json())
 require 'vendor/autoload.php';
 
 $headers = array(
-    'Accept' => 'application/json',
+    'Content-Type' => 'application/json',
+    'Accept' => 'text/plain',
 );
 
 $client = new \GuzzleHttp\Client();
@@ -90661,7 +90671,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/progress', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/progress', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90680,7 +90690,7 @@ try {
 ```java
 URL obj = new URL("https://www.floatplane.com/api/v3/content/progress");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
+con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
 BufferedReader in = new BufferedReader(
     new InputStreamReader(con.getInputStream()));
@@ -90705,11 +90715,12 @@ import (
 func main() {
 
     headers := map[string][]string{
-        "Accept": []string{"application/json"},
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"text/plain"},
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/progress", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/progress", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90719,18 +90730,34 @@ func main() {
 
 ```
 
-`GET /api/v3/content/progress`
+`POST /api/v3/content/progress`
 
 *Update Progress*
 
-TODO
+Update the watch progress on a piece of media (usually video or audio), stored as the number of seconds in the media.
+
+> Body parameter
+
+```json
+{
+  "id": "string",
+  "contentType": "video",
+  "progress": 0
+}
+```
+
+<h3 id="updateprogress-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[UpdateProgressRequest](#schemaupdateprogressrequest)|true|none|
 
 > Example responses
 
 > 200 Response
 
-```json
-{}
+```
+"OK"
 ```
 
 > 400 Response
@@ -90832,14 +90859,12 @@ TODO
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="updateprogress-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -90854,28 +90879,36 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/content/get/progress \
+curl -X POST https://www.floatplane.com/api/v3/content/get/progress \
+  -H 'Content-Type: application/json' \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET https://www.floatplane.com/api/v3/content/get/progress HTTP/1.1
+POST https://www.floatplane.com/api/v3/content/get/progress HTTP/1.1
 Host: www.floatplane.com
+Content-Type: application/json
 Accept: application/json
 
 ```
 
 ```javascript
-
+const inputBody = '{
+  "ids": [
+    "string"
+  ],
+  "contentType": "blogPost"
+}';
 const headers = {
+  'Content-Type':'application/json',
   'Accept':'application/json'
 };
 
 fetch('https://www.floatplane.com/api/v3/content/get/progress',
 {
-  method: 'GET',
-
+  method: 'POST',
+  body: inputBody,
   headers: headers
 })
 .then(function(res) {
@@ -90891,10 +90924,11 @@ require 'rest-client'
 require 'json'
 
 headers = {
+  'Content-Type' => 'application/json',
   'Accept' => 'application/json'
 }
 
-result = RestClient.get 'https://www.floatplane.com/api/v3/content/get/progress',
+result = RestClient.post 'https://www.floatplane.com/api/v3/content/get/progress',
   params: {
   }, headers: headers
 
@@ -90905,10 +90939,11 @@ p JSON.parse(result)
 ```python
 import requests
 headers = {
+  'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
-r = requests.get('https://www.floatplane.com/api/v3/content/get/progress', headers = headers)
+r = requests.post('https://www.floatplane.com/api/v3/content/get/progress', headers = headers)
 
 print(r.json())
 
@@ -90920,6 +90955,7 @@ print(r.json())
 require 'vendor/autoload.php';
 
 $headers = array(
+    'Content-Type' => 'application/json',
     'Accept' => 'application/json',
 );
 
@@ -90929,7 +90965,7 @@ $client = new \GuzzleHttp\Client();
 $request_body = array();
 
 try {
-    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/get/progress', array(
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/content/get/progress', array(
         'headers' => $headers,
         'json' => $request_body,
        )
@@ -90948,7 +90984,7 @@ try {
 ```java
 URL obj = new URL("https://www.floatplane.com/api/v3/content/get/progress");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
+con.setRequestMethod("POST");
 int responseCode = con.getResponseCode();
 BufferedReader in = new BufferedReader(
     new InputStreamReader(con.getInputStream()));
@@ -90973,11 +91009,12 @@ import (
 func main() {
 
     headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
         "Accept": []string{"application/json"},
     }
 
     data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/get/progress", data)
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/content/get/progress", data)
     req.Header = headers
 
     client := &http.Client{}
@@ -90987,18 +91024,46 @@ func main() {
 
 ```
 
-`GET /api/v3/content/get/progress`
+`POST /api/v3/content/get/progress`
 
 *Get Progress*
 
-TODO
+Batch retrieval of watch progress values for blog posts. This API is useful for showing progress of a list of blog posts shown on the screen to the user. When retrieving a list of blog posts, the media attachments only include the identifier; when retrieving full details of a blog post, the attachments include more information, but still fail to return the progress of the media. Only when pulling the full video/audio content does the progress get included in the response. Thus, the recommended approach is to pull paginated results of blog posts first, as usual, and then to call this endpoint to retrieve progress values for each blog post to show in some capacity, usually on the thumbnail as a progress bar on the bottom.
+
+Note that the progress values returned in this endpoint are different from the update progress endpoint and the values returned in video/audio attachments. While the latter are measured in seconds, this endpoint returns progress as a percentage of the media's total duration. It is presumed that the progress returned is from the first attachment in the blog post's `attachmentOrder` that is either a video or audio attachment. Because this returns progress as an integer percentage (0 to 100), it is not recommended to use this particular value for jumping to a timestamp in the media when resuming playback, as the rounded number may be off by plus/minus several seconds in actual playback. Use the actual attachment progress, measured in seconds, instead.
+
+> Body parameter
+
+```json
+{
+  "ids": [
+    "string"
+  ],
+  "contentType": "blogPost"
+}
+```
+
+<h3 id="getprogress-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[GetProgressRequest](#schemagetprogressrequest)|true|none|
 
 > Example responses
 
 > 200 Response
 
 ```json
-{}
+[
+  {
+    "id": "3qZrz5ugsa",
+    "progress": 0
+  },
+  {
+    "id": "mhhrOfndeF",
+    "progress": 100
+  }
+]
 ```
 
 > 400 Response
@@ -91100,14 +91165,12 @@ TODO
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[GetProgressResponse](#schemagetprogressresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="getprogress-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100880,6 +100943,7 @@ xor
       }
     ]
   },
+  "progress": 0,
   "userInteraction": [
     "like"
   ],
@@ -100917,6 +100981,7 @@ xor
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |blogPosts|[string]|true|none|none|
 |timelineSprite|[ImageModel](#schemaimagemodel)|true|none|none|
+|progress|integer|false|none|The watch progress of the video, in seconds. If no progress has yet been posted to the video, then this field may not appear.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 |levels|[object]|true|none|none|
 |» name|string|true|none|none|
@@ -103046,4 +103111,91 @@ Location information for a datacenter. Not required.
 |regionCode|string|true|none|none|
 |latitude|number|true|none|none|
 |longitude|number|true|none|none|
+
+<h2 id="tocS_UpdateProgressRequest">UpdateProgressRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemaupdateprogressrequest"></a>
+<a id="schema_UpdateProgressRequest"></a>
+<a id="tocSupdateprogressrequest"></a>
+<a id="tocsupdateprogressrequest"></a>
+
+```json
+{
+  "id": "string",
+  "contentType": "video",
+  "progress": 0
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|The video or audio attachment identifier for the piece of media that is being updated. Note: this is *not* the blogPost identifier.|
+|contentType|string|true|none|Which type of media the corresponding identifier is.|
+|progress|integer|true|none|The progress through the media that has been consumed by the user, in seconds.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|contentType|video|
+|contentType|audio|
+
+<h2 id="tocS_GetProgressRequest">GetProgressRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemagetprogressrequest"></a>
+<a id="schema_GetProgressRequest"></a>
+<a id="tocSgetprogressrequest"></a>
+<a id="tocsgetprogressrequest"></a>
+
+```json
+{
+  "ids": [
+    "string"
+  ],
+  "contentType": "blogPost"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|ids|[string]|true|none|The identifiers of the blog posts from which progress should be retrieved.|
+|contentType|string|true|none|The type of the corresponding identifiers. The only value currently is `blogPost`.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|contentType|blogPost|
+
+<h2 id="tocS_GetProgressResponse">GetProgressResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemagetprogressresponse"></a>
+<a id="schema_GetProgressResponse"></a>
+<a id="tocSgetprogressresponse"></a>
+<a id="tocsgetprogressresponse"></a>
+
+```json
+[
+  {
+    "id": "string",
+    "progress": 100
+  }
+]
+
+```
+
+A list of objects containing progress values for the requested identifiers. If no progress has been posted to an identifier, it may either not appear in the resulting list, or appear with a progress of `0`.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|progress|integer|false|none|Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100.|
 

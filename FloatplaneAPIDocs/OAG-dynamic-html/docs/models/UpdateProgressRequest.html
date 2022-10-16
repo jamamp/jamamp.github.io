@@ -1,0 +1,23 @@
+
+<h2>UpdateProgressRequest</h2>
+<ul class="parameter">
+  <li class="param-required-true">id : String
+    <br/>The video or audio attachment identifier for the piece of media that is being updated. Note: this is *not* the blogPost identifier.
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-true">contentType : String
+    <br/>Which type of media the corresponding identifier is.
+      <dl class="param-enum">
+        <dt>Enum:
+            <dd>video</dd>
+            <dd>audio</dd>
+        </dt>
+      </dl>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-true">progress : Integer
+    <br/>The progress through the media that has been consumed by the user, in seconds.
+  </li>
+</ul>

@@ -83793,8 +83793,6 @@ Post a new comment to a blog post object.
       ]
     }
   },
-  "contentReference": "",
-  "contentReferenceType": "",
   "text": "This is the text of the comment being posted",
   "replying": null,
   "postDate": "2021-10-09T08:12:51.290Z",
@@ -84109,8 +84107,6 @@ Get comments for a blog post object. Note that replies to each comment tend to b
         ]
       }
     },
-    "contentReference": "",
-    "contentReferenceType": "",
     "text": "This is my comment text, I really like this video.",
     "replying": null,
     "postDate": "2021-10-09T14:58:34.829Z",
@@ -84255,12 +84251,13 @@ Status Code **200**
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|» contentReference|string|true|none|none|
-|» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
 |» replying|string|true|none|none|
 |» postDate|string|true|none|none|
 |» editDate|string|true|none|none|
+|» editCount|integer|true|none|none|
+|» isEdited|boolean|true|none|none|
+|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -84272,12 +84269,13 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» blogPost|string|true|none|none|
 |»» user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|»» contentReference|string|true|none|none|
-|»» contentReferenceType|string|true|none|none|
 |»» text|string|true|none|none|
 |»» replying|string|true|none|none|
 |»» postDate|string(date-time)|true|none|none|
 |»» editDate|string(date-time)¦null|true|none|none|
+|»» editCount|integer|true|none|none|
+|»» isEdited|boolean|true|none|none|
+|»» isPinned|boolean|true|none|none|
 |»» likes|integer|true|none|none|
 |»» dislikes|integer|true|none|none|
 |»» score|integer|true|none|none|
@@ -84492,8 +84490,6 @@ Retrieve more replies from a comment.
         ]
       }
     },
-    "contentReference": "",
-    "contentReferenceType": "",
     "text": "This is my reply text",
     "replying": "1234567890abcdef0",
     "postDate": "2021-12-17T06:57:33.152Z",
@@ -84636,12 +84632,13 @@ Status Code **200**
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|» contentReference|string|true|none|none|
-|» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
 |» replying|string|true|none|none|
 |» postDate|string(date-time)|true|none|none|
 |» editDate|string(date-time)¦null|true|none|none|
+|» editCount|integer|true|none|none|
+|» isEdited|boolean|true|none|none|
+|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -85231,6 +85228,1078 @@ Dislike a comment on a blog post.
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## editComment
+
+<a id="opIdeditComment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST https://www.floatplane.com/api/v3/comment/edit \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST https://www.floatplane.com/api/v3/comment/edit HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/comment/edit',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/edit',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('https://www.floatplane.com/api/v3/comment/edit', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/edit', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/edit");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/edit", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v3/comment/edit`
+
+*Edit Comment*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="editcomment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="editcomment-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## deleteComment
+
+<a id="opIddeleteComment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST https://www.floatplane.com/api/v3/comment/delete \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST https://www.floatplane.com/api/v3/comment/delete HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/comment/delete',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/delete',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('https://www.floatplane.com/api/v3/comment/delete', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/delete', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/delete");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/delete", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v3/comment/delete`
+
+*Delete Comment*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="deletecomment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="deletecomment-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## pinComment
+
+<a id="opIdpinComment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST https://www.floatplane.com/api/v3/comment/pin \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST https://www.floatplane.com/api/v3/comment/pin HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/comment/pin',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/pin',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('https://www.floatplane.com/api/v3/comment/pin', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/pin', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/pin");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/pin", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v3/comment/pin`
+
+*Pin Comment*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="pincomment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="pincomment-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## getCommentHistory
+
+<a id="opIdgetCommentHistory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST https://www.floatplane.com/api/v3/comment/history \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST https://www.floatplane.com/api/v3/comment/history HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/comment/history',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post 'https://www.floatplane.com/api/v3/comment/history',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('https://www.floatplane.com/api/v3/comment/history', headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('POST','https://www.floatplane.com/api/v3/comment/history', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/comment/history");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/comment/history", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v3/comment/history`
+
+*Get Comment History*
+
+TODO
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="getcommenthistory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getcommenthistory-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100355,12 +101424,13 @@ xor
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "string",
   "editDate": "string",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -100379,12 +101449,13 @@ xor
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string|true|none|none|
 |editDate|string|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -102613,12 +103684,13 @@ Represents some basic information of a user (id, username, and profile image).
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "string",
   "editDate": "string",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -102647,12 +103719,13 @@ Represents some basic information of a user (id, username, and profile image).
           ]
         }
       },
-      "contentReference": "string",
-      "contentReferenceType": "string",
       "text": "string",
       "replying": "string",
       "postDate": "2019-08-24T14:15:22Z",
       "editDate": "2019-08-24T14:15:22Z",
+      "editCount": 0,
+      "isEdited": true,
+      "isPinned": true,
       "likes": 0,
       "dislikes": 0,
       "score": 0,
@@ -102679,12 +103752,13 @@ Represents some basic information of a user (id, username, and profile image).
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string|true|none|none|
 |editDate|string|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -102722,12 +103796,13 @@ Represents some basic information of a user (id, username, and profile image).
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "2019-08-24T14:15:22Z",
   "editDate": "2019-08-24T14:15:22Z",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -102749,12 +103824,13 @@ Represents some basic information of a user (id, username, and profile image).
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string(date-time)|true|none|none|
 |editDate|string(date-time)¦null|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -103196,6 +104272,6 @@ A list of objects containing progress values for the requested identifiers. If n
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|id|string|false|none|none|
-|progress|integer|false|none|Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100.|
+|id|string|true|none|none|
+|progress|integer|true|none|Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100.|
 

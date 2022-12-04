@@ -10392,8 +10392,6 @@ Post a new comment to a blog post object.
       ]
     }
   },
-  "contentReference": "",
-  "contentReferenceType": "",
   "text": "This is the text of the comment being posted",
   "replying": null,
   "postDate": "2021-10-09T08:12:51.290Z",
@@ -10708,8 +10706,6 @@ Get comments for a blog post object. Note that replies to each comment tend to b
         ]
       }
     },
-    "contentReference": "",
-    "contentReferenceType": "",
     "text": "This is my comment text, I really like this video.",
     "replying": null,
     "postDate": "2021-10-09T14:58:34.829Z",
@@ -10854,12 +10850,13 @@ Status Code **200**
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|» contentReference|string|true|none|none|
-|» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
 |» replying|string|true|none|none|
 |» postDate|string|true|none|none|
 |» editDate|string|true|none|none|
+|» editCount|integer|true|none|none|
+|» isEdited|boolean|true|none|none|
+|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -10871,12 +10868,13 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» blogPost|string|true|none|none|
 |»» user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|»» contentReference|string|true|none|none|
-|»» contentReferenceType|string|true|none|none|
 |»» text|string|true|none|none|
 |»» replying|string|true|none|none|
 |»» postDate|string(date-time)|true|none|none|
 |»» editDate|string(date-time)¦null|true|none|none|
+|»» editCount|integer|true|none|none|
+|»» isEdited|boolean|true|none|none|
+|»» isPinned|boolean|true|none|none|
 |»» likes|integer|true|none|none|
 |»» dislikes|integer|true|none|none|
 |»» score|integer|true|none|none|
@@ -11091,8 +11089,6 @@ Retrieve more replies from a comment.
         ]
       }
     },
-    "contentReference": "",
-    "contentReferenceType": "",
     "text": "This is my reply text",
     "replying": "1234567890abcdef0",
     "postDate": "2021-12-17T06:57:33.152Z",
@@ -11235,12 +11231,13 @@ Status Code **200**
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|» contentReference|string|true|none|none|
-|» contentReferenceType|string|true|none|none|
 |» text|string|true|none|none|
 |» replying|string|true|none|none|
 |» postDate|string(date-time)|true|none|none|
 |» editDate|string(date-time)¦null|true|none|none|
+|» editCount|integer|true|none|none|
+|» isEdited|boolean|true|none|none|
+|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -19319,12 +19316,13 @@ xor
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "string",
   "editDate": "string",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -19343,12 +19341,13 @@ xor
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string|true|none|none|
 |editDate|string|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -21577,12 +21576,13 @@ Represents some basic information of a user (id, username, and profile image).
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "string",
   "editDate": "string",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -21611,12 +21611,13 @@ Represents some basic information of a user (id, username, and profile image).
           ]
         }
       },
-      "contentReference": "string",
-      "contentReferenceType": "string",
       "text": "string",
       "replying": "string",
       "postDate": "2019-08-24T14:15:22Z",
       "editDate": "2019-08-24T14:15:22Z",
+      "editCount": 0,
+      "isEdited": true,
+      "isPinned": true,
       "likes": 0,
       "dislikes": 0,
       "score": 0,
@@ -21643,12 +21644,13 @@ Represents some basic information of a user (id, username, and profile image).
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string|true|none|none|
 |editDate|string|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -21686,12 +21688,13 @@ Represents some basic information of a user (id, username, and profile image).
       ]
     }
   },
-  "contentReference": "string",
-  "contentReferenceType": "string",
   "text": "string",
   "replying": "string",
   "postDate": "2019-08-24T14:15:22Z",
   "editDate": "2019-08-24T14:15:22Z",
+  "editCount": 0,
+  "isEdited": true,
+  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -21713,12 +21716,13 @@ Represents some basic information of a user (id, username, and profile image).
 |id|string|true|none|none|
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|contentReference|string|true|none|none|
-|contentReferenceType|string|true|none|none|
 |text|string|true|none|none|
 |replying|string|true|none|none|
 |postDate|string(date-time)|true|none|none|
 |editDate|string(date-time)¦null|true|none|none|
+|editCount|integer|true|none|none|
+|isEdited|boolean|true|none|none|
+|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -22160,6 +22164,6 @@ A list of objects containing progress values for the requested identifiers. If n
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|id|string|false|none|none|
-|progress|integer|false|none|Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100.|
+|id|string|true|none|none|
+|progress|integer|true|none|Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100.|
 

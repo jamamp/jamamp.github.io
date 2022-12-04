@@ -1528,7 +1528,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentModel"] = {
-  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1539,12 +1539,6 @@ ul.nav-tabs {
     },
     "user" : {
       "$ref" : "#/components/schemas/UserModel"
-    },
-    "contentReference" : {
-      "type" : "string"
-    },
-    "contentReferenceType" : {
-      "type" : "string"
     },
     "text" : {
       "type" : "string"
@@ -1557,6 +1551,15 @@ ul.nav-tabs {
     },
     "editDate" : {
       "type" : "string"
+    },
+    "editCount" : {
+      "type" : "integer"
+    },
+    "isEdited" : {
+      "type" : "boolean"
+    },
+    "isPinned" : {
+      "type" : "boolean"
     },
     "likes" : {
       "type" : "integer"
@@ -1585,7 +1588,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentReplyModel"] = {
-  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1596,12 +1599,6 @@ ul.nav-tabs {
     },
     "user" : {
       "$ref" : "#/components/schemas/UserModel"
-    },
-    "contentReference" : {
-      "type" : "string"
-    },
-    "contentReferenceType" : {
-      "type" : "string"
     },
     "text" : {
       "type" : "string"
@@ -1617,6 +1614,15 @@ ul.nav-tabs {
       "type" : "string",
       "format" : "date-time",
       "nullable" : true
+    },
+    "editCount" : {
+      "type" : "integer"
+    },
+    "isEdited" : {
+      "type" : "boolean"
+    },
+    "isPinned" : {
+      "type" : "boolean"
     },
     "likes" : {
       "type" : "integer"
@@ -1650,7 +1656,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentV3PostResponse"] = {
-  "required" : [ "blogPost", "contentReference", "contentReferenceType", "dislikes", "editDate", "id", "interactionCounts", "likes", "postDate", "replying", "score", "text", "user" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replying", "score", "text", "user" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1661,12 +1667,6 @@ ul.nav-tabs {
     },
     "user" : {
       "$ref" : "#/components/schemas/UserModel"
-    },
-    "contentReference" : {
-      "type" : "string"
-    },
-    "contentReferenceType" : {
-      "type" : "string"
     },
     "text" : {
       "type" : "string"
@@ -1679,6 +1679,15 @@ ul.nav-tabs {
     },
     "editDate" : {
       "type" : "string"
+    },
+    "editCount" : {
+      "type" : "integer"
+    },
+    "isEdited" : {
+      "type" : "boolean"
+    },
+    "isPinned" : {
+      "type" : "boolean"
     },
     "likes" : {
       "type" : "integer"
@@ -2506,6 +2515,7 @@ ul.nav-tabs {
   "description" : ""
 };
     defs["GetProgressResponse_inner"] = {
+  "required" : [ "id", "progress" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -9161,8 +9171,6 @@ The identifer of the last reply in the reply chain.
             } ]
           }
         },
-        "contentReference" : "",
-        "contentReferenceType" : "",
         "text" : "This is my reply text",
         "replying" : "1234567890abcdef0",
         "postDate" : "2021-12-17T06:57:33.152Z",
@@ -10058,8 +10066,6 @@ When loading more comments on a blog post, this is used to determine which which
             } ]
           }
         },
-        "contentReference" : "",
-        "contentReferenceType" : "",
         "text" : "This is my comment text, I really like this video.",
         "replying" : null,
         "postDate" : "2021-10-09T14:58:34.829Z",
@@ -11747,8 +11753,6 @@ $(document).ready(function() {
             } ]
           }
         },
-        "contentReference" : "",
-        "contentReferenceType" : "",
         "text" : "This is the text of the comment being posted",
         "replying" : null,
         "postDate" : "2021-10-09T08:12:51.290Z",

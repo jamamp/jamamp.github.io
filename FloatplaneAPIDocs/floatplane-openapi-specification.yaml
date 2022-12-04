@@ -792,10 +792,6 @@
             type: "string"
           user: 
             $ref: "#/components/schemas/UserModel"
-          contentReference: 
-            type: "string"
-          contentReferenceType: 
-            type: "string"
           text: 
             type: "string"
           replying: 
@@ -804,6 +800,12 @@
             type: "string"
           editDate: 
             type: "string"
+          editCount: 
+            type: "integer"
+          isEdited: 
+            type: "boolean"
+          isPinned: 
+            type: "boolean"
           likes: 
             type: "integer"
           dislikes: 
@@ -824,12 +826,13 @@
           - "id"
           - "blogPost"
           - "user"
-          - "contentReference"
-          - "contentReferenceType"
           - "text"
           - "replying"
           - "postDate"
           - "editDate"
+          - "editCount"
+          - "isEdited"
+          - "isPinned"
           - "likes"
           - "dislikes"
           - "score"
@@ -2126,10 +2129,6 @@
             type: "string"
           user: 
             $ref: "#/components/schemas/UserModel"
-          contentReference: 
-            type: "string"
-          contentReferenceType: 
-            type: "string"
           text: 
             type: "string"
           replying: 
@@ -2138,6 +2137,12 @@
             type: "string"
           editDate: 
             type: "string"
+          editCount: 
+            type: "integer"
+          isEdited: 
+            type: "boolean"
+          isPinned: 
+            type: "boolean"
           likes: 
             type: "integer"
           dislikes: 
@@ -2166,12 +2171,13 @@
           - "id"
           - "blogPost"
           - "user"
-          - "contentReference"
-          - "contentReferenceType"
           - "text"
           - "replying"
           - "postDate"
           - "editDate"
+          - "editCount"
+          - "isEdited"
+          - "isPinned"
           - "likes"
           - "dislikes"
           - "score"
@@ -2188,10 +2194,6 @@
             type: "string"
           user: 
             $ref: "#/components/schemas/UserModel"
-          contentReference: 
-            type: "string"
-          contentReferenceType: 
-            type: "string"
           text: 
             type: "string"
           replying: 
@@ -2203,6 +2205,12 @@
             type: "string"
             format: "date-time"
             nullable: true
+          editCount: 
+            type: "integer"
+          isEdited: 
+            type: "boolean"
+          isPinned: 
+            type: "boolean"
           likes: 
             type: "integer"
           dislikes: 
@@ -2225,12 +2233,13 @@
           - "id"
           - "blogPost"
           - "user"
-          - "contentReference"
-          - "contentReferenceType"
           - "text"
           - "replying"
           - "postDate"
           - "editDate"
+          - "editCount"
+          - "isEdited"
+          - "isPinned"
           - "likes"
           - "dislikes"
           - "score"
@@ -2486,6 +2495,9 @@
               minimum: 0
               maximum: 100
               description: "Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100."
+          required: 
+            - "id"
+            - "progress"
     securitySchemes: 
       CookieAuth: 
         type: "apiKey"
@@ -12034,8 +12046,6 @@
                           width: 100
                           height: 100
                           path: "https://pbs.floatplane.com/profile_images/default/user12_100x100.png"
-                  contentReference: ""
-                  contentReferenceType: ""
                   text: "This is the text of the comment being posted"
                   replying: null
                   postDate: "2021-10-09T08:12:51.290Z"
@@ -12113,8 +12123,6 @@
                             width: 100
                             height: 100
                             path: "https://pbs.floatplane.com/profile_images/default/user10_100x100.png"
-                    contentReference: ""
-                    contentReferenceType: ""
                     text: "This is my comment text, I really like this video."
                     replying: null
                     postDate: "2021-10-09T14:58:34.829Z"
@@ -12209,8 +12217,6 @@
                             width: 100
                             height: 100
                             path: "https://pbs.floatplane.com/profile_images/default/user12.png"
-                    contentReference: ""
-                    contentReferenceType: ""
                     text: "This is my reply text"
                     replying: "1234567890abcdef0"
                     postDate: "2021-12-17T06:57:33.152Z"
@@ -12292,6 +12298,106 @@
                 schema: 
                   type: "string"
                 example: "dislike"
+          400: 
+            $ref: "#/components/responses/400BadRequest"
+          401: 
+            $ref: "#/components/responses/401Unauthenticated"
+          403: 
+            $ref: "#/components/responses/403Forbidden"
+          404: 
+            $ref: "#/components/responses/404NotFound"
+          default: 
+            $ref: "#/components/responses/Unexpected"
+    /api/v3/comment/edit: 
+      post: 
+        operationId: "editComment"
+        summary: "Edit Comment"
+        description: "TODO"
+        tags: 
+          - "CommentV3"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+            content: 
+              application/json: 
+                schema: {}
+                example: {}
+          400: 
+            $ref: "#/components/responses/400BadRequest"
+          401: 
+            $ref: "#/components/responses/401Unauthenticated"
+          403: 
+            $ref: "#/components/responses/403Forbidden"
+          404: 
+            $ref: "#/components/responses/404NotFound"
+          default: 
+            $ref: "#/components/responses/Unexpected"
+    /api/v3/comment/delete: 
+      post: 
+        operationId: "deleteComment"
+        summary: "Delete Comment"
+        description: "TODO"
+        tags: 
+          - "CommentV3"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+            content: 
+              application/json: 
+                schema: {}
+                example: {}
+          400: 
+            $ref: "#/components/responses/400BadRequest"
+          401: 
+            $ref: "#/components/responses/401Unauthenticated"
+          403: 
+            $ref: "#/components/responses/403Forbidden"
+          404: 
+            $ref: "#/components/responses/404NotFound"
+          default: 
+            $ref: "#/components/responses/Unexpected"
+    /api/v3/comment/pin: 
+      post: 
+        operationId: "pinComment"
+        summary: "Pin Comment"
+        description: "TODO"
+        tags: 
+          - "CommentV3"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+            content: 
+              application/json: 
+                schema: {}
+                example: {}
+          400: 
+            $ref: "#/components/responses/400BadRequest"
+          401: 
+            $ref: "#/components/responses/401Unauthenticated"
+          403: 
+            $ref: "#/components/responses/403Forbidden"
+          404: 
+            $ref: "#/components/responses/404NotFound"
+          default: 
+            $ref: "#/components/responses/Unexpected"
+    /api/v3/comment/history: 
+      post: 
+        operationId: "getCommentHistory"
+        summary: "Get Comment History"
+        description: "TODO"
+        tags: 
+          - "CommentV3"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+            content: 
+              application/json: 
+                schema: {}
+                example: {}
           400: 
             $ref: "#/components/responses/400BadRequest"
           401: 

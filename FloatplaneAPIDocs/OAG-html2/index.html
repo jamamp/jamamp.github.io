@@ -1528,7 +1528,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentModel"] = {
-  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1558,9 +1558,6 @@ ul.nav-tabs {
     "isEdited" : {
       "type" : "boolean"
     },
-    "isPinned" : {
-      "type" : "boolean"
-    },
     "likes" : {
       "type" : "integer"
     },
@@ -1588,7 +1585,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentReplyModel"] = {
-  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1619,9 +1616,6 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "isEdited" : {
-      "type" : "boolean"
-    },
-    "isPinned" : {
       "type" : "boolean"
     },
     "likes" : {
@@ -1656,7 +1650,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentV3PostResponse"] = {
-  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "isPinned", "likes", "postDate", "replying", "score", "text", "user" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replying", "score", "text", "user" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1684,9 +1678,6 @@ ul.nav-tabs {
       "type" : "integer"
     },
     "isEdited" : {
-      "type" : "boolean"
-    },
-    "isPinned" : {
       "type" : "boolean"
     },
     "likes" : {
@@ -2937,7 +2928,7 @@ ul.nav-tabs {
   }
 };
     defs["PostMetadataModel"] = {
-  "required" : [ "audioCount", "audioDuration", "galleryCount", "hasAudio", "hasGallery", "hasPicture", "hasVideo", "isFeatured", "pictureCount", "videoCount", "videoDuration" ],
+  "required" : [ "audioCount", "audioDuration", "hasAudio", "hasPicture", "hasVideo", "isFeatured", "pictureCount", "videoCount", "videoDuration" ],
   "type" : "object",
   "properties" : {
     "hasVideo" : {

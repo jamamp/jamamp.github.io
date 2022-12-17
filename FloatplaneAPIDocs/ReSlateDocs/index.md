@@ -10856,7 +10856,6 @@ Status Code **200**
 |» editDate|string|true|none|none|
 |» editCount|integer|true|none|none|
 |» isEdited|boolean|true|none|none|
-|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -10874,7 +10873,6 @@ Status Code **200**
 |»» editDate|string(date-time)¦null|true|none|none|
 |»» editCount|integer|true|none|none|
 |»» isEdited|boolean|true|none|none|
-|»» isPinned|boolean|true|none|none|
 |»» likes|integer|true|none|none|
 |»» dislikes|integer|true|none|none|
 |»» score|integer|true|none|none|
@@ -11237,7 +11235,6 @@ Status Code **200**
 |» editDate|string(date-time)¦null|true|none|none|
 |» editCount|integer|true|none|none|
 |» isEdited|boolean|true|none|none|
-|» isPinned|boolean|true|none|none|
 |» likes|integer|true|none|none|
 |» dislikes|integer|true|none|none|
 |» score|integer|true|none|none|
@@ -12516,8 +12513,8 @@ Status Code **200**
 |»» audioDuration|number|true|none|none|
 |»» hasPicture|boolean|true|none|none|
 |»» pictureCount|integer|true|none|none|
-|»» hasGallery|boolean|true|none|none|
-|»» galleryCount|integer|true|none|none|
+|»» hasGallery|boolean|false|none|none|
+|»» galleryCount|integer|false|none|none|
 |»» isFeatured|boolean|true|none|none|
 |» releaseDate|string(date-time)|true|none|none|
 |» likes|integer|true|none|none|
@@ -14786,8 +14783,8 @@ Status Code **200**
 |»» audioDuration|number|true|none|none|
 |»» hasPicture|boolean|true|none|none|
 |»» pictureCount|integer|true|none|none|
-|»» hasGallery|boolean|true|none|none|
-|»» galleryCount|integer|true|none|none|
+|»» hasGallery|boolean|false|none|none|
+|»» galleryCount|integer|false|none|none|
 |»» isFeatured|boolean|true|none|none|
 |» releaseDate|string(date-time)|true|none|none|
 |» likes|integer|true|none|none|
@@ -19322,7 +19319,6 @@ xor
   "editDate": "string",
   "editCount": 0,
   "isEdited": true,
-  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -19347,7 +19343,6 @@ xor
 |editDate|string|true|none|none|
 |editCount|integer|true|none|none|
 |isEdited|boolean|true|none|none|
-|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -21040,8 +21035,8 @@ and
 |audioDuration|number|true|none|none|
 |hasPicture|boolean|true|none|none|
 |pictureCount|integer|true|none|none|
-|hasGallery|boolean|true|none|none|
-|galleryCount|integer|true|none|none|
+|hasGallery|boolean|false|none|none|
+|galleryCount|integer|false|none|none|
 |isFeatured|boolean|true|none|none|
 
 <h2 id="tocS_VideoAttachmentModel">VideoAttachmentModel</h2>
@@ -21582,7 +21577,6 @@ Represents some basic information of a user (id, username, and profile image).
   "editDate": "string",
   "editCount": 0,
   "isEdited": true,
-  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -21617,7 +21611,6 @@ Represents some basic information of a user (id, username, and profile image).
       "editDate": "2019-08-24T14:15:22Z",
       "editCount": 0,
       "isEdited": true,
-      "isPinned": true,
       "likes": 0,
       "dislikes": 0,
       "score": 0,
@@ -21650,7 +21643,6 @@ Represents some basic information of a user (id, username, and profile image).
 |editDate|string|true|none|none|
 |editCount|integer|true|none|none|
 |isEdited|boolean|true|none|none|
-|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|
@@ -21694,7 +21686,6 @@ Represents some basic information of a user (id, username, and profile image).
   "editDate": "2019-08-24T14:15:22Z",
   "editCount": 0,
   "isEdited": true,
-  "isPinned": true,
   "likes": 0,
   "dislikes": 0,
   "score": 0,
@@ -21722,7 +21713,6 @@ Represents some basic information of a user (id, username, and profile image).
 |editDate|string(date-time)¦null|true|none|none|
 |editCount|integer|true|none|none|
 |isEdited|boolean|true|none|none|
-|isPinned|boolean|true|none|none|
 |likes|integer|true|none|none|
 |dislikes|integer|true|none|none|
 |score|integer|true|none|none|

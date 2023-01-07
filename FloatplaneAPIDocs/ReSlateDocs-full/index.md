@@ -49692,7 +49692,7 @@ Status Code **200**
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |*anonymous*|[[UserSubscriptionModel](#schemausersubscriptionmodel)]|false|none|none|
-|» startDate|string(date-time)|true|none|none|
+|» startDate|string(date-time)¦null|true|none|none|
 |» endDate|string(date-time)¦null|true|none|none|
 |» paymentID|integer|true|none|none|
 |» interval|string|true|none|none|
@@ -103991,7 +103991,7 @@ Represents some basic information of a user (id, username, and profile image).
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|startDate|string(date-time)|true|none|none|
+|startDate|string(date-time)¦null|true|none|none|
 |endDate|string(date-time)¦null|true|none|none|
 |paymentID|integer|true|none|none|
 |interval|string|true|none|none|

@@ -695,6 +695,7 @@
                       type: "boolean"
                     paymentID: 
                       type: "integer"
+                      nullable: true
                     trialPeriod: 
                       type: "number"
                     creator: 
@@ -2286,6 +2287,7 @@
             nullable: true
           paymentID: 
             type: "integer"
+            nullable: true
           interval: 
             type: "string"
           paymentCancelled: 
@@ -2299,7 +2301,6 @@
           - "endDate"
           - "paymentID"
           - "interval"
-          - "paymentCancelled"
           - "plan"
           - "creator"
       FaqSectionModel: 

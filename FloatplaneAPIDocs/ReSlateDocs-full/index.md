@@ -49694,9 +49694,9 @@ Status Code **200**
 |*anonymous*|[[UserSubscriptionModel](#schemausersubscriptionmodel)]|false|none|none|
 |» startDate|string(date-time)¦null|true|none|none|
 |» endDate|string(date-time)¦null|true|none|none|
-|» paymentID|integer|true|none|none|
+|» paymentID|integer¦null|true|none|none|
 |» interval|string|true|none|none|
-|» paymentCancelled|boolean|true|none|none|
+|» paymentCancelled|boolean|false|none|none|
 |» plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
@@ -101235,7 +101235,7 @@ and
 |»» createdAt|string(date-time)|true|none|none|
 |»» updatedAt|string(date-time)¦null|true|none|none|
 |»» enabled|boolean|true|none|none|
-|»» paymentID|integer|true|none|none|
+|»» paymentID|integer¦null|true|none|none|
 |»» trialPeriod|number|true|none|none|
 |»» creator|string|true|none|none|
 |»» userIsSubscribed|boolean|true|none|none|
@@ -103993,9 +103993,9 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|---|---|---|
 |startDate|string(date-time)¦null|true|none|none|
 |endDate|string(date-time)¦null|true|none|none|
-|paymentID|integer|true|none|none|
+|paymentID|integer¦null|true|none|none|
 |interval|string|true|none|none|
-|paymentCancelled|boolean|true|none|none|
+|paymentCancelled|boolean|false|none|none|
 |plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |creator|string|true|none|none|
 

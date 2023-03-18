@@ -26,12 +26,17 @@
   </li>
 </ul>
 <ul class="parameter">
-  <li class="param-required-true">postDate : String
+  <li class="param-required-true">postDate : Date
     <br/>
   </li>
 </ul>
 <ul class="parameter">
-  <li class="param-required-true">editDate : String
+  <li class="param-required-true">editDate : Date
+    <br/>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">pinDate : Date
     <br/>
   </li>
 </ul>
@@ -66,13 +71,13 @@
   </li>
 </ul>
 <ul class="parameter">
-  <li class="param-required-true">totalReplies : Integer
+  <li class="param-required-false">totalReplies : Integer
     <br/>
   </li>
 </ul>
 <ul class="parameter">
-  <li class="param-required-true">replies : List
-    <br/>
+  <li class="param-required-false">replies : List
+    <br/>This is present (but possibly empty) for top-level comments. This is never present for reply comments.
   </li>
 </ul>
 <ul class="parameter">

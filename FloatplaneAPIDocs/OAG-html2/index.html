@@ -946,7 +946,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
-  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "channel", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -965,6 +965,9 @@ ul.nav-tabs {
     "type" : {
       "type" : "string",
       "enum" : [ "blogPost" ]
+    },
+    "channel" : {
+      "$ref" : "#/components/schemas/ChannelModel"
     },
     "tags" : {
       "type" : "array",
@@ -1054,7 +1057,8 @@ ul.nav-tabs {
       "type" : "string"
     },
     "urlname" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "Shown in the browser URL, and used in `/creator/named` queries."
     },
     "description" : {
       "type" : "string"
@@ -1088,6 +1092,15 @@ ul.nav-tabs {
     },
     "incomeDisplay" : {
       "type" : "boolean"
+    },
+    "defaultChannel" : {
+      "type" : "string"
+    },
+    "channels" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
     },
     "card" : {
       "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
@@ -1487,6 +1500,43 @@ ul.nav-tabs {
   },
   "description" : "A `variant` represents one variant of a source of media. The most common differenitating factor between variants is video resolution, but there may be more variations based on `isHdr`, codecs, FPS, etc. It's possible that groups of variants may be divided into separate `groups` elements."
 };
+    defs["ChannelModel"] = {
+  "required" : [ "about", "card", "cover", "creator", "icon", "id", "order", "title", "urlname" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "creator" : {
+      "type" : "string"
+    },
+    "title" : {
+      "type" : "string"
+    },
+    "urlname" : {
+      "type" : "string",
+      "description" : "Shown in the browser URL."
+    },
+    "about" : {
+      "type" : "string"
+    },
+    "order" : {
+      "type" : "integer"
+    },
+    "cover" : {
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
+    },
+    "card" : {
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
+    },
+    "icon" : {
+      "$ref" : "#/components/schemas/ImageModel"
+    },
+    "socialLinks" : {
+      "$ref" : "#/components/schemas/SocialLinksModel"
+    }
+  }
+};
     defs["CheckFor2faLoginRequest"] = {
   "required" : [ "token" ],
   "type" : "object",
@@ -1528,7 +1578,7 @@ ul.nav-tabs {
   }
 };
     defs["CommentModel"] = {
-  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replies", "replying", "score", "text", "totalReplies", "user", "userInteraction" ],
+  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1544,13 +1594,22 @@ ul.nav-tabs {
       "type" : "string"
     },
     "replying" : {
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "postDate" : {
-      "type" : "string"
+      "type" : "string",
+      "format" : "date-time"
     },
     "editDate" : {
-      "type" : "string"
+      "type" : "string",
+      "format" : "date-time",
+      "nullable" : true
+    },
+    "pinDate" : {
+      "type" : "string",
+      "format" : "date-time",
+      "nullable" : true
     },
     "editCount" : {
       "type" : "integer"
@@ -1575,60 +1634,10 @@ ul.nav-tabs {
     },
     "replies" : {
       "type" : "array",
+      "description" : "This is present (but possibly empty) for top-level comments. This is never present for reply comments.",
       "items" : {
-        "$ref" : "#/components/schemas/CommentReplyModel"
+        "$ref" : "#/components/schemas/CommentModel"
       }
-    },
-    "userInteraction" : {
-      "$ref" : "#/components/schemas/UserInteractionModel"
-    }
-  }
-};
-    defs["CommentReplyModel"] = {
-  "required" : [ "blogPost", "dislikes", "editCount", "editDate", "id", "interactionCounts", "isEdited", "likes", "postDate", "replying", "score", "text", "user", "userInteraction" ],
-  "type" : "object",
-  "properties" : {
-    "id" : {
-      "type" : "string"
-    },
-    "blogPost" : {
-      "type" : "string"
-    },
-    "user" : {
-      "$ref" : "#/components/schemas/UserModel"
-    },
-    "text" : {
-      "type" : "string"
-    },
-    "replying" : {
-      "type" : "string"
-    },
-    "postDate" : {
-      "type" : "string",
-      "format" : "date-time"
-    },
-    "editDate" : {
-      "type" : "string",
-      "format" : "date-time",
-      "nullable" : true
-    },
-    "editCount" : {
-      "type" : "integer"
-    },
-    "isEdited" : {
-      "type" : "boolean"
-    },
-    "likes" : {
-      "type" : "integer"
-    },
-    "dislikes" : {
-      "type" : "integer"
-    },
-    "score" : {
-      "type" : "integer"
-    },
-    "interactionCounts" : {
-      "$ref" : "#/components/schemas/CommentV3PostResponse_interactionCounts"
     },
     "userInteraction" : {
       "$ref" : "#/components/schemas/UserInteractionModel"
@@ -1869,7 +1878,7 @@ ul.nav-tabs {
   }
 };
     defs["ContentPostV3Response"] = {
-  "required" : [ "attachmentOrder", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "userInteraction", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "channel", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "userInteraction", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1888,6 +1897,9 @@ ul.nav-tabs {
     "type" : {
       "type" : "string",
       "enum" : [ "blogPost" ]
+    },
+    "channel" : {
+      "$ref" : "#/components/schemas/ChannelModel"
     },
     "tags" : {
       "type" : "array",
@@ -2082,7 +2094,8 @@ ul.nav-tabs {
       "type" : "string"
     },
     "urlname" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "Shown in the browser URL, and used in `/creator/named` queries."
     },
     "description" : {
       "type" : "string"
@@ -2117,6 +2130,9 @@ ul.nav-tabs {
     },
     "incomeDisplay" : {
       "type" : "boolean"
+    },
+    "defaultChannel" : {
+      "type" : "string"
     }
   }
 };
@@ -2149,20 +2165,21 @@ ul.nav-tabs {
   } ]
 };
     defs["CreatorModelV3"] = {
-  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "category", "channels", "cover", "defaultChannel", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "socialLinks", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
       "type" : "string"
     },
     "owner" : {
-      "type" : "string"
+      "$ref" : "#/components/schemas/CreatorModelV3_owner"
     },
     "title" : {
       "type" : "string"
     },
     "urlname" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "Shown in the browser URL, and used in `/creator/named` queries."
     },
     "description" : {
       "type" : "string"
@@ -2198,19 +2215,60 @@ ul.nav-tabs {
     "incomeDisplay" : {
       "type" : "boolean"
     },
+    "defaultChannel" : {
+      "type" : "string"
+    },
     "socialLinks" : {
       "$ref" : "#/components/schemas/SocialLinksModel"
+    },
+    "channels" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/components/schemas/ChannelModel"
+      }
+    },
+    "discordServers" : {
+      "type" : "array",
+      "description" : "Present in `/creator/named` queries",
+      "items" : {
+        "$ref" : "#/components/schemas/DiscordServerModel"
+      }
+    },
+    "card" : {
+      "$ref" : "#/components/schemas/ImageModel"
     }
   }
 };
     defs["CreatorModelV3_category"] = {
-  "required" : [ "title" ],
+  "required" : [ "id", "title" ],
   "type" : "object",
   "properties" : {
+    "id" : {
+      "type" : "string"
+    },
     "title" : {
       "type" : "string"
     }
   }
+};
+    defs["CreatorModelV3_owner"] = {
+  "oneOf" : [ {
+    "type" : "string"
+  }, {
+    "$ref" : "#/components/schemas/CreatorModelV3_owner_oneOf"
+  } ]
+};
+    defs["CreatorModelV3_owner_oneOf"] = {
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "username" : {
+      "type" : "string"
+    }
+  },
+  "additionalProperties" : false
 };
     defs["DiscordRoleModel"] = {
   "required" : [ "roleName", "server" ],
@@ -2580,6 +2638,10 @@ ul.nav-tabs {
     },
     "owner" : {
       "type" : "string"
+    },
+    "channel" : {
+      "type" : "string",
+      "description" : "The creator channel this livestream belongs to."
     },
     "streamPath" : {
       "type" : "string"
@@ -3502,8 +3564,14 @@ ul.nav-tabs {
                     <li data-group="CreatorV3" data-name="getCreator" class="">
                       <a href="#api-CreatorV3-getCreator">getCreator</a>
                     </li>
+                    <li data-group="CreatorV3" data-name="getCreatorByName" class="">
+                      <a href="#api-CreatorV3-getCreatorByName">getCreatorByName</a>
+                    </li>
                     <li data-group="CreatorV3" data-name="getCreators" class="">
                       <a href="#api-CreatorV3-getCreators">getCreators</a>
+                    </li>
+                    <li data-group="CreatorV3" data-name="listCreatorChannelsV3" class="">
+                      <a href="#api-CreatorV3-listCreatorChannelsV3">listCreatorChannelsV3</a>
                     </li>
                   <li class="nav-header" data-group="DeliveryV3"><a href="#api-DeliveryV3">API Methods - DeliveryV3</a></li>
                     <li data-group="DeliveryV3" data-name="getDeliveryInfoV3" class="">
@@ -8763,7 +8831,7 @@ public class CommentV3ApiExample {
         String rid = rid_example; // String | The identifer of the last reply in the reply chain.
 
         try {
-            array[CommentReplyModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
+            array[CommentModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CommentV3Api#getCommentReplies");
@@ -8786,7 +8854,7 @@ public class CommentV3ApiExample {
         String rid = rid_example; // String | The identifer of the last reply in the reply chain.
 
         try {
-            array[CommentReplyModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
+            array[CommentModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CommentV3Api#getCommentReplies");
@@ -8820,7 +8888,7 @@ String *rid = rid_example; // The identifer of the last reply in the reply chain
     blogPost:blogPost
     limit:limit
     rid:rid
-              completionHandler: ^(array[CommentReplyModel] output, NSError* error) {
+              completionHandler: ^(array[CommentModel] output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -8889,7 +8957,7 @@ namespace Example
 
             try {
                 // Get Comment Replies
-                array[CommentReplyModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
+                array[CommentModel] result = apiInstance.getCommentReplies(comment, blogPost, limit, rid);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling CommentV3Api.getCommentReplies: " + e.Message );
@@ -9145,7 +9213,7 @@ The identifer of the last reply in the reply chain.
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/CommentReplyModel"
+          "$ref" : "#/components/schemas/CommentModel"
         }
       },
       "example" : [ {
@@ -15560,7 +15628,7 @@ Example query: https://www.floatplane.com/api/v3/content/creator?id&#x3D;59f94c0
                             <pre class="prettyprint"><code class="language-bsh">curl -X GET \
  \
  -H "Accept: application/json" \
- "https://www.floatplane.com/api/v3/content/creator?id=id_example&limit=56&fetchAfter=56&search=search_example&tags=&hasVideo=true&hasAudio=true&hasPicture=true&hasText=true&sort=sort_example&fromDuration=56&toDuration=56&fromDate=2022-07-24T07:00:00.001Z&toDate=2022-07-24T07:00:00.001Z"
+ "https://www.floatplane.com/api/v3/content/creator?id=id_example&channel=channel_example&limit=56&fetchAfter=56&search=search_example&tags=&hasVideo=true&hasAudio=true&hasPicture=true&hasText=true&sort=sort_example&fromDuration=56&toDuration=56&fromDate=2022-07-24T07:00:00.001Z&toDate=2022-07-24T07:00:00.001Z"
 </code></pre>
                           </div>
                           <div class="tab-pane" id="examples-ContentV3-getCreatorBlogPosts-0-java">
@@ -15585,6 +15653,7 @@ public class ContentV3ApiExample {
         // Create an instance of the API class
         ContentV3Api apiInstance = new ContentV3Api();
         String id = id_example; // String | The GUID of the creator to retrieve posts from.
+        String channel = channel_example; // String | The id of a creator's specific channel from which to retrieve posts.
         Integer limit = 56; // Integer | The maximum number of posts to return.
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
@@ -15602,7 +15671,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
         Date toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
 
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, channel, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -15620,6 +15689,7 @@ public class ContentV3ApiExample {
     public static void main(String[] args) {
         ContentV3Api apiInstance = new ContentV3Api();
         String id = id_example; // String | The GUID of the creator to retrieve posts from.
+        String channel = channel_example; // String | The id of a creator's specific channel from which to retrieve posts.
         Integer limit = 56; // Integer | The maximum number of posts to return.
         Integer fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
         String search = search_example; // String | Search filter to look for specific posts.
@@ -15637,7 +15707,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
         Date toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
 
         try {
-            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
+            array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, channel, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ContentV3Api#getCreatorBlogPosts");
@@ -15662,6 +15732,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
 // Create an instance of the API class
 ContentV3Api *apiInstance = [[ContentV3Api alloc] init];
 String *id = id_example; // The GUID of the creator to retrieve posts from. (default to null)
+String *channel = channel_example; // The id of a creator's specific channel from which to retrieve posts. (optional) (default to null)
 Integer *limit = 56; // The maximum number of posts to return. (optional) (default to null)
 Integer *fetchAfter = 56; // The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 String *search = search_example; // Search filter to look for specific posts. (optional) (default to null)
@@ -15680,6 +15751,7 @@ Date *toDate = 2022-07-24T07:00:00.001Z; // Include posts where the publication 
 
 // Get Creator Blog Posts
 [apiInstance getCreatorBlogPostsWith:id
+    channel:channel
     limit:limit
     fetchAfter:fetchAfter
     search:search
@@ -15718,6 +15790,7 @@ CookieAuth.apiKey = "YOUR API KEY";
 var api = new FloatplaneRestApi.ContentV3Api()
 var id = id_example; // {String} The GUID of the creator to retrieve posts from.
 var opts = {
+  'channel': channel_example, // {String} The id of a creator's specific channel from which to retrieve posts.
   'limit': 56, // {Integer} The maximum number of posts to return.
   'fetchAfter': 56, // {Integer} The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
   'search': search_example, // {String} Search filter to look for specific posts.
@@ -15770,6 +15843,7 @@ namespace Example
             // Create an instance of the API class
             var apiInstance = new ContentV3Api();
             var id = id_example;  // String | The GUID of the creator to retrieve posts from. (default to null)
+            var channel = channel_example;  // String | The id of a creator's specific channel from which to retrieve posts. (optional)  (default to null)
             var limit = 56;  // Integer | The maximum number of posts to return. (optional)  (default to null)
             var fetchAfter = 56;  // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional)  (default to null)
             var search = search_example;  // String | Search filter to look for specific posts. (optional)  (default to null)
@@ -15788,7 +15862,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
 
             try {
                 // Get Creator Blog Posts
-                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
+                array[BlogPostModelV3] result = apiInstance.getCreatorBlogPosts(id, channel, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ContentV3Api.getCreatorBlogPosts: " + e.Message );
@@ -15811,6 +15885,7 @@ OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.s
 // Create an instance of the API class
 $api_instance = new OpenAPITools\Client\Api\ContentV3Api();
 $id = id_example; // String | The GUID of the creator to retrieve posts from.
+$channel = channel_example; // String | The id of a creator's specific channel from which to retrieve posts.
 $limit = 56; // Integer | The maximum number of posts to return.
 $fetchAfter = 56; // Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 $search = search_example; // String | Search filter to look for specific posts.
@@ -15828,7 +15903,7 @@ $fromDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publicat
 $toDate = 2022-07-24T07:00:00.001Z; // Date | Include posts where the publication date is on or before this filter date.
 
 try {
-    $result = $api_instance->getCreatorBlogPosts($id, $limit, $fetchAfter, $search, $tags, $hasVideo, $hasAudio, $hasPicture, $hasText, $sort, $fromDuration, $toDuration, $fromDate, $toDate);
+    $result = $api_instance->getCreatorBlogPosts($id, $channel, $limit, $fetchAfter, $search, $tags, $hasVideo, $hasAudio, $hasPicture, $hasText, $sort, $fromDuration, $toDuration, $fromDate, $toDate);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ContentV3Api->getCreatorBlogPosts: ', $e->getMessage(), PHP_EOL;
@@ -15849,6 +15924,7 @@ $WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
 # Create an instance of the API class
 my $api_instance = WWW::OPenAPIClient::ContentV3Api->new();
 my $id = id_example; # String | The GUID of the creator to retrieve posts from.
+my $channel = channel_example; # String | The id of a creator's specific channel from which to retrieve posts.
 my $limit = 56; # Integer | The maximum number of posts to return.
 my $fetchAfter = 56; # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.
 my $search = search_example; # String | Search filter to look for specific posts.
@@ -15866,7 +15942,7 @@ my $fromDate = 2022-07-24T07:00:00.001Z; # Date | Include posts where the public
 my $toDate = 2022-07-24T07:00:00.001Z; # Date | Include posts where the publication date is on or before this filter date.
 
 eval {
-    my $result = $api_instance->getCreatorBlogPosts(id => $id, limit => $limit, fetchAfter => $fetchAfter, search => $search, tags => $tags, hasVideo => $hasVideo, hasAudio => $hasAudio, hasPicture => $hasPicture, hasText => $hasText, sort => $sort, fromDuration => $fromDuration, toDuration => $toDuration, fromDate => $fromDate, toDate => $toDate);
+    my $result = $api_instance->getCreatorBlogPosts(id => $id, channel => $channel, limit => $limit, fetchAfter => $fetchAfter, search => $search, tags => $tags, hasVideo => $hasVideo, hasAudio => $hasAudio, hasPicture => $hasPicture, hasText => $hasText, sort => $sort, fromDuration => $fromDuration, toDuration => $toDuration, fromDate => $fromDate, toDate => $toDate);
     print Dumper($result);
 };
 if ($@) {
@@ -15889,6 +15965,7 @@ openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
 # Create an instance of the API class
 api_instance = openapi_client.ContentV3Api()
 id = id_example # String | The GUID of the creator to retrieve posts from. (default to null)
+channel = channel_example # String | The id of a creator's specific channel from which to retrieve posts. (optional) (default to null)
 limit = 56 # Integer | The maximum number of posts to return. (optional) (default to null)
 fetchAfter = 56 # Integer | The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results. (optional) (default to null)
 search = search_example # String | Search filter to look for specific posts. (optional) (default to null)
@@ -15907,7 +15984,7 @@ toDate = 2022-07-24T07:00:00.001Z # Date | Include posts where the publication d
 
 try:
     # Get Creator Blog Posts
-    api_response = api_instance.get_creator_blog_posts(id, limit=limit, fetchAfter=fetchAfter, search=search, tags=tags, hasVideo=hasVideo, hasAudio=hasAudio, hasPicture=hasPicture, hasText=hasText, sort=sort, fromDuration=fromDuration, toDuration=toDuration, fromDate=fromDate, toDate=toDate)
+    api_response = api_instance.get_creator_blog_posts(id, channel=channel, limit=limit, fetchAfter=fetchAfter, search=search, tags=tags, hasVideo=hasVideo, hasAudio=hasAudio, hasPicture=hasPicture, hasText=hasText, sort=sort, fromDuration=fromDuration, toDuration=toDuration, fromDate=fromDate, toDate=toDate)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ContentV3Api->getCreatorBlogPosts: %s\n" % e)</code></pre>
@@ -15918,6 +15995,7 @@ except ApiException as e:
 
 pub fn main() {
     let id = id_example; // String
+    let channel = channel_example; // String
     let limit = 56; // Integer
     let fetchAfter = 56; // Integer
     let search = search_example; // String
@@ -15933,7 +16011,7 @@ pub fn main() {
     let toDate = 2022-07-24T07:00:00.001Z; // Date
 
     let mut context = ContentV3Api::Context::default();
-    let result = client.getCreatorBlogPosts(id, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate, &context).wait();
+    let result = client.getCreatorBlogPosts(id, channel, limit, fetchAfter, search, tags, hasVideo, hasAudio, hasPicture, hasText, sort, fromDuration, toDuration, fromDate, toDate, &context).wait();
 
     println!("{:?}", result);
 }
@@ -15976,6 +16054,26 @@ The GUID of the creator to retrieve posts from.
                 <div class="inner required">
                     Required
                 </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                                <tr><td style="width:150px;">channel</td>
+<td>
+
+
+    <div id="d2e199_getCreatorBlogPosts_channel">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    String
+                </span>
+
+                    <div class="inner description marked">
+The id of a creator&#39;s specific channel from which to retrieve posts.
+                    </div>
+            </div>
         </div>
     </div>
 </td>
@@ -27167,6 +27265,1118 @@ The GUID of the creator being searched.
                         </article>
                       </div>
                       <hr>
+                    <div id="api-CreatorV3-getCreatorByName">
+                      <article id="api-CreatorV3-getCreatorByName-0" data-group="User" data-name="getCreatorByName" data-version="0">
+                        <div class="pull-left">
+                          <h1>getCreatorByName</h1>
+                          <p>Get Creator By Name</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Retrieve detailed information on one or more creators on Floatplane.</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/creator/named</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-CreatorV3-getCreatorByName-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-java">Java</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-CreatorV3-getCreatorByName-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-CreatorV3-getCreatorByName-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-python">Python</a></li>
+                          <li class=""><a href="#examples-CreatorV3-getCreatorByName-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-CreatorV3-getCreatorByName-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ \
+ -H "Accept: application/json" \
+ "https://www.floatplane.com/api/v3/creator/named?creatorURL="
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.CreatorV3Api;
+
+import java.io.File;
+import java.util.*;
+
+public class CreatorV3ApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        
+        // Configure API key authorization: CookieAuth
+        ApiKeyAuth CookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("CookieAuth");
+        CookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //CookieAuth.setApiKeyPrefix("Token");
+
+        // Create an instance of the API class
+        CreatorV3Api apiInstance = new CreatorV3Api();
+        array[String] creatorURL = ; // array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.
+
+        try {
+            array[CreatorModelV3] result = apiInstance.getCreatorByName(creatorURL);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CreatorV3Api#getCreatorByName");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.CreatorV3Api;
+
+public class CreatorV3ApiExample {
+    public static void main(String[] args) {
+        CreatorV3Api apiInstance = new CreatorV3Api();
+        array[String] creatorURL = ; // array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.
+
+        try {
+            array[CreatorModelV3] result = apiInstance.getCreatorByName(creatorURL);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CreatorV3Api#getCreatorByName");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: CookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sails.sid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sails.sid"];
+
+
+// Create an instance of the API class
+CreatorV3Api *apiInstance = [[CreatorV3Api alloc] init];
+array[String] *creatorURL = ; // The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`. (default to null)
+
+// Get Creator By Name
+[apiInstance getCreatorByNameWith:creatorURL
+              completionHandler: ^(array[CreatorModelV3] output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
+
+// Configure API key authorization: CookieAuth
+var CookieAuth = defaultClient.authentications['CookieAuth'];
+CookieAuth.apiKey = "YOUR API KEY";
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
+
+// Create an instance of the API class
+var api = new FloatplaneRestApi.CreatorV3Api()
+var creatorURL = ; // {array[String]} The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getCreatorByName(creatorURL, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getCreatorByNameExample
+    {
+        public void main()
+        {
+            // Configure API key authorization: CookieAuth
+            Configuration.Default.ApiKey.Add("sails.sid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sails.sid", "Bearer");
+
+            // Create an instance of the API class
+            var apiInstance = new CreatorV3Api();
+            var creatorURL = new array[String](); // array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`. (default to null)
+
+            try {
+                // Get Creator By Name
+                array[CreatorModelV3] result = apiInstance.getCreatorByName(creatorURL);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling CreatorV3Api.getCreatorByName: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: CookieAuth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.sid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sails.sid', 'Bearer');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\CreatorV3Api();
+$creatorURL = ; // array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.
+
+try {
+    $result = $api_instance->getCreatorByName($creatorURL);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CreatorV3Api->getCreatorByName: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::CreatorV3Api;
+
+# Configure API key authorization: CookieAuth
+$WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::OPenAPIClient::Configuration::api_key_prefix->{'sails.sid'} = "Bearer";
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::CreatorV3Api->new();
+my $creatorURL = []; # array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.
+
+eval {
+    my $result = $api_instance->getCreatorByName(creatorURL => $creatorURL);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling CreatorV3Api->getCreatorByName: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: CookieAuth
+openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# openapi_client.configuration.api_key_prefix['sails.sid'] = 'Bearer'
+
+# Create an instance of the API class
+api_instance = openapi_client.CreatorV3Api()
+creatorURL =  # array[String] | The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`. (default to null)
+
+try:
+    # Get Creator By Name
+    api_response = api_instance.get_creator_by_name(creatorURL)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling CreatorV3Api->getCreatorByName: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-getCreatorByName-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate CreatorV3Api;
+
+pub fn main() {
+    let creatorURL = ; // array[String]
+
+    let mut context = CreatorV3Api::Context::default();
+    let result = client.getCreatorByName(creatorURL, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">creatorURL*</td>
+<td>
+
+
+    <div id="d2e199_getCreatorByName_creatorURL">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    array[String]
+                </span>
+
+                    <div class="inner description marked">
+The &#x60;urlname&#x60;(s) of the creator(s) to be retrieved. See &#x60;CreatorModelV3&#x60;.
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-200"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-200" class="marked"></p>
+                            <script>
+                              var responseCreatorV3200_description = `OK`;
+                              var responseCreatorV3200_description_break = responseCreatorV3200_description.indexOf('\n');
+                              if (responseCreatorV3200_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-200").text("Status: 200 - " + responseCreatorV3200_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-200").text("Status: 200 - " + responseCreatorV3200_description.substring(0, responseCreatorV3200_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-200").html(responseCreatorV3200_description.substring(responseCreatorV3200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-200-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-200-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-200" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CreatorModelV3"
+        }
+      },
+      "example" : [ {
+        "id" : "59f94c0bdd241b70349eb72b",
+        "owner" : "59f94c0bdd241b70349eb723",
+        "title" : "LinusTechTips",
+        "urlname" : "linustechtips",
+        "description" : "We make entertaining videos about technology, including tech reviews, showcases and other content.",
+        "about" : "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+        "category" : {
+          "id" : "59f94c0bdd241b70349eb727",
+          "title" : "Technology"
+        },
+        "cover" : {
+          "width" : 1990,
+          "height" : 519,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+          "childImages" : [ {
+            "width" : 1245,
+            "height" : 325,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+          } ]
+        },
+        "icon" : {
+          "width" : 600,
+          "height" : 600,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+          "childImages" : [ {
+            "width" : 250,
+            "height" : 250,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+          }, {
+            "width" : 100,
+            "height" : 100,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+          } ]
+        },
+        "liveStream" : {
+          "id" : "5c13f3c006f1be15e08e05c0",
+          "title" : "I Am Hard... [REDACTED] - WAN Show March 17, 2023",
+          "description" : "<p>Get a 15-day free trial for unlimited backup at<a href=\"https://www.backblaze.com/landing/podcast-wan.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.backblaze.com/landing/podcast-wan.html</a></p><p>Try Zoho One free for 30 days with no credit card required here:<a href=\"https://www.zoho.com/one/lp/linus.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.zoho.com/one/lp/linus.html</a></p><p>Save 15% with our offer code WANSHOW at <a href=\"https://vessi.com/WANSHOW\" rel=\"noopener noreferrer\" target=\"_blank\">https://vessi.com/WANSHOW</a></p><p><br></p><p>Podcast Download: TBD</p>",
+          "thumbnail" : {
+            "width" : 1920,
+            "height" : 1080,
+            "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677.jpeg",
+            "childImages" : [ {
+              "width" : 400,
+              "height" : 225,
+              "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677_400x225.jpeg"
+            }, {
+              "width" : 1200,
+              "height" : 675,
+              "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677_1200x675.jpeg"
+            } ]
+          },
+          "owner" : "59f94c0bdd241b70349eb72b",
+          "channel" : "63fe42c309e691e4e36de93d",
+          "streamPath" : "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8",
+          "offline" : {
+            "title" : "Offline",
+            "description" : "We're offline for now – please check back later!",
+            "thumbnail" : {
+              "width" : 1920,
+              "height" : 1080,
+              "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026.jpeg",
+              "childImages" : [ {
+                "width" : 400,
+                "height" : 225,
+                "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_400x225.jpeg"
+              }, {
+                "width" : 1200,
+                "height" : 675,
+                "path" : "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_1200x675.jpeg"
+              } ]
+            }
+          }
+        },
+        "subscriptionPlans" : [ {
+          "id" : "5d48d0306825b5780db93d07",
+          "title" : "LTT Supporter",
+          "description" : "- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $10 by purchasing an annual subscription\n- Our gratitude for your support",
+          "price" : "5.00",
+          "priceYearly" : "50.00",
+          "currency" : "usd",
+          "logo" : null,
+          "interval" : "month",
+          "featured" : true,
+          "allowGrandfatheredAccess" : false,
+          "discordServers" : [ ],
+          "discordRoles" : [ ]
+        }, {
+          "id" : "5e0ba6ac14e2590f760a0f0f",
+          "title" : "LTT Supporter Plus",
+          "description" : "- 4K Bitrate Streaming\n- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $20 by purchasing an annual subscription\n- Our gratitude for your support",
+          "price" : "10.00",
+          "priceYearly" : "100.00",
+          "currency" : "usd",
+          "logo" : null,
+          "interval" : "month",
+          "featured" : true,
+          "allowGrandfatheredAccess" : false,
+          "discordServers" : [ ],
+          "discordRoles" : [ ]
+        } ],
+        "discoverable" : true,
+        "subscriberCountDisplay" : "total",
+        "incomeDisplay" : false,
+        "defaultChannel" : "63fe42c309e691e4e36de93d",
+        "socialLinks" : {
+          "instagram" : "https://www.instagram.com/linustech",
+          "website" : "https://linustechtips.com",
+          "facebook" : "https://www.facebook.com/LinusTech",
+          "youtube" : "https://www.youtube.com/user/LinusTechTips",
+          "twitter" : "https://twitter.com/linustech"
+        },
+        "channels" : [ {
+          "id" : "63fe42c309e691e4e36de93d",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "Linus Tech Tips",
+          "urlname" : "main",
+          "about" : "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+          "order" : 0,
+          "cover" : {
+            "width" : 1990,
+            "height" : 519,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+            "childImages" : [ {
+              "width" : 1245,
+              "height" : 325,
+              "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+            } ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 600,
+            "height" : 600,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+            "childImages" : [ {
+              "width" : 250,
+              "height" : 250,
+              "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+            }, {
+              "width" : 100,
+              "height" : 100,
+              "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+            } ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "6413534d88c13c181c3e2809",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "TechLinked",
+          "urlname" : "techlinked",
+          "about" : "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+          "order" : 2,
+          "cover" : {
+            "width" : 1080,
+            "height" : 282,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/231100243161134_1678988109632.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "64135da7ce81077a8480c679",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "ShortCircuit",
+          "urlname" : "shortcircuit",
+          "about" : "What's in the box? Let's find out!\n\nOfficial channel under Linus Media Group.",
+          "order" : 3,
+          "cover" : {
+            "width" : 1084,
+            "height" : 283,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/745715133852622_1678990806332.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/470304051261927_1678990806883.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "64135e27c773b27ff22c97eb",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "Techquickie",
+          "urlname" : "techquickie",
+          "about" : "Ever wanted to learn more about your favorite gadgets or a trending topic in tech? \n\nWith a mix of humor, cynicism, and insight, Techquickie brings you the answers to all your tech questions every Tuesday and Friday.",
+          "order" : 5,
+          "cover" : {
+            "width" : 1080,
+            "height" : 282,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/721553790654237_1678990887992.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/666841640245092_1678990909616.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "64135e901ebaee42e258eb0b",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "Mac Address",
+          "urlname" : "macaddress",
+          "about" : "The exploration of all things Apple, from iPhones underwater to full iClouds in the sky. We want to be the channel that you come to first for an unexpected viewpoint about the devices you love.",
+          "order" : 4,
+          "cover" : {
+            "width" : 1080,
+            "height" : 282,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/254417940627493_1678990992632.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/979475909700348_1678990993114.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "64135ed078d6262f717341b7",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "Channel Super Fun",
+          "urlname" : "channelsuperfun",
+          "about" : "Channel Super Fun is all about the name. Games, toys, and challenges. Expect to find them all here!",
+          "order" : 6,
+          "cover" : {
+            "width" : 1080,
+            "height" : 282,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/881886551214964_1678991123807.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/317924815973639_1678991124672.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "64135f82fc76ab7f9fbdc876",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "They're Just Movies",
+          "urlname" : "tajm",
+          "about" : "Each week our small group of nerds sits down for a not-so-serious, SPOILER-FILLED, chat about the movies you love.\n\nFormerly known as Carpool Critics, we're part of Linus Media Group!",
+          "order" : 7,
+          "cover" : {
+            "width" : 1080,
+            "height" : 282,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/190277198232475_1678991235439.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 88,
+            "height" : 88,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/570806971094170_1678991236419.jpeg",
+            "childImages" : [ ]
+          },
+          "socialLinks" : { }
+        }, {
+          "id" : "6413623f5b12cca228a28e78",
+          "creator" : "59f94c0bdd241b70349eb72b",
+          "title" : "FP Exclusive",
+          "urlname" : "fpexclusive",
+          "about" : "wow... so empty",
+          "order" : 1,
+          "cover" : {
+            "width" : 1200,
+            "height" : 313,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/072932633007415_1678991935461.jpeg",
+            "childImages" : [ ]
+          },
+          "card" : null,
+          "icon" : {
+            "width" : 720,
+            "height" : 720,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484.jpeg",
+            "childImages" : [ {
+              "width" : 100,
+              "height" : 100,
+              "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_100x100.jpeg"
+            }, {
+              "width" : 250,
+              "height" : 250,
+              "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_250x250.jpeg"
+            } ]
+          },
+          "socialLinks" : { }
+        } ],
+        "discordServers" : [ {
+          "id" : "5baa8838d9f3aa0a83acd429",
+          "guildName" : "Linus Tech Tips",
+          "guildIcon" : "803d5f745b30aba3edba719bac671660",
+          "inviteLink" : "https://discord.gg/LTT",
+          "inviteMode" : "link"
+        }, {
+          "id" : "5e34cd9a9dbb744872192895",
+          "guildName" : "LTT Minecraft Network",
+          "guildIcon" : "4f7f812b49196b1646bdcdb84b948c84",
+          "inviteLink" : "https://discord.gg/VVpwBPXrMc",
+          "inviteMode" : "link"
+        } ]
+      } ]
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-200-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-400"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-400" class="marked"></p>
+                            <script>
+                              var responseCreatorV3400_description = `Bad Request - The request has errors and the server did not process it.`;
+                              var responseCreatorV3400_description_break = responseCreatorV3400_description.indexOf('\n');
+                              if (responseCreatorV3400_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-400").text("Status: 400 - " + responseCreatorV3400_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-400").text("Status: 400 - " + responseCreatorV3400_description.substring(0, responseCreatorV3400_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-400").html(responseCreatorV3400_description.substring(responseCreatorV3400_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-400" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-400-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-400-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-400-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-400" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request - The request has errors and the server did not process it.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-400-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-401"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-401" class="marked"></p>
+                            <script>
+                              var responseCreatorV3401_description = `Unauthenticated - The request was not authenticated to make the request.`;
+                              var responseCreatorV3401_description_break = responseCreatorV3401_description.indexOf('\n');
+                              if (responseCreatorV3401_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-401").text("Status: 401 - " + responseCreatorV3401_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-401").text("Status: 401 - " + responseCreatorV3401_description.substring(0, responseCreatorV3401_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-401").html(responseCreatorV3401_description.substring(responseCreatorV3401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-401-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-401-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-401" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthenticated - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "erng-ah8e-n0d3",
+        "errors" : [ {
+          "id" : "erng-ah8e-n0d3",
+          "name" : "notLoggedInError",
+          "message" : "You must be logged-in to access this resource."
+        } ],
+        "message" : "You must be logged-in to access this resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-401-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-403"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-403" class="marked"></p>
+                            <script>
+                              var responseCreatorV3403_description = `Forbidden - The request was not authenticated to make the request.`;
+                              var responseCreatorV3403_description_break = responseCreatorV3403_description.indexOf('\n');
+                              if (responseCreatorV3403_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-403").text("Status: 403 - " + responseCreatorV3403_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-403").text("Status: 403 - " + responseCreatorV3403_description.substring(0, responseCreatorV3403_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-403").html(responseCreatorV3403_description.substring(responseCreatorV3403_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-403" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-403-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-403-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-403-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-403" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "missingAchievementError",
+          "message" : "You lack one or more of the required achievements needed to access the requested resource.",
+          "data" : {
+            "requiresAllOfAchievement" : [ {
+              "id" : "6157853e479315db795f7296",
+              "title" : "FloatVPN Alpha",
+              "startDate" : null,
+              "endDate" : null,
+              "icon" : null
+            } ]
+          }
+        } ],
+        "message" : "You lack one or more of the required achievements needed to access the requested resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-403-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-404"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-404" class="marked"></p>
+                            <script>
+                              var responseCreatorV3404_description = `Not Found - The resource was not found.`;
+                              var responseCreatorV3404_description_break = responseCreatorV3404_description.indexOf('\n');
+                              if (responseCreatorV3404_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-404").text("Status: 404 - " + responseCreatorV3404_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-404").text("Status: 404 - " + responseCreatorV3404_description.substring(0, responseCreatorV3404_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-404").html(responseCreatorV3404_description.substring(responseCreatorV3404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-404-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-404-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-404" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found - The resource was not found.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "notFoundError"
+        } ]
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-404-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-getCreatorByName-title-default"></h3>
+                            <p id="examples-CreatorV3-getCreatorByName-description-default" class="marked"></p>
+                            <script>
+                              var responseCreatorV3default_description = `Unexpected response code`;
+                              var responseCreatorV3default_description_break = responseCreatorV3default_description.indexOf('\n');
+                              if (responseCreatorV3default_description_break == -1) {
+                                $("#examples-CreatorV3-getCreatorByName-title-default").text("Status: default - " + responseCreatorV3default_description);
+                              } else {
+                                $("#examples-CreatorV3-getCreatorByName-title-default").text("Status: default - " + responseCreatorV3default_description.substring(0, responseCreatorV3default_description_break));
+                                $("#examples-CreatorV3-getCreatorByName-description-default").html(responseCreatorV3default_description.substring(responseCreatorV3default_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-getCreatorByName-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-getCreatorByName-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-getCreatorByName-default-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-getCreatorByName-default-schema">
+                                  <div id="responses-CreatorV3-getCreatorByName-schema-default" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unexpected response code",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-getCreatorByName-default-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-getCreatorByName-schema-default');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-getCreatorByName-default-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-CreatorV3-getCreators">
                       <article id="api-CreatorV3-getCreators-0" data-group="User" data-name="getCreators" data-version="0">
                         <div class="pull-left">
@@ -28250,6 +29460,1043 @@ Optional search string for finding particular creators on the platform.
                                     </script>
                                   </div>
                                   <input id='responses-CreatorV3-getCreators-default-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-CreatorV3-listCreatorChannelsV3">
+                      <article id="api-CreatorV3-listCreatorChannelsV3-0" data-group="User" data-name="listCreatorChannelsV3" data-version="0">
+                        <div class="pull-left">
+                          <h1>listCreatorChannelsV3</h1>
+                          <p>List Creator Channels</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Retrieves a list of channels within the given creator(s).</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/creator/channels/list</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-CreatorV3-listCreatorChannelsV3-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-java">Java</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-python">Python</a></li>
+                          <li class=""><a href="#examples-CreatorV3-listCreatorChannelsV3-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-CreatorV3-listCreatorChannelsV3-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ \
+ -H "Accept: application/json" \
+ "https://www.floatplane.com/api/v3/creator/channels/list?ids="
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.CreatorV3Api;
+
+import java.io.File;
+import java.util.*;
+
+public class CreatorV3ApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        
+        // Configure API key authorization: CookieAuth
+        ApiKeyAuth CookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("CookieAuth");
+        CookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //CookieAuth.setApiKeyPrefix("Token");
+
+        // Create an instance of the API class
+        CreatorV3Api apiInstance = new CreatorV3Api();
+        array[String] ids = ; // array[String] | The ids of the creator(s) from which to search for channels.
+
+        try {
+            array[ChannelModel] result = apiInstance.listCreatorChannelsV3(ids);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CreatorV3Api#listCreatorChannelsV3");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.CreatorV3Api;
+
+public class CreatorV3ApiExample {
+    public static void main(String[] args) {
+        CreatorV3Api apiInstance = new CreatorV3Api();
+        array[String] ids = ; // array[String] | The ids of the creator(s) from which to search for channels.
+
+        try {
+            array[ChannelModel] result = apiInstance.listCreatorChannelsV3(ids);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CreatorV3Api#listCreatorChannelsV3");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: CookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sails.sid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sails.sid"];
+
+
+// Create an instance of the API class
+CreatorV3Api *apiInstance = [[CreatorV3Api alloc] init];
+array[String] *ids = ; // The ids of the creator(s) from which to search for channels. (default to null)
+
+// List Creator Channels
+[apiInstance listCreatorChannelsV3With:ids
+              completionHandler: ^(array[ChannelModel] output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
+var defaultClient = FloatplaneRestApi.ApiClient.instance;
+
+// Configure API key authorization: CookieAuth
+var CookieAuth = defaultClient.authentications['CookieAuth'];
+CookieAuth.apiKey = "YOUR API KEY";
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
+
+// Create an instance of the API class
+var api = new FloatplaneRestApi.CreatorV3Api()
+var ids = ; // {array[String]} The ids of the creator(s) from which to search for channels.
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.listCreatorChannelsV3(ids, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class listCreatorChannelsV3Example
+    {
+        public void main()
+        {
+            // Configure API key authorization: CookieAuth
+            Configuration.Default.ApiKey.Add("sails.sid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sails.sid", "Bearer");
+
+            // Create an instance of the API class
+            var apiInstance = new CreatorV3Api();
+            var ids = new array[String](); // array[String] | The ids of the creator(s) from which to search for channels. (default to null)
+
+            try {
+                // List Creator Channels
+                array[ChannelModel] result = apiInstance.listCreatorChannelsV3(ids);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling CreatorV3Api.listCreatorChannelsV3: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: CookieAuth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.sid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sails.sid', 'Bearer');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\CreatorV3Api();
+$ids = ; // array[String] | The ids of the creator(s) from which to search for channels.
+
+try {
+    $result = $api_instance->listCreatorChannelsV3($ids);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CreatorV3Api->listCreatorChannelsV3: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::CreatorV3Api;
+
+# Configure API key authorization: CookieAuth
+$WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::OPenAPIClient::Configuration::api_key_prefix->{'sails.sid'} = "Bearer";
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::CreatorV3Api->new();
+my $ids = []; # array[String] | The ids of the creator(s) from which to search for channels.
+
+eval {
+    my $result = $api_instance->listCreatorChannelsV3(ids => $ids);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling CreatorV3Api->listCreatorChannelsV3: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: CookieAuth
+openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# openapi_client.configuration.api_key_prefix['sails.sid'] = 'Bearer'
+
+# Create an instance of the API class
+api_instance = openapi_client.CreatorV3Api()
+ids =  # array[String] | The ids of the creator(s) from which to search for channels. (default to null)
+
+try:
+    # List Creator Channels
+    api_response = api_instance.list_creator_channels_v3(ids)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling CreatorV3Api->listCreatorChannelsV3: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-CreatorV3-listCreatorChannelsV3-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate CreatorV3Api;
+
+pub fn main() {
+    let ids = ; // array[String]
+
+    let mut context = CreatorV3Api::Context::default();
+    let result = client.listCreatorChannelsV3(ids, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">ids*</td>
+<td>
+
+
+    <div id="d2e199_listCreatorChannelsV3_ids">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    array[String]
+                </span>
+
+                    <div class="inner description marked">
+The ids of the creator(s) from which to search for channels.
+                    </div>
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-200"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-200" class="marked"></p>
+                            <script>
+                              var responseCreatorV3200_description = `OK`;
+                              var responseCreatorV3200_description_break = responseCreatorV3200_description.indexOf('\n');
+                              if (responseCreatorV3200_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-200").text("Status: 200 - " + responseCreatorV3200_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-200").text("Status: 200 - " + responseCreatorV3200_description.substring(0, responseCreatorV3200_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-200").html(responseCreatorV3200_description.substring(responseCreatorV3200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-200-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-200-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-200" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/ChannelModel"
+        }
+      },
+      "example" : [ {
+        "id" : "63fe42c309e691e4e36de93d",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "Linus Tech Tips",
+        "urlname" : "main",
+        "about" : "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+        "order" : 0,
+        "cover" : {
+          "width" : 1990,
+          "height" : 519,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+          "childImages" : [ {
+            "width" : 1245,
+            "height" : 325,
+            "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+          } ]
+        },
+        "card" : {
+          "width" : 375,
+          "height" : 500,
+          "path" : "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871.jpeg",
+          "childImages" : [ {
+            "width" : 300,
+            "height" : 400,
+            "path" : "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871_300x400.jpeg"
+          } ]
+        },
+        "icon" : {
+          "width" : 600,
+          "height" : 600,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+          "childImages" : [ {
+            "width" : 250,
+            "height" : 250,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+          }, {
+            "width" : 100,
+            "height" : 100,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+          } ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "6413534d88c13c181c3e2809",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "TechLinked",
+        "urlname" : "techlinked",
+        "about" : "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+        "order" : 2,
+        "cover" : {
+          "width" : 1080,
+          "height" : 282,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/231100243161134_1678988109632.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/953298867250186_1678988110714.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "64135da7ce81077a8480c679",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "ShortCircuit",
+        "urlname" : "shortcircuit",
+        "about" : "What's in the box? Let's find out!\n\nOfficial channel under Linus Media Group.",
+        "order" : 3,
+        "cover" : {
+          "width" : 1084,
+          "height" : 283,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/745715133852622_1678990806332.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/939790311068913_1678990807440.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/470304051261927_1678990806883.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "64135e27c773b27ff22c97eb",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "Techquickie",
+        "urlname" : "techquickie",
+        "about" : "Ever wanted to learn more about your favorite gadgets or a trending topic in tech? \n\nWith a mix of humor, cynicism, and insight, Techquickie brings you the answers to all your tech questions every Tuesday and Friday.",
+        "order" : 5,
+        "cover" : {
+          "width" : 1080,
+          "height" : 282,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/721553790654237_1678990887992.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/962826906389296_1678990910103.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/666841640245092_1678990909616.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "64135e901ebaee42e258eb0b",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "Mac Address",
+        "urlname" : "macaddress",
+        "about" : "The exploration of all things Apple, from iPhones underwater to full iClouds in the sky. We want to be the channel that you come to first for an unexpected viewpoint about the devices you love.",
+        "order" : 4,
+        "cover" : {
+          "width" : 1080,
+          "height" : 282,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/254417940627493_1678990992632.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/493604923555386_1678990993708.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/979475909700348_1678990993114.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "64135ed078d6262f717341b7",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "Channel Super Fun",
+        "urlname" : "channelsuperfun",
+        "about" : "Channel Super Fun is all about the name. Games, toys, and challenges. Expect to find them all here!",
+        "order" : 6,
+        "cover" : {
+          "width" : 1080,
+          "height" : 282,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/881886551214964_1678991123807.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/953601834319296_1678991125167.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/317924815973639_1678991124672.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "64135f82fc76ab7f9fbdc876",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "They're Just Movies",
+        "urlname" : "tajm",
+        "about" : "Each week our small group of nerds sits down for a not-so-serious, SPOILER-FILLED, chat about the movies you love.\n\nFormerly known as Carpool Critics, we're part of Linus Media Group!",
+        "order" : 7,
+        "cover" : {
+          "width" : 1080,
+          "height" : 282,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/190277198232475_1678991235439.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 66,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/863827491957963_1678991237126.jpeg",
+          "childImages" : [ ]
+        },
+        "icon" : {
+          "width" : 88,
+          "height" : 88,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/570806971094170_1678991236419.jpeg",
+          "childImages" : [ ]
+        },
+        "socialLinks" : { }
+      }, {
+        "id" : "6413623f5b12cca228a28e78",
+        "creator" : "59f94c0bdd241b70349eb72b",
+        "title" : "FP Exclusive",
+        "urlname" : "fpexclusive",
+        "about" : "wow... so empty",
+        "order" : 1,
+        "cover" : {
+          "width" : 1200,
+          "height" : 313,
+          "path" : "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/072932633007415_1678991935461.jpeg",
+          "childImages" : [ ]
+        },
+        "card" : {
+          "width" : 750,
+          "height" : 1000,
+          "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240.jpeg",
+          "childImages" : [ {
+            "width" : 375,
+            "height" : 500,
+            "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240_375x500.jpeg"
+          }, {
+            "width" : 300,
+            "height" : 400,
+            "path" : "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240_300x400.jpeg"
+          } ]
+        },
+        "icon" : {
+          "width" : 720,
+          "height" : 720,
+          "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484.jpeg",
+          "childImages" : [ {
+            "width" : 100,
+            "height" : 100,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_100x100.jpeg"
+          }, {
+            "width" : 250,
+            "height" : 250,
+            "path" : "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_250x250.jpeg"
+          } ]
+        },
+        "socialLinks" : { }
+      } ]
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-200-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-400"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-400" class="marked"></p>
+                            <script>
+                              var responseCreatorV3400_description = `Bad Request - The request has errors and the server did not process it.`;
+                              var responseCreatorV3400_description_break = responseCreatorV3400_description.indexOf('\n');
+                              if (responseCreatorV3400_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-400").text("Status: 400 - " + responseCreatorV3400_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-400").text("Status: 400 - " + responseCreatorV3400_description.substring(0, responseCreatorV3400_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-400").html(responseCreatorV3400_description.substring(responseCreatorV3400_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-400" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-400-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-400-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-400-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-400" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request - The request has errors and the server did not process it.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-400-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-401"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-401" class="marked"></p>
+                            <script>
+                              var responseCreatorV3401_description = `Unauthenticated - The request was not authenticated to make the request.`;
+                              var responseCreatorV3401_description_break = responseCreatorV3401_description.indexOf('\n');
+                              if (responseCreatorV3401_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-401").text("Status: 401 - " + responseCreatorV3401_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-401").text("Status: 401 - " + responseCreatorV3401_description.substring(0, responseCreatorV3401_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-401").html(responseCreatorV3401_description.substring(responseCreatorV3401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-401-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-401-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-401" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthenticated - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "erng-ah8e-n0d3",
+        "errors" : [ {
+          "id" : "erng-ah8e-n0d3",
+          "name" : "notLoggedInError",
+          "message" : "You must be logged-in to access this resource."
+        } ],
+        "message" : "You must be logged-in to access this resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-401-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-403"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-403" class="marked"></p>
+                            <script>
+                              var responseCreatorV3403_description = `Forbidden - The request was not authenticated to make the request.`;
+                              var responseCreatorV3403_description_break = responseCreatorV3403_description.indexOf('\n');
+                              if (responseCreatorV3403_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-403").text("Status: 403 - " + responseCreatorV3403_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-403").text("Status: 403 - " + responseCreatorV3403_description.substring(0, responseCreatorV3403_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-403").html(responseCreatorV3403_description.substring(responseCreatorV3403_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-403" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-403-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-403-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-403-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-403" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden - The request was not authenticated to make the request.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "missingAchievementError",
+          "message" : "You lack one or more of the required achievements needed to access the requested resource.",
+          "data" : {
+            "requiresAllOfAchievement" : [ {
+              "id" : "6157853e479315db795f7296",
+              "title" : "FloatVPN Alpha",
+              "startDate" : null,
+              "endDate" : null,
+              "icon" : null
+            } ]
+          }
+        } ],
+        "message" : "You lack one or more of the required achievements needed to access the requested resource."
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-403-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-404"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-404" class="marked"></p>
+                            <script>
+                              var responseCreatorV3404_description = `Not Found - The resource was not found.`;
+                              var responseCreatorV3404_description_break = responseCreatorV3404_description.indexOf('\n');
+                              if (responseCreatorV3404_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-404").text("Status: 404 - " + responseCreatorV3404_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-404").text("Status: 404 - " + responseCreatorV3404_description.substring(0, responseCreatorV3404_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-404").html(responseCreatorV3404_description.substring(responseCreatorV3404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-404-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-404-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-404" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found - The resource was not found.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "f4ec-orux-hds2",
+        "errors" : [ {
+          "id" : "f4ec-orux-hds2",
+          "name" : "notFoundError"
+        } ]
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-404-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+                            <h3 id="examples-CreatorV3-listCreatorChannelsV3-title-default"></h3>
+                            <p id="examples-CreatorV3-listCreatorChannelsV3-description-default" class="marked"></p>
+                            <script>
+                              var responseCreatorV3default_description = `Unexpected response code`;
+                              var responseCreatorV3default_description_break = responseCreatorV3default_description.indexOf('\n');
+                              if (responseCreatorV3default_description_break == -1) {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-default").text("Status: default - " + responseCreatorV3default_description);
+                              } else {
+                                $("#examples-CreatorV3-listCreatorChannelsV3-title-default").text("Status: default - " + responseCreatorV3default_description.substring(0, responseCreatorV3default_description_break));
+                                $("#examples-CreatorV3-listCreatorChannelsV3-description-default").html(responseCreatorV3default_description.substring(responseCreatorV3default_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-CreatorV3-listCreatorChannelsV3-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-CreatorV3-listCreatorChannelsV3-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-CreatorV3-listCreatorChannelsV3-default-wrapper" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-CreatorV3-listCreatorChannelsV3-default-schema">
+                                  <div id="responses-CreatorV3-listCreatorChannelsV3-schema-default" class="exampleStyle">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unexpected response code",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorModel"
+      },
+      "example" : {
+        "id" : "awoz-3s5g-6amf",
+        "errors" : [ {
+          "id" : "9edc-zejt-n3hb",
+          "name" : "paramValidationError",
+          "message" : "\"captchaToken\" must be an object",
+          "data" : {
+            "rule" : "object.base"
+          }
+        } ],
+        "message" : "\"captchaToken\" must be an object"
+      }
+    }
+  }
+};
+                                        var schema = findNode('schema',schemaWrapper).schema;
+                                        if (!schema) {
+                                          schema = schemaWrapper.schema;
+                                        }
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                        } else if (schema.items != null && schema.items.$ref != null) {
+                                            schema.items = defsParser.$refs.get(schema.items.$ref);
+                                        } else {
+                                          schemaWrapper.definitions = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-CreatorV3-listCreatorChannelsV3-default-schema-data').val(JSON.stringify(schema));
+                                        var result = $('#responses-CreatorV3-listCreatorChannelsV3-schema-default');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-CreatorV3-listCreatorChannelsV3-default-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
                         </article>

@@ -24294,7 +24294,7 @@ Status Code **200**
 |» id|string|true|none|none|
 |» owner|string|true|none|none|
 |» title|string|true|none|none|
-|» urlname|string|true|none|none|
+|» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|string|true|none|none|
@@ -24321,6 +24321,7 @@ Status Code **200**
 |»»» path|string(uri)|true|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» owner|string|true|none|none|
+|»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
 |»»» title|string¦null|true|none|none|
@@ -24334,6 +24335,7 @@ Status Code **200**
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
+|» defaultChannel|string|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -24734,7 +24736,7 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» owner|string|true|none|none|
 |»» title|string|true|none|none|
-|»» urlname|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
@@ -24761,6 +24763,7 @@ Status Code **200**
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
+|»»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
 |»»»» title|string¦null|true|none|none|
@@ -24774,6 +24777,7 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
+|»» defaultChannel|string|false|none|none|
 
 *and*
 
@@ -28479,12 +28483,32 @@ Status Code **200**
 |---|---|---|---|---|
 |*anonymous*|[[CreatorModelV3](#schemacreatormodelv3)]|false|none|none|
 |» id|string|true|none|none|
-|» owner|string|true|none|none|
+|» owner|any|true|none|none|
+
+*oneOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|string|false|none|none|
+
+*xor*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|object|false|none|none|
+|»»» id|string|false|none|none|
+|»»» username|string|false|none|none|
+
+*continued*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 |» title|string|true|none|none|
-|» urlname|string|true|none|none|
+|» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|object|true|none|none|
+|»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»» width|integer|true|none|none|
@@ -28509,6 +28533,7 @@ Status Code **200**
 |»»» path|string(uri)|true|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» owner|string|true|none|none|
+|»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»» streamPath|string|true|none|none|
 |»» offline|object|true|none|none|
 |»»» title|string¦null|true|none|none|
@@ -28541,8 +28566,30 @@ Status Code **200**
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
+|» defaultChannel|string|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
 |»» **additionalProperties**|string(uri)|false|none|none|
+|» channels|[[ChannelModel](#schemachannelmodel)]|true|none|none|
+|»» id|string|true|none|none|
+|»» creator|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL.|
+|»» about|string|true|none|none|
+|»» order|integer|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|Present in `/creator/named` queries|
+|» card|[ImageModel](#schemaimagemodel)|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -28557,13 +28604,13 @@ CookieAuth
 
 ```shell
 # You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/creator/named \
+curl -X GET https://www.floatplane.com/api/v3/creator/named?creatorURL=string \
   -H 'Accept: application/json'
 
 ```
 
 ```http
-GET https://www.floatplane.com/api/v3/creator/named HTTP/1.1
+GET https://www.floatplane.com/api/v3/creator/named?creatorURL=string HTTP/1.1
 Host: www.floatplane.com
 Accept: application/json
 
@@ -28575,7 +28622,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('https://www.floatplane.com/api/v3/creator/named',
+fetch('https://www.floatplane.com/api/v3/creator/named?creatorURL=string',
 {
   method: 'GET',
 
@@ -28599,7 +28646,8 @@ headers = {
 
 result = RestClient.get 'https://www.floatplane.com/api/v3/creator/named',
   params: {
-  }, headers: headers
+  'creatorURL' => 'array[string]'
+}, headers: headers
 
 p JSON.parse(result)
 
@@ -28611,7 +28659,11 @@ headers = {
   'Accept': 'application/json'
 }
 
-r = requests.get('https://www.floatplane.com/api/v3/creator/named', headers = headers)
+r = requests.get('https://www.floatplane.com/api/v3/creator/named', params={
+  'creatorURL': [
+  "string"
+]
+}, headers = headers)
 
 print(r.json())
 
@@ -28649,7 +28701,7 @@ try {
 ```
 
 ```java
-URL obj = new URL("https://www.floatplane.com/api/v3/creator/named");
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/named?creatorURL=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("GET");
 int responseCode = con.getResponseCode();
@@ -28694,14 +28746,371 @@ func main() {
 
 *Get Creator By Name*
 
-TODO
+Retrieve detailed information on one or more creators on Floatplane.
+
+<h3 id="getcreatorbyname-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|creatorURL|query|array[string]|true|The `urlname`(s) of the creator(s) to be retrieved. See `CreatorModelV3`.|
 
 > Example responses
 
 > 200 Response
 
 ```json
-{}
+[
+  {
+    "id": "59f94c0bdd241b70349eb72b",
+    "owner": "59f94c0bdd241b70349eb723",
+    "title": "LinusTechTips",
+    "urlname": "linustechtips",
+    "description": "We make entertaining videos about technology, including tech reviews, showcases and other content.",
+    "about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+    "category": {
+      "id": "59f94c0bdd241b70349eb727",
+      "title": "Technology"
+    },
+    "cover": {
+      "width": 1990,
+      "height": 519,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+      "childImages": [
+        {
+          "width": 1245,
+          "height": 325,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+        }
+      ]
+    },
+    "icon": {
+      "width": 600,
+      "height": 600,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+      "childImages": [
+        {
+          "width": 250,
+          "height": 250,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+        }
+      ]
+    },
+    "liveStream": {
+      "id": "5c13f3c006f1be15e08e05c0",
+      "title": "I Am Hard... [REDACTED] - WAN Show March 17, 2023",
+      "description": "<p>Get a 15-day free trial for unlimited backup at<a href=\"https://www.backblaze.com/landing/podcast-wan.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.backblaze.com/landing/podcast-wan.html</a></p><p>Try Zoho One free for 30 days with no credit card required here:<a href=\"https://www.zoho.com/one/lp/linus.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.zoho.com/one/lp/linus.html</a></p><p>Save 15% with our offer code WANSHOW at <a href=\"https://vessi.com/WANSHOW\" rel=\"noopener noreferrer\" target=\"_blank\">https://vessi.com/WANSHOW</a></p><p><br></p><p>Podcast Download: TBD</p>",
+      "thumbnail": {
+        "width": 1920,
+        "height": 1080,
+        "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677.jpeg",
+        "childImages": [
+          {
+            "width": 400,
+            "height": 225,
+            "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677_400x225.jpeg"
+          },
+          {
+            "width": 1200,
+            "height": 675,
+            "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/754645543818842_1679099143677_1200x675.jpeg"
+          }
+        ]
+      },
+      "owner": "59f94c0bdd241b70349eb72b",
+      "channel": "63fe42c309e691e4e36de93d",
+      "streamPath": "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8",
+      "offline": {
+        "title": "Offline",
+        "description": "We're offline for now – please check back later!",
+        "thumbnail": {
+          "width": 1920,
+          "height": 1080,
+          "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026.jpeg",
+          "childImages": [
+            {
+              "width": 400,
+              "height": 225,
+              "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_400x225.jpeg"
+            },
+            {
+              "width": 1200,
+              "height": 675,
+              "path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_1200x675.jpeg"
+            }
+          ]
+        }
+      }
+    },
+    "subscriptionPlans": [
+      {
+        "id": "5d48d0306825b5780db93d07",
+        "title": "LTT Supporter",
+        "description": "- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $10 by purchasing an annual subscription\n- Our gratitude for your support",
+        "price": "5.00",
+        "priceYearly": "50.00",
+        "currency": "usd",
+        "logo": null,
+        "interval": "month",
+        "featured": true,
+        "allowGrandfatheredAccess": false,
+        "discordServers": [],
+        "discordRoles": []
+      },
+      {
+        "id": "5e0ba6ac14e2590f760a0f0f",
+        "title": "LTT Supporter Plus",
+        "description": "- 4K Bitrate Streaming\n- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $20 by purchasing an annual subscription\n- Our gratitude for your support",
+        "price": "10.00",
+        "priceYearly": "100.00",
+        "currency": "usd",
+        "logo": null,
+        "interval": "month",
+        "featured": true,
+        "allowGrandfatheredAccess": false,
+        "discordServers": [],
+        "discordRoles": []
+      }
+    ],
+    "discoverable": true,
+    "subscriberCountDisplay": "total",
+    "incomeDisplay": false,
+    "defaultChannel": "63fe42c309e691e4e36de93d",
+    "socialLinks": {
+      "instagram": "https://www.instagram.com/linustech",
+      "website": "https://linustechtips.com",
+      "facebook": "https://www.facebook.com/LinusTech",
+      "youtube": "https://www.youtube.com/user/LinusTechTips",
+      "twitter": "https://twitter.com/linustech"
+    },
+    "channels": [
+      {
+        "id": "63fe42c309e691e4e36de93d",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "Linus Tech Tips",
+        "urlname": "main",
+        "about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+        "order": 0,
+        "cover": {
+          "width": 1990,
+          "height": 519,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+          "childImages": [
+            {
+              "width": 1245,
+              "height": 325,
+              "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+            }
+          ]
+        },
+        "card": null,
+        "icon": {
+          "width": 600,
+          "height": 600,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+          "childImages": [
+            {
+              "width": 250,
+              "height": 250,
+              "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+            },
+            {
+              "width": 100,
+              "height": 100,
+              "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+            }
+          ]
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "6413534d88c13c181c3e2809",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "TechLinked",
+        "urlname": "techlinked",
+        "about": "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+        "order": 2,
+        "cover": {
+          "width": 1080,
+          "height": 282,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/231100243161134_1678988109632.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "64135da7ce81077a8480c679",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "ShortCircuit",
+        "urlname": "shortcircuit",
+        "about": "What's in the box? Let's find out!\n\nOfficial channel under Linus Media Group.",
+        "order": 3,
+        "cover": {
+          "width": 1084,
+          "height": 283,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/745715133852622_1678990806332.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/470304051261927_1678990806883.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "64135e27c773b27ff22c97eb",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "Techquickie",
+        "urlname": "techquickie",
+        "about": "Ever wanted to learn more about your favorite gadgets or a trending topic in tech? \n\nWith a mix of humor, cynicism, and insight, Techquickie brings you the answers to all your tech questions every Tuesday and Friday.",
+        "order": 5,
+        "cover": {
+          "width": 1080,
+          "height": 282,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/721553790654237_1678990887992.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/666841640245092_1678990909616.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "64135e901ebaee42e258eb0b",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "Mac Address",
+        "urlname": "macaddress",
+        "about": "The exploration of all things Apple, from iPhones underwater to full iClouds in the sky. We want to be the channel that you come to first for an unexpected viewpoint about the devices you love.",
+        "order": 4,
+        "cover": {
+          "width": 1080,
+          "height": 282,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/254417940627493_1678990992632.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/979475909700348_1678990993114.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "64135ed078d6262f717341b7",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "Channel Super Fun",
+        "urlname": "channelsuperfun",
+        "about": "Channel Super Fun is all about the name. Games, toys, and challenges. Expect to find them all here!",
+        "order": 6,
+        "cover": {
+          "width": 1080,
+          "height": 282,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/881886551214964_1678991123807.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/317924815973639_1678991124672.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "64135f82fc76ab7f9fbdc876",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "They're Just Movies",
+        "urlname": "tajm",
+        "about": "Each week our small group of nerds sits down for a not-so-serious, SPOILER-FILLED, chat about the movies you love.\n\nFormerly known as Carpool Critics, we're part of Linus Media Group!",
+        "order": 7,
+        "cover": {
+          "width": 1080,
+          "height": 282,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/190277198232475_1678991235439.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 88,
+          "height": 88,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/570806971094170_1678991236419.jpeg",
+          "childImages": []
+        },
+        "socialLinks": {}
+      },
+      {
+        "id": "6413623f5b12cca228a28e78",
+        "creator": "59f94c0bdd241b70349eb72b",
+        "title": "FP Exclusive",
+        "urlname": "fpexclusive",
+        "about": "wow... so empty",
+        "order": 1,
+        "cover": {
+          "width": 1200,
+          "height": 313,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/072932633007415_1678991935461.jpeg",
+          "childImages": []
+        },
+        "card": null,
+        "icon": {
+          "width": 720,
+          "height": 720,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484.jpeg",
+          "childImages": [
+            {
+              "width": 100,
+              "height": 100,
+              "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_100x100.jpeg"
+            },
+            {
+              "width": 250,
+              "height": 250,
+              "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_250x250.jpeg"
+            }
+          ]
+        },
+        "socialLinks": {}
+      }
+    ],
+    "discordServers": [
+      {
+        "id": "5baa8838d9f3aa0a83acd429",
+        "guildName": "Linus Tech Tips",
+        "guildIcon": "803d5f745b30aba3edba719bac671660",
+        "inviteLink": "https://discord.gg/LTT",
+        "inviteMode": "link"
+      },
+      {
+        "id": "5e34cd9a9dbb744872192895",
+        "guildName": "LTT Minecraft Network",
+        "guildIcon": "4f7f812b49196b1646bdcdb84b948c84",
+        "inviteLink": "https://discord.gg/VVpwBPXrMc",
+        "inviteMode": "link"
+      }
+    ]
+  }
+]
 ```
 
 > 400 Response
@@ -28811,6 +29220,120 @@ TODO
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorbyname-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[[CreatorModelV3](#schemacreatormodelv3)]|false|none|none|
+|» id|string|true|none|none|
+|» owner|any|true|none|none|
+
+*oneOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|string|false|none|none|
+
+*xor*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|object|false|none|none|
+|»»» id|string|false|none|none|
+|»»» username|string|false|none|none|
+
+*continued*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» title|string|true|none|none|
+|» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
+|» description|string|true|none|none|
+|» about|string|true|none|none|
+|» category|object|true|none|none|
+|»» id|string|true|none|none|
+|»» title|string|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
+|»» id|string|true|none|none|
+|»» title|string|true|none|none|
+|»» description|string|true|none|none|
+|»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» owner|string|true|none|none|
+|»» channel|string|false|none|The creator channel this livestream belongs to.|
+|»» streamPath|string|true|none|none|
+|»» offline|object|true|none|none|
+|»»» title|string¦null|true|none|none|
+|»»» description|string¦null|true|none|none|
+|»»» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
+|»» id|string|true|none|none|
+|»» title|string|true|none|none|
+|»» description|string|true|none|none|
+|»» price|string¦null|true|none|none|
+|»» priceYearly|string¦null|true|none|none|
+|»» currency|string|true|none|none|
+|»» logo|string¦null|true|none|none|
+|»» interval|string|true|none|none|
+|»» featured|boolean|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»» id|string|true|none|none|
+|»»» guildName|string|true|none|none|
+|»»» guildIcon|string|true|none|none|
+|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteMode|string|true|none|none|
+|»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»» server|string|true|none|none|
+|»»» roleName|string|true|none|none|
+|» discoverable|boolean|true|none|none|
+|» subscriberCountDisplay|string|true|none|none|
+|» incomeDisplay|boolean|true|none|none|
+|» defaultChannel|string|true|none|none|
+|» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
+|»» **additionalProperties**|string(uri)|false|none|none|
+|» channels|[[ChannelModel](#schemachannelmodel)]|true|none|none|
+|»» id|string|true|none|none|
+|»» creator|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL.|
+|»» about|string|true|none|none|
+|»» order|integer|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|Present in `/creator/named` queries|
+|» card|[ImageModel](#schemaimagemodel)|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -29079,6 +29602,579 @@ TODO
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="discovercreatorsv3-responseschema">Response Schema</h3>
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+CookieAuth
+</aside>
+
+## listCreatorChannelsV3
+
+<a id="opIdlistCreatorChannelsV3"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET https://www.floatplane.com/api/v3/creator/channels/list?ids=string \
+  -H 'Accept: application/json'
+
+```
+
+```http
+GET https://www.floatplane.com/api/v3/creator/channels/list?ids=string HTTP/1.1
+Host: www.floatplane.com
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('https://www.floatplane.com/api/v3/creator/channels/list?ids=string',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.get 'https://www.floatplane.com/api/v3/creator/channels/list',
+  params: {
+  'ids' => 'array[string]'
+}, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.get('https://www.floatplane.com/api/v3/creator/channels/list', params={
+  'ids': [
+  "string"
+]
+}, headers = headers)
+
+print(r.json())
+
+```
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$headers = array(
+    'Accept' => 'application/json',
+);
+
+$client = new \GuzzleHttp\Client();
+
+// Define array of request body.
+$request_body = array();
+
+try {
+    $response = $client->request('GET','https://www.floatplane.com/api/v3/creator/channels/list', array(
+        'headers' => $headers,
+        'json' => $request_body,
+       )
+    );
+    print_r($response->getBody()->getContents());
+ }
+ catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    // handle exception or api errors.
+    print_r($e->getMessage());
+ }
+
+ // ...
+
+```
+
+```java
+URL obj = new URL("https://www.floatplane.com/api/v3/creator/channels/list?ids=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/creator/channels/list", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /api/v3/creator/channels/list`
+
+*List Creator Channels*
+
+Retrieves a list of channels within the given creator(s).
+
+<h3 id="listcreatorchannelsv3-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|ids|query|array[string]|true|The ids of the creator(s) from which to search for channels.|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  {
+    "id": "63fe42c309e691e4e36de93d",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "Linus Tech Tips",
+    "urlname": "main",
+    "about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+    "order": 0,
+    "cover": {
+      "width": 1990,
+      "height": 519,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+      "childImages": [
+        {
+          "width": 1245,
+          "height": 325,
+          "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+        }
+      ]
+    },
+    "card": {
+      "width": 375,
+      "height": 500,
+      "path": "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871.jpeg",
+      "childImages": [
+        {
+          "width": 300,
+          "height": 400,
+          "path": "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871_300x400.jpeg"
+        }
+      ]
+    },
+    "icon": {
+      "width": 600,
+      "height": 600,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+      "childImages": [
+        {
+          "width": 250,
+          "height": 250,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+        }
+      ]
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "6413534d88c13c181c3e2809",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "TechLinked",
+    "urlname": "techlinked",
+    "about": "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+    "order": 2,
+    "cover": {
+      "width": 1080,
+      "height": 282,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/231100243161134_1678988109632.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/953298867250186_1678988110714.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "64135da7ce81077a8480c679",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "ShortCircuit",
+    "urlname": "shortcircuit",
+    "about": "What's in the box? Let's find out!\n\nOfficial channel under Linus Media Group.",
+    "order": 3,
+    "cover": {
+      "width": 1084,
+      "height": 283,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/745715133852622_1678990806332.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/939790311068913_1678990807440.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/470304051261927_1678990806883.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "64135e27c773b27ff22c97eb",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "Techquickie",
+    "urlname": "techquickie",
+    "about": "Ever wanted to learn more about your favorite gadgets or a trending topic in tech? \n\nWith a mix of humor, cynicism, and insight, Techquickie brings you the answers to all your tech questions every Tuesday and Friday.",
+    "order": 5,
+    "cover": {
+      "width": 1080,
+      "height": 282,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/721553790654237_1678990887992.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/962826906389296_1678990910103.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/666841640245092_1678990909616.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "64135e901ebaee42e258eb0b",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "Mac Address",
+    "urlname": "macaddress",
+    "about": "The exploration of all things Apple, from iPhones underwater to full iClouds in the sky. We want to be the channel that you come to first for an unexpected viewpoint about the devices you love.",
+    "order": 4,
+    "cover": {
+      "width": 1080,
+      "height": 282,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/254417940627493_1678990992632.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/493604923555386_1678990993708.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/979475909700348_1678990993114.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "64135ed078d6262f717341b7",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "Channel Super Fun",
+    "urlname": "channelsuperfun",
+    "about": "Channel Super Fun is all about the name. Games, toys, and challenges. Expect to find them all here!",
+    "order": 6,
+    "cover": {
+      "width": 1080,
+      "height": 282,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/881886551214964_1678991123807.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/953601834319296_1678991125167.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/317924815973639_1678991124672.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "64135f82fc76ab7f9fbdc876",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "They're Just Movies",
+    "urlname": "tajm",
+    "about": "Each week our small group of nerds sits down for a not-so-serious, SPOILER-FILLED, chat about the movies you love.\n\nFormerly known as Carpool Critics, we're part of Linus Media Group!",
+    "order": 7,
+    "cover": {
+      "width": 1080,
+      "height": 282,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/190277198232475_1678991235439.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 66,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/863827491957963_1678991237126.jpeg",
+      "childImages": []
+    },
+    "icon": {
+      "width": 88,
+      "height": 88,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/570806971094170_1678991236419.jpeg",
+      "childImages": []
+    },
+    "socialLinks": {}
+  },
+  {
+    "id": "6413623f5b12cca228a28e78",
+    "creator": "59f94c0bdd241b70349eb72b",
+    "title": "FP Exclusive",
+    "urlname": "fpexclusive",
+    "about": "wow... so empty",
+    "order": 1,
+    "cover": {
+      "width": 1200,
+      "height": 313,
+      "path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/072932633007415_1678991935461.jpeg",
+      "childImages": []
+    },
+    "card": {
+      "width": 750,
+      "height": 1000,
+      "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240.jpeg",
+      "childImages": [
+        {
+          "width": 375,
+          "height": 500,
+          "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240_375x500.jpeg"
+        },
+        {
+          "width": 300,
+          "height": 400,
+          "path": "https://pbs.floatplane.com/creator_cards/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/717727609968419_1678991937240_300x400.jpeg"
+        }
+      ]
+    },
+    "icon": {
+      "width": 720,
+      "height": 720,
+      "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484.jpeg",
+      "childImages": [
+        {
+          "width": 100,
+          "height": 100,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_100x100.jpeg"
+        },
+        {
+          "width": 250,
+          "height": 250,
+          "path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_250x250.jpeg"
+        }
+      ]
+    },
+    "socialLinks": {}
+  }
+]
+```
+
+> 400 Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+> 401 Response
+
+```json
+{
+  "id": "erng-ah8e-n0d3",
+  "errors": [
+    {
+      "id": "erng-ah8e-n0d3",
+      "name": "notLoggedInError",
+      "message": "You must be logged-in to access this resource."
+    }
+  ],
+  "message": "You must be logged-in to access this resource."
+}
+```
+
+> 403 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "missingAchievementError",
+      "message": "You lack one or more of the required achievements needed to access the requested resource.",
+      "data": {
+        "requiresAllOfAchievement": [
+          {
+            "id": "6157853e479315db795f7296",
+            "title": "FloatVPN Alpha",
+            "startDate": null,
+            "endDate": null,
+            "icon": null
+          }
+        ]
+      }
+    }
+  ],
+  "message": "You lack one or more of the required achievements needed to access the requested resource."
+}
+```
+
+> 404 Response
+
+```json
+{
+  "id": "f4ec-orux-hds2",
+  "errors": [
+    {
+      "id": "f4ec-orux-hds2",
+      "name": "notFoundError"
+    }
+  ]
+}
+```
+
+> default Response
+
+```json
+{
+  "id": "awoz-3s5g-6amf",
+  "errors": [
+    {
+      "id": "9edc-zejt-n3hb",
+      "name": "paramValidationError",
+      "message": "\"captchaToken\" must be an object",
+      "data": {
+        "rule": "object.base"
+      }
+    }
+  ],
+  "message": "\"captchaToken\" must be an object"
+}
+```
+
+<h3 id="listcreatorchannelsv3-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="listcreatorchannelsv3-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[[ChannelModel](#schemachannelmodel)]|false|none|none|
+|» id|string|true|none|none|
+|» creator|string|true|none|none|
+|» title|string|true|none|none|
+|» urlname|string|true|none|Shown in the browser URL.|
+|» about|string|true|none|none|
+|» order|integer|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» width|integer|true|none|none|
+|»» height|integer|true|none|none|
+|»» path|string(uri)|true|none|none|
+|»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|»» **additionalProperties**|string(uri)|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -61194,7 +62290,7 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» owner|string|true|none|none|
 |»» title|string|true|none|none|
-|»» urlname|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|string|true|none|none|
@@ -61221,6 +62317,7 @@ Status Code **200**
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
+|»»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
 |»»»» title|string¦null|true|none|none|
@@ -61234,6 +62331,7 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
+|»» defaultChannel|string|false|none|none|
 |» userNotificationSetting|object|true|none|none|
 |»» createdAt|string(date-time)|true|none|none|
 |»» updatedAt|string(date-time)¦null|true|none|none|
@@ -84252,9 +85350,10 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |» text|string|true|none|none|
-|» replying|string|true|none|none|
-|» postDate|string|true|none|none|
-|» editDate|string|true|none|none|
+|» replying|string¦null|true|none|none|
+|» postDate|string(date-time)|true|none|none|
+|» editDate|string(date-time)¦null|true|none|none|
+|» pinDate|string(date-time)¦null|false|none|none|
 |» editCount|integer|true|none|none|
 |» isEdited|boolean|true|none|none|
 |» likes|integer|true|none|none|
@@ -84263,24 +85362,8 @@ Status Code **200**
 |» interactionCounts|object|true|none|none|
 |»» like|integer|true|none|none|
 |»» dislike|integer|true|none|none|
-|» totalReplies|integer|true|none|none|
-|» replies|[[CommentReplyModel](#schemacommentreplymodel)]|true|none|none|
-|»» id|string|true|none|none|
-|»» blogPost|string|true|none|none|
-|»» user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|»» text|string|true|none|none|
-|»» replying|string|true|none|none|
-|»» postDate|string(date-time)|true|none|none|
-|»» editDate|string(date-time)¦null|true|none|none|
-|»» editCount|integer|true|none|none|
-|»» isEdited|boolean|true|none|none|
-|»» likes|integer|true|none|none|
-|»» dislikes|integer|true|none|none|
-|»» score|integer|true|none|none|
-|»» interactionCounts|object|true|none|none|
-|»»» like|integer|true|none|none|
-|»»» dislike|integer|true|none|none|
-|»» userInteraction|[string]¦null|true|none|none|
+|» totalReplies|integer|false|none|none|
+|» replies|[[CommentModel](#schemacommentmodel)]|false|none|This is present (but possibly empty) for top-level comments. This is never present for reply comments.|
 |» userInteraction|[string]¦null|true|none|none|
 
 #### Links
@@ -84616,7 +85699,7 @@ Status Code **200**
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|*anonymous*|[[CommentReplyModel](#schemacommentreplymodel)]|false|none|none|
+|*anonymous*|[[CommentModel](#schemacommentmodel)]|false|none|none|
 |» id|string|true|none|none|
 |» blogPost|string|true|none|none|
 |» user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
@@ -84631,9 +85714,10 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |» text|string|true|none|none|
-|» replying|string|true|none|none|
+|» replying|string¦null|true|none|none|
 |» postDate|string(date-time)|true|none|none|
 |» editDate|string(date-time)¦null|true|none|none|
+|» pinDate|string(date-time)¦null|false|none|none|
 |» editCount|integer|true|none|none|
 |» isEdited|boolean|true|none|none|
 |» likes|integer|true|none|none|
@@ -84642,6 +85726,8 @@ Status Code **200**
 |» interactionCounts|object|true|none|none|
 |»» like|integer|true|none|none|
 |»» dislike|integer|true|none|none|
+|» totalReplies|integer|false|none|none|
+|» replies|[[CommentModel](#schemacommentmodel)]|false|none|This is present (but possibly empty) for top-level comments. This is never present for reply comments.|
 |» userInteraction|[string]¦null|true|none|none|
 
 <aside class="warning">
@@ -86464,6 +87550,7 @@ Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd24
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |id|query|string|true|The GUID of the creator to retrieve posts from.|
+|channel|query|string|false|The id of a creator's specific channel from which to retrieve posts.|
 |limit|query|integer|false|The maximum number of posts to return.|
 |fetchAfter|query|integer|false|The number of posts to skip. Usually a multiple of `limit`, to get the next "page" of results.|
 |search|query|string|false|Search filter to look for specific posts.|
@@ -86975,6 +88062,33 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
+|» channel|[ChannelModel](#schemachannelmodel)|true|none|none|
+|»» id|string|true|none|none|
+|»» creator|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL.|
+|»» about|string|true|none|none|
+|»» order|integer|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|»»» **additionalProperties**|string(uri)|false|none|none|
 |» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
@@ -87000,19 +88114,13 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» username|string|true|none|none|
 |»» title|string|true|none|none|
-|»» urlname|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|object|true|none|none|
+|»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»»»» width|integer|true|none|none|
-|»»»» height|integer|true|none|none|
-|»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
@@ -87024,6 +88132,7 @@ Status Code **200**
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
+|»»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
 |»»»» title|string¦null|true|none|none|
@@ -87056,6 +88165,8 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
+|»» defaultChannel|string|false|none|none|
+|»» channels|[string]|false|none|none|
 |»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -89245,6 +90356,33 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
+|» channel|[ChannelModel](#schemachannelmodel)|true|none|none|
+|»» id|string|true|none|none|
+|»» creator|string|true|none|none|
+|»» title|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL.|
+|»» about|string|true|none|none|
+|»» order|integer|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|»»» **additionalProperties**|string(uri)|false|none|none|
 |» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
@@ -89270,19 +90408,13 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» username|string|true|none|none|
 |»» title|string|true|none|none|
-|»» urlname|string|true|none|none|
+|»» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |»» description|string|true|none|none|
 |»» about|string|true|none|none|
 |»» category|object|true|none|none|
+|»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»»»» width|integer|true|none|none|
-|»»»» height|integer|true|none|none|
-|»»»» path|string(uri)|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
@@ -89294,6 +90426,7 @@ Status Code **200**
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»»» owner|string|true|none|none|
+|»»» channel|string|false|none|The creator channel this livestream belongs to.|
 |»»» streamPath|string|true|none|none|
 |»»» offline|object|true|none|none|
 |»»»» title|string¦null|true|none|none|
@@ -89326,6 +90459,8 @@ Status Code **200**
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
+|»» defaultChannel|string|false|none|none|
+|»» channels|[string]|false|none|none|
 |»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -101496,6 +102631,54 @@ xor
       "title": "string",
       "text": "string",
       "type": "blogPost",
+      "channel": {
+        "id": "string",
+        "creator": "string",
+        "title": "string",
+        "urlname": "string",
+        "about": "string",
+        "order": 0,
+        "cover": {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com",
+          "childImages": [
+            {
+              "width": 0,
+              "height": 0,
+              "path": "http://example.com"
+            }
+          ]
+        },
+        "card": {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com",
+          "childImages": [
+            {
+              "width": 0,
+              "height": 0,
+              "path": "http://example.com"
+            }
+          ]
+        },
+        "icon": {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com",
+          "childImages": [
+            {
+              "width": 0,
+              "height": 0,
+              "path": "http://example.com"
+            }
+          ]
+        },
+        "socialLinks": {
+          "property1": "http://example.com",
+          "property2": "http://example.com"
+        }
+      },
       "tags": [
         "string"
       ],
@@ -101531,6 +102714,7 @@ xor
         "description": "string",
         "about": "string",
         "category": {
+          "id": "string",
           "title": "string"
         },
         "cover": {
@@ -101574,6 +102758,7 @@ xor
             ]
           },
           "owner": "string",
+          "channel": "string",
           "streamPath": "string",
           "offline": {
             "title": "string",
@@ -101624,6 +102809,10 @@ xor
         "discoverable": true,
         "subscriberCountDisplay": "string",
         "incomeDisplay": true,
+        "defaultChannel": "string",
+        "channels": [
+          "string"
+        ],
         "card": {
           "width": 0,
           "height": 0,
@@ -101721,6 +102910,54 @@ xor
   "title": "string",
   "text": "string",
   "type": "blogPost",
+  "channel": {
+    "id": "string",
+    "creator": "string",
+    "title": "string",
+    "urlname": "string",
+    "about": "string",
+    "order": 0,
+    "cover": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "card": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "icon": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "socialLinks": {
+      "property1": "http://example.com",
+      "property2": "http://example.com"
+    }
+  },
   "tags": [
     "string"
   ],
@@ -101794,6 +103031,7 @@ xor
         ]
       },
       "owner": "string",
+      "channel": "string",
       "streamPath": "string",
       "offline": {
         "title": "string",
@@ -101817,7 +103055,8 @@ xor
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",
-    "incomeDisplay": true
+    "incomeDisplay": true,
+    "defaultChannel": "string"
   },
   "wasReleasedSilently": true,
   "thumbnail": {
@@ -101935,6 +103174,7 @@ xor
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.|
 |type|string|true|none|none|
+|channel|[ChannelModel](#schemachannelmodel)|true|none|none|
 |tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
@@ -102518,6 +103758,7 @@ xor
       ]
     },
     "owner": "string",
+    "channel": "string",
     "streamPath": "string",
     "offline": {
       "title": "string",
@@ -102541,7 +103782,8 @@ xor
   ],
   "discoverable": true,
   "subscriberCountDisplay": "string",
-  "incomeDisplay": true
+  "incomeDisplay": true,
+  "defaultChannel": "string"
 }
 
 ```
@@ -102553,7 +103795,7 @@ xor
 |id|string|true|none|none|
 |owner|string|true|none|none|
 |title|string|true|none|none|
-|urlname|string|true|none|none|
+|urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |description|string|true|none|none|
 |about|string|true|none|none|
 |category|string|true|none|none|
@@ -102564,6 +103806,7 @@ xor
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
+|defaultChannel|string|false|none|none|
 
 <h2 id="tocS_CreatorModelV2Extended">CreatorModelV2Extended</h2>
 <!-- backwards compatibility -->
@@ -102622,6 +103865,7 @@ xor
       ]
     },
     "owner": "string",
+    "channel": "string",
     "streamPath": "string",
     "offline": {
       "title": "string",
@@ -102646,6 +103890,7 @@ xor
   "discoverable": true,
   "subscriberCountDisplay": "string",
   "incomeDisplay": true,
+  "defaultChannel": "string",
   "socialLinks": {
     "property1": "http://example.com",
     "property2": "http://example.com"
@@ -102695,6 +103940,7 @@ and
   "description": "string",
   "about": "string",
   "category": {
+    "id": "string",
     "title": "string"
   },
   "cover": {
@@ -102738,6 +103984,7 @@ and
       ]
     },
     "owner": "string",
+    "channel": "string",
     "streamPath": "string",
     "offline": {
       "title": "string",
@@ -102788,6 +104035,182 @@ and
   "discoverable": true,
   "subscriberCountDisplay": "string",
   "incomeDisplay": true,
+  "defaultChannel": "string",
+  "socialLinks": {
+    "property1": "http://example.com",
+    "property2": "http://example.com"
+  },
+  "channels": [
+    {
+      "id": "string",
+      "creator": "string",
+      "title": "string",
+      "urlname": "string",
+      "about": "string",
+      "order": 0,
+      "cover": {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "http://example.com"
+          }
+        ]
+      },
+      "card": {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "http://example.com"
+          }
+        ]
+      },
+      "icon": {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com",
+        "childImages": [
+          {
+            "width": 0,
+            "height": 0,
+            "path": "http://example.com"
+          }
+        ]
+      },
+      "socialLinks": {
+        "property1": "http://example.com",
+        "property2": "http://example.com"
+      }
+    }
+  ],
+  "discordServers": [
+    {
+      "id": "string",
+      "guildName": "string",
+      "guildIcon": "string",
+      "inviteLink": "http://example.com",
+      "inviteMode": "string"
+    }
+  ],
+  "card": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|true|none|none|
+|owner|any|true|none|none|
+
+oneOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|string|false|none|none|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|object|false|none|none|
+|»» id|string|false|none|none|
+|»» username|string|false|none|none|
+
+continued
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|title|string|true|none|none|
+|urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
+|description|string|true|none|none|
+|about|string|true|none|none|
+|category|object|true|none|none|
+|» id|string|true|none|none|
+|» title|string|true|none|none|
+|cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
+|subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
+|discoverable|boolean|true|none|none|
+|subscriberCountDisplay|string|true|none|none|
+|incomeDisplay|boolean|true|none|none|
+|defaultChannel|string|true|none|none|
+|socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
+|channels|[[ChannelModel](#schemachannelmodel)]|true|none|none|
+|discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|Present in `/creator/named` queries|
+|card|[ImageModel](#schemaimagemodel)|false|none|none|
+
+<h2 id="tocS_ChannelModel">ChannelModel</h2>
+<!-- backwards compatibility -->
+<a id="schemachannelmodel"></a>
+<a id="schema_ChannelModel"></a>
+<a id="tocSchannelmodel"></a>
+<a id="tocschannelmodel"></a>
+
+```json
+{
+  "id": "string",
+  "creator": "string",
+  "title": "string",
+  "urlname": "string",
+  "about": "string",
+  "order": 0,
+  "cover": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
+  "card": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
+  "icon": {
+    "width": 0,
+    "height": 0,
+    "path": "http://example.com",
+    "childImages": [
+      {
+        "width": 0,
+        "height": 0,
+        "path": "http://example.com"
+      }
+    ]
+  },
   "socialLinks": {
     "property1": "http://example.com",
     "property2": "http://example.com"
@@ -102801,21 +104224,15 @@ and
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |id|string|true|none|none|
-|owner|string|true|none|none|
+|creator|string|true|none|none|
 |title|string|true|none|none|
-|urlname|string|true|none|none|
-|description|string|true|none|none|
+|urlname|string|true|none|Shown in the browser URL.|
 |about|string|true|none|none|
-|category|object|true|none|none|
-|» title|string|true|none|none|
+|order|integer|true|none|none|
 |cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
-|subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
-|discoverable|boolean|true|none|none|
-|subscriberCountDisplay|string|true|none|none|
-|incomeDisplay|boolean|true|none|none|
-|socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
+|socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
 
 <h2 id="tocS_BlogPostModelV3">BlogPostModelV3</h2>
 <!-- backwards compatibility -->
@@ -102831,6 +104248,54 @@ and
   "title": "string",
   "text": "string",
   "type": "blogPost",
+  "channel": {
+    "id": "string",
+    "creator": "string",
+    "title": "string",
+    "urlname": "string",
+    "about": "string",
+    "order": 0,
+    "cover": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "card": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "icon": {
+      "width": 0,
+      "height": 0,
+      "path": "http://example.com",
+      "childImages": [
+        {
+          "width": 0,
+          "height": 0,
+          "path": "http://example.com"
+        }
+      ]
+    },
+    "socialLinks": {
+      "property1": "http://example.com",
+      "property2": "http://example.com"
+    }
+  },
   "tags": [
     "string"
   ],
@@ -102866,6 +104331,7 @@ and
     "description": "string",
     "about": "string",
     "category": {
+      "id": "string",
       "title": "string"
     },
     "cover": {
@@ -102909,6 +104375,7 @@ and
         ]
       },
       "owner": "string",
+      "channel": "string",
       "streamPath": "string",
       "offline": {
         "title": "string",
@@ -102959,6 +104426,10 @@ and
     "discoverable": true,
     "subscriberCountDisplay": "string",
     "incomeDisplay": true,
+    "defaultChannel": "string",
+    "channels": [
+      "string"
+    ],
     "card": {
       "width": 0,
       "height": 0,
@@ -103011,6 +104482,7 @@ and
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
+|channel|[ChannelModel](#schemachannelmodel)|true|none|none|
 |tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
@@ -103025,10 +104497,11 @@ and
 |»» id|string|true|none|none|
 |»» username|string|true|none|none|
 |» title|string|true|none|none|
-|» urlname|string|true|none|none|
+|» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |» description|string|true|none|none|
 |» about|string|true|none|none|
 |» category|object|true|none|none|
+|»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |» cover|[ImageModel](#schemaimagemodel)|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
@@ -103037,6 +104510,8 @@ and
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
+|» defaultChannel|string|false|none|none|
+|» channels|[string]|false|none|none|
 |» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
@@ -103425,6 +104900,7 @@ and
     ]
   },
   "owner": "string",
+  "channel": "string",
   "streamPath": "string",
   "offline": {
     "title": "string",
@@ -103455,6 +104931,7 @@ and
 |description|string|true|none|none|
 |thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |owner|string|true|none|none|
+|channel|string|false|none|The creator channel this livestream belongs to.|
 |streamPath|string|true|none|none|
 |offline|object|true|none|none|
 |» title|string¦null|true|none|none|
@@ -103681,8 +105158,9 @@ Represents some basic information of a user (id, username, and profile image).
   },
   "text": "string",
   "replying": "string",
-  "postDate": "string",
-  "editDate": "string",
+  "postDate": "2019-08-24T14:15:22Z",
+  "editDate": "2019-08-24T14:15:22Z",
+  "pinDate": "2019-08-24T14:15:22Z",
   "editCount": 0,
   "isEdited": true,
   "likes": 0,
@@ -103717,6 +105195,7 @@ Represents some basic information of a user (id, username, and profile image).
       "replying": "string",
       "postDate": "2019-08-24T14:15:22Z",
       "editDate": "2019-08-24T14:15:22Z",
+      "pinDate": "2019-08-24T14:15:22Z",
       "editCount": 0,
       "isEdited": true,
       "likes": 0,
@@ -103726,6 +105205,8 @@ Represents some basic information of a user (id, username, and profile image).
         "like": 0,
         "dislike": 0
       },
+      "totalReplies": 0,
+      "replies": [],
       "userInteraction": [
         "like"
       ]
@@ -103746,79 +105227,10 @@ Represents some basic information of a user (id, username, and profile image).
 |blogPost|string|true|none|none|
 |user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
 |text|string|true|none|none|
-|replying|string|true|none|none|
-|postDate|string|true|none|none|
-|editDate|string|true|none|none|
-|editCount|integer|true|none|none|
-|isEdited|boolean|true|none|none|
-|likes|integer|true|none|none|
-|dislikes|integer|true|none|none|
-|score|integer|true|none|none|
-|interactionCounts|object|true|none|none|
-|» like|integer|true|none|none|
-|» dislike|integer|true|none|none|
-|totalReplies|integer|true|none|none|
-|replies|[[CommentReplyModel](#schemacommentreplymodel)]|true|none|none|
-|userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
-
-<h2 id="tocS_CommentReplyModel">CommentReplyModel</h2>
-<!-- backwards compatibility -->
-<a id="schemacommentreplymodel"></a>
-<a id="schema_CommentReplyModel"></a>
-<a id="tocScommentreplymodel"></a>
-<a id="tocscommentreplymodel"></a>
-
-```json
-{
-  "id": "string",
-  "blogPost": "string",
-  "user": {
-    "id": "string",
-    "username": "string",
-    "profileImage": {
-      "width": 0,
-      "height": 0,
-      "path": "http://example.com",
-      "childImages": [
-        {
-          "width": 0,
-          "height": 0,
-          "path": "http://example.com"
-        }
-      ]
-    }
-  },
-  "text": "string",
-  "replying": "string",
-  "postDate": "2019-08-24T14:15:22Z",
-  "editDate": "2019-08-24T14:15:22Z",
-  "editCount": 0,
-  "isEdited": true,
-  "likes": 0,
-  "dislikes": 0,
-  "score": 0,
-  "interactionCounts": {
-    "like": 0,
-    "dislike": 0
-  },
-  "userInteraction": [
-    "like"
-  ]
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|id|string|true|none|none|
-|blogPost|string|true|none|none|
-|user|[UserModel](#schemausermodel)|true|none|Represents some basic information of a user (id, username, and profile image).|
-|text|string|true|none|none|
-|replying|string|true|none|none|
+|replying|string¦null|true|none|none|
 |postDate|string(date-time)|true|none|none|
 |editDate|string(date-time)¦null|true|none|none|
+|pinDate|string(date-time)¦null|false|none|none|
 |editCount|integer|true|none|none|
 |isEdited|boolean|true|none|none|
 |likes|integer|true|none|none|
@@ -103827,6 +105239,8 @@ Represents some basic information of a user (id, username, and profile image).
 |interactionCounts|object|true|none|none|
 |» like|integer|true|none|none|
 |» dislike|integer|true|none|none|
+|totalReplies|integer|false|none|none|
+|replies|[[CommentModel](#schemacommentmodel)]|false|none|This is present (but possibly empty) for top-level comments. This is never present for reply comments.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 
 <h2 id="tocS_UserNotificationModel">UserNotificationModel</h2>
@@ -103887,6 +105301,7 @@ Represents some basic information of a user (id, username, and profile image).
         ]
       },
       "owner": "string",
+      "channel": "string",
       "streamPath": "string",
       "offline": {
         "title": "string",
@@ -103910,7 +105325,8 @@ Represents some basic information of a user (id, username, and profile image).
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",
-    "incomeDisplay": true
+    "incomeDisplay": true,
+    "defaultChannel": "string"
   },
   "userNotificationSetting": {
     "createdAt": "2019-08-24T14:15:22Z",

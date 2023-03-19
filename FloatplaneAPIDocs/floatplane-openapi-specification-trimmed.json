@@ -725,10 +725,11 @@
                 "properties": {
                     "totalSubscriberCount": {
                         "type": "integer",
-                        "description": "The total number of subscribers for this creator."
+                        "description": "The total number of subscribers for this creator.",
+                        "nullable": true
                     },
                     "totalIncome": {
-                        "type": "string",
+                        "type": "integer",
                         "description": "The total amount of monthly income for this creator. This field tends to always be $0 for regular users.",
                         "nullable": true
                     },
@@ -782,7 +783,6 @@
                                         "trialPeriod",
                                         "creator",
                                         "userIsSubscribed",
-                                        "userIsGrandfathered",
                                         "enabledGlobal"
                                     ]
                                 }
@@ -2015,7 +2015,6 @@
                     "title",
                     "urlname",
                     "about",
-                    "order",
                     "cover",
                     "card",
                     "icon"
@@ -2316,7 +2315,6 @@
                     "logo",
                     "interval",
                     "featured",
-                    "allowGrandfatheredAccess",
                     "discordServers",
                     "discordRoles"
                 ]
@@ -2747,7 +2745,8 @@
                     },
                     "inviteLink": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "uri",
+                        "nullable": true
                     },
                     "inviteMode": {
                         "type": "string"

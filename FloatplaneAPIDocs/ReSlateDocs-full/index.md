@@ -24790,7 +24790,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 
 <aside class="warning">
@@ -28553,12 +28553,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -28575,7 +28575,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -29297,12 +29297,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -29319,7 +29319,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -30154,7 +30154,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» urlname|string|true|none|Shown in the browser URL.|
 |» about|string|true|none|none|
-|» order|integer|true|none|none|
+|» order|integer|false|none|none|
 |» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
@@ -50803,12 +50803,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -88068,7 +88068,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -88152,12 +88152,12 @@ Status Code **200**
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string(uri)|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -90362,7 +90362,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -90446,12 +90446,12 @@ Status Code **200**
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string(uri)|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -91383,274 +91383,6 @@ Retrieve more information on a picture attachment from a blog post in order to c
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## getGalleryContent
-
-<a id="opIdgetGalleryContent"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/content/gallery \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET https://www.floatplane.com/api/v3/content/gallery HTTP/1.1
-Host: www.floatplane.com
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('https://www.floatplane.com/api/v3/content/gallery',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get 'https://www.floatplane.com/api/v3/content/gallery',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('https://www.floatplane.com/api/v3/content/gallery', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','https://www.floatplane.com/api/v3/content/gallery', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("https://www.floatplane.com/api/v3/content/gallery");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/content/gallery", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v3/content/gallery`
-
-*Get Gallery Content*
-
-TODO
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="getgallerycontent-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="getgallerycontent-responseschema">Response Schema</h3>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -102305,7 +102037,7 @@ continued
 ```json
 {
   "totalSubscriberCount": 0,
-  "totalIncome": "string",
+  "totalIncome": 0,
   "plans": [
     {
       "id": "string",
@@ -102352,8 +102084,8 @@ continued
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|totalSubscriberCount|integer|true|none|The total number of subscribers for this creator.|
-|totalIncome|string¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
+|totalSubscriberCount|integer¦null|true|none|The total number of subscribers for this creator.|
+|totalIncome|integer¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
 |plans|[allOf]|true|none|none|
 
 allOf
@@ -102374,7 +102106,7 @@ and
 |»» trialPeriod|number|true|none|none|
 |»» creator|string|true|none|none|
 |»» userIsSubscribed|boolean|true|none|none|
-|»» userIsGrandfathered|boolean|true|none|none|
+|»» userIsGrandfathered|boolean|false|none|none|
 |»» enabledGlobal|boolean|true|none|none|
 
 <h2 id="tocS_UserInfoV2Response">UserInfoV2Response</h2>
@@ -104228,7 +103960,7 @@ continued
 |title|string|true|none|none|
 |urlname|string|true|none|Shown in the browser URL.|
 |about|string|true|none|none|
-|order|integer|true|none|none|
+|order|integer|false|none|none|
 |cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
@@ -104578,7 +104310,7 @@ continued
 |logo|string¦null|true|none|none|
 |interval|string|true|none|none|
 |featured|boolean|true|none|none|
-|allowGrandfatheredAccess|boolean¦null|true|none|none|
+|allowGrandfatheredAccess|boolean¦null|false|none|none|
 |discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 
@@ -104984,7 +104716,7 @@ continued
 |id|string|true|none|none|
 |guildName|string|true|none|none|
 |guildIcon|string|true|none|none|
-|inviteLink|string(uri)|true|none|none|
+|inviteLink|string(uri)¦null|true|none|none|
 |inviteMode|string|true|none|none|
 
 <h2 id="tocS_DiscordRoleModel">DiscordRoleModel</h2>

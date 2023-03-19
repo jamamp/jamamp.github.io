@@ -3548,7 +3548,7 @@ Status Code **200**
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 
 <aside class="warning">
@@ -4631,12 +4631,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -4653,7 +4653,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -5375,12 +5375,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -5397,7 +5397,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -5964,7 +5964,7 @@ Status Code **200**
 |» title|string|true|none|none|
 |» urlname|string|true|none|Shown in the browser URL.|
 |» about|string|true|none|none|
-|» order|integer|true|none|none|
+|» order|integer|false|none|none|
 |» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
@@ -8844,12 +8844,12 @@ Status Code **200**
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
 |»» featured|boolean|true|none|none|
-|»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»» id|string|true|none|none|
 |»»» guildName|string|true|none|none|
 |»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
 |»»» inviteMode|string|true|none|none|
 |»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»» server|string|true|none|none|
@@ -13863,7 +13863,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -13947,12 +13947,12 @@ Status Code **200**
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string(uri)|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -16157,7 +16157,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» urlname|string|true|none|Shown in the browser URL.|
 |»» about|string|true|none|none|
-|»» order|integer|true|none|none|
+|»» order|integer|false|none|none|
 |»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
@@ -16241,12 +16241,12 @@ Status Code **200**
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
 |»»» featured|boolean|true|none|none|
-|»»» allowGrandfatheredAccess|boolean¦null|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
 |»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |»»»» id|string|true|none|none|
 |»»»» guildName|string|true|none|none|
 |»»»» guildIcon|string|true|none|none|
-|»»»» inviteLink|string(uri)|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
 |»»»» inviteMode|string|true|none|none|
 |»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 |»»»» server|string|true|none|none|
@@ -20465,7 +20465,7 @@ continued
 ```json
 {
   "totalSubscriberCount": 0,
-  "totalIncome": "string",
+  "totalIncome": 0,
   "plans": [
     {
       "id": "string",
@@ -20512,8 +20512,8 @@ continued
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|totalSubscriberCount|integer|true|none|The total number of subscribers for this creator.|
-|totalIncome|string¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
+|totalSubscriberCount|integer¦null|true|none|The total number of subscribers for this creator.|
+|totalIncome|integer¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
 |plans|[allOf]|true|none|none|
 
 allOf
@@ -20534,7 +20534,7 @@ and
 |»» trialPeriod|number|true|none|none|
 |»» creator|string|true|none|none|
 |»» userIsSubscribed|boolean|true|none|none|
-|»» userIsGrandfathered|boolean|true|none|none|
+|»» userIsGrandfathered|boolean|false|none|none|
 |»» enabledGlobal|boolean|true|none|none|
 
 <h2 id="tocS_UserInfoV2Response">UserInfoV2Response</h2>
@@ -22388,7 +22388,7 @@ continued
 |title|string|true|none|none|
 |urlname|string|true|none|Shown in the browser URL.|
 |about|string|true|none|none|
-|order|integer|true|none|none|
+|order|integer|false|none|none|
 |cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
@@ -22738,7 +22738,7 @@ continued
 |logo|string¦null|true|none|none|
 |interval|string|true|none|none|
 |featured|boolean|true|none|none|
-|allowGrandfatheredAccess|boolean¦null|true|none|none|
+|allowGrandfatheredAccess|boolean¦null|false|none|none|
 |discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
 |discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
 
@@ -23144,7 +23144,7 @@ continued
 |id|string|true|none|none|
 |guildName|string|true|none|none|
 |guildIcon|string|true|none|none|
-|inviteLink|string(uri)|true|none|none|
+|inviteLink|string(uri)¦null|true|none|none|
 |inviteMode|string|true|none|none|
 
 <h2 id="tocS_DiscordRoleModel">DiscordRoleModel</h2>

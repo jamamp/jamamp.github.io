@@ -1411,7 +1411,7 @@
             type: "array"
             nullable: true
             items: 
-              type: "object"
+              $ref: "#/components/schemas/SubscriptionPlanModel"
           discoverable: 
             type: "boolean"
           subscriberCountDisplay: 
@@ -1599,7 +1599,12 @@
             enum: 
               - "blogPost"
           channel: 
-            $ref: "#/components/schemas/ChannelModel"
+            oneOf: 
+              - 
+                $ref: "#/components/schemas/ChannelModel"
+              - 
+                type: "string"
+                description: "Channel identifier"
           tags: 
             type: "array"
             items: 
@@ -1656,7 +1661,10 @@
                   - "id"
                   - "title"
               cover: 
-                $ref: "#/components/schemas/ImageModel"
+                allOf: 
+                  - 
+                    $ref: "#/components/schemas/ImageModel"
+                nullable: true
               icon: 
                 $ref: "#/components/schemas/ImageModel"
               liveStream: 
@@ -1700,7 +1708,6 @@
               - "discoverable"
               - "subscriberCountDisplay"
               - "incomeDisplay"
-              - "card"
           wasReleasedSilently: 
             type: "boolean"
           thumbnail: 
@@ -1748,7 +1755,6 @@
           - "comments"
           - "creator"
           - "wasReleasedSilently"
-          - "thumbnail"
           - "isAccessible"
       SubscriptionPlanModel: 
         type: "object"
@@ -1824,13 +1830,10 @@
             type: "boolean"
         required: 
           - "hasVideo"
-          - "videoCount"
           - "videoDuration"
           - "hasAudio"
-          - "audioCount"
           - "audioDuration"
           - "hasPicture"
-          - "pictureCount"
           - "isFeatured"
       VideoAttachmentModel: 
         type: "object"
@@ -2183,6 +2186,7 @@
                 type: "string"
               data: 
                 type: "object"
+                nullable: true
                 properties: 
                   canJoinGuilds: 
                     type: "boolean"

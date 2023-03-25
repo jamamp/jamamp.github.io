@@ -946,7 +946,7 @@ ul.nav-tabs {
   }
 };
     defs["BlogPostModelV3"] = {
-  "required" : [ "attachmentOrder", "channel", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "thumbnail", "title", "type", "wasReleasedSilently" ],
+  "required" : [ "attachmentOrder", "channel", "comments", "creator", "dislikes", "guid", "id", "isAccessible", "likes", "metadata", "releaseDate", "score", "tags", "text", "title", "type", "wasReleasedSilently" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -967,7 +967,7 @@ ul.nav-tabs {
       "enum" : [ "blogPost" ]
     },
     "channel" : {
-      "$ref" : "#/components/schemas/ChannelModel"
+      "$ref" : "#/components/schemas/BlogPostModelV3_channel"
     },
     "tags" : {
       "type" : "array",
@@ -1043,8 +1043,16 @@ ul.nav-tabs {
     }
   }
 };
+    defs["BlogPostModelV3_channel"] = {
+  "oneOf" : [ {
+    "$ref" : "#/components/schemas/ChannelModel"
+  }, {
+    "type" : "string",
+    "description" : "Channel identifier"
+  } ]
+};
     defs["BlogPostModelV3_creator"] = {
-  "required" : [ "about", "card", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
+  "required" : [ "about", "category", "cover", "description", "discoverable", "icon", "id", "incomeDisplay", "liveStream", "owner", "subscriberCountDisplay", "subscriptionPlans", "title", "urlname" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1070,7 +1078,7 @@ ul.nav-tabs {
       "$ref" : "#/components/schemas/CreatorModelV3_category"
     },
     "cover" : {
-      "$ref" : "#/components/schemas/ImageModel"
+      "$ref" : "#/components/schemas/ContentPostV3Response_thumbnail"
     },
     "icon" : {
       "$ref" : "#/components/schemas/ImageModel"
@@ -1771,7 +1779,8 @@ ul.nav-tabs {
     "canJoinGuilds" : {
       "type" : "boolean"
     }
-  }
+  },
+  "nullable" : true
 };
     defs["ContentCreatorListLastItems"] = {
   "required" : [ "blogPostId", "creatorId", "moreFetchable" ],
@@ -2119,7 +2128,7 @@ ul.nav-tabs {
       "type" : "array",
       "nullable" : true,
       "items" : {
-        "type" : "object"
+        "$ref" : "#/components/schemas/SubscriptionPlanModel"
       }
     },
     "discoverable" : {
@@ -2993,7 +3002,7 @@ ul.nav-tabs {
   }
 };
     defs["PostMetadataModel"] = {
-  "required" : [ "audioCount", "audioDuration", "hasAudio", "hasPicture", "hasVideo", "isFeatured", "pictureCount", "videoCount", "videoDuration" ],
+  "required" : [ "audioDuration", "hasAudio", "hasPicture", "hasVideo", "isFeatured", "videoDuration" ],
   "type" : "object",
   "properties" : {
     "hasVideo" : {

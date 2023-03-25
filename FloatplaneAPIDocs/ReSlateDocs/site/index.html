@@ -2090,7 +2090,7 @@ CookieAuth
 </tr>
 <tr>
 <td>»» data</td>
-<td>object</td>
+<td>object¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -2539,7 +2539,140 @@ CookieAuth
 </tr>
 <tr>
 <td>» subscriptionPlans</td>
-<td>[object]¦null</td>
+<td>[<a href="#schemasubscriptionplanmodel">SubscriptionPlanModel</a>]¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» title</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» description</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» price</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» priceYearly</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» currency</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» logo</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» interval</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» featured</td>
+<td>boolean</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» allowGrandfatheredAccess</td>
+<td>boolean¦null</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» discordServers</td>
+<td>[<a href="#schemadiscordservermodel">DiscordServerModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» guildName</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» guildIcon</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» inviteLink</td>
+<td>string(uri)¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» inviteMode</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»» discordRoles</td>
+<td>[<a href="#schemadiscordrolemodel">DiscordRoleModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» server</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» roleName</td>
+<td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -3014,7 +3147,140 @@ CookieAuth
 </tr>
 <tr>
 <td>»» subscriptionPlans</td>
-<td>[object]¦null</td>
+<td>[<a href="#schemasubscriptionplanmodel">SubscriptionPlanModel</a>]¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» title</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» description</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» price</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» priceYearly</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» currency</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» logo</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» interval</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» featured</td>
+<td>boolean</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» allowGrandfatheredAccess</td>
+<td>boolean¦null</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» discordServers</td>
+<td>[<a href="#schemadiscordservermodel">DiscordServerModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» guildName</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» guildIcon</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» inviteLink</td>
+<td>string(uri)¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» inviteMode</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» discordRoles</td>
+<td>[<a href="#schemadiscordrolemodel">DiscordRoleModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» server</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» roleName</td>
+<td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -3085,41 +3351,6 @@ CookieAuth
 <tr>
 <td>»» discordServers</td>
 <td>[<a href="#schemadiscordservermodel">DiscordServerModel</a>]</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» id</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» guildName</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» guildIcon</td>
-<td>string</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» inviteLink</td>
-<td>string(uri)¦null</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» inviteMode</td>
-<td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -7871,7 +8102,140 @@ CookieAuth
 </tr>
 <tr>
 <td>»» subscriptionPlans</td>
-<td>[object]¦null</td>
+<td>[<a href="#schemasubscriptionplanmodel">SubscriptionPlanModel</a>]¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» title</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» description</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» price</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» priceYearly</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» currency</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» logo</td>
+<td>string¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» interval</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» featured</td>
+<td>boolean</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» allowGrandfatheredAccess</td>
+<td>boolean¦null</td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» discordServers</td>
+<td>[<a href="#schemadiscordservermodel">DiscordServerModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» id</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» guildName</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» guildIcon</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» inviteLink</td>
+<td>string(uri)¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» inviteMode</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» discordRoles</td>
+<td>[<a href="#schemadiscordrolemodel">DiscordRoleModel</a>]</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» server</td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»» roleName</td>
+<td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -9498,84 +9862,77 @@ CookieAuth
 </tr>
 <tr>
 <td>» channel</td>
+<td>any</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p><em>oneOf</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
 <td><a href="#schemachannelmodel">ChannelModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» id</td>
+<td>»»» id</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» creator</td>
+<td>»»» creator</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» title</td>
+<td>»»» title</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» urlname</td>
+<td>»»» urlname</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>Shown in the browser URL.</td>
 </tr>
 <tr>
-<td>»» about</td>
+<td>»»» about</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» order</td>
+<td>»»» order</td>
 <td>integer</td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» cover</td>
+<td>»»» cover</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» width</td>
-<td>integer</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» height</td>
-<td>integer</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» path</td>
-<td>string(uri)</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» childImages</td>
-<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -9602,89 +9959,152 @@ CookieAuth
 <td>none</td>
 </tr>
 <tr>
-<td>»» card</td>
+<td>»»»» childImages</td>
+<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» width</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» height</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» path</td>
+<td>string(uri)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» card</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» width</td>
+<td>»»»» width</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» height</td>
+<td>»»»» height</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» path</td>
+<td>»»»» path</td>
 <td>string(uri)</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» childImages</td>
+<td>»»»» childImages</td>
 <td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» icon</td>
+<td>»»» icon</td>
 <td><a href="#schemaimagemodel">ImageModel</a></td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» width</td>
+<td>»»»» width</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» height</td>
+<td>»»»» height</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» path</td>
+<td>»»»» path</td>
 <td>string(uri)</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» childImages</td>
+<td>»»»» childImages</td>
 <td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» socialLinks</td>
+<td>»»» socialLinks</td>
 <td><a href="#schemasociallinksmodel">SocialLinksModel</a></td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» <strong>additionalProperties</strong></td>
+<td>»»»» <strong>additionalProperties</strong></td>
 <td>string(uri)</td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
+</tbody>
+</table>
+<p><em>xor</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>Channel identifier</td>
+</tr>
+</tbody>
+</table>
+<p><em>continued</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>» tags</td>
 <td>[string]</td>
@@ -9716,7 +10136,7 @@ CookieAuth
 <tr>
 <td>»» videoCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -9737,7 +10157,7 @@ CookieAuth
 <tr>
 <td>»» audioCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -9758,7 +10178,7 @@ CookieAuth
 <tr>
 <td>»» pictureCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -9904,7 +10324,35 @@ CookieAuth
 </tr>
 <tr>
 <td>»» cover</td>
-<td><a href="#schemaimagemodel">ImageModel</a></td>
+<td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» width</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» height</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» path</td>
+<td>string(uri)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» childImages</td>
+<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -10234,7 +10682,7 @@ CookieAuth
 <tr>
 <td>»» card</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -10276,7 +10724,7 @@ CookieAuth
 <tr>
 <td>» thumbnail</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -10938,84 +11386,77 @@ CookieAuth
 </tr>
 <tr>
 <td>» channel</td>
+<td>any</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p><em>oneOf</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
 <td><a href="#schemachannelmodel">ChannelModel</a></td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» id</td>
+<td>»»» id</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» creator</td>
+<td>»»» creator</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» title</td>
+<td>»»» title</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» urlname</td>
+<td>»»» urlname</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>Shown in the browser URL.</td>
 </tr>
 <tr>
-<td>»» about</td>
+<td>»»» about</td>
 <td>string</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» order</td>
+<td>»»» order</td>
 <td>integer</td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» cover</td>
+<td>»»» cover</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» width</td>
-<td>integer</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» height</td>
-<td>integer</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» path</td>
-<td>string(uri)</td>
-<td>true</td>
-<td>none</td>
-<td>none</td>
-</tr>
-<tr>
-<td>»»» childImages</td>
-<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -11042,89 +11483,152 @@ CookieAuth
 <td>none</td>
 </tr>
 <tr>
-<td>»» card</td>
+<td>»»»» childImages</td>
+<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» width</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» height</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»»»» path</td>
+<td>string(uri)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» card</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» width</td>
+<td>»»»» width</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» height</td>
+<td>»»»» height</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» path</td>
+<td>»»»» path</td>
 <td>string(uri)</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» childImages</td>
+<td>»»»» childImages</td>
 <td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» icon</td>
+<td>»»» icon</td>
 <td><a href="#schemaimagemodel">ImageModel</a></td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» width</td>
+<td>»»»» width</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» height</td>
+<td>»»»» height</td>
 <td>integer</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» path</td>
+<td>»»»» path</td>
 <td>string(uri)</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» childImages</td>
+<td>»»»» childImages</td>
 <td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»» socialLinks</td>
+<td>»»» socialLinks</td>
 <td><a href="#schemasociallinksmodel">SocialLinksModel</a></td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
 <tr>
-<td>»»» <strong>additionalProperties</strong></td>
+<td>»»»» <strong>additionalProperties</strong></td>
 <td>string(uri)</td>
 <td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
+</tbody>
+</table>
+<p><em>xor</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>»» <em>anonymous</em></td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>Channel identifier</td>
+</tr>
+</tbody>
+</table>
+<p><em>continued</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>» tags</td>
 <td>[string]</td>
@@ -11156,7 +11660,7 @@ CookieAuth
 <tr>
 <td>»» videoCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11177,7 +11681,7 @@ CookieAuth
 <tr>
 <td>»» audioCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11198,7 +11702,7 @@ CookieAuth
 <tr>
 <td>»» pictureCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11344,7 +11848,35 @@ CookieAuth
 </tr>
 <tr>
 <td>»» cover</td>
-<td><a href="#schemaimagemodel">ImageModel</a></td>
+<td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» width</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» height</td>
+<td>integer</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» path</td>
+<td>string(uri)</td>
+<td>true</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>»»» childImages</td>
+<td>[<a href="#schemachildimagemodel">ChildImageModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -11674,7 +12206,7 @@ CookieAuth
 <tr>
 <td>»» card</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -11716,7 +12248,7 @@ CookieAuth
 <tr>
 <td>» thumbnail</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -15079,7 +15611,7 @@ CookieAuth
 <a id="schema_ContentPostV3Response"></a>
 <a id="tocScontentpostv3response"></a>
 <a id="tocscontentpostv3response"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"blogPost"</span><span class="token punctuation">,</span><br>  <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"card"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"socialLinks"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"attachmentOrder"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"metadata"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"hasVideo"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"videoCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"videoDuration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasAudio"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"audioCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"audioDuration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasPicture"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"pictureCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasGallery"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"galleryCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"isFeatured"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>            <span class="token punctuation">{</span><br>              <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>            <span class="token punctuation">}</span><br>          <span class="token punctuation">]</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"wasReleasedSilently"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"userInteraction"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"like"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"videoAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>      <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"audioAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"waveform"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"dataSetLength"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"highestValue"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"lowestValue"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token number">0</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"pictureAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"galleryAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token null keyword">null</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"blogPost"</span><span class="token punctuation">,</span><br>  <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"order"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"card"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"socialLinks"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"attachmentOrder"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"string"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"metadata"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"hasVideo"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"videoCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"videoDuration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasAudio"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"audioCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"audioDuration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasPicture"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"pictureCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"hasGallery"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"galleryCount"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"isFeatured"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>  <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>            <span class="token punctuation">{</span><br>              <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>            <span class="token punctuation">}</span><br>          <span class="token punctuation">]</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"priceYearly"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"currency"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"logo"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"interval"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"featured"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>        <span class="token property">"allowGrandfatheredAccess"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>        <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>            <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><span class="token punctuation">,</span><br>        <span class="token property">"discordRoles"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"server"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"roleName"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"wasReleasedSilently"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"userInteraction"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"like"</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"videoAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"releaseDate"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>      <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"audioAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"duration"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"waveform"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"dataSetLength"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"highestValue"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"lowestValue"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token number">0</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"pictureAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guid"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"likes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"dislikes"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"isProcessing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"primaryBlogPost"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"isAccessible"</span><span class="token operator">:</span> <span class="token boolean">true</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"galleryAttachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token null keyword">null</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-26">Properties</h3>
 <table>
 <thead>
@@ -16255,7 +16787,7 @@ CookieAuth
 <a id="schema_CreatorModelV2"></a>
 <a id="tocScreatormodelv2"></a>
 <a id="tocscreatormodelv2"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"priceYearly"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"currency"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"logo"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"interval"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"featured"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowGrandfatheredAccess"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"discordRoles"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"server"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"roleName"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-38">Properties</h3>
 <table>
 <thead>
@@ -16340,7 +16872,7 @@ CookieAuth
 </tr>
 <tr>
 <td>subscriptionPlans</td>
-<td>[object]¦null</td>
+<td>[<a href="#schemasubscriptionplanmodel">SubscriptionPlanModel</a>]¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -16381,7 +16913,7 @@ CookieAuth
 <a id="schema_CreatorModelV2Extended"></a>
 <a id="tocScreatormodelv2extended"></a>
 <a id="tocscreatormodelv2extended"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"socialLinks"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"priceYearly"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"currency"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"logo"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"interval"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"featured"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"allowGrandfatheredAccess"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token property">"discordRoles"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"server"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>          <span class="token property">"roleName"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>  <span class="token property">"socialLinks"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"property1"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>    <span class="token property">"property2"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-39">Properties</h3>
 <p>allOf</p>
 <table>
@@ -16824,11 +17356,67 @@ CookieAuth
 </tr>
 <tr>
 <td>channel</td>
-<td><a href="#schemachannelmodel">ChannelModel</a></td>
+<td>any</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
 </tr>
+</tbody>
+</table>
+<p>oneOf</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>» <em>anonymous</em></td>
+<td><a href="#schemachannelmodel">ChannelModel</a></td>
+<td>false</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>xor</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>» <em>anonymous</em></td>
+<td>string</td>
+<td>false</td>
+<td>none</td>
+<td>Channel identifier</td>
+</tr>
+</tbody>
+</table>
+<p>continued</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Restrictions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>tags</td>
 <td>[string]</td>
@@ -16971,7 +17559,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» cover</td>
-<td><a href="#schemaimagemodel">ImageModel</a></td>
+<td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -17035,7 +17623,7 @@ CookieAuth
 <tr>
 <td>» card</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -17049,7 +17637,7 @@ CookieAuth
 <tr>
 <td>thumbnail</td>
 <td><a href="#schemaimagemodel">ImageModel</a>¦null</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -17239,7 +17827,7 @@ CookieAuth
 <tr>
 <td>videoCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -17260,7 +17848,7 @@ CookieAuth
 <tr>
 <td>audioCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -17281,7 +17869,7 @@ CookieAuth
 <tr>
 <td>pictureCount</td>
 <td>integer</td>
-<td>true</td>
+<td>false</td>
 <td>none</td>
 <td>none</td>
 </tr>
@@ -18226,7 +18814,7 @@ CookieAuth
 </tr>
 <tr>
 <td>» data</td>
-<td>object</td>
+<td>object¦null</td>
 <td>true</td>
 <td>none</td>
 <td>none</td>
@@ -18414,7 +19002,7 @@ CookieAuth
 <a id="schema_UserNotificationModel"></a>
 <a id="tocSusernotificationmodel"></a>
 <a id="tocsusernotificationmodel"></a>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>            <span class="token punctuation">{</span><br>              <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>            <span class="token punctuation">}</span><br>          <span class="token punctuation">]</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"userNotificationSetting"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"contentEmail"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"contentFirebase"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"creatorMessageEmail"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"user"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"urlname"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"about"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"cover"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"icon"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>      <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"liveStream"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>        <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>        <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>            <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token property">"owner"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"streamPath"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>      <span class="token property">"offline"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"thumbnail"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>          <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>          <span class="token property">"childImages"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>            <span class="token punctuation">{</span><br>              <span class="token property">"width"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"height"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>              <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><br>            <span class="token punctuation">}</span><br>          <span class="token punctuation">]</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriptionPlans"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token punctuation">{</span><br>        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"priceYearly"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"currency"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"logo"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"interval"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>        <span class="token property">"featured"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>        <span class="token property">"allowGrandfatheredAccess"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>        <span class="token property">"discordServers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"guildName"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"guildIcon"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"inviteLink"</span><span class="token operator">:</span> <span class="token string">"http://example.com"</span><span class="token punctuation">,</span><br>            <span class="token property">"inviteMode"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><span class="token punctuation">,</span><br>        <span class="token property">"discordRoles"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>          <span class="token punctuation">{</span><br>            <span class="token property">"server"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>            <span class="token property">"roleName"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"discoverable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"subscriberCountDisplay"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"incomeDisplay"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"defaultChannel"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token property">"userNotificationSetting"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2019-08-24T14:15:22Z"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"contentEmail"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"contentFirebase"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"creatorMessageEmail"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token property">"user"</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span><br>    <span class="token property">"creator"</span><span class="token operator">:</span> <span class="token string">"string"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br></code></pre>
 <h3 id="properties-59">Properties</h3>
 <table>
 <thead>

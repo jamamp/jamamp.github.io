@@ -23643,7 +23643,7 @@ Status Code **200**
 |»» id|string|true|none|none|
 |»» remoteUserId|string|true|none|none|
 |»» remoteUserName|string|true|none|none|
-|»» data|object|true|none|none|
+|»» data|object¦null|true|none|none|
 |»»» canJoinGuilds|boolean|true|none|none|
 |» connected|boolean|true|none|If true, the user is connected and the `connectedAccount` will have data about the account.|
 |» isAccountProvider|boolean|true|none|none|
@@ -24331,7 +24331,26 @@ Status Code **200**
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
 |»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|» subscriptionPlans|[object]¦null|true|none|none|
+|» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
+|»» id|string|true|none|none|
+|»» title|string|true|none|none|
+|»» description|string|true|none|none|
+|»» price|string¦null|true|none|none|
+|»» priceYearly|string¦null|true|none|none|
+|»» currency|string|true|none|none|
+|»» logo|string¦null|true|none|none|
+|»» interval|string|true|none|none|
+|»» featured|boolean|true|none|none|
+|»» allowGrandfatheredAccess|boolean¦null|false|none|none|
+|»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»» id|string|true|none|none|
+|»»» guildName|string|true|none|none|
+|»»» guildIcon|string|true|none|none|
+|»»» inviteLink|string(uri)¦null|true|none|none|
+|»»» inviteMode|string|true|none|none|
+|»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»» server|string|true|none|none|
+|»»» roleName|string|true|none|none|
 |» discoverable|boolean|true|none|none|
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
@@ -24773,7 +24792,26 @@ Status Code **200**
 |»»»»» height|integer|true|none|none|
 |»»»»» path|string(uri)|true|none|none|
 |»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» subscriptionPlans|[object]¦null|true|none|none|
+|»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
+|»»» id|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» price|string¦null|true|none|none|
+|»»» priceYearly|string¦null|true|none|none|
+|»»» currency|string|true|none|none|
+|»»» logo|string¦null|true|none|none|
+|»»» interval|string|true|none|none|
+|»»» featured|boolean|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
+|»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»»» id|string|true|none|none|
+|»»»» guildName|string|true|none|none|
+|»»»» guildIcon|string|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
+|»»»» inviteMode|string|true|none|none|
+|»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»»» server|string|true|none|none|
+|»»»» roleName|string|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
@@ -24787,11 +24825,6 @@ Status Code **200**
 |»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
 |»»» **additionalProperties**|string(uri)|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
-|»»» id|string|true|none|none|
-|»»» guildName|string|true|none|none|
-|»»» guildIcon|string|true|none|none|
-|»»» inviteLink|string(uri)¦null|true|none|none|
-|»»» inviteMode|string|true|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -62327,7 +62360,26 @@ Status Code **200**
 |»»»»» height|integer|true|none|none|
 |»»»»» path|string(uri)|true|none|none|
 |»»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» subscriptionPlans|[object]¦null|true|none|none|
+|»» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
+|»»» id|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» description|string|true|none|none|
+|»»» price|string¦null|true|none|none|
+|»»» priceYearly|string¦null|true|none|none|
+|»»» currency|string|true|none|none|
+|»»» logo|string¦null|true|none|none|
+|»»» interval|string|true|none|none|
+|»»» featured|boolean|true|none|none|
+|»»» allowGrandfatheredAccess|boolean¦null|false|none|none|
+|»»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+|»»»» id|string|true|none|none|
+|»»»» guildName|string|true|none|none|
+|»»»» guildIcon|string|true|none|none|
+|»»»» inviteLink|string(uri)¦null|true|none|none|
+|»»»» inviteMode|string|true|none|none|
+|»»» discordRoles|[[DiscordRoleModel](#schemadiscordrolemodel)]|true|none|none|
+|»»»» server|string|true|none|none|
+|»»»» roleName|string|true|none|none|
 |»» discoverable|boolean|true|none|none|
 |»» subscriberCountDisplay|string|true|none|none|
 |»» incomeDisplay|boolean|true|none|none|
@@ -88062,44 +88114,61 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
-|» channel|[ChannelModel](#schemachannelmodel)|true|none|none|
-|»» id|string|true|none|none|
-|»» creator|string|true|none|none|
-|»» title|string|true|none|none|
-|»» urlname|string|true|none|Shown in the browser URL.|
-|»» about|string|true|none|none|
-|»» order|integer|false|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» channel|any|true|none|none|
+
+*oneOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[ChannelModel](#schemachannelmodel)|false|none|none|
+|»»» id|string|true|none|none|
+|»»» creator|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» urlname|string|true|none|Shown in the browser URL.|
+|»»» about|string|true|none|none|
+|»»» order|integer|false|none|none|
+|»»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»»» **additionalProperties**|string(uri)|false|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|»»»» **additionalProperties**|string(uri)|false|none|none|
+
+*xor*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|string|false|none|Channel identifier|
+
+*continued*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 |» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
-|»» videoCount|integer|true|none|none|
+|»» videoCount|integer|false|none|none|
 |»» videoDuration|number|true|none|none|
 |»» hasAudio|boolean|true|none|none|
-|»» audioCount|integer|true|none|none|
+|»» audioCount|integer|false|none|none|
 |»» audioDuration|number|true|none|none|
 |»» hasPicture|boolean|true|none|none|
-|»» pictureCount|integer|true|none|none|
+|»» pictureCount|integer|false|none|none|
 |»» hasGallery|boolean|false|none|none|
 |»» galleryCount|integer|false|none|none|
 |»» isFeatured|boolean|true|none|none|
@@ -88120,7 +88189,11 @@ Status Code **200**
 |»» category|object|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
@@ -88167,13 +88240,13 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |»» defaultChannel|string|false|none|none|
 |»» channels|[string]|false|none|none|
-|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
@@ -90356,44 +90429,61 @@ Status Code **200**
 |» title|string|true|none|none|
 |» text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |» type|string|true|none|none|
-|» channel|[ChannelModel](#schemachannelmodel)|true|none|none|
-|»» id|string|true|none|none|
-|»» creator|string|true|none|none|
-|»» title|string|true|none|none|
-|»» urlname|string|true|none|Shown in the browser URL.|
-|»» about|string|true|none|none|
-|»» order|integer|false|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|» channel|any|true|none|none|
+
+*oneOf*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|[ChannelModel](#schemachannelmodel)|false|none|none|
+|»»» id|string|true|none|none|
+|»»» creator|string|true|none|none|
+|»»» title|string|true|none|none|
+|»»» urlname|string|true|none|Shown in the browser URL.|
+|»»» about|string|true|none|none|
+|»»» order|integer|false|none|none|
+|»»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |»»»» width|integer|true|none|none|
 |»»»» height|integer|true|none|none|
 |»»»» path|string(uri)|true|none|none|
-|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
-|»»» width|integer|true|none|none|
-|»»» height|integer|true|none|none|
-|»»» path|string(uri)|true|none|none|
-|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
-|»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
-|»»» **additionalProperties**|string(uri)|false|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»»»» width|integer|true|none|none|
+|»»»»» height|integer|true|none|none|
+|»»»»» path|string(uri)|true|none|none|
+|»»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
+|»»»» width|integer|true|none|none|
+|»»»» height|integer|true|none|none|
+|»»»» path|string(uri)|true|none|none|
+|»»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
+|»»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
+|»»»» **additionalProperties**|string(uri)|false|none|none|
+
+*xor*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|»» *anonymous*|string|false|none|Channel identifier|
+
+*continued*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 |» tags|[string]|true|none|none|
 |» attachmentOrder|[string]|true|none|none|
 |» metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
 |»» hasVideo|boolean|true|none|none|
-|»» videoCount|integer|true|none|none|
+|»» videoCount|integer|false|none|none|
 |»» videoDuration|number|true|none|none|
 |»» hasAudio|boolean|true|none|none|
-|»» audioCount|integer|true|none|none|
+|»» audioCount|integer|false|none|none|
 |»» audioDuration|number|true|none|none|
 |»» hasPicture|boolean|true|none|none|
-|»» pictureCount|integer|true|none|none|
+|»» pictureCount|integer|false|none|none|
 |»» hasGallery|boolean|false|none|none|
 |»» galleryCount|integer|false|none|none|
 |»» isFeatured|boolean|true|none|none|
@@ -90414,7 +90504,11 @@ Status Code **200**
 |»» category|object|true|none|none|
 |»»» id|string|true|none|none|
 |»»» title|string|true|none|none|
-|»» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|»» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»»» width|integer|true|none|none|
+|»»» height|integer|true|none|none|
+|»»» path|string(uri)|true|none|none|
+|»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |»» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |»» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |»»» id|string|true|none|none|
@@ -90461,13 +90555,13 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |»» defaultChannel|string|false|none|none|
 |»» channels|[string]|false|none|none|
-|»» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|»» card|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |»»» width|integer|true|none|none|
 |»»» height|integer|true|none|none|
 |»»» path|string(uri)|true|none|none|
 |»»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» wasReleasedSilently|boolean|true|none|none|
-|» thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|» thumbnail|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |»» width|integer|true|none|none|
 |»» height|integer|true|none|none|
 |»» path|string(uri)|true|none|none|
@@ -102783,7 +102877,33 @@ xor
       }
     },
     "subscriptionPlans": [
-      {}
+      {
+        "id": "string",
+        "title": "string",
+        "description": "string",
+        "price": "string",
+        "priceYearly": "string",
+        "currency": "string",
+        "logo": "string",
+        "interval": "string",
+        "featured": true,
+        "allowGrandfatheredAccess": true,
+        "discordServers": [
+          {
+            "id": "string",
+            "guildName": "string",
+            "guildIcon": "string",
+            "inviteLink": "http://example.com",
+            "inviteMode": "string"
+          }
+        ],
+        "discordRoles": [
+          {
+            "server": "string",
+            "roleName": "string"
+          }
+        ]
+      }
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",
@@ -103510,7 +103630,33 @@ xor
     }
   },
   "subscriptionPlans": [
-    {}
+    {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "price": "string",
+      "priceYearly": "string",
+      "currency": "string",
+      "logo": "string",
+      "interval": "string",
+      "featured": true,
+      "allowGrandfatheredAccess": true,
+      "discordServers": [
+        {
+          "id": "string",
+          "guildName": "string",
+          "guildIcon": "string",
+          "inviteLink": "http://example.com",
+          "inviteMode": "string"
+        }
+      ],
+      "discordRoles": [
+        {
+          "server": "string",
+          "roleName": "string"
+        }
+      ]
+    }
   ],
   "discoverable": true,
   "subscriberCountDisplay": "string",
@@ -103534,7 +103680,7 @@ xor
 |cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
-|subscriptionPlans|[object]¦null|true|none|none|
+|subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]¦null|true|none|none|
 |discoverable|boolean|true|none|none|
 |subscriberCountDisplay|string|true|none|none|
 |incomeDisplay|boolean|true|none|none|
@@ -103617,7 +103763,33 @@ xor
     }
   },
   "subscriptionPlans": [
-    {}
+    {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "price": "string",
+      "priceYearly": "string",
+      "currency": "string",
+      "logo": "string",
+      "interval": "string",
+      "featured": true,
+      "allowGrandfatheredAccess": true,
+      "discordServers": [
+        {
+          "id": "string",
+          "guildName": "string",
+          "guildIcon": "string",
+          "inviteLink": "http://example.com",
+          "inviteMode": "string"
+        }
+      ],
+      "discordRoles": [
+        {
+          "server": "string",
+          "roleName": "string"
+        }
+      ]
+    }
   ],
   "discoverable": true,
   "subscriberCountDisplay": "string",
@@ -104214,7 +104386,24 @@ continued
 |title|string|true|none|none|
 |text|string|true|none|Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML..|
 |type|string|true|none|none|
-|channel|[ChannelModel](#schemachannelmodel)|true|none|none|
+|channel|any|true|none|none|
+
+oneOf
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|[ChannelModel](#schemachannelmodel)|false|none|none|
+
+xor
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» *anonymous*|string|false|none|Channel identifier|
+
+continued
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
 |tags|[string]|true|none|none|
 |attachmentOrder|[string]|true|none|none|
 |metadata|[PostMetadataModel](#schemapostmetadatamodel)|true|none|none|
@@ -104235,7 +104424,7 @@ continued
 |» category|object|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
-|» cover|[ImageModel](#schemaimagemodel)|true|none|none|
+|» cover|[ImageModel](#schemaimagemodel)¦null|true|none|none|
 |» icon|[ImageModel](#schemaimagemodel)|true|none|none|
 |» liveStream|[LiveStreamModel](#schemalivestreammodel)¦null|true|none|none|
 |» subscriptionPlans|[[SubscriptionPlanModel](#schemasubscriptionplanmodel)]|true|none|none|
@@ -104244,9 +104433,9 @@ continued
 |» incomeDisplay|boolean|true|none|none|
 |» defaultChannel|string|false|none|none|
 |» channels|[string]|false|none|none|
-|» card|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|» card|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |videoAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
 |audioAttachments|[string]|false|none|May be undefined, usually when `isAccessible` is `false`.|
@@ -104343,13 +104532,13 @@ continued
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |hasVideo|boolean|true|none|none|
-|videoCount|integer|true|none|none|
+|videoCount|integer|false|none|none|
 |videoDuration|number|true|none|none|
 |hasAudio|boolean|true|none|none|
-|audioCount|integer|true|none|none|
+|audioCount|integer|false|none|none|
 |audioDuration|number|true|none|none|
 |hasPicture|boolean|true|none|none|
-|pictureCount|integer|true|none|none|
+|pictureCount|integer|false|none|none|
 |hasGallery|boolean|false|none|none|
 |galleryCount|integer|false|none|none|
 |isFeatured|boolean|true|none|none|
@@ -104856,7 +105045,7 @@ Represents some basic information of a user (id, username, and profile image).
 |» id|string|true|none|none|
 |» remoteUserId|string|true|none|none|
 |» remoteUserName|string|true|none|none|
-|» data|object|true|none|none|
+|» data|object¦null|true|none|none|
 |»» canJoinGuilds|boolean|true|none|none|
 |connected|boolean|true|none|If true, the user is connected and the `connectedAccount` will have data about the account.|
 |isAccountProvider|boolean|true|none|none|
@@ -105053,7 +105242,33 @@ Represents some basic information of a user (id, username, and profile image).
       }
     },
     "subscriptionPlans": [
-      {}
+      {
+        "id": "string",
+        "title": "string",
+        "description": "string",
+        "price": "string",
+        "priceYearly": "string",
+        "currency": "string",
+        "logo": "string",
+        "interval": "string",
+        "featured": true,
+        "allowGrandfatheredAccess": true,
+        "discordServers": [
+          {
+            "id": "string",
+            "guildName": "string",
+            "guildIcon": "string",
+            "inviteLink": "http://example.com",
+            "inviteMode": "string"
+          }
+        ],
+        "discordRoles": [
+          {
+            "server": "string",
+            "roleName": "string"
+          }
+        ]
+      }
     ],
     "discoverable": true,
     "subscriberCountDisplay": "string",

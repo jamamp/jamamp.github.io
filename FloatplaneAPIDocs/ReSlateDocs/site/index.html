@@ -127,6 +127,11 @@
                   </li>
                 
                   <li>
+                    <a href="#rate-limiting" class="toc-h2 toc-link" data-title="">Rate Limiting</a>
+                    
+                  </li>
+                
+                  <li>
                     <a href="#notes" class="toc-h2 toc-link" data-title="">Notes</a>
                     
                   </li>
@@ -951,7 +956,7 @@
 <p>Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.</p>
 </blockquote>
 <p>Homepage: <a href="https://jman012.github.io/FloatplaneAPIDocs">https://jman012.github.io/FloatplaneAPIDocs</a></p>
-<p>This document describes the REST API layer of <a href="https://www.floatplane.com">https://www.floatplane.com</a>, a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.</p>
+<p>This document describes the REST API layer of <a href="https://www.floatplane.com">https://www.floatplane.com</a>, a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creators via paid subscriptions in order to watch their video and livestream content in higher quality, in addition to other perks.</p>
 <p>While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have “TODO” as the description, and are automatically removed before document generation. If you are viewing the “Trimmed” version of this document, they have been removed for brevity.</p>
 <h2 id="api-object-organization">API Object Organization</h2>
 <ul>
@@ -968,15 +973,16 @@
 <li>A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.</li>
 </ul>
 </li>
-<li>A Blog Post is comprised of one or more of: video, audio, picture, or gallery <strong>Attachments</strong>
+<li>A Blog Post is comprised of one or more of: video, audio, or picture <strong>Attachments</strong>
 <ul>
-<li>A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.</li>
+<li>A media Attachment may be: video, audio, picture. Attachments are a part of Blog Posts, and are in a particular order.</li>
 </ul>
 </li>
 <li>A Creator may also have a single <strong>Livestream</strong></li>
+<li>Creators also may have one or more <strong>Channels</strong></li>
 </ul>
 <h2 id="api-flow">API Flow</h2>
-<p>As of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.</p>
+<p>As of Floatplane version 4.0.13, these are the recommended endpoints to use for normal operations.</p>
 <ol>
 <li>Login
 <ol>
@@ -989,15 +995,16 @@
 <li>Home page
 <ol>
 <li><code>/api/v3/user/subscriptions</code> - Get the user’s active subscriptions</li>
-<li><code>/api/v3/content/creator/list</code> - Using the subscriptions, show a home page with content from all subscriptions
+<li><code>/api/v3/creator/info</code> - Get more information on subscribed creators
 <ol>
-<li>Supply all creator identifiers from the subscriptions</li>
-<li>This should be paginated</li>
+<li>Shows a list of creators that the user can select</li>
+<li>Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.</li>
 </ol>
 </li>
-<li><code>/api/v2/creator/info</code> - Also show a list of creators that the user can select
+<li><code>/api/v3/content/creator/list</code> - Using the subscriptions, show a home page with content from all subscriptions/subscribed creators
 <ol>
-<li>Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.</li>
+<li>Supply all creator identifiers from the subscriptions</li>
+<li>This is be paginated</li>
 </ol>
 </li>
 </ol>
@@ -1005,7 +1012,7 @@
 <li>Creator page
 <ol>
 <li><code>/api/v3/creator/info</code> - Get more details for the creator to display, including if livestreams are available</li>
-<li><code>/api/v3/content/creator</code> - Show recent content by the creator</li>
+<li><code>/api/v3/content/creator</code> - Show recent content by that creator (as opposed to all subscribed creators, above)</li>
 <li><code>/api/v2/plan/info</code> - Show available plans the user can subscribe to for the creator</li>
 </ol>
 </li>
@@ -1020,13 +1027,13 @@
 </li>
 <li><code>/api/v2/user/ban/status</code> - Determine if the user is banned from this creator</li>
 <li><code>/api/v3/content/{video|audio|picture|gallery}</code> - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.</li>
-<li><code>/api/v2/cdn/delivery</code> - For video and audio, this is required to get the information to stream or download the content in media players</li>
+<li><code>/api/v3/delivery/info</code> - For video and audio, this is required to get the information to stream or download the content in media players</li>
 </ol>
 </li>
 <li>Livestream
 <ol>
-<li><code>/api/v2/cdn/delivery</code> - Using the type “livestream” to load the livestream media in a media player</li>
-<li><code>wss://chat.floatplane.com/sails.io/?...</code> - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.</li>
+<li><code>/api/v3/delivery/info</code> - Using the type “livestream” to load the livestream media in a media player</li>
+<li><code>wss://chat.floatplane.com/sails.io/?...</code> - To connect to the livestream chat over websocket. See <a href="https://jman012.github.io/FloatplaneAPIDocs/">https://jman012.github.io/FloatplaneAPIDocs/</a> for more information on the FP Async API with Websockets.</li>
 </ol>
 </li>
 <li>User Profile
@@ -1036,8 +1043,12 @@
 </li>
 </ol>
 <h2 id="api-organization">API Organization</h2>
-<p>The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from <code>frontend.floatplane.com/{version}/vendor.js</code>. This is in order to use the best organization from the original developers’ point of view.</p>
+<p>The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from <code>frontend.floatplane.com/{version}/main.js</code>. This is in order to use the best organization from the original developers’ point of view.</p>
 <p>For instance, Floatplane’s authentication endpoints are organized into <code>Auth.v2.login(...)</code>, <code>Auth.v2.logout()</code>, and <code>Auth.v3.getCaptchaInfo()</code>. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits <code>Auth</code> into <code>AuthV2</code> and <code>AuthV3</code> to emulate the nested structure.</p>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<p>The Floatplane API may employ rate limiting on certain or all endpoints. If too many requests are sent by a client to the API, it will be rejected and rate-limited. This may be by IP address per endpoint in a certain unit of time, but is subject to change.</p>
+<p>Rate-limited requests will respond with an HTTP 429 response. The content of the response may be HTML or JSON and is subject to change. The response will also have a <code>Retry-After</code> header, which contains the number of seconds remaining until the rate limiting will cease for the client on that endpoint.</p>
+<p>Clients are expected to both 1) prevent too many requests from executing at a time, usually for specific endpoints, and particulay for the <code>/api/v2/cdn/delivery</code> and <code>/api/v3/delivery/info</code> endpoints, and 2) properly handle rate-limited responses by ceasing requests until the <code>Retry-After</code> expiration.</p>
 <h2 id="notes">Notes</h2>
 <p>Note that the Floatplane API does support the use of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">ETags</a> for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane’s API server.</p>
 <p>The date-time format used by Floatplane API is not standard ISO 8601 format. The dates/times given by Floatplane include milliseconds. Depending on your code generator, you may need to override the date-time format to something similar to <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, for both encoding and decoding.</p>
@@ -1168,6 +1179,12 @@ License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MI
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -1175,6 +1192,7 @@ License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MI
 </tr>
 </tbody>
 </table>
+<h3 id="login-responseschema">Response Schema</h3>
 <h3 id="response-headers">Response Headers</h3>
 <table>
 <thead>
@@ -1193,6 +1211,13 @@ License: <a href="https://github.com/Jman012/FloatplaneAPI/blob/main/LICENSE">MI
 <td>string</td>
 <td></td>
 <td>Contains the cookie used in subsequent authenticated requests.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -1285,6 +1310,12 @@ This operation does not require authentication
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -1292,6 +1323,7 @@ This operation does not require authentication
 </tr>
 </tbody>
 </table>
+<h3 id="logout-responseschema">Response Schema</h3>
 <h3 id="response-headers-1">Response Headers</h3>
 <table>
 <thead>
@@ -1310,6 +1342,13 @@ This operation does not require authentication
 <td>string</td>
 <td></td>
 <td>Obtain a new authentication/authorization cookie after logging out. This new cookie will not be authenticated to perform subsequent requests.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -1427,6 +1466,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -1434,6 +1479,7 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="checkfor2falogin-responseschema">Response Schema</h3>
 <h3 id="response-headers-2">Response Headers</h3>
 <table>
 <thead>
@@ -1452,6 +1498,13 @@ CookieAuth
 <td>string</td>
 <td></td>
 <td>Contains the cookie used in subsequent authenticated requests.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -1546,10 +1599,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getcaptchainfo-responseschema">Response Schema</h3>
+<h3 id="response-headers-3">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -1713,10 +1794,38 @@ This operation does not require authentication
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getdeliveryinfo-responseschema">Response Schema</h3>
+<h3 id="response-headers-4">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -1907,10 +2016,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getdeliveryinfov3-responseschema">Response Schema</h3>
+<h3 id="response-headers-5">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -2003,6 +2140,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -2118,6 +2261,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-6">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -2228,6 +2392,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -2707,6 +2877,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-7">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -2815,6 +3006,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -3357,6 +3554,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-8">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -3469,10 +3687,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getcreator-responseschema">Response Schema</h3>
+<h3 id="response-headers-9">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -3584,6 +3830,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -4308,6 +4560,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-10">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -4416,6 +4689,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -5140,6 +5419,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-11">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -5248,6 +5548,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -5461,6 +5767,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-12">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -5573,10 +5900,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getcreatorsubinfopublic-responseschema">Response Schema</h3>
+<h3 id="response-headers-13">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -5671,10 +6026,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getedges-responseschema">Response Schema</h3>
+<h3 id="response-headers-14">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -5766,6 +6149,12 @@ This operation does not require authentication
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -5935,6 +6324,27 @@ This operation does not require authentication
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-15">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="success">
 This operation does not require authentication
 </aside>
@@ -6023,6 +6433,12 @@ This operation does not require authentication
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -6117,6 +6533,27 @@ This operation does not require authentication
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-16">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -6206,6 +6643,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -6288,6 +6731,27 @@ CookieAuth
 <td>true</td>
 <td>none</td>
 <td>none</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-headers-17">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -6380,10 +6844,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="listinvoices-responseschema">Response Schema</h3>
+<h3 id="response-headers-18">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -6478,6 +6970,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -6486,6 +6984,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="socketconnect-responseschema">Response Schema</h3>
+<h3 id="response-headers-19">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -6575,6 +7094,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -6583,6 +7108,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="disconnectsocket-responseschema">Response Schema</h3>
+<h3 id="response-headers-20">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -6672,6 +7218,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -6916,6 +7468,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-21">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -7028,10 +7601,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getuserinfo-responseschema">Response Schema</h3>
+<h3 id="response-headers-22">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7145,10 +7746,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getuserinfobyname-responseschema">Response Schema</h3>
+<h3 id="response-headers-23">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7241,10 +7870,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getsecurity-responseschema">Response Schema</h3>
+<h3 id="response-headers-24">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7358,10 +8015,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="usercreatorbanstatus-responseschema">Response Schema</h3>
+<h3 id="response-headers-25">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7477,10 +8162,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getactivityfeedv3-responseschema">Response Schema</h3>
+<h3 id="response-headers-26">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7594,10 +8307,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getexternallinksv3-responseschema">Response Schema</h3>
+<h3 id="response-headers-27">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7690,10 +8431,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getself-responseschema">Response Schema</h3>
+<h3 id="response-headers-28">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -7784,6 +8553,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -8333,6 +9108,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-29">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -8447,10 +9243,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="updateusernotificationsettingsv3-responseschema">Response Schema</h3>
+<h3 id="response-headers-30">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -8570,10 +9394,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="postcomment-responseschema">Response Schema</h3>
+<h3 id="response-headers-31">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -8699,6 +9551,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -8958,6 +9816,27 @@ CookieAuth
 </tr>
 </thead>
 </table>
+<h3 id="response-headers-32">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -9087,6 +9966,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -9321,6 +10206,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-33">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -9436,10 +10342,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="likecomment-responseschema">Response Schema</h3>
+<h3 id="response-headers-34">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -9558,10 +10492,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dislikecomment-responseschema">Response Schema</h3>
+<h3 id="response-headers-35">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -9796,6 +10758,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -10824,6 +11792,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-36">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -10949,10 +11938,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getmulticreatorblogposts-responseschema">Response Schema</h3>
+<h3 id="response-headers-37">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -11066,6 +12083,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -11092,6 +12115,27 @@ CookieAuth
 <td>false</td>
 <td>none</td>
 <td>none</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-headers-38">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -11205,10 +12249,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getblogpost-responseschema">Response Schema</h3>
+<h3 id="response-headers-39">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -11320,6 +12392,12 @@ CookieAuth
 <td><a href="https://tools.ietf.org/html/rfc7231#section-6.5.4">Not Found</a></td>
 <td>Not Found - The resource was not found.</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+<tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
 </tr>
 <tr>
 <td>default</td>
@@ -12332,6 +13410,27 @@ CookieAuth
 </tr>
 </tbody>
 </table>
+<h3 id="response-headers-40">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -12442,10 +13541,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getvideocontent-responseschema">Response Schema</h3>
+<h3 id="response-headers-41">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -12559,10 +13686,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getpicturecontent-responseschema">Response Schema</h3>
+<h3 id="response-headers-42">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -12680,10 +13835,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="likecontent-responseschema">Response Schema</h3>
+<h3 id="response-headers-43">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -12801,10 +13984,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dislikecontent-responseschema">Response Schema</h3>
+<h3 id="response-headers-44">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -12923,10 +14134,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="updateprogress-responseschema">Response Schema</h3>
+<h3 id="response-headers-45">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -13045,10 +14284,38 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getprogress-responseschema">Response Schema</h3>
+<h3 id="response-headers-46">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -13143,6 +14410,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -13151,6 +14424,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="joinliveroom-responseschema">Response Schema</h3>
+<h3 id="response-headers-47">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -13240,6 +14534,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -13248,6 +14548,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="leaveliveroom-responseschema">Response Schema</h3>
+<h3 id="response-headers-48">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -13376,6 +14697,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -13384,6 +14711,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="votepoll-responseschema">Response Schema</h3>
+<h3 id="response-headers-49">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth
@@ -13492,6 +14840,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -13499,7 +14853,8 @@ CookieAuth
 </tr>
 </tbody>
 </table>
-<h3 id="response-headers-3">Response Headers</h3>
+<h3 id="redirectytlatest-responseschema">Response Schema</h3>
+<h3 id="response-headers-50">Response Headers</h3>
 <table>
 <thead>
 <tr>
@@ -13517,6 +14872,13 @@ CookieAuth
 <td>string</td>
 <td></td>
 <td>A YouTube URL for a video.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
 </tr>
 </tbody>
 </table>
@@ -13611,6 +14973,12 @@ CookieAuth
 <td><a href="#schemaerrormodel">ErrorModel</a></td>
 </tr>
 <tr>
+<td>429</td>
+<td><a href="https://tools.ietf.org/html/rfc6585#section-4">Too Many Requests</a></td>
+<td>Too Many Requests - The resource was requested too many times</td>
+<td>None</td>
+</tr>
+<tr>
 <td>default</td>
 <td>Default</td>
 <td>Unexpected response code</td>
@@ -13619,6 +14987,27 @@ CookieAuth
 </tbody>
 </table>
 <h3 id="listcreatorloyaltyreward-responseschema">Response Schema</h3>
+<h3 id="response-headers-51">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Header</th>
+<th>Type</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>Retry-After</td>
+<td>integer</td>
+<td></td>
+<td>The number of seconds the client must wait until future requests will respond normally.</td>
+</tr>
+</tbody>
+</table>
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
 CookieAuth

@@ -25,7 +25,7 @@ headingLevel: 2
 
 Homepage: [https://jman012.github.io/FloatplaneAPIDocs](https://jman012.github.io/FloatplaneAPIDocs)
 
-This document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
+This document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creators via paid subscriptions in order to watch their video and livestream content in higher quality, in addition to other perks.
 
 While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have "TODO" as the description, and are automatically removed before document generation. If you are viewing the "Trimmed" version of this document, they have been removed for brevity.
 
@@ -38,13 +38,14 @@ While this document contains stubs for all of the Floatplane APIs for this versi
 - A Creator publishes **Content**, in the form of **Blog Posts**
 	- Content is produced by Creators, and show up for subscribed Users to view when it is released. A piece of Content is meant to be generic, and may contain different types of sub-Content. Currently, the only type is a Blog Post.
 	- A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.
-- A Blog Post is comprised of one or more of: video, audio, picture, or gallery **Attachments**
-	- A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.
+- A Blog Post is comprised of one or more of: video, audio, or picture **Attachments**
+	- A media Attachment may be: video, audio, picture. Attachments are a part of Blog Posts, and are in a particular order.
 - A Creator may also have a single **Livestream**
+- Creators also may have one or more **Channels**
 
 ## API Flow
 
-As of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.
+As of Floatplane version 4.0.13, these are the recommended endpoints to use for normal operations.
 
 1. Login
 	1. `/api/v3/auth/captcha/info` - Get captcha information
@@ -53,14 +54,15 @@ As of Floatplane version 3.5.1, these are the recommended endpoints to use for n
 	1. `/api/v2/auth/logout` - Logout at a later point in time
 1. Home page
 	1. `/api/v3/user/subscriptions` - Get the user's active subscriptions
-	1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions
-		1. Supply all creator identifiers from the subscriptions
-		1. This should be paginated
-	1. `/api/v2/creator/info` - Also show a list of creators that the user can select
+    1. `/api/v3/creator/info` - Get more information on subscribed creators
+        1. Shows a list of creators that the user can select
 		1. Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.
+	1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions/subscribed creators
+		1. Supply all creator identifiers from the subscriptions
+		1. This is be paginated
 1. Creator page
 	1. `/api/v3/creator/info` - Get more details for the creator to display, including if livestreams are available
-	1. `/api/v3/content/creator` - Show recent content by the creator
+	1. `/api/v3/content/creator` - Show recent content by that creator (as opposed to all subscribed creators, above)
 	1. `/api/v2/plan/info` - Show available plans the user can subscribe to for the creator
 1. Content page
 	1. `/api/v3/content/post` - Show more detailed information about a piece of content, including text description, available attachments, metadata, interactions, etc.
@@ -69,18 +71,26 @@ As of Floatplane version 3.5.1, these are the recommended endpoints to use for n
 		1. There are several more comment APIs to post, like, dislike, etc.
 	1. `/api/v2/user/ban/status` - Determine if the user is banned from this creator
 	1. `/api/v3/content/{video|audio|picture|gallery}` - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.
-	1. `/api/v2/cdn/delivery` - For video and audio, this is required to get the information to stream or download the content in media players
+	1. `/api/v3/delivery/info` - For video and audio, this is required to get the information to stream or download the content in media players
 1. Livestream
-	1. `/api/v2/cdn/delivery` - Using the type "livestream" to load the livestream media in a media player
-	1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.
+	1. `/api/v3/delivery/info` - Using the type "livestream" to load the livestream media in a media player
+	1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. See https://jman012.github.io/FloatplaneAPIDocs/ for more information on the FP Async API with Websockets.
 1. User Profile
 	1. `/api/v3/user/self` - Display username, name, email, and profile pictures
 
 ## API Organization
 
-The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/vendor.js`. This is in order to use the best organization from the original developers' point of view.
+The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/main.js`. This is in order to use the best organization from the original developers' point of view.
 
 For instance, Floatplane's authentication endpoints are organized into `Auth.v2.login(...)`, `Auth.v2.logout()`, and `Auth.v3.getCaptchaInfo()`. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits `Auth` into `AuthV2` and `AuthV3` to emulate the nested structure.
+
+## Rate Limiting
+
+The Floatplane API may employ rate limiting on certain or all endpoints. If too many requests are sent by a client to the API, it will be rejected and rate-limited. This may be by IP address per endpoint in a certain unit of time, but is subject to change.
+
+Rate-limited requests will respond with an HTTP 429 response. The content of the response may be HTML or JSON and is subject to change. The response will also have a `Retry-After` header, which contains the number of seconds remaining until the rate limiting will cease for the client on that endpoint. 
+
+Clients are expected to both 1) prevent too many requests from executing at a time, usually for specific endpoints, and particulay for the `/api/v2/cdn/delivery` and `/api/v3/delivery/info` endpoints, and 2) properly handle rate-limited responses by ceasing requests until the `Retry-After` expiration.
 
 ## Notes
 
@@ -365,9 +375,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="confirmemail-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -633,9 +650,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="requestactivationemail-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -905,9 +929,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatoragreement-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -1173,9 +1204,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatoragreement-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -1441,9 +1479,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="editcreatoragreement-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -1713,9 +1758,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -1981,9 +2033,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatordetails-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -2249,9 +2308,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getsubscriptionplanlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -2517,9 +2583,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="checkcreatorurlavailable-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -2785,9 +2858,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorcategories-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -3053,9 +3133,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createcreator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -3321,9 +3408,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadcover-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -3589,9 +3683,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorstitles-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -3857,9 +3958,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatecreator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -4125,9 +4233,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatecreatorsubscriptionplan-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -4393,9 +4508,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadcard-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -4661,9 +4783,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadicon-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -4933,9 +5062,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorinvitecodelist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -5201,9 +5337,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createcreatorinvitecode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -5473,9 +5616,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getjobstatus-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -5741,9 +5891,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="startjob-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -6009,9 +6166,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="stopjob-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -6281,9 +6445,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfaqsectionsacp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -6549,9 +6720,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatefaqsection-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -6817,9 +6995,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfaqsectiondetails-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -7085,9 +7270,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfaqarticledetails-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -7353,9 +7545,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatefaqarticle-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -7621,9 +7820,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadfaqimage-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -7889,9 +8095,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfaqimages-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -8157,9 +8370,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createfaqsection-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -8425,9 +8645,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createfaqarticle-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -8697,9 +8924,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfeatureconfigs-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -8965,9 +9199,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savefeature-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -9233,9 +9474,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savefeaturedependencies-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -9501,9 +9749,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savefeaturecategory-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -9769,9 +10024,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savefeaturetype-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -10037,9 +10299,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savefeatureresolution-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -10309,9 +10578,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addglobalmoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -10577,9 +10853,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removeglobalmoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -10845,9 +11128,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removemoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -11119,9 +11409,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getmoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -11387,9 +11684,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listmoderatorsadmin-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -11659,9 +11963,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getmoderatorlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -11927,9 +12238,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createmoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -12195,9 +12513,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateglobalmoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -12463,9 +12788,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removecreatormoderatoracp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -12731,9 +13063,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addcreatormoderatoracp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -12999,9 +13338,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getmoderatoravailablecreators-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -13267,9 +13613,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getmoderatorcreators-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -13539,9 +13892,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuserlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -13807,9 +14167,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuserdetails-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -14075,9 +14442,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="searchuserformoderation-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -14343,9 +14717,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="finduser-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -14611,9 +14992,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createadmin-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -14879,9 +15267,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addusersubscriptions-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -15147,9 +15542,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="checkusernameavailable-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -15415,9 +15817,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="checkemailavailable-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -15683,9 +16092,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadavataracp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -15951,9 +16367,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateuser-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -16219,9 +16642,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getusersubscriptions-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -16487,9 +16917,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removeusersubscription-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -16755,9 +17192,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateadministrator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -17023,9 +17467,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deleteuser-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -17291,9 +17742,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="signupacp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -17559,9 +18017,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listuserinvoices-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -17827,9 +18292,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getpaymentprocessordata-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -18099,9 +18571,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="scheduledeletionacp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -18367,9 +18846,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unscheduledeletionacp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -18635,9 +19121,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getsubjectaccessdata-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -18958,13 +19451,17 @@ Login to Floatplane with the provided username and password, retrieving the auth
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The login attempt failed, either due to a bad username or password.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="login-responseschema">Response Schema</h3>
 
 ### Response Headers
 
 |Status|Header|Type|Format|Description|
 |---|---|---|---|---|
 |200|Set-Cookie|string||Contains the cookie used in subsequent authenticated requests.|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="success">
 This operation does not require authentication
@@ -19229,13 +19726,17 @@ Log out of Floatplane, invalidating the authentication/authorization cookie.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="logout-responseschema">Response Schema</h3>
 
 ### Response Headers
 
 |Status|Header|Type|Format|Description|
 |---|---|---|---|---|
 |200|Set-Cookie|string||Obtain a new authentication/authorization cookie after logging out. This new cookie will not be authenticated to perform subsequent requests.|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -19501,9 +20002,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="beginspoofing-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -19769,9 +20277,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="endspoofing-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -20037,9 +20552,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="signup-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -20352,13 +20874,17 @@ Complete the login process if a two-factor authentication token is required from
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The login attempt failed, either due to a bad username or password.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="checkfor2falogin-responseschema">Response Schema</h3>
 
 ### Response Headers
 
 |Status|Header|Type|Format|Description|
 |---|---|---|---|---|
 |200|Set-Cookie|string||Contains the cookie used in subsequent authenticated requests.|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -20649,7 +21175,16 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getcaptchainfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="success">
 This operation does not require authentication
@@ -20918,9 +21453,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="generateclienttoken-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -21271,7 +21813,16 @@ Given an video/audio attachment identifier, retrieves the information necessary 
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getdeliveryinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -21978,7 +22529,16 @@ Note that tokens are JWT tokens, but have been replaced with `<token>` in the ex
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getdeliveryinfov3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -22254,9 +22814,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getaccountconnect-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -22528,9 +23095,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="callback-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -22796,9 +23370,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="complete-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -23064,9 +23645,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="refresh-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -23332,9 +23920,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="dissociate-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -23626,6 +24221,7 @@ List the available 3rd party accounts for the user's profile.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listconnections-responseschema">Response Schema</h3>
@@ -23647,6 +24243,12 @@ Status Code **200**
 |»»» canJoinGuilds|boolean|true|none|none|
 |» connected|boolean|true|none|If true, the user is connected and the `connectedAccount` will have data about the account.|
 |» isAccountProvider|boolean|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -23916,9 +24518,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addcreatormoderatoradmin-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -24282,6 +24891,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getinfo-responseschema">Response Schema</h3>
@@ -24355,6 +24965,12 @@ Status Code **200**
 |» subscriberCountDisplay|string|true|none|none|
 |» incomeDisplay|boolean|true|none|none|
 |» defaultChannel|string|false|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -24737,6 +25353,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorinfobyname-responseschema">Response Schema</h3>
@@ -24825,6 +25442,12 @@ Status Code **200**
 |»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|true|none|none|
 |»»» **additionalProperties**|string(uri)|false|none|none|
 |»» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -25090,9 +25713,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listvideos-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -25358,9 +25988,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listplaylists-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -25626,9 +26263,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreators-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -25894,9 +26538,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="discovercreatorsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -26162,9 +26813,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatorcategoriesv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -26430,9 +27088,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatesociallinks-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -26698,9 +27363,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getsociallinks-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -26966,9 +27638,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatechannelimage-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -27234,9 +27913,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatechannelinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -27502,9 +28188,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getchannelinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -27902,7 +28595,16 @@ Retrieve detailed information about a specific creator.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getcreator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -28506,6 +29208,7 @@ Retrieve and search for all creators on Floatplane. Useful for creator discovery
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreators-responseschema">Response Schema</h3>
@@ -28623,6 +29326,12 @@ Status Code **200**
 |»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|Present in `/creator/named` queries|
 |» card|[ImageModel](#schemaimagemodel)|false|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -29250,6 +29959,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorbyname-responseschema">Response Schema</h3>
@@ -29367,6 +30077,12 @@ Status Code **200**
 |»» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
 |» discordServers|[[DiscordServerModel](#schemadiscordservermodel)]|false|none|Present in `/creator/named` queries|
 |» card|[ImageModel](#schemaimagemodel)|false|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -29632,9 +30348,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="discovercreatorsv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -30173,6 +30896,7 @@ Retrieves a list of channels within the given creator(s).
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatorchannelsv3-responseschema">Response Schema</h3>
@@ -30208,6 +30932,12 @@ Status Code **200**
 |»» childImages|[[ChildImageModel](#schemachildimagemodel)]¦null|true|none|none|
 |» socialLinks|[SocialLinksModel](#schemasociallinksmodel)|false|none|none|
 |»» **additionalProperties**|string(uri)|false|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -30473,9 +31203,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatorcategoriesv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -30741,9 +31478,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="bindcreatorinvitecode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -31009,9 +31753,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorinvitecodeinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -31277,9 +32028,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="claimcreatorinvitecode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -31549,9 +32307,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getagreement-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -31817,9 +32582,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="confirmagreement-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -32089,9 +32861,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatorplanfeaturelevels-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -32357,9 +33136,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="calculatecreatorplanfeaturecosts-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -32625,9 +33411,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="planfeaturelevels-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -32897,9 +33690,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="publishsubscriptionplan-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -33165,9 +33965,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatesubscriptionplans-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -33433,9 +34240,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listsubscriptionplans-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -33809,7 +34623,16 @@ Retrieve detailed information about a creator's subscription plans and their sub
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getcreatorsubinfopublic-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -34079,9 +34902,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getplansforcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -34351,9 +35181,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="link-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -34619,9 +35456,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="linkcallback-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -34887,9 +35731,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listdiscordbotconnections-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -35155,9 +36006,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unlink-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -35423,9 +36281,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getdiscordbotinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -35691,9 +36556,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="generateinvitelink-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -35959,9 +36831,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatelink-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -36227,9 +37106,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="joindiscordservers-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -36594,7 +37480,16 @@ Retrieve a list of edge servers from which to stream or download videos. This is
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getedges-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="success">
 This operation does not require authentication
@@ -36859,9 +37754,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideourl-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -37176,6 +38078,7 @@ Retrieve a list of FAQ sections to display to the user. Each section contains on
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getfaqsections-responseschema">Response Schema</h3>
@@ -37209,6 +38112,12 @@ Status Code **200**
 |---|---|
 |status|public|
 |status|public|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="success">
 This operation does not require authentication
@@ -37483,9 +38392,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideoplayer-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -37755,9 +38671,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getoptimizationsv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -38027,9 +38950,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getoptimizationsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -38299,9 +39229,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="renderlivepopout-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -38567,9 +39504,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateconfig-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -38835,9 +39779,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadlivethumbnail-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -39107,9 +40058,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="banuserv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -39375,9 +40333,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unbanuserv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -39643,9 +40608,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listbanv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -39911,9 +40883,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="hidecommentv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -40179,9 +41158,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unhidecommentv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -40447,9 +41433,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="moderatevideocomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -40715,9 +41708,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userbanstatusv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -40983,9 +41983,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userunbanv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -41251,9 +42258,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userinfov2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -41523,9 +42537,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="banuserv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -41791,9 +42812,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unbanuserv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -42059,9 +43087,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listbanv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -42327,9 +43362,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="hidecommentv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -42595,9 +43637,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unhidecommentv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -42863,9 +43912,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="moderatecomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -43131,9 +44187,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userbanstatusv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -43399,9 +44462,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userunbanv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -43667,9 +44737,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="userinfov3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -43939,9 +45016,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="sendpasswordreset-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -44207,9 +45291,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="resetpassword-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -44475,9 +45566,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="validatekey-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -44760,6 +45858,7 @@ Retrieve a list of saved payment methods for the user's account. Payment methods
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listpaymentmethods-responseschema">Response Schema</h3>
@@ -44778,6 +45877,12 @@ Status Code **200**
 |»» exp_month|integer|true|none|none|
 |»» exp_year|integer|true|none|none|
 |»» name|string|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -45043,9 +46148,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addpaymentmethod-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -45311,9 +46423,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deletepaymentmethod-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -45579,9 +46698,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="setprimarypaymentmethod-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -45847,9 +46973,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="estimatetaxes-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -46115,9 +47248,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="purchasesubscription-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -46383,9 +47523,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="cancelsubscription-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -46662,6 +47809,7 @@ Retrieve a list of billing addresses saved to the user's account, to be used in 
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listaddresses-responseschema">Response Schema</h3>
@@ -46679,6 +47827,12 @@ Status Code **200**
 |» region|string|true|none|none|
 |» country|string|true|none|none|
 |» default|boolean|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -46944,9 +48098,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addaddress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -47212,9 +48373,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateaddress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -47480,9 +48648,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deleteaddress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -47748,9 +48923,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="setprimaryaddress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -48022,9 +49204,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="webhook-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -48297,9 +49486,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="webhookwithsubprocessor-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -48621,7 +49817,16 @@ Retrieve a list of paid or unpaid subscription invoices for the user.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="listinvoices-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -48891,9 +50096,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="subscribeuser-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -49165,9 +50377,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="subscribeuserbyid-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -49437,9 +50656,16 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="socketconnect-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -49705,9 +50931,16 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="disconnectsocket-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -49977,9 +51210,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="retrievepublickey-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -50249,9 +51489,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listusersubscriptionsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -50517,9 +51764,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="doesuserhavesubv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -50812,6 +52066,7 @@ Retrieve a list of all active subscriptions for the user.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listusersubscriptionsv3-responseschema">Response Schema</h3>
@@ -50861,6 +52116,12 @@ Status Code **200**
 |Parameter|Expression|
 |---|---|
 |creatorGUID|$response.body#/0/creator|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -51126,9 +52387,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="doesuserhavesubv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -51398,9 +52666,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="submitsupport-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -51666,9 +52941,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="gettickettypes-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -51938,9 +53220,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="syncconnect-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -52206,9 +53495,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="disconnectsync-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -52478,9 +53774,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="gettranscodeprogress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -52746,9 +54049,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="progresssubscribe-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -53014,9 +54324,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="progressunsubscribe-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -53286,9 +54603,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getactiveprocesses-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -53554,9 +54878,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="progresssubscribecms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -53822,9 +55153,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="progressunsubscribecms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -54132,7 +55470,16 @@ Retrieve more detailed information about one or more users from their identifier
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getuserinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -54398,9 +55745,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="self-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -54706,7 +56060,16 @@ Retrieve more detailed information about one or more users from their usernames.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getuserinfobyname-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -54972,9 +56335,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -55240,9 +56610,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateemail-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -55508,9 +56885,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="completeemailchange-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -55776,9 +57160,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadavatar-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -56044,9 +57435,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="changepassword-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -56312,9 +57710,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getusercreator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -56580,9 +57985,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getactivityfeedv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -56848,9 +58260,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getexternallinksv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -57116,9 +58535,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateexternallinksv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -57384,9 +58810,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getadministrator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -57655,7 +59088,16 @@ Retrieve information about the current security configuration for the user.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getsecurity-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -57921,9 +59363,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="generatetwofactorsecret-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -58189,9 +59638,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="activatetwofactorauthentication-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -58457,9 +59913,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deactivatetwofactorauthentication-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -58725,9 +60188,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="activatebackupcode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -58993,9 +60463,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deactivatebackupcode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -59261,9 +60738,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="generatebackupcode-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -59529,9 +61013,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getusernotificationsettingsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -59797,9 +61288,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateusernotificationsettingsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -60074,7 +61572,16 @@ true
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="usercreatorbanstatus-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -60365,7 +61872,16 @@ Retrieve recent activity for a user, such as comments and other interactions the
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getactivityfeedv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -60649,7 +62165,16 @@ Retrieve configured social media links from a user's profile.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getexternallinksv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -60915,9 +62440,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateexternallinksv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -61207,7 +62739,16 @@ Retrieve more detailed information about the user, including their name and emai
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getself-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -61473,9 +63014,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="scheduledeletion-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -61741,9 +63289,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unscheduledeletion-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -62009,9 +63564,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getachievementperks-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -62310,6 +63872,7 @@ Retrieve notification details for a user. The details are split into seperate se
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getusernotificationsettingsv3-responseschema">Response Schema</h3>
@@ -62393,6 +63956,12 @@ Status Code **200**
 |»» creatorMessageEmail|boolean|true|none|none|
 |»» user|string|true|none|none|
 |»» creator|string|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -62685,7 +64254,16 @@ true
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="updateusernotificationsettingsv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -62955,9 +64533,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideocomments-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -63223,9 +64808,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addvideocomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -63491,9 +65083,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideocommentreplies-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -63763,9 +65362,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="clearinteraction-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -64031,9 +65637,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="setinteraction-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -64303,9 +65916,16 @@ TODO. This seems to originate from the `.m3u8` file captured from the CDN endpoi
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="watchkey-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -64571,9 +66191,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -64839,9 +66466,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getrelatedvideos-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -65107,9 +66741,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatevideo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -65375,9 +67016,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deletevideo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -65643,9 +67291,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -65915,9 +67570,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getdashclearkeys-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -66183,9 +67845,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getdashclearkeysoverpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -66451,9 +68120,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getdashsignedchunkurl-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -66723,9 +68399,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listplaylistvideos-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -66995,9 +68678,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createmultipartuploadv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -67263,9 +68953,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuploadedpartsv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -67531,9 +69228,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="signpartuploadvideo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -67799,9 +69503,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="abortmultipartuploadv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -68067,9 +69778,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="completemultipartuploadvideo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -68335,9 +70053,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadthumbnailv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -68613,9 +70338,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="connectedaccount-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -68885,9 +70617,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="ivslivestreampublish-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -69153,9 +70892,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="livestreampublish-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -69425,9 +71171,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getappinfov2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -69693,9 +71446,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="registerv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -69961,9 +71721,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unregisterv2-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -70229,9 +71996,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="gettokeninfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -70501,9 +72275,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getappinfov3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -70769,9 +72550,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="registerv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -71037,9 +72825,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="unregisterv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -71309,9 +73104,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcontentlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -71577,9 +73379,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcontentacp-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -71845,9 +73654,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="postcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -72113,9 +73929,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getorderlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -72381,9 +74204,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getorder-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -72649,9 +74479,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="postorder-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -72917,9 +74754,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="postmanager-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -73185,9 +75029,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createorder-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -73453,9 +75304,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="augmentorder-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -73721,9 +75579,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuploadlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -73989,9 +75854,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getupload-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -74257,9 +76129,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="postupload-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -74525,9 +76404,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getjob-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -74793,9 +76679,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="postjob-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -75061,9 +76954,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="gettask-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -75329,9 +77229,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="posttask-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -75601,9 +77508,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getblogpostcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -75869,9 +77783,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listblogpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -76137,9 +78058,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createblogpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -76405,9 +78333,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="editblogpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -76673,9 +78608,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deleteblogpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -76941,9 +78883,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updatenewattachments-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -77213,9 +79162,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="editcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -77481,9 +79437,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listvideocontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -77749,9 +79712,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listaudiocontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -78017,9 +79987,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listpicturecontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -78285,9 +80262,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listgallerycontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -78553,9 +80537,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getvideocontentcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -78821,9 +80812,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getaudiocontentcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -79089,9 +81087,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getpicturecontentcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -79357,9 +81362,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getgallerycontentcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -79625,9 +81637,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcontentcms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -79893,9 +81912,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deletecontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -80165,9 +82191,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorwarehouse-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -80433,9 +82466,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="savecreatorwarehouse-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -80701,9 +82741,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listpricerules-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -80969,9 +83016,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getpricerule-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -81237,9 +83291,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createpricerule-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -81505,9 +83566,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="editpricerule-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -81773,9 +83841,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deletepricerule-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -82041,9 +84116,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listproducts-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -82309,9 +84391,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcollections-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -82577,9 +84666,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getshopinfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -82845,9 +84941,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listshopshippingcountries-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -83113,9 +85216,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getproducts-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -83381,9 +85491,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcollections-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -83649,9 +85766,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcountries-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -83921,9 +86045,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getlivestreaminfo-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -84193,9 +86324,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listsubscriptionplanscms-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -84461,9 +86599,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listsubscribers-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -84729,9 +86874,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="downloadsubscribers-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -85061,7 +87213,16 @@ Post a new comment to a blog post object.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="postcomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -85379,6 +87540,7 @@ Get comments for a blog post object. Note that replies to each comment tend to b
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcomments-responseschema">Response Schema</h3>
@@ -85430,6 +87592,12 @@ Status Code **200**
 
 |Parameter|Expression|
 |---|---|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -85743,6 +87911,7 @@ Retrieve more replies from a comment.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcommentreplies-responseschema">Response Schema</h3>
@@ -85781,6 +87950,12 @@ Status Code **200**
 |» totalReplies|integer|false|none|none|
 |» replies|[[CommentModel](#schemacommentmodel)]|false|none|This is present (but possibly empty) for top-level comments. This is never present for reply comments.|
 |» userInteraction|[string]¦null|true|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -86071,7 +88246,16 @@ Like a comment on a blog post.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="likecomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -86362,7 +88546,16 @@ Dislike a comment on a blog post.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="dislikecomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -86628,9 +88821,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="editcomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -86896,9 +89096,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="deletecomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -87164,9 +89371,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="pincomment-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -87432,9 +89646,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcommenthistory-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -88100,6 +90321,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcreatorblogposts-responseschema">Response Schema</h3>
@@ -88270,6 +90492,12 @@ Status Code **200**
 |Parameter|Expression|
 |---|---|
 |id|$response.body#/0/id|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -88915,7 +91143,16 @@ Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getmulticreatorblogposts-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -89202,6 +91439,7 @@ Retrieve all tags and the number of times the tags have been used for the specif
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcontenttags-responseschema">Response Schema</h3>
@@ -89211,6 +91449,12 @@ Status Code **200**
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» **additionalProperties**|integer|false|none|none|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -89615,7 +91859,16 @@ Retrieve more details on a specific blog post object for viewing.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getblogpost-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -90415,6 +92668,7 @@ Retrieve a list of blog posts that are related to the post being viewed.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getrelatedblogposts-responseschema">Response Schema</h3>
@@ -90577,6 +92831,12 @@ Status Code **200**
 |Property|Value|
 |---|---|
 |type|blogPost|
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -90905,7 +93165,16 @@ Retrieve more information on a video attachment from a blog post in order to con
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getvideocontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -91171,9 +93440,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getaudiocontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -91476,7 +93752,16 @@ Retrieve more information on a picture attachment from a blog post in order to c
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getpicturecontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -91742,9 +94027,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -92037,7 +94329,16 @@ Toggles the like status on a piece of content. If disliked before, it will turn 
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="likecontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -92330,7 +94631,16 @@ Toggles the dislike status on a piece of content. If liked before, it will turn 
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="dislikecontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -92596,9 +94906,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getpictureurl-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -92891,7 +95208,16 @@ Update the watch progress on a piece of media (usually video or audio), stored a
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="updateprogress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -93197,7 +95523,16 @@ Note that the progress values returned in this endpoint are different from the u
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="getprogress-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -93467,9 +95802,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createmultipartuploadv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -93735,9 +96077,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuploadedpartsv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -94003,9 +96352,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="signpartuploadcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -94271,9 +96627,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="abortmultipartuploadv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -94539,9 +96902,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="completemultipartuploadcontent-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -94807,9 +97177,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="uploadthumbnailv3-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -95075,9 +97452,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="thumbnailupdatesubscribe-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -95347,9 +97731,16 @@ TODO - Not used in Floatplane code.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="thumbnailupdateunsubscribe-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -95619,9 +98010,16 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="joinliveroom-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -95887,9 +98285,16 @@ TODO - Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation f
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="joinliveroommoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -96155,9 +98560,16 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="leaveliveroom-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -96423,9 +98835,16 @@ TODO - Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation f
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="leaveliveroommoderator-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -96718,9 +99137,16 @@ Vote on an option of a poll. Voting a second time or attempting to change a choi
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="votepoll-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -97019,9 +99445,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="cmslistpolls-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -97329,9 +99762,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="createlivepoll-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -97621,9 +100061,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="closepoll-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -97893,13 +100340,17 @@ Redirects (HTTP 302) the user to the latest LMG video for a given LMG channel ke
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
+
+<h3 id="redirectytlatest-responseschema">Response Schema</h3>
 
 ### Response Headers
 
 |Status|Header|Type|Format|Description|
 |---|---|---|---|---|
 |302|Location|string||A YouTube URL for a video.|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -98169,9 +100620,16 @@ Retrieve a list of loyalty rewards for the user. The reason for why this is a PO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listcreatorloyaltyreward-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -98437,9 +100895,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="claimloyaltyreward-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -98709,9 +101174,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getenabledstate-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -98977,9 +101449,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="updateenabledstate-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -99245,9 +101724,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="downloaduserprofile-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -99513,9 +101999,16 @@ TODO - Not used in Floatplane code yet.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getuserprofilelinksephemeral-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -99781,9 +102274,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="getserverlist-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100057,9 +102557,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="addcreatormoderatorbypath-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100325,9 +102832,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removecreatormoderatoradmin-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100599,9 +103113,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="removecreatormoderatorbypath-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -100867,9 +103388,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listmoderators-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -101141,9 +103669,16 @@ TODO
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
+|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
 
 <h3 id="listmoderatorsbypath-responseschema">Response Schema</h3>
+
+### Response Headers
+
+|Status|Header|Type|Format|Description|
+|---|---|---|---|---|
+|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:

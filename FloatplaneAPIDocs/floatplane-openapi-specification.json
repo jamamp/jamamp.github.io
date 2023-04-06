@@ -3001,7 +3001,8 @@
 					"id",
 					"username",
 					"profileImage"
-				]
+				],
+				"additionalProperties": false
 			},
 			"UserSelfModel": {
 				"type": "object",
@@ -3050,6 +3051,7 @@
 					},
 					"connectedAccount": {
 						"type": "object",
+						"nullable": true,
 						"properties": {
 							"id": {
 								"type": "string"
@@ -3230,9 +3232,6 @@
 							}
 						},
 						"required": [
-							"createdAt",
-							"updatedAt",
-							"id",
 							"contentEmail",
 							"contentFirebase",
 							"creatorMessageEmail",
@@ -3624,6 +3623,11 @@
 								}
 							],
 							"message": "You lack one or more of the required achievements needed to access the requested resource."
+						}
+					},
+					"text/html": {
+						"schema": {
+							"type": "string"
 						}
 					}
 				}

@@ -2142,6 +2142,7 @@
           - "id"
           - "username"
           - "profileImage"
+        additionalProperties: false
       UserSelfModel: 
         type: "object"
         properties: 
@@ -2177,6 +2178,7 @@
             type: "string"
           connectedAccount: 
             type: "object"
+            nullable: true
             properties: 
               id: 
                 type: "string"
@@ -2307,9 +2309,6 @@
               creator: 
                 type: "string"
             required: 
-              - "createdAt"
-              - "updatedAt"
-              - "id"
               - "contentEmail"
               - "contentFirebase"
               - "creatorMessageEmail"
@@ -2592,6 +2591,9 @@
                         endDate: null
                         icon: null
               message: "You lack one or more of the required achievements needed to access the requested resource."
+          text/html: 
+            schema: 
+              type: "string"
       404NotFound: 
         description: "Not Found - The resource was not found."
         content: 

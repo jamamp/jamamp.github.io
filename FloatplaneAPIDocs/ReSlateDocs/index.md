@@ -384,6 +384,10 @@ Login to Floatplane with the provided username and password, retrieving the auth
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -424,7 +428,7 @@ Login to Floatplane with the provided username and password, retrieving the auth
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Returns the header and information about the logged-in user, including the id, username, and profile image.|[AuthLoginV2Response](#schemaauthloginv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The login attempt failed, either due to a bad username or password.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -659,6 +663,10 @@ Log out of Floatplane, invalidating the authentication/authorization cookie.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -699,7 +707,7 @@ Log out of Floatplane, invalidating the authentication/authorization cookie.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -982,6 +990,10 @@ Complete the login process if a two-factor authentication token is required from
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -1022,7 +1034,7 @@ Complete the login process if a two-factor authentication token is required from
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Returns the header and information about the logged-in user, including the id, username, and profile image.|[AuthLoginV2Response](#schemaauthloginv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The login attempt failed, either due to a bad username or password.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -1283,6 +1295,10 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -1323,7 +1339,7 @@ Gets the site keys used for Google Recaptcha V2 and V3. These are useful when pr
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[GetCaptchaInfoResponse](#schemagetcaptchainforesponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -1642,6 +1658,10 @@ Given an video/audio attachment identifier, retrieves the information necessary 
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -1682,7 +1702,7 @@ Given an video/audio attachment identifier, retrieves the information necessary 
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Information on how to stream or download the requested video from the CDN in various levels of quality.|[CdnDeliveryV2Response](#schemacdndeliveryv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -2358,6 +2378,10 @@ Note that tokens are JWT tokens, but have been replaced with `<token>` in the ex
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -2398,7 +2422,7 @@ Note that tokens are JWT tokens, but have been replaced with `<token>` in the ex
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Information on how to stream or download the requested video from the CDN in various levels of quality.|[CdnDeliveryV3Response](#schemacdndeliveryv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -2663,6 +2687,10 @@ List the available 3rd party accounts for the user's profile.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -2703,7 +2731,7 @@ List the available 3rd party accounts for the user's profile.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Returns the list of connected and available accounts.|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -2719,7 +2747,7 @@ Status Code **200**
 |» name|string|true|none|Display-friendly label for the `key`.|
 |» enabled|boolean|true|none|Determines if the system allows this account to be connected to.|
 |» iconWhite|string|true|none|none|
-|» connectedAccount|object|true|none|none|
+|» connectedAccount|object¦null|true|none|none|
 |»» id|string|true|none|none|
 |»» remoteUserId|string|true|none|none|
 |»» remoteUserName|string|true|none|none|
@@ -3054,6 +3082,10 @@ Retrieve detailed information on one or more creators on Floatplane.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -3094,7 +3126,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - The creators are found from their identifiers and returned in an array|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -3516,6 +3548,10 @@ Retrieve detailed information on one or more creators on Floatplane.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -3556,7 +3592,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -4008,6 +4044,10 @@ Retrieve detailed information about a specific creator.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -4048,7 +4088,7 @@ Retrieve detailed information about a specific creator.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Creator information returned|[CreatorModelV3](#schemacreatormodelv3)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -4621,6 +4661,10 @@ Retrieve and search for all creators on Floatplane. Useful for creator discovery
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -4661,7 +4705,7 @@ Retrieve and search for all creators on Floatplane. Useful for creator discovery
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Creators returned|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -5372,6 +5416,10 @@ Retrieve detailed information on one or more creators on Floatplane.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -5412,7 +5460,7 @@ Retrieve detailed information on one or more creators on Floatplane.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -6034,6 +6082,10 @@ Retrieves a list of channels within the given creator(s).
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -6074,7 +6126,7 @@ Retrieves a list of channels within the given creator(s).
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -6453,6 +6505,10 @@ Retrieve detailed information about a creator's subscription plans and their sub
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -6493,7 +6549,7 @@ Retrieve detailed information about a creator's subscription plans and their sub
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Information about the plans for the creator|[PlanInfoV2Response](#schemaplaninfov2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -6827,6 +6883,10 @@ Retrieve a list of edge servers from which to stream or download videos. This is
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -6867,7 +6927,7 @@ Retrieve a list of edge servers from which to stream or download videos. This is
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[EdgesModel](#schemaedgesmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -7150,6 +7210,10 @@ Retrieve a list of FAQ sections to display to the user. Each section contains on
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -7190,7 +7254,7 @@ Retrieve a list of FAQ sections to display to the user. Each section contains on
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -7471,6 +7535,10 @@ Retrieve a list of saved payment methods for the user's account. Payment methods
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -7511,7 +7579,7 @@ Retrieve a list of saved payment methods for the user's account. Payment methods
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -7772,6 +7840,10 @@ Retrieve a list of billing addresses saved to the user's account, to be used in 
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -7812,7 +7884,7 @@ Retrieve a list of billing addresses saved to the user's account, to be used in 
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -8117,6 +8189,10 @@ Retrieve a list of paid or unpaid subscription invoices for the user.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -8157,7 +8233,7 @@ Retrieve a list of paid or unpaid subscription invoices for the user.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[PaymentInvoiceListV2Response](#schemapaymentinvoicelistv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -8396,6 +8472,10 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -8436,7 +8516,7 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -8671,6 +8751,10 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -8711,7 +8795,7 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -8973,6 +9057,10 @@ Retrieve a list of all active subscriptions for the user.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -9013,7 +9101,7 @@ Retrieve a list of all active subscriptions for the user.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Subscriptions returned|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -9336,6 +9424,10 @@ Retrieve more detailed information about one or more users from their identifier
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -9376,7 +9468,7 @@ Retrieve more detailed information about one or more users from their identifier
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Results of the user search|[UserInfoV2Response](#schemauserinfov2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -9651,6 +9743,10 @@ Retrieve more detailed information about one or more users from their usernames.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -9691,7 +9787,7 @@ Retrieve more detailed information about one or more users from their usernames.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Results of the user search|[UserNamedV2Response](#schemausernamedv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -9929,6 +10025,10 @@ Retrieve information about the current security configuration for the user.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -9969,7 +10069,7 @@ Retrieve information about the current security configuration for the user.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Current security settings|[UserSecurityV2Response](#schemausersecurityv2response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -10213,6 +10313,10 @@ true
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -10253,7 +10357,7 @@ true
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Whether the user is banned or not|boolean|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -10513,6 +10617,10 @@ Retrieve recent activity for a user, such as comments and other interactions the
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -10553,7 +10661,7 @@ Retrieve recent activity for a user, such as comments and other interactions the
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Activity returned|[UserActivityV3Response](#schemauseractivityv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -10806,6 +10914,10 @@ Retrieve configured social media links from a user's profile.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -10846,7 +10958,7 @@ Retrieve configured social media links from a user's profile.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - User links returned|[UserLinksV3Response](#schemauserlinksv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -11105,6 +11217,10 @@ Retrieve more detailed information about the user, including their name and emai
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -11145,7 +11261,7 @@ Retrieve more detailed information about the user, including their name and emai
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Information returned|[UserSelfV3Response](#schemauserselfv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -11413,6 +11529,10 @@ Retrieve notification details for a user. The details are split into seperate se
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -11453,7 +11573,7 @@ Retrieve notification details for a user. The details are split into seperate se
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Notifications returned|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -11531,9 +11651,9 @@ Status Code **200**
 |»» incomeDisplay|boolean|true|none|none|
 |»» defaultChannel|string|false|none|none|
 |» userNotificationSetting|object|true|none|none|
-|»» createdAt|string(date-time)|true|none|none|
-|»» updatedAt|string(date-time)¦null|true|none|none|
-|»» id|string|true|none|none|
+|»» createdAt|string(date-time)|false|none|none|
+|»» updatedAt|string(date-time)¦null|false|none|none|
+|»» id|string|false|none|none|
 |»» contentEmail|boolean|true|none|none|
 |»» contentFirebase|boolean|true|none|none|
 |»» creatorMessageEmail|boolean|true|none|none|
@@ -11795,6 +11915,10 @@ true
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -11835,7 +11959,7 @@ true
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Whether or not the update was successful|boolean|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -12134,6 +12258,10 @@ Post a new comment to a blog post object.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -12174,7 +12302,7 @@ Post a new comment to a blog post object.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Commented posted successfully, returning comment details|[CommentV3PostResponse](#schemacommentv3postresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -12461,6 +12589,10 @@ Get comments for a blog post object. Note that replies to each comment tend to b
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -12501,7 +12633,7 @@ Get comments for a blog post object. Note that replies to each comment tend to b
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - All comments returned for the query parameters|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -12832,6 +12964,10 @@ Retrieve more replies from a comment.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -12872,7 +13008,7 @@ Retrieve more replies from a comment.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -13167,6 +13303,10 @@ Like a comment on a blog post.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -13207,7 +13347,7 @@ Like a comment on a blog post.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Comment successfully liked|string|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -13467,6 +13607,10 @@ Dislike a comment on a blog post.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -13507,7 +13651,7 @@ Dislike a comment on a blog post.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Comment successfully disliked|string|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -14142,6 +14286,10 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -14182,7 +14330,7 @@ This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually excl
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Creator posted returned|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -14964,6 +15112,10 @@ Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -15004,7 +15156,7 @@ Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Posts returned|[ContentCreatorListV3Response](#schemacontentcreatorlistv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -15260,6 +15412,10 @@ Retrieve all tags and the number of times the tags have been used for the specif
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -15300,7 +15456,7 @@ Retrieve all tags and the number of times the tags have been used for the specif
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Creator tag information|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -15680,6 +15836,10 @@ Retrieve more details on a specific blog post object for viewing.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -15720,7 +15880,7 @@ Retrieve more details on a specific blog post object for viewing.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Detailed post information|[ContentPostV3Response](#schemacontentpostv3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -16489,6 +16649,10 @@ Retrieve a list of blog posts that are related to the post being viewed.
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -16529,7 +16693,7 @@ Retrieve a list of blog posts that are related to the post being viewed.
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Related post details|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -16986,6 +17150,10 @@ Retrieve more information on a video attachment from a blog post in order to con
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -17026,7 +17194,7 @@ Retrieve more information on a video attachment from a blog post in order to con
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - Video details returned|[ContentVideoV3Response](#schemacontentvideov3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -17298,6 +17466,10 @@ Retrieve more information on a picture attachment from a blog post in order to c
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -17338,7 +17510,7 @@ Retrieve more information on a picture attachment from a blog post in order to c
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ContentPictureV3Response](#schemacontentpicturev3response)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -17600,6 +17772,10 @@ Toggles the like status on a piece of content. If disliked before, it will turn 
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -17640,7 +17816,7 @@ Toggles the like status on a piece of content. If disliked before, it will turn 
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[UserInteractionModel](#schemauserinteractionmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -17902,6 +18078,10 @@ Toggles the dislike status on a piece of content. If liked before, it will turn 
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -17942,7 +18122,7 @@ Toggles the dislike status on a piece of content. If liked before, it will turn 
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[UserInteractionModel](#schemauserinteractionmodel)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -18204,6 +18384,10 @@ Update the watch progress on a piece of media (usually video or audio), stored a
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -18244,7 +18428,7 @@ Update the watch progress on a piece of media (usually video or audio), stored a
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -18519,6 +18703,10 @@ Note that the progress values returned in this endpoint are different from the u
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -18559,7 +18747,7 @@ Note that the progress values returned in this endpoint are different from the u
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[GetProgressResponse](#schemagetprogressresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -18798,6 +18986,10 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -18838,7 +19030,7 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -19073,6 +19265,10 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -19113,7 +19309,7 @@ Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -19375,6 +19571,10 @@ Vote on an option of a poll. Voting a second time or attempting to change a choi
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -19415,7 +19615,7 @@ Vote on an option of a poll. Voting a second time or attempting to change a choi
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -19654,6 +19854,10 @@ Redirects (HTTP 302) the user to the latest LMG video for a given LMG channel ke
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -19694,7 +19898,7 @@ Redirects (HTTP 302) the user to the latest LMG video for a given LMG channel ke
 |302|[Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)|Found|None|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -19934,6 +20138,10 @@ Retrieve a list of loyalty rewards for the user. The reason for why this is a PO
 }
 ```
 
+```
+"string"
+```
+
 > 404 Response
 
 ```json
@@ -19974,7 +20182,7 @@ Retrieve a list of loyalty rewards for the user. The reason for why this is a PO
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
 |429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
 |default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
@@ -23883,7 +24091,7 @@ Represents some basic information of a user (id, username, and profile image).
 |name|string|true|none|Display-friendly label for the `key`.|
 |enabled|boolean|true|none|Determines if the system allows this account to be connected to.|
 |iconWhite|string|true|none|none|
-|connectedAccount|object|true|none|none|
+|connectedAccount|object¦null|true|none|none|
 |» id|string|true|none|none|
 |» remoteUserId|string|true|none|none|
 |» remoteUserName|string|true|none|none|
@@ -24137,9 +24345,9 @@ Represents some basic information of a user (id, username, and profile image).
 |---|---|---|---|---|
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |userNotificationSetting|object|true|none|none|
-|» createdAt|string(date-time)|true|none|none|
-|» updatedAt|string(date-time)¦null|true|none|none|
-|» id|string|true|none|none|
+|» createdAt|string(date-time)|false|none|none|
+|» updatedAt|string(date-time)¦null|false|none|none|
+|» id|string|false|none|none|
 |» contentEmail|boolean|true|none|none|
 |» contentFirebase|boolean|true|none|none|
 |» creatorMessageEmail|boolean|true|none|none|

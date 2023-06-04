@@ -4731,8 +4731,8 @@ Status Code **200**
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |»» *anonymous*|object|false|none|none|
-|»»» id|string|false|none|none|
-|»»» username|string|false|none|none|
+|»»» id|string|true|none|none|
+|»»» username|string|true|none|none|
 
 *continued*
 
@@ -5486,8 +5486,8 @@ Status Code **200**
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |»» *anonymous*|object|false|none|none|
-|»»» id|string|false|none|none|
-|»»» username|string|false|none|none|
+|»»» id|string|true|none|none|
+|»»» username|string|true|none|none|
 
 *continued*
 
@@ -23087,8 +23087,8 @@ xor
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |» *anonymous*|object|false|none|none|
-|»» id|string|false|none|none|
-|»» username|string|false|none|none|
+|»» id|string|true|none|none|
+|»» username|string|true|none|none|
 
 continued
 

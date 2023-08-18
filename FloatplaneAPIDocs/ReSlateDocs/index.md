@@ -22087,7 +22087,7 @@ xor
 |comments|integer|true|none|none|
 |creator|[CreatorModelV2](#schemacreatormodelv2)|true|none|none|
 |wasReleasedSilently|boolean|true|none|none|
-|thumbnail|[ImageModel](#schemaimagemodel)¦null|true|none|none|
+|thumbnail|[ImageModel](#schemaimagemodel)¦null|false|none|none|
 |isAccessible|boolean|true|none|If false, the post should be marked as locked and not viewable by the user.|
 |userInteraction|[UserInteractionModel](#schemauserinteractionmodel)|true|none|none|
 |videoAttachments|[[VideoAttachmentModel](#schemavideoattachmentmodel)]|false|none|May be undefined when the post is locked.|

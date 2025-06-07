@@ -25294,7 +25294,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string¦null|true|none|none|
-|»» priceYearly|string¦null|true|none|none|
+|»» priceYearly|string¦null|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
@@ -25766,7 +25766,7 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string¦null|true|none|none|
-|»»» priceYearly|string¦null|true|none|none|
+|»»» priceYearly|string¦null|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
@@ -29619,26 +29619,9 @@ Status Code **200**
 |---|---|---|---|---|
 |*anonymous*|[[CreatorModelV3](#schemacreatormodelv3)]|false|none|none|
 |» id|string|true|none|none|
-|» owner|any|true|none|none|
-
-*oneOf*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|»» *anonymous*|string|false|none|none|
-
-*xor*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|string|true|none|none|
-|»»» username|string|true|none|none|
-
-*continued*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
+|» owner|object|true|none|none|
+|»» id|string|true|none|none|
+|»» username|string|true|none|none|
 |» title|string|true|none|none|
 |» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |» description|string|true|none|none|
@@ -29684,7 +29667,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string¦null|true|none|none|
-|»» priceYearly|string¦null|true|none|none|
+|»» priceYearly|string¦null|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
@@ -30374,26 +30357,9 @@ Status Code **200**
 |---|---|---|---|---|
 |*anonymous*|[[CreatorModelV3](#schemacreatormodelv3)]|false|none|none|
 |» id|string|true|none|none|
-|» owner|any|true|none|none|
-
-*oneOf*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|»» *anonymous*|string|false|none|none|
-
-*xor*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|»» *anonymous*|object|false|none|none|
-|»»» id|string|true|none|none|
-|»»» username|string|true|none|none|
-
-*continued*
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
+|» owner|object|true|none|none|
+|»» id|string|true|none|none|
+|»» username|string|true|none|none|
 |» title|string|true|none|none|
 |» urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |» description|string|true|none|none|
@@ -30439,7 +30405,7 @@ Status Code **200**
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string¦null|true|none|none|
-|»» priceYearly|string¦null|true|none|none|
+|»» priceYearly|string¦null|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
@@ -52792,13 +52758,13 @@ Status Code **200**
 |» endDate|string(date-time)¦null|true|none|none|
 |» paymentID|integer¦null|true|none|none|
 |» interval|string|true|none|none|
-|» paymentCancelled|boolean|false|none|none|
+|» paymentCancelled|boolean¦null|false|none|none|
 |» plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |»» id|string|true|none|none|
 |»» title|string|true|none|none|
 |»» description|string|true|none|none|
 |»» price|string¦null|true|none|none|
-|»» priceYearly|string¦null|true|none|none|
+|»» priceYearly|string¦null|false|none|none|
 |»» currency|string|true|none|none|
 |»» logo|string¦null|true|none|none|
 |»» interval|string|true|none|none|
@@ -58797,564 +58763,6 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-## getExternalLinksV2
-
-<a id="opIdgetExternalLinksV2"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET https://www.floatplane.com/api/v2/user/links \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET https://www.floatplane.com/api/v2/user/links HTTP/1.1
-Host: www.floatplane.com
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('https://www.floatplane.com/api/v2/user/links',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get 'https://www.floatplane.com/api/v2/user/links',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('https://www.floatplane.com/api/v2/user/links', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','https://www.floatplane.com/api/v2/user/links', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("https://www.floatplane.com/api/v2/user/links");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v2/user/links", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v2/user/links`
-
-*Get External Links*
-
-TODO - Not used in Floatplane code.
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-```
-"string"
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="getexternallinksv2-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="getexternallinksv2-responseschema">Response Schema</h3>
-
-### Response Headers
-
-|Status|Header|Type|Format|Description|
-|---|---|---|---|---|
-|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## updateExternalLinksV2
-
-<a id="opIdupdateExternalLinksV2"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST https://www.floatplane.com/api/v2/user/links \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST https://www.floatplane.com/api/v2/user/links HTTP/1.1
-Host: www.floatplane.com
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('https://www.floatplane.com/api/v2/user/links',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post 'https://www.floatplane.com/api/v2/user/links',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('https://www.floatplane.com/api/v2/user/links', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','https://www.floatplane.com/api/v2/user/links', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("https://www.floatplane.com/api/v2/user/links");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v2/user/links", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v2/user/links`
-
-*Update External Links*
-
-TODO - Not used in Floatplane code.
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-```
-"string"
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="updateexternallinksv2-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="updateexternallinksv2-responseschema">Response Schema</h3>
-
-### Response Headers
-
-|Status|Header|Type|Format|Description|
-|---|---|---|---|---|
-|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
 ## getAdministrator
 
 <a id="opIdgetAdministrator"></a>
@@ -62740,582 +62148,6 @@ To perform this operation, you must be authenticated by means of one of the foll
 CookieAuth
 </aside>
 
-## getExternalLinksV3
-
-<a id="opIdgetExternalLinksV3"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET https://www.floatplane.com/api/v3/user/links?id=string \
-  -H 'Accept: application/json'
-
-```
-
-```http
-GET https://www.floatplane.com/api/v3/user/links?id=string HTTP/1.1
-Host: www.floatplane.com
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('https://www.floatplane.com/api/v3/user/links?id=string',
-{
-  method: 'GET',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.get 'https://www.floatplane.com/api/v3/user/links',
-  params: {
-  'id' => 'string'
-}, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.get('https://www.floatplane.com/api/v3/user/links', params={
-  'id': 'string'
-}, headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('GET','https://www.floatplane.com/api/v3/user/links', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("https://www.floatplane.com/api/v3/user/links?id=string");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("GET", "https://www.floatplane.com/api/v3/user/links", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`GET /api/v3/user/links`
-
-*Get External Links*
-
-Retrieve configured social media links from a user's profile.
-
-<h3 id="getexternallinksv3-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|query|string|true|The GUID of the user being searched.|
-
-> Example responses
-
-> 200 Response
-
-```json
-{
-  "twitch": {
-    "url": "https://twitch.tv/myusername",
-    "type": {
-      "name": "twitch",
-      "displayName": "Twitch",
-      "hostName": "twitch.tv"
-    }
-  }
-}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-```
-"string"
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="getexternallinksv3-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK - User links returned|[UserLinksV3Response](#schemauserlinksv3response)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="getexternallinksv3-responseschema">Response Schema</h3>
-
-### Response Headers
-
-|Status|Header|Type|Format|Description|
-|---|---|---|---|---|
-|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
-## updateExternalLinksV3
-
-<a id="opIdupdateExternalLinksV3"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X POST https://www.floatplane.com/api/v3/user/links \
-  -H 'Accept: application/json'
-
-```
-
-```http
-POST https://www.floatplane.com/api/v3/user/links HTTP/1.1
-Host: www.floatplane.com
-Accept: application/json
-
-```
-
-```javascript
-
-const headers = {
-  'Accept':'application/json'
-};
-
-fetch('https://www.floatplane.com/api/v3/user/links',
-{
-  method: 'POST',
-
-  headers: headers
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```ruby
-require 'rest-client'
-require 'json'
-
-headers = {
-  'Accept' => 'application/json'
-}
-
-result = RestClient.post 'https://www.floatplane.com/api/v3/user/links',
-  params: {
-  }, headers: headers
-
-p JSON.parse(result)
-
-```
-
-```python
-import requests
-headers = {
-  'Accept': 'application/json'
-}
-
-r = requests.post('https://www.floatplane.com/api/v3/user/links', headers = headers)
-
-print(r.json())
-
-```
-
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-$headers = array(
-    'Accept' => 'application/json',
-);
-
-$client = new \GuzzleHttp\Client();
-
-// Define array of request body.
-$request_body = array();
-
-try {
-    $response = $client->request('POST','https://www.floatplane.com/api/v3/user/links', array(
-        'headers' => $headers,
-        'json' => $request_body,
-       )
-    );
-    print_r($response->getBody()->getContents());
- }
- catch (\GuzzleHttp\Exception\BadResponseException $e) {
-    // handle exception or api errors.
-    print_r($e->getMessage());
- }
-
- // ...
-
-```
-
-```java
-URL obj = new URL("https://www.floatplane.com/api/v3/user/links");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
-
-```
-
-```go
-package main
-
-import (
-       "bytes"
-       "net/http"
-)
-
-func main() {
-
-    headers := map[string][]string{
-        "Accept": []string{"application/json"},
-    }
-
-    data := bytes.NewBuffer([]byte{jsonReq})
-    req, err := http.NewRequest("POST", "https://www.floatplane.com/api/v3/user/links", data)
-    req.Header = headers
-
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    // ...
-}
-
-```
-
-`POST /api/v3/user/links`
-
-*Update External Links*
-
-TODO
-
-> Example responses
-
-> 200 Response
-
-```json
-{}
-```
-
-> 400 Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-> 401 Response
-
-```json
-{
-  "id": "erng-ah8e-n0d3",
-  "errors": [
-    {
-      "id": "erng-ah8e-n0d3",
-      "name": "notLoggedInError",
-      "message": "You must be logged-in to access this resource."
-    }
-  ],
-  "message": "You must be logged-in to access this resource."
-}
-```
-
-> 403 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "missingAchievementError",
-      "message": "You lack one or more of the required achievements needed to access the requested resource.",
-      "data": {
-        "requiresAllOfAchievement": [
-          {
-            "id": "6157853e479315db795f7296",
-            "title": "FloatVPN Alpha",
-            "startDate": null,
-            "endDate": null,
-            "icon": null
-          }
-        ]
-      }
-    }
-  ],
-  "message": "You lack one or more of the required achievements needed to access the requested resource."
-}
-```
-
-```
-"string"
-```
-
-> 404 Response
-
-```json
-{
-  "id": "f4ec-orux-hds2",
-  "errors": [
-    {
-      "id": "f4ec-orux-hds2",
-      "name": "notFoundError"
-    }
-  ]
-}
-```
-
-> default Response
-
-```json
-{
-  "id": "awoz-3s5g-6amf",
-  "errors": [
-    {
-      "id": "9edc-zejt-n3hb",
-      "name": "paramValidationError",
-      "message": "\"captchaToken\" must be an object",
-      "data": {
-        "rule": "object.base"
-      }
-    }
-  ],
-  "message": "\"captchaToken\" must be an object"
-}
-```
-
-<h3 id="updateexternallinksv3-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request - The request has errors and the server did not process it.|[ErrorModel](#schemaerrormodel)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated - The request was not authenticated to make the request.|[ErrorModel](#schemaerrormodel)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden - The request was not authenticated to make the request.|string|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not Found - The resource was not found.|[ErrorModel](#schemaerrormodel)|
-|429|[Too Many Requests](https://tools.ietf.org/html/rfc6585#section-4)|Too Many Requests - The resource was requested too many times|None|
-|default|Default|Unexpected response code|[ErrorModel](#schemaerrormodel)|
-
-<h3 id="updateexternallinksv3-responseschema">Response Schema</h3>
-
-### Response Headers
-
-|Status|Header|Type|Format|Description|
-|---|---|---|---|---|
-|429|Retry-After|integer||The number of seconds the client must wait until future requests will respond normally.|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-CookieAuth
-</aside>
-
 ## getSelf
 
 <a id="opIdgetSelf"></a>
@@ -64808,7 +63640,7 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string¦null|true|none|none|
-|»»» priceYearly|string¦null|true|none|none|
+|»»» priceYearly|string¦null|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
@@ -91694,7 +90526,7 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string¦null|true|none|none|
-|»»» priceYearly|string¦null|true|none|none|
+|»»» priceYearly|string¦null|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
@@ -94057,7 +92889,7 @@ Status Code **200**
 |»»» title|string|true|none|none|
 |»»» description|string|true|none|none|
 |»»» price|string¦null|true|none|none|
-|»»» priceYearly|string¦null|true|none|none|
+|»»» priceYearly|string¦null|false|none|none|
 |»»» currency|string|true|none|none|
 |»»» logo|string¦null|true|none|none|
 |»»» interval|string|true|none|none|
@@ -94324,6 +93156,16 @@ Retrieve more information on a video attachment from a blog post in order to con
       "height": 720,
       "label": "720p",
       "order": 2
+    }
+  ],
+  "textTracks": [
+    {
+      "id": "6823ca1cb3c97e3f8cefe6bb",
+      "src": "https://941d59f1900d0a09025413971374845d.r2.cloudflarestorage.com/prod-texttrack/text_tracks/BX3VEUGz2v/AQsb2my1nC6x6XX.vtt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=848bccaff51d5141475de2d2a180f979%2F20250607%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250607T191449Z&X-Amz-Expires=900&X-Amz-Signature=4787e98e0d22cd06aec5a0d76fa6829138a95582e4d831964004471ff48fb1c1&X-Amz-SignedHeaders=host&response-expires=Sat%2C%2007%20Jun%202025%2019%3A14%3A50%20GMT&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+      "kind": "captions",
+      "language": "en",
+      "generated": false,
+      "processing": false
     }
   ]
 }
@@ -106134,7 +104976,7 @@ continued
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |totalSubscriberCount|integer¦null|true|none|The total number of subscribers for this creator.|
-|totalIncome|integer¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
+|totalIncome|number¦null|true|none|The total amount of monthly income for this creator. This field tends to always be $0 for regular users.|
 |plans|[allOf]|true|none|none|
 
 allOf
@@ -107068,6 +105910,16 @@ xor
       "label": "string",
       "order": 0
     }
+  ],
+  "textTracks": [
+    {
+      "id": "string",
+      "src": "string",
+      "kind": "string",
+      "language": "string",
+      "generated": true,
+      "processing": true
+    }
   ]
 }
 
@@ -107102,6 +105954,13 @@ xor
 |» height|integer|true|none|none|
 |» label|string|true|none|none|
 |» order|integer|true|none|none|
+|textTracks|[object]|false|none|none|
+|» id|string|true|none|Text track identifier.|
+|» src|string(url)|true|none|URL to a text track file, usually .vtt files.|
+|» kind|string|true|none|Usually 'caption'.|
+|» language|string|true|none|Language code, e.g. 'en'.|
+|» generated|boolean|true|none|Whether the text track has been generated.|
+|» processing|boolean|true|none|Whether the text track is processing.|
 
 <h2 id="tocS_ContentPictureV3Response">ContentPictureV3Response</h2>
 <!-- backwards compatibility -->
@@ -107793,7 +106652,10 @@ and
 ```json
 {
   "id": "string",
-  "owner": "string",
+  "owner": {
+    "id": "string",
+    "username": "string"
+  },
   "title": "string",
   "urlname": "string",
   "description": "string",
@@ -107979,26 +106841,9 @@ and
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |id|string|true|none|none|
-|owner|any|true|none|none|
-
-oneOf
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|» *anonymous*|string|false|none|none|
-
-xor
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|» *anonymous*|object|false|none|none|
-|»» id|string|true|none|none|
-|»» username|string|true|none|none|
-
-continued
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
+|owner|object|true|none|none|
+|» id|string|true|none|none|
+|» username|string|true|none|none|
 |title|string|true|none|none|
 |urlname|string|true|none|Shown in the browser URL, and used in `/creator/named` queries.|
 |description|string|true|none|none|
@@ -108449,7 +107294,7 @@ continued
 |title|string|true|none|none|
 |description|string|true|none|none|
 |price|string¦null|true|none|none|
-|priceYearly|string¦null|true|none|none|
+|priceYearly|string¦null|false|none|none|
 |currency|string|true|none|none|
 |logo|string¦null|true|none|none|
 |interval|string|true|none|none|
@@ -109313,7 +108158,7 @@ Represents some basic information of a user (id, username, and profile image).
 |endDate|string(date-time)¦null|true|none|none|
 |paymentID|integer¦null|true|none|none|
 |interval|string|true|none|none|
-|paymentCancelled|boolean|false|none|none|
+|paymentCancelled|boolean¦null|false|none|none|
 |plan|[SubscriptionPlanModel](#schemasubscriptionplanmodel)|true|none|none|
 |creator|string|true|none|none|
 

@@ -2082,6 +2082,12 @@ ul.nav-tabs {
       "items" : {
         "$ref" : "#/components/schemas/ContentVideoV3Response_levels_inner"
       }
+    },
+    "textTracks" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/components/schemas/ContentVideoV3Response_textTracks_inner"
+      }
     }
   }
 };
@@ -2103,6 +2109,37 @@ ul.nav-tabs {
     },
     "order" : {
       "type" : "integer"
+    }
+  }
+};
+    defs["ContentVideoV3Response_textTracks_inner"] = {
+  "required" : [ "generated", "id", "kind", "language", "processing", "src" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "description" : "Text track identifier."
+    },
+    "src" : {
+      "type" : "string",
+      "description" : "URL to a text track file, usually .vtt files.",
+      "format" : "url"
+    },
+    "kind" : {
+      "type" : "string",
+      "description" : "Usually 'caption'."
+    },
+    "language" : {
+      "type" : "string",
+      "description" : "Language code, e.g. 'en'."
+    },
+    "generated" : {
+      "type" : "boolean",
+      "description" : "Whether the text track has been generated."
+    },
+    "processing" : {
+      "type" : "boolean",
+      "description" : "Whether the text track is processing."
     }
   }
 };
@@ -2285,13 +2322,6 @@ ul.nav-tabs {
   }
 };
     defs["CreatorModelV3_owner"] = {
-  "oneOf" : [ {
-    "type" : "string"
-  }, {
-    "$ref" : "#/components/schemas/CreatorModelV3_owner_oneOf"
-  } ]
-};
-    defs["CreatorModelV3_owner_oneOf"] = {
   "required" : [ "id", "username" ],
   "type" : "object",
   "properties" : {
@@ -2976,7 +3006,7 @@ ul.nav-tabs {
       "nullable" : true
     },
     "totalIncome" : {
-      "type" : "integer",
+      "type" : "number",
       "description" : "The total amount of monthly income for this creator. This field tends to always be $0 for regular users.",
       "nullable" : true
     },
@@ -3072,7 +3102,7 @@ ul.nav-tabs {
   }
 };
     defs["SubscriptionPlanModel"] = {
-  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "logo", "price", "priceYearly", "title" ],
+  "required" : [ "currency", "description", "discordRoles", "discordServers", "featured", "id", "interval", "logo", "price", "title" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -3424,7 +3454,8 @@ ul.nav-tabs {
       "type" : "string"
     },
     "paymentCancelled" : {
-      "type" : "boolean"
+      "type" : "boolean",
+      "nullable" : true
     },
     "plan" : {
       "$ref" : "#/components/schemas/SubscriptionPlanModel"
@@ -3683,9 +3714,6 @@ ul.nav-tabs {
                   <li class="nav-header" data-group="UserV3"><a href="#api-UserV3">API Methods - UserV3</a></li>
                     <li data-group="UserV3" data-name="getActivityFeedV3" class="">
                       <a href="#api-UserV3-getActivityFeedV3">getActivityFeedV3</a>
-                    </li>
-                    <li data-group="UserV3" data-name="getExternalLinksV3" class="">
-                      <a href="#api-UserV3-getExternalLinksV3">getExternalLinksV3</a>
                     </li>
                     <li data-group="UserV3" data-name="getSelf" class="">
                       <a href="#api-UserV3-getSelf">getSelf</a>
@@ -39222,734 +39250,6 @@ The GUID of the user being queried.
                                     </script>
                                   </div>
                                   <input id='responses-UserV3-getActivityFeedV3-default-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-UserV3-getExternalLinksV3">
-                      <article id="api-UserV3-getExternalLinksV3-0" data-group="User" data-name="getExternalLinksV3" data-version="0">
-                        <div class="pull-left">
-                          <h1>getExternalLinksV3</h1>
-                          <p>Get External Links</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked">Retrieve configured social media links from a user&#39;s profile.</p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v3/user/links</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-UserV3-getExternalLinksV3-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-java">Java</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-UserV3-getExternalLinksV3-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-UserV3-getExternalLinksV3-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-python">Python</a></li>
-                          <li class=""><a href="#examples-UserV3-getExternalLinksV3-0-rust">Rust</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-UserV3-getExternalLinksV3-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
- \
- -H "Accept: application/json,text/html" \
- "https://www.floatplane.com/api/v3/user/links?id=id_example"
-</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-java">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.model.*;
-import org.openapitools.client.api.UserV3Api;
-
-import java.io.File;
-import java.util.*;
-
-public class UserV3ApiExample {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        
-        // Configure API key authorization: CookieAuth
-        ApiKeyAuth CookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("CookieAuth");
-        CookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CookieAuth.setApiKeyPrefix("Token");
-
-        // Create an instance of the API class
-        UserV3Api apiInstance = new UserV3Api();
-        String id = id_example; // String | The GUID of the user being searched.
-
-        try {
-            map['String', UserLinksV3Response_value] result = apiInstance.getExternalLinksV3(id);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling UserV3Api#getExternalLinksV3");
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-android">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.UserV3Api;
-
-public class UserV3ApiExample {
-    public static void main(String[] args) {
-        UserV3Api apiInstance = new UserV3Api();
-        String id = id_example; // String | The GUID of the user being searched.
-
-        try {
-            map['String', UserLinksV3Response_value] result = apiInstance.getExternalLinksV3(id);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling UserV3Api#getExternalLinksV3");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-
-// Configure API key authorization: (authentication scheme: CookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sails.sid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sails.sid"];
-
-
-// Create an instance of the API class
-UserV3Api *apiInstance = [[UserV3Api alloc] init];
-String *id = id_example; // The GUID of the user being searched. (default to null)
-
-// Get External Links
-[apiInstance getExternalLinksV3With:id
-              completionHandler: ^(map['String', UserLinksV3Response_value] output, NSError* error) {
-    if (output) {
-        NSLog(@"%@", output);
-    }
-    if (error) {
-        NSLog(@"Error: %@", error);
-    }
-}];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var FloatplaneRestApi = require('floatplane_rest_api');
-var defaultClient = FloatplaneRestApi.ApiClient.instance;
-
-// Configure API key authorization: CookieAuth
-var CookieAuth = defaultClient.authentications['CookieAuth'];
-CookieAuth.apiKey = "YOUR API KEY";
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//CookieAuth.apiKeyPrefix['sails.sid'] = "Token";
-
-// Create an instance of the API class
-var api = new FloatplaneRestApi.UserV3Api()
-var id = id_example; // {String} The GUID of the user being searched.
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.getExternalLinksV3(id, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using Org.OpenAPITools.Api;
-using Org.OpenAPITools.Client;
-using Org.OpenAPITools.Model;
-
-namespace Example
-{
-    public class getExternalLinksV3Example
-    {
-        public void main()
-        {
-            // Configure API key authorization: CookieAuth
-            Configuration.Default.ApiKey.Add("sails.sid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sails.sid", "Bearer");
-
-            // Create an instance of the API class
-            var apiInstance = new UserV3Api();
-            var id = id_example;  // String | The GUID of the user being searched. (default to null)
-
-            try {
-                // Get External Links
-                map['String', UserLinksV3Response_value] result = apiInstance.getExternalLinksV3(id);
-                Debug.WriteLine(result);
-            } catch (Exception e) {
-                Debug.Print("Exception when calling UserV3Api.getExternalLinksV3: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-// Configure API key authorization: CookieAuth
-OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKey('sails.sid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// OpenAPITools\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sails.sid', 'Bearer');
-
-// Create an instance of the API class
-$api_instance = new OpenAPITools\Client\Api\UserV3Api();
-$id = id_example; // String | The GUID of the user being searched.
-
-try {
-    $result = $api_instance->getExternalLinksV3($id);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling UserV3Api->getExternalLinksV3: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::OPenAPIClient::Configuration;
-use WWW::OPenAPIClient::UserV3Api;
-
-# Configure API key authorization: CookieAuth
-$WWW::OPenAPIClient::Configuration::api_key->{'sails.sid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::OPenAPIClient::Configuration::api_key_prefix->{'sails.sid'} = "Bearer";
-
-# Create an instance of the API class
-my $api_instance = WWW::OPenAPIClient::UserV3Api->new();
-my $id = id_example; # String | The GUID of the user being searched.
-
-eval {
-    my $result = $api_instance->getExternalLinksV3(id => $id);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling UserV3Api->getExternalLinksV3: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import openapi_client
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Configure API key authorization: CookieAuth
-openapi_client.configuration.api_key['sails.sid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# openapi_client.configuration.api_key_prefix['sails.sid'] = 'Bearer'
-
-# Create an instance of the API class
-api_instance = openapi_client.UserV3Api()
-id = id_example # String | The GUID of the user being searched. (default to null)
-
-try:
-    # Get External Links
-    api_response = api_instance.get_external_links_v3(id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling UserV3Api->getExternalLinksV3: %s\n" % e)</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-UserV3-getExternalLinksV3-0-rust">
-                              <pre class="prettyprint"><code class="language-rust">extern crate UserV3Api;
-
-pub fn main() {
-    let id = id_example; // String
-
-    let mut context = UserV3Api::Context::default();
-    let result = client.getExternalLinksV3(id, &context).wait();
-
-    println!("{:?}", result);
-}
-</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Scopes</h2>
-                          <table>
-                            
-                          </table>
-
-                          <h2>Parameters</h2>
-
-
-
-
-
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                <tr><td style="width:150px;">id*</td>
-<td>
-
-
-    <div id="d2e199_getExternalLinksV3_id">
-        <div class="json-schema-view">
-            <div class="primitive">
-                <span class="type">
-                    String
-                </span>
-
-                    <div class="inner description marked">
-The GUID of the user being searched.
-                    </div>
-            </div>
-                <div class="inner required">
-                    Required
-                </div>
-        </div>
-    </div>
-</td>
-</tr>
-
-                            </table>
-
-                          <h2>Responses</h2>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-200"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-200" class="marked"></p>
-                            <script>
-                              var responseUserV3200_description = `OK - User links returned`;
-                              var responseUserV3200_description_break = responseUserV3200_description.indexOf('\n');
-                              if (responseUserV3200_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-200").text("Status: 200 - " + responseUserV3200_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-200").text("Status: 200 - " + responseUserV3200_description.substring(0, responseUserV3200_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-200").html(responseUserV3200_description.substring(responseUserV3200_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-200" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-200-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-200-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-200-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-200" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-200-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-400"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-400" class="marked"></p>
-                            <script>
-                              var responseUserV3400_description = `Bad Request - The request has errors and the server did not process it.`;
-                              var responseUserV3400_description_break = responseUserV3400_description.indexOf('\n');
-                              if (responseUserV3400_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-400").text("Status: 400 - " + responseUserV3400_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-400").text("Status: 400 - " + responseUserV3400_description.substring(0, responseUserV3400_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-400").html(responseUserV3400_description.substring(responseUserV3400_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-400" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-400-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-400-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-400-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-400" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-400-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-400');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-400-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-401"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-401" class="marked"></p>
-                            <script>
-                              var responseUserV3401_description = `Unauthenticated - The request was not authenticated to make the request.`;
-                              var responseUserV3401_description_break = responseUserV3401_description.indexOf('\n');
-                              if (responseUserV3401_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-401").text("Status: 401 - " + responseUserV3401_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-401").text("Status: 401 - " + responseUserV3401_description.substring(0, responseUserV3401_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-401").html(responseUserV3401_description.substring(responseUserV3401_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-401" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-401-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-401-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-401-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-401" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-401-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-401');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-401-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-403"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-403" class="marked"></p>
-                            <script>
-                              var responseUserV3403_description = `Forbidden - The request was not authenticated to make the request.`;
-                              var responseUserV3403_description_break = responseUserV3403_description.indexOf('\n');
-                              if (responseUserV3403_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-403").text("Status: 403 - " + responseUserV3403_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-403").text("Status: 403 - " + responseUserV3403_description.substring(0, responseUserV3403_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-403").html(responseUserV3403_description.substring(responseUserV3403_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-403" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-403-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-403-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-403-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-403" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-403-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-403');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-403-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-404"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-404" class="marked"></p>
-                            <script>
-                              var responseUserV3404_description = `Not Found - The resource was not found.`;
-                              var responseUserV3404_description_break = responseUserV3404_description.indexOf('\n');
-                              if (responseUserV3404_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-404").text("Status: 404 - " + responseUserV3404_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-404").text("Status: 404 - " + responseUserV3404_description.substring(0, responseUserV3404_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-404").html(responseUserV3404_description.substring(responseUserV3404_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-404" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-404-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-404-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-404-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-404" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-404-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-404');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-404-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-429"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-429" class="marked"></p>
-                            <script>
-                              var responseUserV3429_description = `Too Many Requests - The resource was requested too many times`;
-                              var responseUserV3429_description_break = responseUserV3429_description.indexOf('\n');
-                              if (responseUserV3429_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-429").text("Status: 429 - " + responseUserV3429_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-429").text("Status: 429 - " + responseUserV3429_description.substring(0, responseUserV3429_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-429").html(responseUserV3429_description.substring(responseUserV3429_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-429" class="nav nav-tabs nav-tabs-examples" >
-
-                                <li class="">
-                                  <a data-toggle="tab" href="#responses-getExternalLinksV3-429-headers">Headers</a>
-                                </li>
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-429-wrapper" style='margin-bottom: 10px;'>
-                                  <div class="tab-pane" id="responses-getExternalLinksV3-429-headers">
-                                      <table>
-                                          <tr>
-                                              <th width="150px">Name</th>
-                                              <th width="100px">Type</th>
-                                              <th width="100px">Format</th>
-                                              <th>Description</th>
-                                          </tr>
-                                              <tr>
-                                                  <td>RetryMinusAfter</td>
-                                                  <td>Integer</td>
-                                                  <td></td>
-                                                  <td>The number of seconds the client must wait until future requests will respond normally.</td>
-                                              </tr>
-                                      </table>
-                                  </div>
-                            </div>
-                            <h3 id="examples-UserV3-getExternalLinksV3-title-default"></h3>
-                            <p id="examples-UserV3-getExternalLinksV3-description-default" class="marked"></p>
-                            <script>
-                              var responseUserV3default_description = `Unexpected response code`;
-                              var responseUserV3default_description_break = responseUserV3default_description.indexOf('\n');
-                              if (responseUserV3default_description_break == -1) {
-                                $("#examples-UserV3-getExternalLinksV3-title-default").text("Status: default - " + responseUserV3default_description);
-                              } else {
-                                $("#examples-UserV3-getExternalLinksV3-title-default").text("Status: default - " + responseUserV3default_description.substring(0, responseUserV3default_description_break));
-                                $("#examples-UserV3-getExternalLinksV3-description-default").html(responseUserV3default_description.substring(responseUserV3default_description_break));
-                              }
-                            </script>
-
-
-                            <ul id="responses-detail-UserV3-getExternalLinksV3-default" class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-UserV3-getExternalLinksV3-default-schema">Schema</a>
-                                </li>
-
-
-
-
-                            </ul>
-
-
-                            <div class="tab-content" id="responses-UserV3-getExternalLinksV3-default-wrapper" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-UserV3-getExternalLinksV3-default-schema">
-                                  <div id="responses-UserV3-getExternalLinksV3-schema-default" class="exampleStyle">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = ;
-                                        var schema = findNode('schema',schemaWrapper).schema;
-                                        if (!schema) {
-                                          schema = schemaWrapper.schema;
-                                        }
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                          Object.keys(schema.properties).forEach( (item) => {
-                                            if (schema.properties[item].$ref != null) {
-                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
-                                            }
-                                          });
-                                        } else if (schema.items != null && schema.items.$ref != null) {
-                                            schema.items = defsParser.$refs.get(schema.items.$ref);
-                                        } else {
-                                          schemaWrapper.definitions = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-UserV3-getExternalLinksV3-default-schema-data').val(JSON.stringify(schema));
-                                        var result = $('#responses-UserV3-getExternalLinksV3-schema-default');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-UserV3-getExternalLinksV3-default-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
                         </article>
